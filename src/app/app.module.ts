@@ -15,6 +15,13 @@ import { MovieListComponent } from './components/movie-list/movie-list.component
 import { AllMoviesComponent } from './components/all-movies/all-movies.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { InformationComponent } from './components/information/information.component';
+import { environment } from 'src/environments/environment.prod';
+
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+// import { AngularFirestoreModule } from '@angular/fire/firestore';
+// import { AngularFireStorageModule } from '@angular/fire/storage';
+// import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
@@ -34,7 +41,12 @@ import { InformationComponent } from './components/information/information.compo
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    // AngularFirestoreModule,
+    // AngularFireAuthModule,
+    // AngularFireStorageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
