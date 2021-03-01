@@ -6,13 +6,31 @@ import { AppComponent } from './app.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
+import { TeluguComponent } from './components/telugu/telugu.component';
+import { TamilComponent } from './components/tamil/tamil.component';
+import { MalayalamComponent } from './components/malayalam/malayalam.component';
+import { KannadaComponent } from './components/kannada/kannada.component';
+import { MainMovieComponent } from './components/main-movie/main-movie.component';
+import { MovieListComponent } from './components/movie-list/movie-list.component';
+import { AllMoviesComponent } from './components/all-movies/all-movies.component';
+import { AboutUsComponent } from './components/about-us/about-us.component';
+import { InformationComponent } from './components/information/information.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    TeluguComponent,
+    TamilComponent,
+    MalayalamComponent,
+    KannadaComponent,
+    MainMovieComponent,
+    MovieListComponent,
+    AllMoviesComponent,
+    AboutUsComponent,
+    InformationComponent
   ],
   imports: [
     BrowserModule,

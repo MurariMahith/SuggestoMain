@@ -12,4 +12,5 @@ export class Movie
     cast : string[];
     suggestedDate : string;
     ytTrailerLink : string;
+    rating : number;
 }

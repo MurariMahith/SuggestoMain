@@ -1,3 +1,4 @@
+<!-- <p>-----------------------------------------------------------------------------------------------------------------------------</p> -->
 <!-- <p>main suggestion for that day</p> -->
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <!-- <ol class="carousel-indicators">
@@ -15,13 +16,36 @@
   </div>
 </div>
 <hr>
+<!-- MODAL STARTS HERE --> 
+
+<!--its very buggy may need to go to different approach for modals in home page-->
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Man Of Steel</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/T6DJcgm3wNY?rel=0" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL ENDS HERE -->
+
 
 <!-- <p>movie cards goes down here, with sections</p> -->
 <div style="display: flex;justify-content: center;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;margin-top: 20px;">
   <h1>Similar Movies</h1>
 </div>
-
-  <div class="container">
+<div class="scrolling-wrapper">
+  <div class="card2">
     <div class="movie-card">
       <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
         <div class="header-icon-container">
@@ -32,7 +56,8 @@
           <a href="#">
             <h3 class="movie-title">Man of Steel</h3>
           </a>
-          <div class="imax-logo">Watch Trailer</div>
+          <div class="imax-logo" data-toggle="modal" data-target="#exampleModalCenter">Watch Trailer</div>
+          <!-- <div class="imax-logo">Watch Trailer</div> ORIGINAL BEFORE MODAL, PASTE THIS LINE IF WE REMOVE BOOTSTRAP MODAL AND REMOVE ABOVE LINE -->
         </div>
         <div class="movie-info">
           <div class="info-section">
@@ -51,6 +76,8 @@
       </div>
     </div>
     
+  </div>
+  <div class="card2">
     <div class="movie-card">
       <div class="movie-header babyDriver">
         <div class="header-icon-container">
@@ -83,8 +110,10 @@
           </div><!--seat-->
         </div>
       </div><!--movie-content-->
-    </div><!--movie-card-->
+    </div>
     
+  </div>
+  <div class="card2">
     <div class="movie-card">
       <div class="movie-header theDarkTower">
         <div class="header-icon-container">
@@ -117,10 +146,74 @@
           </div><!--seat-->
         </div>
       </div><!--movie-content-->
-    </div><!--movie-card-->
+    </div>
     
+  </div>
+  <div class="card2">
     <div class="movie-card">
-      <div class="movie-header bladeRunner2049">
+      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
+        <div class="header-icon-container">
+      </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Man of Steel</h3>
+          </a>
+          <div class="imax-logo">Watch Trailer</div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Language</label>
+            <span>English</span>
+          </div>
+          <div class="info-section">
+            <label>Genre</label>
+            <span>Superhero,Action</span>
+          </div>
+          <div class="info-section">
+            <label>Year of Release</label>
+            <span>2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
+        <div class="header-icon-container">
+      </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Man of Steel</h3>
+          </a>
+          <div class="imax-logo">Watch Trailer</div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Language</label>
+            <span>English</span>
+          </div>
+          <div class="info-section">
+            <label>Genre</label>
+            <span>Superhero,Action</span>
+          </div>
+          <div class="info-section">
+            <label>Year of Release</label>
+            <span>2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header babyDriver">
         <div class="header-icon-container">
 
         </div>
@@ -128,14 +221,50 @@
       <div class="movie-content">
         <div class="movie-content-header">
           <a href="#">
-            <h3 class="movie-title">Blade Runner 2049</h3>
+            <h3 class="movie-title">Baby Driver</h3>
           </a>
           
         </div>
         <div class="movie-info">
           <div class="info-section">
             <label>Date & Time</label>
-            <span>Mon 16 Oct - 10:00PM</span>
+            <span>Tue 4 July - 05:00PM</span>
+          </div><!--date,time-->
+          <div class="info-section">
+            <label>Screen</label>
+            <span>01</span>
+          </div><!--screen-->
+          <div class="info-section">
+            <label>Row</label>
+            <span>H</span>
+          </div><!--row-->
+          <div class="info-section">
+            <label>Seat</label>
+            <span>15</span>
+          </div><!--seat-->
+        </div>
+      </div><!--movie-content-->
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header theDarkTower">
+        <div class="header-icon-container">
+
+        </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">The Dark Tower</h3>
+          </a>
+          
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Date & Time</label>
+            <span>Wed 16 Aug - 07:00PM</span>
           </div><!--date,time-->
           <div class="info-section">
             <label>Screen</label>
@@ -143,18 +272,613 @@
           </div><!--screen-->
           <div class="info-section">
             <label>Row</label>
-            <span>D</span>
+            <span>C</span>
           </div><!--row-->
           <div class="info-section">
             <label>Seat</label>
-            <span>05,06</span>
+            <span>18</span>
           </div><!--seat-->
         </div>
       </div><!--movie-content-->
-    </div><!--movie-card-->
+    </div>
     
-  </div><!--container-->
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
+        <div class="header-icon-container">
+      </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Man of Steel</h3>
+          </a>
+          <div class="imax-logo">Watch Trailer</div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Language</label>
+            <span>English</span>
+          </div>
+          <div class="info-section">
+            <label>Genre</label>
+            <span>Superhero,Action</span>
+          </div>
+          <div class="info-section">
+            <label>Year of Release</label>
+            <span>2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
+        <div class="header-icon-container">
+      </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Man of Steel</h3>
+          </a>
+          <div class="imax-logo">Watch Trailer</div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Language</label>
+            <span>English</span>
+          </div>
+          <div class="info-section">
+            <label>Genre</label>
+            <span>Superhero,Action</span>
+          </div>
+          <div class="info-section">
+            <label>Year of Release</label>
+            <span>2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header babyDriver">
+        <div class="header-icon-container">
+
+        </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Baby Driver</h3>
+          </a>
+          
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Date & Time</label>
+            <span>Tue 4 July - 05:00PM</span>
+          </div><!--date,time-->
+          <div class="info-section">
+            <label>Screen</label>
+            <span>01</span>
+          </div><!--screen-->
+          <div class="info-section">
+            <label>Row</label>
+            <span>H</span>
+          </div><!--row-->
+          <div class="info-section">
+            <label>Seat</label>
+            <span>15</span>
+          </div><!--seat-->
+        </div>
+      </div><!--movie-content-->
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header theDarkTower">
+        <div class="header-icon-container">
+
+        </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">The Dark Tower</h3>
+          </a>
+          
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Date & Time</label>
+            <span>Wed 16 Aug - 07:00PM</span>
+          </div><!--date,time-->
+          <div class="info-section">
+            <label>Screen</label>
+            <span>06</span>
+          </div><!--screen-->
+          <div class="info-section">
+            <label>Row</label>
+            <span>C</span>
+          </div><!--row-->
+          <div class="info-section">
+            <label>Seat</label>
+            <span>18</span>
+          </div><!--seat-->
+        </div>
+      </div><!--movie-content-->
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
+        <div class="header-icon-container">
+      </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Man of Steel</h3>
+          </a>
+          <div class="imax-logo">Watch Trailer</div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Language</label>
+            <span>English</span>
+          </div>
+          <div class="info-section">
+            <label>Genre</label>
+            <span>Superhero,Action</span>
+          </div>
+          <div class="info-section">
+            <label>Year of Release</label>
+            <span>2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <!-- <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div> -->
+</div>
 <hr>
+<hr>
+
+<div style="display: flex;justify-content: center;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;margin-top: 20px;">
+  <h1>Editor's Choice</h1>
+</div>
+<div class="scrolling-wrapper">
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
+        <div class="header-icon-container">
+      </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Man of Steel</h3>
+          </a>
+          <div class="imax-logo">Watch Trailer</div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Language</label>
+            <span>English</span>
+          </div>
+          <div class="info-section">
+            <label>Genre</label>
+            <span>Superhero,Action</span>
+          </div>
+          <div class="info-section">
+            <label>Year of Release</label>
+            <span>2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header babyDriver">
+        <div class="header-icon-container">
+
+        </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Baby Driver</h3>
+          </a>
+          
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Date & Time</label>
+            <span>Tue 4 July - 05:00PM</span>
+          </div><!--date,time-->
+          <div class="info-section">
+            <label>Screen</label>
+            <span>01</span>
+          </div><!--screen-->
+          <div class="info-section">
+            <label>Row</label>
+            <span>H</span>
+          </div><!--row-->
+          <div class="info-section">
+            <label>Seat</label>
+            <span>15</span>
+          </div><!--seat-->
+        </div>
+      </div><!--movie-content-->
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header theDarkTower">
+        <div class="header-icon-container">
+
+        </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">The Dark Tower</h3>
+          </a>
+          
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Date & Time</label>
+            <span>Wed 16 Aug - 07:00PM</span>
+          </div><!--date,time-->
+          <div class="info-section">
+            <label>Screen</label>
+            <span>06</span>
+          </div><!--screen-->
+          <div class="info-section">
+            <label>Row</label>
+            <span>C</span>
+          </div><!--row-->
+          <div class="info-section">
+            <label>Seat</label>
+            <span>18</span>
+          </div><!--seat-->
+        </div>
+      </div><!--movie-content-->
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
+        <div class="header-icon-container">
+      </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Man of Steel</h3>
+          </a>
+          <div class="imax-logo">Watch Trailer</div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Language</label>
+            <span>English</span>
+          </div>
+          <div class="info-section">
+            <label>Genre</label>
+            <span>Superhero,Action</span>
+          </div>
+          <div class="info-section">
+            <label>Year of Release</label>
+            <span>2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
+        <div class="header-icon-container">
+      </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Man of Steel</h3>
+          </a>
+          <div class="imax-logo">Watch Trailer</div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Language</label>
+            <span>English</span>
+          </div>
+          <div class="info-section">
+            <label>Genre</label>
+            <span>Superhero,Action</span>
+          </div>
+          <div class="info-section">
+            <label>Year of Release</label>
+            <span>2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header babyDriver">
+        <div class="header-icon-container">
+
+        </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Baby Driver</h3>
+          </a>
+          
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Date & Time</label>
+            <span>Tue 4 July - 05:00PM</span>
+          </div><!--date,time-->
+          <div class="info-section">
+            <label>Screen</label>
+            <span>01</span>
+          </div><!--screen-->
+          <div class="info-section">
+            <label>Row</label>
+            <span>H</span>
+          </div><!--row-->
+          <div class="info-section">
+            <label>Seat</label>
+            <span>15</span>
+          </div><!--seat-->
+        </div>
+      </div><!--movie-content-->
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header theDarkTower">
+        <div class="header-icon-container">
+
+        </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">The Dark Tower</h3>
+          </a>
+          
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Date & Time</label>
+            <span>Wed 16 Aug - 07:00PM</span>
+          </div><!--date,time-->
+          <div class="info-section">
+            <label>Screen</label>
+            <span>06</span>
+          </div><!--screen-->
+          <div class="info-section">
+            <label>Row</label>
+            <span>C</span>
+          </div><!--row-->
+          <div class="info-section">
+            <label>Seat</label>
+            <span>18</span>
+          </div><!--seat-->
+        </div>
+      </div><!--movie-content-->
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
+        <div class="header-icon-container">
+      </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Man of Steel</h3>
+          </a>
+          <div class="imax-logo">Watch Trailer</div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Language</label>
+            <span>English</span>
+          </div>
+          <div class="info-section">
+            <label>Genre</label>
+            <span>Superhero,Action</span>
+          </div>
+          <div class="info-section">
+            <label>Year of Release</label>
+            <span>2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
+        <div class="header-icon-container">
+      </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Man of Steel</h3>
+          </a>
+          <div class="imax-logo">Watch Trailer</div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Language</label>
+            <span>English</span>
+          </div>
+          <div class="info-section">
+            <label>Genre</label>
+            <span>Superhero,Action</span>
+          </div>
+          <div class="info-section">
+            <label>Year of Release</label>
+            <span>2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header babyDriver">
+        <div class="header-icon-container">
+
+        </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Baby Driver</h3>
+          </a>
+          
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Date & Time</label>
+            <span>Tue 4 July - 05:00PM</span>
+          </div><!--date,time-->
+          <div class="info-section">
+            <label>Screen</label>
+            <span>01</span>
+          </div><!--screen-->
+          <div class="info-section">
+            <label>Row</label>
+            <span>H</span>
+          </div><!--row-->
+          <div class="info-section">
+            <label>Seat</label>
+            <span>15</span>
+          </div><!--seat-->
+        </div>
+      </div><!--movie-content-->
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header theDarkTower">
+        <div class="header-icon-container">
+
+        </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">The Dark Tower</h3>
+          </a>
+          
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Date & Time</label>
+            <span>Wed 16 Aug - 07:00PM</span>
+          </div><!--date,time-->
+          <div class="info-section">
+            <label>Screen</label>
+            <span>06</span>
+          </div><!--screen-->
+          <div class="info-section">
+            <label>Row</label>
+            <span>C</span>
+          </div><!--row-->
+          <div class="info-section">
+            <label>Seat</label>
+            <span>18</span>
+          </div><!--seat-->
+        </div>
+      </div><!--movie-content-->
+    </div>
+    
+  </div>
+  <div class="card2">
+    <div class="movie-card">
+      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
+        <div class="header-icon-container">
+      </div>
+      </div><!--movie-header-->
+      <div class="movie-content">
+        <div class="movie-content-header">
+          <a href="#">
+            <h3 class="movie-title">Man of Steel</h3>
+          </a>
+          <div class="imax-logo">Watch Trailer</div>
+        </div>
+        <div class="movie-info">
+          <div class="info-section">
+            <label>Language</label>
+            <span>English</span>
+          </div>
+          <div class="info-section">
+            <label>Genre</label>
+            <span>Superhero,Action</span>
+          </div>
+          <div class="info-section">
+            <label>Year of Release</label>
+            <span>2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <!-- <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div>
+  <div class="card2"><h2>Card</h2></div> -->
+</div>
+<hr>
+<hr>
+
+
 <div style="display: flex;justify-content: center;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;margin-top: 20px;">
   <h1>Recently Suggested Movies</h1>
 </div>
