@@ -24,7 +24,8 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.json"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -48,10 +49,11 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
+              "aot": false,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": false,
+              "serviceWorker": true
             }
           }
         },
@@ -85,7 +87,8 @@
             "scripts": [],
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.json"
             ]
           }
         },
@@ -131,5 +134,8 @@
       }
     }
   },
-  "defaultProject": "suggesto"
+  "defaultProject": "suggesto",
+  "cli": {
+    "analytics": "43e56816-8f13-470d-b776-4943e8bbefdb"
+  }
 }

@@ -7,7 +7,7 @@ import { Movie } from './../models/movie'
 })
 export class MovieServiceService {
 
-  private dbPath = '/movies';
+  private dbPath = '/engMovies';
 
   movieRef: AngularFireList<Movie> = null;
 
@@ -16,7 +16,7 @@ export class MovieServiceService {
     this.movieRef = db.list(this.dbPath);
   }
 
-  getMoviesList(): AngularFireList<any> {
+  getAllMovies(): AngularFireList<any> {
     return this.movieRef;
   }
 

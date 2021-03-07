@@ -19,6 +19,8 @@ import { environment } from 'src/environments/environment.prod';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { ServiceWorkerModule } from '@angular/service-worker';
+//import { environment } from '../environments/environment';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
 // import { AngularFireStorageModule } from '@angular/fire/storage';
 // import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -44,6 +46,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     // AngularFirestoreModule,
     // AngularFireAuthModule,
     // AngularFireStorageModule

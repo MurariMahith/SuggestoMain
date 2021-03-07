@@ -1,3 +1,44 @@
-<p>
-  all-movies works!
-</p>
+<div class="jumbotron">
+  <div style="display: flex;justify-content: center;">
+    <h1 class="text-centre display-4 ">All Movies</h1>
+  </div>  
+  <hr>
+<!-- <div class="scrolling-wrapper"> -->
+  <div style="display: flex;flex-wrap: wrap;">
+    <div class="card2" *ngFor="let movie of DisplayMovieList">
+      <div class="movie-card">
+        <!-- <div class="movie-header manOfSteel" style="background-image: url(movie.smallImageUrl);"> -->
+        <div class="movie-header manOfSteel" [ngStyle]="{'background-image': 'url(' + movie.smallImageUrl + ')'}">
+          <div class="header-icon-container">          
+          </div>
+        </div><!--movie-header-->
+        <div class="movie-content">
+          <div class="movie-content-header">
+            <a href="#">
+              <h3 class="movie-title">{{movie.title}}</h3>
+            </a>
+            
+            <!-- <div class="imax-logo">Watch Trailer</div> ORIGINAL BEFORE MODAL, PASTE THIS LINE IF WE REMOVE BOOTSTRAP MODAL AND REMOVE ABOVE LINE -->
+          </div>
+          <div class="movie-info" style="font-size:small;">
+            <div>
+              <label>Language : </label>
+              <span><b> {{movie.language}}</b></span>
+            </div>
+            <div>
+              <label>Genre : </label>
+              <span><b> {{movie.genre}}</b></span>
+            </div>
+            <div>
+              <label>Year of Release : </label>
+              <span><b> {{movie.releaseYear}}</b></span>
+            </div>
+          </div>
+            <div>
+              <div class="imax-logo" data-toggle="modal" data-target="#exampleModalCenter"><a href="{{movie.trailerUrl}}">Watch Trailer</a></div>
+            </div>          
+        </div>
+      </div> 
+    </div>  
+  </div>
+</div>
