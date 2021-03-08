@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'kannada',  component: KannadaComponent },
   { path: 'malayalam',  component: MalayalamComponent },
   { path: 'all',  component: AllMoviesComponent },
-  { path: 'movie',  component: MainMovieComponent },
+  { path: 'movie/:key',  component: MainMovieComponent },
   { path: 'movielist',  component: MovieListComponent },
   { path: 'aboutus',  component: AboutUsComponent },
   { path: 'info',  component: InformationComponent },

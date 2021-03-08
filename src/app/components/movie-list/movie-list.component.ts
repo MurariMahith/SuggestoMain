@@ -82,6 +82,7 @@ export class MovieListComponent implements OnInit {
       obj.trailerUrl = o.ytTrailerLink;      
       obj.releaseYear = o.releaseYear;
       obj.bigImageUrl = o.imageUrl;
+      obj.key = o.key;
       obj.smallImageUrl = o.cardImageUrl;
       if(o.language.english)
         obj.language += 'English, '
@@ -104,10 +105,9 @@ export class MovieListComponent implements OnInit {
     return MovieListForDisplay2;
   }
 
-  GoToEditList(key)
+  GoToMovie(key)
   {
-    console.log(key)
-    this.router.navigateByUrl('/editList/'+key)
+    this.router.navigateByUrl('/movie/'+key)
   }
 
 }

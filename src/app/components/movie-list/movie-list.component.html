@@ -8,10 +8,11 @@
         <div class="card2" *ngFor="let movie of list.moviesInList">
           <div class="movie-card">
             <!-- <div class="movie-header manOfSteel" style="background-image: url(movie.smallImageUrl);"> -->
+            <a (click)="GoToMovie(movie.key)">
             <div class="movie-header manOfSteel" [ngStyle]="{'background-image': 'url(' + movie.smallImageUrl + ')'}">
               <div class="header-icon-container">          
               </div>
-            </div><!--movie-header-->
+            </div></a><!--movie-header-->
             <div class="movie-content">
               <div class="movie-content-header">
                 <a>

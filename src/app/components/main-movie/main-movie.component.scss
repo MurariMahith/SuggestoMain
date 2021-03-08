@@ -127,6 +127,16 @@ a:hover {
 .movie-content {
   padding: 18px 18px 24px 18px;
   margin: 0;
+  //above is original
+  height: 200px;
+  //overflow:hidden;
+  ///very very important overflow - x here makes text in this div don't go outside instead hides text that goes after div
+  overflow-x: hidden;
+  // word-wrap:break-word;
+  // overflow-wrap: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .movie-content-header, .movie-info {

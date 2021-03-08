@@ -22,6 +22,7 @@ export class DisplayMovieService {
       obj.releaseYear = o.releaseYear;
       obj.bigImageUrl = o.imageUrl;
       obj.smallImageUrl = o.cardImageUrl;
+      obj.key = o.key;
       if(o.language.english)
         obj.language += 'English, '
       if(o.language.telugu)

@@ -1,73 +1,65 @@
-<!-- <div>
-<div class="movie-card">
-  <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
-    <div class="header-icon-container">
-  </div>
-  </div>
-  <div class="movie-content">
-    <div class="movie-content-header">
-      <a href="#">
-        <h3 class="movie-title">Man of Steel</h3>
-      </a>
-      <div class="imax-logo">Watch Trailer</div>
-    </div>
-    <div class="movie-info">
-      <div class="info-section">
-        <label>Language</label>
-        <span>English</span>
-      </div>
-      <div class="info-section">
-        <label>Genre</label>
-        <span>Superhero,Action</span>
-      </div>
-      <div class="info-section">
-        <label>Year of Release</label>
-        <span>2019</span>
-      </div>
-    </div>
-  </div>
-</div>
-</div> -->
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+<span *ngIf="loading">
+  <img width="100%" src="../../../assets/images/loadinggif3.gif">
+</span>
 
+<span *ngIf="!loading">
+  
+  
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="movie-card">
+          <!-- <div class="movie-header manOfSteel" style="background-image: url(movie.smallImageUrl);"> -->
+          <div class="movie-header manOfSteel" [ngStyle]="{'background-image': 'url(' + actualMovie.smallImageUrl + ')'}">
+            <div class="header-icon-container">          
+            </div>
+          </div><!--movie-header-->
+          <div class="movie-content">
+            <div class="movie-content-header">
+              <a>
+                <p class="movie-title">{{actualMovie.title}}</p>
+              </a>
+              
+              <!-- <div class="imax-logo">Watch Trailer</div> ORIGINAL BEFORE MODAL, PASTE THIS LINE IF WE REMOVE BOOTSTRAP MODAL AND REMOVE ABOVE LINE -->
+            </div>
+            <div class="movie-info" style="font-size:small;">
+              <div>
+                <label>Language : </label>
+                <span><b> {{actualMovie.language}}</b></span>
+              </div>
+              <div>
+                <label>Genre : </label>
+                <span><b> {{actualMovie.genre}}</b></span>
+              </div>
+              <div>
+                <label>Year of Release : </label>
+                <span><b> {{actualMovie.releaseYear}}</b></span>
+              </div>
+            </div>
+              <div>
+                <div class="imax-logo" data-toggle="modal" data-target="#exampleModalCenter"><a href="{{actualMovie.trailerUrl}}">Watch Trailer</a></div>
+              </div>
+            
+          </div>
+        </div> 
 
-<div class="row">
-  <div class="col-sm-3">
-    <div class="movie-card">
-      <div class="movie-header manOfSteel" style="background-image: url('http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg');">
-        <div class="header-icon-container">
       </div>
-      </div><!--movie-header-->
-      <div class="movie-content">
-        <div class="movie-content-header">
-          <a href="#">
-            <h3 class="movie-title">Man of Steel</h3>
-          </a>
-          <div class="imax-logo">Watch Trailer</div>
-        </div>
-        <div class="movie-info">
-          <div class="info-section">
-            <label>Language</label>
-            <span>English</span>
-          </div>
-          <div class="info-section">
-            <label>Genre</label>
-            <span>Superhero,Action</span>
-          </div>
-          <div class="info-section">
-            <label>Year of Release</label>
-            <span>2019</span>
-          </div>
+      <div class="col-sm-8">    
+        <div class="embed-responsive embed-responsive-16by9" style="margin: 20px;border-radius: 10px;">
+          <iframe class="embed-responsive-item" [src]="safeSrc" allowfullscreen></iframe>
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-sm-8">    
-    <div class="embed-responsive embed-responsive-16by9" style="margin: 20px;border-radius: 10px;">
-      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/T6DJcgm3wNY?rel=0" allowfullscreen></iframe>
-    </div>
-  </div>
-</div>
 
-<div class="description" style="display: flex;justify-content: center;margin: 5%;">
-  <h3>description goes here</h3>
-</div>
+    <div class="description">
+      
+    </div>
+
+    <div class="movie-links" style="display: flex;justify-content: center">
+      <!-- <h3>description goes here</h3> -->
+      <button type="button" style="margin: 1%;" class="btn btn-outline-primary btn-lg btn-block" (click)="GoToMovieExternalSite()">Watch Movie <i class="fa fa-play-circle-o"></i></button>      
+      <!--this below line implementation is hidden until our app gets good response-->
+      <!-- <button type="button" style="margin: 1%;" class="btn btn-outline-primary btn-lg btn-block">Download Movie From Torrent <i class="fa fa-play-circle-o"></i></button>       -->
+    </div>
+
+</span>

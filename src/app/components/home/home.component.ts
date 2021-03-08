@@ -8,6 +8,8 @@ import { MovieList } from 'src/app/models/MovieList';
 import { DisplayMovieService } from 'src/app/services/display-movie.service';
 import { DisplayListService } from 'src/app/services/display-list.service';
 import { DisplayMovieList } from 'src/app/models/DisplayMovieList';
+import { Router } from '@angular/router';
+import { $ } from 'protractor';
 
 @Component({
   selector: 'app-home',
@@ -31,6 +33,7 @@ export class HomeComponent implements OnInit {
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
     private listDisplayService : DisplayListService,
+    private router : Router
     ) { }
 
   ngOnInit() 
@@ -93,6 +96,16 @@ export class HomeComponent implements OnInit {
       }
     }
     this.editorsChoice = this.listDisplayService.BuildMovieListForDisplay(customMovieList,this.allMovies);
+  }
+
+  GoToMovie(key)
+  {
+    this.router.navigateByUrl('/movie/'+key)
+  }
+
+  launchModal(key)
+  {
+    //document.querySelector(".exampleModalCenter").on()
   }
 
 }

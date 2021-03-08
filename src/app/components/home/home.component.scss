@@ -211,7 +211,8 @@ a:hover {
 
 
 .scrolling-wrapper {
-  overflow-x: scroll;
+  //border: 2px solid black;
+  overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
 
@@ -220,4 +221,8 @@ a:hover {
     margin: 10px;
     width: 300px;
   }
+}
+
+.scrolling-wrapper::-webkit-scrollbar {
+  display: none;
 }
