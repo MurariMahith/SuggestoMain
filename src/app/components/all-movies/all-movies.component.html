@@ -13,41 +13,56 @@
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent2">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <!-- <li class="nav-item active">
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
+          </li> -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownG" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownG" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Filter By Genre
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <button type="button" class="btn btn-primary btn-sm btn-block" style="margin: 2%;">Reset</button>
+              <label class="dropdown-item" (click)="resetGenreFilter()">Reset</label>
               <span *ngFor="let g of allGenres">
                 <button type="button" id="{{g}}" (click)="addGenreToSort(g)" class="btn btn-secondary btn-sm" style="margin: 2%;">{{g}}</button>
               </span>              
             </div>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownY" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownY" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Filter By Year
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <label class="dropdown-item">Reset</label>
+              <label class="dropdown-item" (click)="resetYearFilter()">Reset</label>
               <span *ngFor="let year of allMovieYears">
                 <button type="button" id="{{year}}" (click)="addYearToSort(year)" class="btn btn-secondary btn-sm" style="margin: 1%;">{{year}}</button>
               </span>              
             </div>
           </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownL" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Filter By Language
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <label class="dropdown-item" (click)="resetLanguageFilter()">Reset</label>
+              <span *ngFor="let lang of allLanguages">
+                <button type="button" id="{{lang}}" (click)="addLanguageToSort(lang)" class="btn btn-secondary btn-sm" style="margin: 1%;">{{lang}}</button>
+              </span>              
+            </div>
+          </li>
           <li class="nav-item">
-            <div style="display: flex;align-items: center;">
-              <input type="checkbox" [(ngModel)]="advancedSearch" name="Adventure">
-              <label>&nbsp;Advanced Search</label>
+            <div class="nav-link" style="display: flex;align-items: center;">
+              <!-- <input type="checkbox" [(ngModel)]="advancedSearch" name="Adventure">
+              <label>&nbsp;Advanced Search</label> -->
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="advancedSearch" name="Adventure">
+                <span class="slider round"></span>
+              </label>
+              <label data-toggle="tooltip" data-placement="bottom" title="Advance search is a great feature that include search results by movie name, cast, release year and other custom tags for each movie.Try searching ironman,hulk etc.,.">&nbsp;Advanced Search</label>
             </div>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-          <p class="btn btn-outline-success my-2 my-sm-0">Search</p>
-          <input class="form-control mr-sm-2" type="text" placeholder="Start Typing for Movies" name="searchStr" [(ngModel)]="searchString" #searchStr="ngModel" (ngModelChange)="searching($event)">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search For Movies" name="searchStr" [(ngModel)]="searchString" #searchStr="ngModel" (ngModelChange)="searching($event)">
         </form>
       </div>
     </nav>
@@ -89,6 +104,35 @@
             </div>          
         </div>
       </div> 
-    </div>  
+    </div> 
+    <div *ngIf="noMoviesSearch">
+      <div class="card " style="margin: 2%;">
+        <div class="card-header">
+          No Movies Present based on your Search and Filter criteria
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Didn't Find an expected Movie?</h5>
+          <p class="card-text">If you like to add your movie suggestion so that it helps us to suggest movies better, please type Movie name and Language below.</p>
+          <form>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Movie Name</label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Year</label>
+              <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+        <div class="card-footer text-muted">
+          2 days ago
+        </div>
+      </div>    
+    </div> 
   </div>
 </div>

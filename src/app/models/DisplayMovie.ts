@@ -8,6 +8,9 @@ export class DisplayMovie
     releaseYear : string = '';
     bigImageUrl : string = '';
     smallImageUrl : string = '';
+    description : string = '';
+    subTags : string = ''; 
+    cast : string = '';
     key : string = '';
     //rating is to sort array based on rating
     rating : number = 0;
