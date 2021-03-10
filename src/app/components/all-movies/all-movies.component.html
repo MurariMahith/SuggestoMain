@@ -18,7 +18,7 @@
     </div>
   </div>
 </div> -->
-<div class="jumbotron">
+<div class="jumbotron" style="padding-top: 2%;">
   <div style="display: flex;justify-content: center;">
     <h1 class="text-centre display-8 ">All Movies</h1>
   </div>  
@@ -37,7 +37,7 @@
           </li> -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownG" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Filter By Genre
+              Filter By Genre <span style="color: green;">({{genresToIncludeInSort.length}})</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <label class="dropdown-item" (click)="resetGenreFilter()">Reset</label>
@@ -48,7 +48,7 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownY" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Filter By Year
+              Filter By Year <span style="color: green;">({{yearsToIncludeInSort.length}})</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <label class="dropdown-item" (click)="resetYearFilter()">Reset</label>
@@ -59,7 +59,7 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownL" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Filter By Language
+              Filter By Language <span style="color: green;">({{languagesToIncludeInSort.length}})</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <label class="dropdown-item" (click)="resetLanguageFilter()">Reset</label>
@@ -87,7 +87,7 @@
     </nav>
   </div>
 <!-- <div class="scrolling-wrapper"> -->
-  <div style="display: flex;flex-wrap: wrap;">
+  <div style="display: flex;flex-wrap: wrap;justify-content: center;">
     <div class="card2" *ngFor="let movie of DisplayMovieList">
       <div class="movie-card">
         <!-- <div class="movie-header manOfSteel" style="background-image: url(movie.smallImageUrl);"> -->
@@ -126,8 +126,8 @@
     </div> 
     <div *ngIf="noMoviesSearch">
       <div class="card " style="margin: 2%;">
-        <div class="card-header">
-          No Movies Present based on your Search and Filter criteria
+        <div class="card-header" style="color: red;">
+          No Movies Present based on your Search and Filter criteria, check for the filters above or check the search key word you entered.
         </div>
         <div class="card-body">
           <h5 class="card-title">Didn't Find an expected Movie?</h5>

@@ -18,7 +18,7 @@ export class AllMoviesComponent implements OnInit {
 
   DisplayMovieList : DisplayMovie[] = [];
   DisplayMovieListOriginal : DisplayMovie[] = [];
-  //DisplayMovieListOriginal2 : DisplayMovie[] = [];
+  DisplayMovieList2 : DisplayMovie[] = [];
   allTitles2 = new Object();
   searchResults = [];
   advancedSearch : boolean = true;
@@ -127,15 +127,17 @@ export class AllMoviesComponent implements OnInit {
   {    
     event = event.trim().toLocaleLowerCase();
     // console.log(event);
-    this.searchResults.length = 0;    
+    //this.searchResults.length = 0;  
+    const fakeVar = this.DisplayMovieList;  
     this.DisplayMovieList.length = 0;
     var titles = Object.keys(this.allTitles2);
+    console.log(fakeVar.length)
     titles.forEach(element => {
       if(element.search(event) != -1)
       {
         element.search(event)
         this.DisplayMovieList.push(this.DisplayMovieListOriginal.find(o => o.key == this.allTitles2[element]))
-        this.searchResults.push(element);     
+        //this.searchResults.push(element);     
       }
     });
     if(this.advancedSearch)
@@ -158,6 +160,10 @@ export class AllMoviesComponent implements OnInit {
         {
           this.DisplayMovieList.push(mov)
           console.log(mov.title);
+        }
+        if(mov.language.trim().toLocaleLowerCase().search(event) != -1)
+        {
+          this.DisplayMovieList.push(mov)
         }
       });
     }    
@@ -351,6 +357,7 @@ export class AllMoviesComponent implements OnInit {
     {
       this.noMoviesSearch = false;
     }
+    this.DisplayMovieList2 = this.DisplayMovieList;
   }
 
   resetGenreFilter()
