@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { DisplayMovie } from 'src/app/models/DisplayMovie';
 import { FMovie } from 'src/app/models/Fmovie';
+import { UserSuggestedMovie } from 'src/app/models/UserSuggestedMovie';
 import { MovieServiceService } from 'src/app/services/movie-service.service';
+import { UserMovieSuggestService } from 'src/app/services/user-movie-suggest.service';
 
 @Component({
   selector: 'app-all-movies',
@@ -32,7 +34,9 @@ export class AllMoviesComponent implements OnInit {
   genresToIncludeInSort : string[] = []; 
   languagesToIncludeInSort : string[] = []; 
 
-  constructor(private movieService : MovieServiceService,private router : Router) { }
+  userMovie : UserSuggestedMovie = new UserSuggestedMovie();
+
+  constructor(private movieService : MovieServiceService,private router : Router, private userMovieService : UserMovieSuggestService) { }
 
   ngOnInit() {
 
@@ -51,6 +55,16 @@ export class AllMoviesComponent implements OnInit {
     })
 
 
+  }
+
+  onSubmit()
+  {
+    //this.userMovie.rating = Number($(':radio').val())
+    // $(':radio').change(function() {
+    //   console.log('New star rating: ' + this.val);
+    // });
+    //this.userMovieService.createUserSuggestedMovie(this.userMovie);
+    console.log(this.userMovie)
   }
 
   prepareDisplayMovieList(arr : FMovie[]) : DisplayMovie[]

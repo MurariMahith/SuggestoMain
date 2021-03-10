@@ -16,7 +16,7 @@
         <a (click)="GoToMovie(this.todayMovie.key)">
         <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"></a>
         <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
-          <h1>{{this.todayMovie.title}}</h1>
+          <h3>{{this.todayMovie.title}}</h3>
         </div>
       </span>
       
@@ -52,7 +52,7 @@
 
 <!---movies lists from ts file here-->
 <div *ngFor="let list of editorsChoice">
-  <h1 class="text-center display-6">{{list.listName}}</h1>
+  <h3 class="text-center display-8">{{list.listName}}</h3>
   <div class="scrolling-wrapper">
     <!-- <div style="display: flex;flex-wrap: nowrap;"> -->
       <div class="card2" *ngFor="let movie of list.moviesInList">
