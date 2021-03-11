@@ -20,4 +20,8 @@ export class MovieServiceService {
     return this.movieRef;
   }
 
+  updateMovie(key: string, value: any): Promise<void> {
+    return this.movieRef.update(key, value);
+  }
+
 }

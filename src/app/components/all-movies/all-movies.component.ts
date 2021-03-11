@@ -59,12 +59,9 @@ export class AllMoviesComponent implements OnInit {
 
   onSubmit()
   {
-    //this.userMovie.rating = Number($(':radio').val())
-    // $(':radio').change(function() {
-    //   console.log('New star rating: ' + this.val);
-    // });
-    //this.userMovieService.createUserSuggestedMovie(this.userMovie);
-    console.log(this.userMovie)
+    this.userMovieService.createUserSuggestedMovie(this.userMovie)
+    alert("Thank you for your suggestion, This will help us to suggest better movies.") 
+    window.location.href="/all";
   }
 
   prepareDisplayMovieList(arr : FMovie[]) : DisplayMovie[]

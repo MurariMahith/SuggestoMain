@@ -51,8 +51,25 @@
       </div>
     </div>
 
-    <div class="description">
-      
+    <div class="rating" style="margin: 5%;">
+      <div class="form-group" *ngIf="eligibleForRating">
+        <label for="exampleInputPassword2">Already saw this movie, please give us your rating to this movie</label>     
+        <small id="emailHelp" class="form-text text-muted">It will help us to suggest better movies. You can only rate one time per movie. (editing rating for movies will be supported in next version) </small> <br>
+        <div style="display: flex;">
+        <select class="form-select browser-default custom-select" id="ratingdropdown" aria-label="Default select example" name="rtingd" [(ngModel)]="rating">
+          <option [value]=0>Rate {{actualMovie.title}} movie here</option>
+          <option [value]="1">Below Average</option>
+          <option [value]="2">Average</option>
+          <option [value]="3">Good</option>
+          <option [value]="4">Extrordinary</option>
+          <option [value]="5">Mind blowing</option>
+        </select>   
+        <button type="button" style="margin-left: 1%;width: 100px;" class="btn btn-outline-primary btn-sm" (click)="rateMovie(actualMovie.key)">Submit</button>   </div>
+      </div>
+      <div *ngIf="!eligibleForRating">
+        <h4> You already rated <b>{{rating}}</b> for <b>{{actualMovie.title}}</b>. Thank you !</h4>
+        <small id="emailHelp" class="form-text text-muted"> You can only rate one time per movie. (editing rating for movies will be supported in next version)</small>
+      </div>
     </div>
 
     <div class="movie-links" style="display: flex;justify-content: center">

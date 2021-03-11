@@ -25,6 +25,10 @@ export class MainMovieComponent implements OnInit {
   safeSrc: SafeResourceUrl;
   loading : boolean = true;
 
+  rating : number = 0;
+
+  eligibleForRating : boolean = true;
+
   constructor(private movieService : MovieServiceService, 
     private activatedRoute: ActivatedRoute,
     private router : Router,
@@ -34,6 +38,13 @@ export class MainMovieComponent implements OnInit {
   ngOnInit() {
 
     var movieKey = this.activatedRoute.snapshot.params.key;
+
+    var prevRating = window.localStorage.getItem(movieKey);
+    if(prevRating != null && window.localStorage)
+    {
+      this.eligibleForRating = false;
+      this.rating = Number(prevRating);
+    }
 
     this.movieService.getAllMovies().snapshotChanges().pipe(
       map(changes =>
@@ -72,6 +83,22 @@ export class MainMovieComponent implements OnInit {
   GoToMovieExternalSite()
   {
     window.location.href = this.actualMovie.movieLink;
+  }
+
+  rateMovie(key :string)
+  {
+    var movieKey = this.activatedRoute.snapshot.params.key
+    var ratedMovie = this.foundMovies[0];
+    delete ratedMovie.key;
+
+    ratedMovie.rating = Number(ratedMovie.rating) + Number(this.rating);
+    //console.log(Number("10")+Number("20"))
+    // console.log(ratedMovie);
+    window.localStorage.setItem(movieKey,""+this.rating);
+    this.movieService.updateMovie(movieKey,ratedMovie)
+    // .then(()=>alert("rating for "+ratedMovie.title+" is submitted. This will help us to suggest movies better."))
+    // .catch(()=>alert("something went wrong, cannot submit rating, please contact admin or try agian later"))
+    window.location.reload();
   }
 
 }
