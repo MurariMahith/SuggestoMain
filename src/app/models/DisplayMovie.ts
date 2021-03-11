@@ -12,6 +12,7 @@ export class DisplayMovie
     subTags : string = ''; 
     cast : string = '';
     key : string = '';
+    suggestedDate : string = '';
     //rating is to sort array based on rating
     rating : number = 0;
 }

@@ -78,6 +78,7 @@ export class AllMoviesComponent implements OnInit {
       obj.rating = o.rating;
       obj.cast = o.cast.join(",")
       obj.subTags = o.subTags.join(",")
+      obj.suggestedDate = o.suggestedDate;
 
       for(var key in o.language)
       {

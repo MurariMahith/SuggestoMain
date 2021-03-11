@@ -49,6 +49,49 @@
 </div>
 <!-- MODAL ENDS HERE -->
 
+<div *ngIf="!loading">
+  <h3 class="text-center display-8">Recently Suggested Movies From Us</h3>
+  <div class="scrolling-wrapper">
+    <!-- <div style="display: flex;flex-wrap: nowrap;"> -->
+      <div class="card2" *ngFor="let movie of sortedArray">
+        <div class="movie-card">
+          <!-- <div class="movie-header manOfSteel" style="background-image: url(movie.smallImageUrl);"> -->
+            <a (click)="GoToMovie(movie.key)">
+          <div class="movie-header manOfSteel" [ngStyle]="{'background-image': 'url(' + movie.smallImageUrl + ')'}">
+            <div class="header-icon-container">          
+            </div>
+          </div></a><!--movie-header-->
+          <div class="movie-content">
+            <div class="movie-content-header">
+              <a>
+                <p class="movie-title">{{movie.title}}</p>
+              </a>
+              
+              <!-- <div class="imax-logo">Watch Trailer</div> ORIGINAL BEFORE MODAL, PASTE THIS LINE IF WE REMOVE BOOTSTRAP MODAL AND REMOVE ABOVE LINE -->
+            </div>
+            <div class="movie-info" style="font-size:small;">
+              <div>
+                <label>Language : </label>
+                <span><b> {{movie.language}}</b></span>
+              </div>
+              <div>
+                <label>Genre : </label>
+                <span><b> {{movie.genre}}</b></span>
+              </div>
+              <div>
+                <label>Suggested Date : </label>
+                <span><b> {{movie.suggestedDate}}</b></span>
+              </div>
+            </div>
+              <div>
+                <div class="imax-logo" data-toggle="modal" data-target="#exampleModalCenter"><a>Watch Trailer</a></div>
+              </div>            
+          </div>
+        </div>  
+      </div>  
+    </div>
+</div>
+
 
 <!---movies lists from ts file here-->
 <div *ngFor="let list of editorsChoice">

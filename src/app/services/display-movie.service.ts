@@ -22,7 +22,11 @@ export class DisplayMovieService {
       obj.releaseYear = o.releaseYear;
       obj.bigImageUrl = o.imageUrl;
       obj.smallImageUrl = o.cardImageUrl;
+      obj.suggestedDate = o.suggestedDate;
       obj.key = o.key;
+      obj.rating = o.rating;
+      obj.cast = o.cast.join(",")
+      obj.subTags = o.subTags.join(",")
       if(o.language.english)
         obj.language += 'English, '
       if(o.language.telugu)
