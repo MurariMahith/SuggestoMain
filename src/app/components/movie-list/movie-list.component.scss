@@ -220,3 +220,7 @@ a:hover {
     width: 300px;    
   }
 }
+
+.scrolling-wrapper::-webkit-scrollbar {
+  display: none;
+}

@@ -21,6 +21,8 @@ export class MovieListComponent implements OnInit {
 
   MovieListsForView : DisplayMovieList[] = [];
 
+  selectedList : DisplayMovieList = new DisplayMovieList();
+
   constructor(private movieService : MovieServiceService,private listService : MovieListService,private router : Router) { }
 
   ngOnInit() {
@@ -108,6 +110,16 @@ export class MovieListComponent implements OnInit {
   GoToMovie(key)
   {
     this.router.navigateByUrl('/movie/'+key)
+  }
+
+  scroll(str)
+  {
+    var elmnt = document.getElementById("scrollToThis");
+    elmnt.scrollIntoView({ behavior: 'smooth'});
+    console.log(str);
+    var arr = [];
+    arr.push(this.MovieListsForView.find( o => o.key === str))
+    this.selectedList = arr[0]
   }
 
 }
