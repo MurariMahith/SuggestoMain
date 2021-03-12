@@ -286,9 +286,13 @@ input:checked + .slider:before {
   top: 0;
   position: relative;
   overflow: hidden;
-  margin-top:50px;
-  height: 367px;
-  border: 2px solid black;
+  // margin-top:20px;
+  // margin-left: 10%;
+  // margin-right: 10%;
+  height: 250px;
+  width: 150px;
+  //border: 1px solid rgb(196, 196, 196);
+  border-radius: 5px;
   
 }
 .item img{
@@ -304,6 +308,23 @@ input:checked + .slider:before {
 .img-thumbnail{
     border:0px;
     border-radius:0px;
+}
+
+.scrolling-wrapper2 {
+  //border: 2px solid black;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .item {
+    display: inline-block;
+    // margin: 10px;
+    // width: 300px;
+  }
+}
+
+.scrolling-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 //below is style for rating

@@ -8,12 +8,13 @@ import { MovieList } from 'src/app/models/MovieList';
 import { DisplayMovieService } from 'src/app/services/display-movie.service';
 import { DisplayListService } from 'src/app/services/display-list.service';
 import { DisplayMovieList } from 'src/app/models/DisplayMovieList';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { $ } from 'protractor';
 import { HomePageLists } from 'src/app/models/HomePageLists';
 import { HomePageListsService } from 'src/app/services/home-page-lists.service';
 import _ from 'lodash'
 import { DisplayMovie } from 'src/app/models/DisplayMovie';
+import { Genre } from 'src/app/models/Genre';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit {
   editorsChoice : DisplayMovieList[] = [];
 
   todayMovie : FMovie;
+  todayMovieD : DisplayMovie;
   //todayBooleanMovie is used to check whether tody we have suggested movie or not
   todayBooleanMovie : boolean = true;
   //loading boolean is for animations to view until our app fetches movies from db
@@ -36,18 +38,33 @@ export class HomeComponent implements OnInit {
 
   sortedArray : DisplayMovie[] = []
 
+  allGenres : string[] = []
+  genreObj : Genre = new Genre();
+  
+  isMobile : boolean = false;
+
+
 
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
     private listDisplayService : DisplayListService,
     private router : Router,
-    private homelistsservice : HomePageListsService
+    private homelistsservice : HomePageListsService,
+    private activatedRote : ActivatedRoute
     ) { }
 
   ngOnInit() 
   {
-
+    if( screen.width <= 480 ) {     
+      this.isMobile = true;
+      console.log("mobile");
+    }
+    else{
+      console.log("laptop")
+    }
+    this.allGenres = Object.keys(this.genreObj)
+    console.log(this.allGenres)
     this.movieService.getAllMovies().snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
@@ -63,11 +80,14 @@ export class HomeComponent implements OnInit {
         var newDate = this.buildProperDate(this.allMovies[i].suggestedDate);       
         if(moment().startOf('day').isSame(moment(new Date(newDate))))
         {
-          this.todayMovie = this.allMovies[i];
+          this.todayMovie = this.allMovies[i];          
           this.todayBooleanMovie = false;
           break;
         }
       }
+      var arr = [];
+      arr.push(this.todayMovie)
+      this.todayMovieD = this.movieDisplayService.prepareDisplayMovieList(arr)[0]
       //this.getMovieListsFromDb();
     })
     this.homelistsservice.getAll().snapshotChanges().pipe(
@@ -142,6 +162,11 @@ export class HomeComponent implements OnInit {
     //   }
     // }
     this.editorsChoice = this.listDisplayService.BuildMovieListForDisplay(this.homePageList.listsToIncludeInHomePage,this.allMovies);
+  }
+
+  GoToGenre(str:string)
+  {
+    this.router.navigateByUrl('/all?genre='+str.trim().toLocaleLowerCase())
   }
 
   GoToMovie(key)

@@ -226,3 +226,67 @@ a:hover {
 .scrolling-wrapper::-webkit-scrollbar {
   display: none;
 }
+
+//below here is style for commented html at start of allmovies html page
+.item{
+  left: 0;
+  top: 0;
+  position: relative;
+  overflow: hidden;
+  margin-top:2%;
+  margin-left: 2%;
+  height: 250px;
+  width: 150px;
+  //border: 1px solid rgb(95, 95, 95);
+  border-radius: 5px;  
+  
+}
+.item img{
+  -webkit-transition: 0.6s ease;
+    transition: 0.6s ease;
+    
+}
+.item img:hover{
+  -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+    box-shadow: 0 8px 6px -6px black
+
+}
+.img-thumbnail{
+    border:0px;
+    border-radius:0px;
+}
+
+.scrolling-wrapper2 {
+  //border: 2px solid black;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .item {
+    display: inline-block;
+    // margin: 10px;
+    // width: 300px;
+  }
+}
+
+// .scrolling-wrapper2::-webkit-scrollbar {
+//   display: none;
+// }
+
+.scrolling-wrapper3 {
+  //border: 2px solid black;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .genre-icon {
+    display: inline-block;
+    // margin: 10px;
+    // width: 300px;
+  }
+}
+
+.scrolling-wrapper3::-webkit-scrollbar {
+  display: none;
+}

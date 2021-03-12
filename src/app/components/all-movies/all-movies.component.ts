@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { DisplayMovie } from 'src/app/models/DisplayMovie';
 import { FMovie } from 'src/app/models/Fmovie';
@@ -36,9 +36,33 @@ export class AllMoviesComponent implements OnInit {
 
   userMovie : UserSuggestedMovie = new UserSuggestedMovie();
 
-  constructor(private movieService : MovieServiceService,private router : Router, private userMovieService : UserMovieSuggestService) { }
+  genreFromParam : string = '';
+  langFromParam : string = '';
+
+  filterSelected : boolean = false;
+
+  isMobile : boolean = false;
+
+
+  constructor(private movieService : MovieServiceService,
+    private router : Router, 
+    private userMovieService : UserMovieSuggestService,
+    private activatedRote : ActivatedRoute
+    ) { }
 
   ngOnInit() {
+
+    if( screen.width <= 480 ) {     
+      this.isMobile = true;
+      console.log("mobile");
+    }
+    else{
+      console.log("laptop")
+    }
+
+    this.genreFromParam = this.activatedRote.snapshot.queryParamMap.get('genre')
+    this.langFromParam = this.activatedRote.snapshot.queryParamMap.get('lang')
+    //console.log(genreFromParam + langFromParam)
 
     this.movieService.getAllMovies().snapshotChanges().pipe(
       map(changes =>
@@ -52,17 +76,28 @@ export class AllMoviesComponent implements OnInit {
       
       this.DisplayMovieList = this.prepareDisplayMovieList(this.allMovies)
       this.DisplayMovieListOriginal = this.prepareDisplayMovieList(this.allMovies)
+      this.paramsBasedSort()
+
     })
-
-
   }
 
-  onSubmit()
+  paramsBasedSort()
   {
-    this.userMovieService.createUserSuggestedMovie(this.userMovie)
-    alert("Thank you for your suggestion, This will help us to suggest better movies.") 
-    window.location.href="/all";
+    //this.paramsort = true;
+    if(this.genreFromParam && this.allGenres.includes(this.genreFromParam))
+    {
+      this.genresToIncludeInSort.push(this.genreFromParam.trim().toLocaleLowerCase());
+      this.sortAccordingToGenreAndYear();
+    }
+
+    if(this.langFromParam && this.allGenres.includes(this.langFromParam))
+    {
+      this.languagesToIncludeInSort.push(this.langFromParam.trim().toLocaleLowerCase());
+      this.sortAccordingToLanguage();
+    }
   }
+
+
 
   prepareDisplayMovieList(arr : FMovie[]) : DisplayMovie[]
   {
@@ -88,7 +123,7 @@ export class AllMoviesComponent implements OnInit {
       }
       for(var key in o.movieGenre)
       {
-        this.allGenres.push(key);
+        this.allGenres.push(key.trim().toLocaleLowerCase());
         if(o.movieGenre[key])
           obj.genre += key +','
       }      
@@ -251,6 +286,7 @@ export class AllMoviesComponent implements OnInit {
 
   sortAccordingToGenreAndYear()
   {
+    this.filterSelected = true
     console.log("years")
     console.log(this.yearsToIncludeInSort);
     console.log("genres")
@@ -356,6 +392,11 @@ export class AllMoviesComponent implements OnInit {
       this.noMoviesSearch = false;
     }
     this.DisplayMovieList2 = this.DisplayMovieList;
+
+    if(this.genresToIncludeInSort.length == 0 && this.yearsToIncludeInSort.length == 0 && this.languagesToIncludeInSort.length == 0)
+    {
+      this.filterSelected = false;
+    }
   }
 
   resetGenreFilter()
@@ -393,6 +434,21 @@ export class AllMoviesComponent implements OnInit {
     });
     this.languagesToIncludeInSort.length = 0
     this.sortAccordingToGenreAndYear()
+  }
+
+  resetAllFilters()
+  {
+    this.resetGenreFilter();
+    this.resetLanguageFilter();
+    this.resetYearFilter();
+    this.filterSelected = false;
+  }
+
+  onSubmit()
+  {
+    this.userMovieService.createUserSuggestedMovie(this.userMovie)
+    alert("Thank you for your suggestion, This will help us to suggest better movies.") 
+    window.location.href="/all";
   }
 
 }

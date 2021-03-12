@@ -16,7 +16,21 @@
         <a (click)="GoToMovie(this.todayMovie.key)">
         <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"></a>
         <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
-          <h3>{{this.todayMovie.title}}</h3>
+          <h5>{{this.todayMovie.title}}</h5><br>          
+        </div>
+        <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
+          <h6 class="text-muted text-centre">"{{this.todayMovie.description}}"</h6>         
+        </div>
+        
+        <div class="row" style="margin-left: 3%;margin-right: 3%;margin-top: 0;">
+          <div class="col-sm-6">
+            <p><b>Language : </b>{{this.todayMovieD.language}}</p>
+            <p><b>Genre : </b>{{this.todayMovieD.genre}}</p>
+          </div>
+          <div class="col-sm-6">
+            <p><b>Released Year : </b>{{this.todayMovieD.releaseYear}}</p>
+            <p><b>Trailer : </b><button type="button" class="btn btn-outline-primary btn-sm" (click)="GoToMovie(this.todayMovieD.key)">Watch here</button></p>
+          </div>
         </div>
       </span>
       
@@ -24,8 +38,9 @@
 
     </div>
   </div>
+  <hr *ngIf="!loading">
 </div>
-<hr>
+
 <!-- MODAL STARTS HERE --> 
 
 <!--its very buggy may need to go to different approach for modals in home page-->
@@ -49,8 +64,93 @@
 </div>
 <!-- MODAL ENDS HERE -->
 
+<!--very important for responsive ness between mobile and laptop-->
+<span *ngIf="isMobile">
+      <!--testing-->
+    <div *ngIf="!loading">
+      <h5 class="text-center display-8">Recently Suggested Movies From Us</h5>
+      <div class="scrolling-wrapper2">
+        <span *ngFor="let movie of sortedArray">
+          <div class="item">
+            <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
+            <h6 style="text-align: center;">{{movie.title}}</h6>  
+          </div>     
+        </span>    
+      </div>
+    </div>
+    <!--testing end here-->
+
+    <!--find now-->
+    <div *ngIf="!loading" style="margin-top: 3%;margin-bottom: 3%;">
+      <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
+        <div class="p-2"><h5 class="text-center display-8">Find Now</h5></div>
+        <div class="ml-auto p-2">
+          <div class="float-right" style="margin-right:3% ;">
+            <span class="badge badge-light">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="scrolling-wrapper3">
+        <span *ngFor="let g of allGenres">
+          <div class="genre-icon" style="margin: 2%;">
+            <!-- <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a> -->
+            <button type="button" class="btn btn-outline-primary" (click)="GoToGenre(g)">{{g}}</button>
+          </div>      
+        </span>   
+      </div>
+    </div>
+    <!--find now end here-->
+
+
+    <div *ngFor="let list of editorsChoice">
+      
+      <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
+        <div class="p-2"><h5 class="text-center display-8">{{list.listName}}</h5></div>
+        <div class="ml-auto p-2">
+          <div class="float-right" style="margin-right:3% ;">
+            <span class="badge badge-light">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="scrolling-wrapper2">
+          <span *ngFor="let movie of list.moviesInList">
+            <div class="item">
+              <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
+              <h6 style="text-align: center;">{{movie.title}}</h6>  
+            </div>     
+          </span> 
+ 
+        </div>
+    </div>
+
+
+</span>
+
+<!--------------------------------------------------------LAPTOP BELOW -------------------------------------------------------------->
+<span *ngIf="!isMobile">
+
+
 <div *ngIf="!loading">
-  <h3 class="text-center display-8">Recently Suggested Movies From Us</h3>
+  <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
+    <div class="p-2"><h3 class="text-center display-8">Recently Suggested Movies From Us</h3></div>
+    <div class="ml-auto p-2">
+      <div class="float-right" style="margin-right:3% ;">
+        <span class="badge badge-light">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
   <div class="scrolling-wrapper">
     <!-- <div style="display: flex;flex-wrap: nowrap;"> -->
       <div class="card2" *ngFor="let movie of sortedArray">
@@ -91,11 +191,45 @@
       </div>  
     </div>
 </div>
-
+  <!--find now-->
+  <div *ngIf="!loading" style="margin-top: 3%;margin-bottom: 3%;">
+    <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
+      <div class="p-2"><h3 class="text-center display-8">Find Now</h3></div>
+      <div class="ml-auto p-2">
+        <div class="float-right" style="margin-right:3% ;">
+          <span class="badge badge-light">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="scrolling-wrapper3" style="margin-left: 4%;">
+      <span *ngFor="let g of allGenres">
+        <div class="genre-icon" style="margin: 1%;">        
+          <button type="button" class="btn btn-outline-primary" (click)="GoToGenre(g)">{{g}}</button>
+        </div>      
+      </span>   
+    </div>
+  </div>
+  <!--find now end here-->
 
 <!---movies lists from ts file here-->
 <div *ngFor="let list of editorsChoice">
-  <h3 class="text-center display-8">{{list.listName}}</h3>
+  
+  <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
+    <div class="p-2"><h3 class="text-center display-8">{{list.listName}}</h3></div>
+    <div class="ml-auto p-2">
+      <div class="float-right" style="margin-right:3% ;">
+        <span class="badge badge-light">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
   <div class="scrolling-wrapper">
     <!-- <div style="display: flex;flex-wrap: nowrap;"> -->
       <div class="card2" *ngFor="let movie of list.moviesInList">
@@ -136,8 +270,6 @@
       </div>  
     </div>
 </div>
-
-
 <!---ts file movie list end here-->
-<!--all below html is static-->
+</span>
 

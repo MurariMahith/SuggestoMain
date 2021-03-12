@@ -1,3 +1,12 @@
+<!-- <div style="display: flex;flex-wrap: wrap;justify-content: center;">
+  <span *ngFor="let movie of DisplayMovieList">
+    <div class="item">
+      <img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;" alt="{{movie.title}}">
+      <h6 style="text-align: center;">{{movie.title}}</h6>  
+    </div>     
+  </span>    
+</div> -->
+
 <!-- <div class="container">
   <h2 class="text-center">Zoom Image On Mouse Over</h2>
   <div class="row">
@@ -25,16 +34,16 @@
   <hr>
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" data-toggle="collapse" data-target="#navbarSupportedContent2">Search For Movies</a>
+      <a class="navbar-brand" data-toggle="collapse" data-target="#navbarSupportedContent2">Search <span *ngIf="filterSelected" class="badge badge-dark">filters applied</span></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent2" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent2">
         <ul class="navbar-nav mr-auto">
-          <!-- <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li> -->
+          <li class="nav-item active" *ngIf="filterSelected">
+            <a class="nav-link" (click)="resetAllFilters()">Reset All Filters</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownG" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Filter By Genre <span style="color: green;">({{genresToIncludeInSort.length}})</span>
@@ -86,8 +95,10 @@
       </div>
     </nav>
   </div>
+  <hr>
 <!-- <div class="scrolling-wrapper"> -->
-  <div style="display: flex;flex-wrap: wrap;justify-content: center;">
+  <!----laptop screen-->
+  <div style="display: flex;flex-wrap: wrap;justify-content: center;" *ngIf="!isMobile">
     <div class="card2" *ngFor="let movie of DisplayMovieList">
       <div class="movie-card">
         <!-- <div class="movie-header manOfSteel" style="background-image: url(movie.smallImageUrl);"> -->
@@ -221,4 +232,15 @@
       </div>    
     </div> 
   </div>
+
+  <!----mobiel screen-->
+  <div style="display: flex;flex-wrap: wrap;justify-content: center;" *ngIf="isMobile">
+    <span *ngFor="let movie of DisplayMovieList">
+      <div class="item">
+        <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;" alt="{{movie.title}}"></a>
+        <h6 style="text-align: center;">{{movie.title}}</h6>  
+      </div>     
+    </span>    
+  </div>
+
 </div>
