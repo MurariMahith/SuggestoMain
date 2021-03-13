@@ -30,10 +30,10 @@ export class DisplayListService {
             obj.listName = o.listName;
             obj.key = o["key"]
             o.moviesInThisList.forEach(element => {
-                console.log(allMoviesFromDb.find(a => a.key===element))        
+                //console.log(allMoviesFromDb.find(a => a.key===element))        
                 movieListForDisplay.push(allMoviesFromDb.find(a => a.key===element));
             });
-            console.log(movieListForDisplay);
+            //console.log(movieListForDisplay);
             obj.moviesInList = this.displaymovieservice.prepareDisplayMovieList(movieListForDisplay); 
             MovieListsForView.push(obj);            
         });

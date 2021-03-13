@@ -14,7 +14,7 @@ export class DisplayMovieService {
   prepareDisplayMovieList(allMoviesFromDb : FMovie[]) : DisplayMovie[]
   {
     var MovieListForDisplay : DisplayMovie[] = [];
-    console.log(allMoviesFromDb)
+    //console.log(allMoviesFromDb)
     allMoviesFromDb.forEach(o => {
       var obj = new DisplayMovie()
       obj.title = o.title;
