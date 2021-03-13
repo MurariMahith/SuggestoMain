@@ -4,7 +4,12 @@ export class Genre
     Adventure : boolean = false;
     Super_Hero : boolean = false;
     Science_Fiction : boolean = false;
+    Comedy : boolean = false;
+    Drama : boolean = false;
+    Fantasy : boolean = false;
     Crime : boolean = false;
+    Suspense : boolean = false;
+    SuggestedByUsers : boolean = false;
     Family_Entertainer : boolean = false;
     Chill_With_Friends : boolean = false;    
     Historic : boolean = false;
@@ -13,9 +18,6 @@ export class Genre
     Military : boolean = false;
     Smuggling : boolean = false;    
     Alien_and_Space : boolean =false;
-    Comedy : boolean = false;
-    Drama : boolean = false;
-    Fantasy : boolean = false;
     Horror : boolean = false;
     Mystery : boolean = false;
     Romance : boolean = false;
