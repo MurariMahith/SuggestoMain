@@ -82,7 +82,7 @@ export class MainMovieComponent implements OnInit {
 
   GoToMovieExternalSite()
   {
-    window.location.href = this.actualMovie.movieLink;
+    window.location.href = this.actualMovie.ottLink;
   }
 
   rateMovie(key :string)

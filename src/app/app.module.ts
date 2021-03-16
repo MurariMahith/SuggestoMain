@@ -22,6 +22,10 @@ import { environment } from 'src/environments/environment.prod';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { LoginComponent } from './components/authentication/login/login.component';
+import { SignupComponent } from './components/authentication/signup/signup.component';
+import { ResetPasswordComponent } from './components/authentication/reset-password/reset-password.component';
+import { PersonalComponent } from './components/personal/personal.component';
 //import { environment } from '../environments/environment';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
 // import { AngularFireStorageModule } from '@angular/fire/storage';
@@ -41,7 +45,11 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     MovieListComponent,
     AllMoviesComponent,
     AboutUsComponent,
-    InformationComponent
+    InformationComponent,
+    LoginComponent,
+    SignupComponent,
+    ResetPasswordComponent,
+    PersonalComponent
   ],
   imports: [
     BrowserModule,

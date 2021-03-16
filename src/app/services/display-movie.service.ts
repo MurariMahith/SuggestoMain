@@ -25,6 +25,9 @@ export class DisplayMovieService {
       obj.suggestedDate = o.suggestedDate;
       obj.key = o.key;
       obj.rating = o.rating;
+      obj.ottLink = o.ottLink;
+      obj.torrentDownloadLink = o.torrentDownloadLink;
+      obj.torrentOnlineLink = o.torrentOnlineLink;
       obj.cast = o.cast.join(",")
       obj.subTags = o.subTags.join(",")
       if(o.language.english)

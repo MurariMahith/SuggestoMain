@@ -2,7 +2,7 @@ export class DisplayMovie
 {
     title : string = '';
     trailerUrl : string = '';
-    movieLink : string = 'https://www.primevideo.com/detail/0RZFTNZ3FJJB8TD0JNI63TJ7AA/ref=atv_hm_hom_c_8pZiqd_2_1';
+    //movieLink : string = 'https://www.primevideo.com/detail/0RZFTNZ3FJJB8TD0JNI63TJ7AA/ref=atv_hm_hom_c_8pZiqd_2_1';
     language : string = '';
     genre : string = '';
     releaseYear : string = '';
@@ -15,4 +15,7 @@ export class DisplayMovie
     suggestedDate : string = '';
     //rating is to sort array based on rating
     rating : number = 0;
+    ottLink : string = 'https://www.primevideo.com/detail/0RZFTNZ3FJJB8TD0JNI63TJ7AA/ref=atv_hm_hom_c_8pZiqd_2_1';
+    torrentDownloadLink : string = '';
+    torrentOnlineLink : string = '';
 }

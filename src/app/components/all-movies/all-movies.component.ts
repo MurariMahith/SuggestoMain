@@ -111,6 +111,9 @@ export class AllMoviesComponent implements OnInit {
       obj.smallImageUrl = o.cardImageUrl;
       obj.key = o.key;
       obj.rating = o.rating;
+      obj.ottLink = o.ottLink;
+      obj.torrentOnlineLink = o.torrentOnlineLink;
+      obj.torrentDownloadLink = o.torrentDownloadLink;
       obj.cast = o.cast.join(",")
       obj.subTags = o.subTags.join(",")
       obj.suggestedDate = o.suggestedDate;

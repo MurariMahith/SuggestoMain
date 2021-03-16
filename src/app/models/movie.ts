@@ -8,12 +8,15 @@ export class Movie
     title : string = '';
     releaseYear : string = '';
     description : string = '';
-    language : Language;
-    movieGenre : Genre;
-    availableIn : MoviePlatForm;
+    language : Language = new Language();
+    movieGenre : Genre = new Genre();
+    availableIn : MoviePlatForm = new MoviePlatForm();
     subTags : string[] = [];    
     cast : string[] = [];
     suggestedDate : string = '';
     ytTrailerLink : string = '';
     rating : number = 0;
+    ottLink : string = '';
+    torrentDownloadLink : string = '';
+    torrentOnlineLink : string = '';
 }

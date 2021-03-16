@@ -17,4 +17,7 @@ export class FMovie
     suggestedDate : string = '';
     ytTrailerLink : string = '';
     rating : number = 0;
+    ottLink : string = '';
+    torrentDownloadLink : string = '';
+    torrentOnlineLink : string = '';
 }
