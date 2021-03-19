@@ -4,6 +4,7 @@ export class DisplayMovie
     trailerUrl : string = '';
     //movieLink : string = 'https://www.primevideo.com/detail/0RZFTNZ3FJJB8TD0JNI63TJ7AA/ref=atv_hm_hom_c_8pZiqd_2_1';
     language : string = '';
+    availableIn : string = '';
     genre : string = '';
     releaseYear : string = '';
     bigImageUrl : string = '';

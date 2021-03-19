@@ -29,6 +29,8 @@ export class MainMovieComponent implements OnInit {
 
   eligibleForRating : boolean = true;
 
+  moreAboutMovie : string = 'https://www.google.com/search?q='
+
   constructor(private movieService : MovieServiceService, 
     private activatedRoute: ActivatedRoute,
     private router : Router,
@@ -85,6 +87,16 @@ export class MainMovieComponent implements OnInit {
     window.location.href = this.actualMovie.ottLink;
   }
 
+  MoreAboutMovie()
+  {
+    window.location.href = this.moreAboutMovie+this.actualMovie.title+" movie";
+  }
+
+  trailer()
+  {
+    document.getElementById("yt-trailermm").scrollIntoView({ behavior: "smooth",block: "center"})
+  }
+
   rateMovie(key :string)
   {
     var movieKey = this.activatedRoute.snapshot.params.key
@@ -98,7 +110,8 @@ export class MainMovieComponent implements OnInit {
     this.movieService.updateMovie(movieKey,ratedMovie)
     // .then(()=>alert("rating for "+ratedMovie.title+" is submitted. This will help us to suggest movies better."))
     // .catch(()=>alert("something went wrong, cannot submit rating, please contact admin or try agian later"))
-    window.location.reload();
+    // window.location.reload();
+    alert("Your rating for "+ratedMovie.title+" is successfully submitted.Thank you!")
   }
 
 }

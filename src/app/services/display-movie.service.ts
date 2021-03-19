@@ -45,6 +45,13 @@ export class DisplayMovieService {
         if(o.movieGenre[key])
           obj.genre += key +','
       }
+
+      for(var key in o.availableIn)
+      {
+        if(o.availableIn[key])
+          obj.availableIn += key +','
+      }
+
       MovieListForDisplay.push(obj);    
     });
     //sorting display items based on rating
