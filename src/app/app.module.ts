@@ -29,7 +29,8 @@ import { PersonalComponent } from './components/personal/personal.component';
 //import { environment } from '../environments/environment';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
 // import { AngularFireStorageModule } from '@angular/fire/storage';
-// import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { PersonalisationComponent } from './components/personalisation/personalisation.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { PersonalComponent } from './components/personal/personal.component';
     LoginComponent,
     SignupComponent,
     ResetPasswordComponent,
-    PersonalComponent
+    PersonalComponent,
+    PersonalisationComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +62,7 @@ import { PersonalComponent } from './components/personal/personal.component';
     AngularFireDatabaseModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     // AngularFirestoreModule,
-    // AngularFireAuthModule,
+    AngularFireAuthModule,
     // AngularFireStorageModule
   ],
   providers: [],

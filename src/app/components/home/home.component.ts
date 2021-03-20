@@ -16,6 +16,8 @@ import _ from 'lodash'
 import { DisplayMovie } from 'src/app/models/DisplayMovie';
 import { Genre } from 'src/app/models/Genre';
 import { HttpClient } from '@angular/common/http';
+import { CustomerService } from 'src/app/services/customerService';
+import { Customer } from 'src/app/models/Customer';
 
 @Component({
   selector: 'app-home',
@@ -39,7 +41,7 @@ export class HomeComponent implements OnInit {
 
   sortedArray : DisplayMovie[] = []
 
-  allGenres : string[] = []
+  allGenres : string[] = [];
   genreObj : Genre = new Genre();
   
   isMobile : boolean = false;
@@ -54,6 +56,8 @@ export class HomeComponent implements OnInit {
 
   locationBasedMovies : DisplayMovie[] = [];
 
+  currentCustomer : Customer;
+
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
@@ -61,7 +65,8 @@ export class HomeComponent implements OnInit {
     private router : Router,
     private homelistsservice : HomePageListsService,
     private activatedRote : ActivatedRoute,
-    private http : HttpClient
+    private http : HttpClient,
+    private customerService : CustomerService
     ) { }
 
   ngOnInit() 
@@ -73,6 +78,21 @@ export class HomeComponent implements OnInit {
     else{
       //console.log("laptop")
     }
+    if(localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
+    {
+      this.customerService.getLoggedInCustomer()
+        .subscribe(o =>
+          {
+            console.log(o)
+            if(o.find(x => x.uid === localStorage.getItem("uid")))
+            {
+              this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
+            }
+            console.log(this.currentCustomer)
+          })
+    }
+    //console.log(this.customerService.getLoggedInCustomer())
+    console.log(this.currentCustomer)
     this.allGenres = Object.keys(this.genreObj)
     //console.log(this.allGenres)
     this.movieService.getAllMovies().snapshotChanges().pipe(

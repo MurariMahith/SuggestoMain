@@ -12,6 +12,7 @@ import { MainMovieComponent } from './components/main-movie/main-movie.component
 import { MalayalamComponent } from './components/malayalam/malayalam.component';
 import { MovieListComponent } from './components/movie-list/movie-list.component';
 import { PersonalComponent } from './components/personal/personal.component';
+import { PersonalisationComponent } from './components/personalisation/personalisation.component';
 import { TamilComponent } from './components/tamil/tamil.component';
 import { TeluguComponent } from './components/telugu/telugu.component';
 
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'login',  component: LoginComponent },
   { path: 'signup',  component: SignupComponent },
   { path: 'resetPassword',  component: ResetPasswordComponent },
+  { path: 'personalisation',  component: PersonalisationComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 @NgModule({

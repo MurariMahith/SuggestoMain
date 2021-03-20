@@ -1,1 +1,29 @@
-<p>login works!</p>
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+  
+      <!-- Icon -->
+      <div class="fadeIn first" style="margin: 5%;">
+        <img src="../../../../assets/images/logo.jpg" style="height: 60px;width: 60px;border-radius: 10px;" id="icon" alt="User Icon" />
+      </div>
+  
+      <!-- Login Form -->
+      <form>
+        <input type="text" id="login" class="fadeIn second" name="Email" [(ngModel)]="email" #Email="ngModel" placeholder="E-mail Id">
+        <input type="text" id="password" class="fadeIn third" name="Pass" [(ngModel)]="password" #Pass="ngModel" placeholder="Password">
+        <input type="submit" class="fadeIn fourth" value="Log In">
+        <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark" (click)="submit()">
+            Login
+          </button>
+        
+      </form>
+      <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark" (click)="loginWithGoogle()">
+        Sign in with Google <i class="fa fa-google" aria-hidden="true"></i>
+      </button>
+      <!-- Remind Passowrd -->
+      <div id="formFooter">
+        <a class="underlineHover" routerLink="/resetPassword">Forgot Password?</a>
+      </div>
+  
+    </div>
+  </div>

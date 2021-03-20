@@ -1,0 +1,106 @@
+<div class="jumbotron">
+<div class="jumbotron" *ngIf="showGenreWindow" id="genre">
+    <div  style="margin-top: 3%;margin-bottom: 3%;">
+        <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
+          <div class="p-2"><h5 class="text-center display-8">Select your personal favourite genres</h5></div>
+          <div class="ml-auto p-2">
+            <div class="float-right" style="margin-right:3% ;">
+              <span class="badge badge-light">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex;justify-content: center;flex-wrap: wrap;margin: 1%;">
+          <span *ngFor="let g of allGenres">
+            <div style="margin: 0.25pc;">
+              <!-- <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a> -->
+              <button type="button" id="{{g}}" class="btn btn-outline-primary" (click)="selectGenre(g)" style="margin: 2%;">{{g}}</button>
+            </div>      
+          </span>   
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="genreDone()">Next</button>
+</div>
+
+<div class="jumbotron" *ngIf="showFinalWindow" id="language">
+    <div  style="margin-top: 3%;margin-bottom: 3%;">
+        <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
+          <div class="p-2"><h5 class="text-center display-8">Your Preferred Movie Languages</h5></div>
+          <div class="ml-auto p-2">
+            <div class="float-right" style="margin-right:3% ;">
+              <span class="badge badge-light">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex;justify-content: center;flex-wrap: wrap;">
+            <div style="margin: 0.25pc;">
+              <button type="button" class="btn btn-outline-primary" (click)="selectLang('English')" id="English" style="margin: 2%;">English</button>
+            </div>
+            <div style="margin: 0.25pc;">
+                <button type="button" class="btn btn-outline-primary" (click)="selectLang('Telugu')" id="Telugu" style="margin: 2%;">Telugu</button>
+            </div>
+            <div style="margin: 0.25pc;">
+              <button type="button" class="btn btn-outline-primary" (click)="selectLang('Tamil')" id="Tamil" style="margin: 2%;">Tamil</button>
+            </div>
+            <div style="margin: 0.25pc;">
+                <button type="button" class="btn btn-outline-primary" (click)="selectLang('Malayalam')" id="Malayalam" style="margin: 2%;">Malayalam</button>
+            </div>
+            <div style="margin: 0.25pc;">
+                <button type="button" class="btn btn-outline-primary" (click)="selectLang('Kannada')" id="Kannada" style="margin: 2%;">Kannada</button>
+            </div>           
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="genreBack()">Previous</button>
+      <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="languageDone()">Next</button>
+</div>
+
+<div class="jumbotron" *ngIf="showLanguageWindow" id="final">
+    <div  style="margin-top: 3%;margin-bottom: 3%;">
+        <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
+          <div class="p-2"><h5 class="text-center display-8">Your Preferred Movie Languages</h5></div>
+          <div class="ml-auto p-2">
+            <div class="float-right" style="margin-right:3% ;">
+              <span class="badge badge-light">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6" id="yt-trailermm" >
+                <h5 class="text-center display-8">Your Preferences</h5>
+                <div style="display: flex;justify-content: center;flex-wrap: wrap;">
+                <span *ngFor="let g of genreSelected">
+                    <div style="margin: 0.25pc;">
+                      <!-- <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a> -->
+                      <button type="button" class="btn btn-outline-primary" style="margin: 2%;">{{g}}</button>
+                    </div>      
+                </span> 
+                </div>
+            </div>
+            <div class="col-sm-6" id="yt-trailermm" >
+                <h5 class="text-center display-8">Your Preferred Movie Languages</h5>
+                <div style="display: flex;justify-content: center;flex-wrap: wrap;">
+                <span *ngFor="let g of languagesSelected">
+                    <div style="margin: 0.25pc;">
+                      <!-- <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a> -->
+                      <button type="button" class="btn btn-outline-primary" style="margin: 2%;">{{g}}</button>
+                    </div>      
+                </span>
+                </div>
+            </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="languageBack()">Previous</button>
+      <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="submitPreferences()">Submit</button>
+</div>
+</div>
