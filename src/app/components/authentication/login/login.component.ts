@@ -20,6 +20,8 @@ export class LoginComponent implements OnInit {
 
   customer : Customer = new Customer();
 
+  dbCust : boolean = false;
+
   constructor(private  authService : AuthService,private afAuth : AngularFireAuth,private customerService : CustomerService) { }
 
   ngOnInit(): void {
@@ -65,6 +67,9 @@ export class LoginComponent implements OnInit {
     this.customer.name = this.user.displayName;
     this.customer.email = this.user.email;
     this.customer.emailVerified = this.user.emailVerified;
+    this.customer.preferredGenre = [];
+    this.customer.preferredLanguages = [];
+    this.customer.wishlistedMovies = [];
     console.log(this.customer)
     this.checkCustomer()
   }
@@ -80,13 +85,21 @@ export class LoginComponent implements OnInit {
           if(!(o.find(x => x.uid == this.customer.uid)))
           {
             this.customerService.createCustomer(this.customer);
+            //window.location.href = "/personalisation"
+            this.dbCust = true;
             console.log("customer created")
           }
           else
           {
             console.log("customer already present in our db")
+            //window.location.href = "/"
           }
-          window.location.href = "/personalisation"
+          if(this.dbCust)
+          {
+            window.location.href = "/personalisation"
+          }
+
+          
         }) 
     
   }

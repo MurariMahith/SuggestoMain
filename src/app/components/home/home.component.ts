@@ -18,6 +18,7 @@ import { Genre } from 'src/app/models/Genre';
 import { HttpClient } from '@angular/common/http';
 import { CustomerService } from 'src/app/services/customerService';
 import { Customer } from 'src/app/models/Customer';
+import { RatedMovies } from 'src/app/models/Customer Related/RatedMovies';
 
 @Component({
   selector: 'app-home',
@@ -58,6 +59,16 @@ export class HomeComponent implements OnInit {
 
   currentCustomer : Customer;
 
+  wishlistedMovies : string[] = [];
+  ratedMoviesForThisCustomer : string[] = [];
+
+  personalisedMoviesDisplay : DisplayMovie[] = [];
+
+  loggedIn : boolean = false;
+
+  MovieToBeRated : FMovie = new FMovie();
+  rating : number = 0;
+
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
@@ -87,10 +98,26 @@ export class HomeComponent implements OnInit {
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
+              this.loggedIn = true
+            }
+            if(this.currentCustomer.wishlistedMovies)
+            {
+              this.wishlistedMovies = this.currentCustomer.wishlistedMovies;
+            }
+            if(this.currentCustomer.ratedMovies)
+            {
+              this.currentCustomer.ratedMovies.forEach(element => {
+                this.ratedMoviesForThisCustomer.push(element.movieId)
+              });
             }
             console.log(this.currentCustomer)
+            
           })
     }
+    // else
+    // {
+    //   this.loading = false
+    // }
     //console.log(this.customerService.getLoggedInCustomer())
     console.log(this.currentCustomer)
     this.allGenres = Object.keys(this.genreObj)
@@ -102,7 +129,7 @@ export class HomeComponent implements OnInit {
         )
       )
     ).subscribe(o => {
-      this.allMovies = o;
+      this.allMovies = o;      
       this.loading = false;
       //console.log(o);
       for(let i=0;i<this.allMovies.length;i++)
@@ -118,6 +145,7 @@ export class HomeComponent implements OnInit {
       var arr = [];
       arr.push(this.todayMovie)
       this.todayMovieD = this.movieDisplayService.prepareDisplayMovieList(arr)[0]
+      this.buildPersonalisedContentForLoggedInCustomer()
       //this.getMovieListsFromDb();
     })
     this.homelistsservice.getAll().snapshotChanges().pipe(
@@ -143,6 +171,55 @@ export class HomeComponent implements OnInit {
     });
     //this.buildeditorChoiceMovieListForDisplay()
 
+  }
+
+  buildPersonalisedContentForLoggedInCustomer()
+  {
+    console.log(this.currentCustomer.preferredGenre)
+    console.log(this.allMovies)
+    var i=0;
+    var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies);
+    var personalisedMovies = []
+    allDisplayMovies.forEach(o => {
+
+      var genresForMovie = o.genre.trim().split(',')
+      //console.log(genresForMovie)
+      
+      genresForMovie.forEach(element => {
+
+        //console.log(this.currentCustomer.preferredGenre.includes(element))
+        //console.log(element)
+        
+        if(this.currentCustomer.preferredGenre.includes(element))
+        {
+          i=i+1;
+          personalisedMovies.push(o)
+        }
+
+      });
+
+    });
+    console.log(i)
+    //console.log(personalisedMovies)
+    var uniqueArray :DisplayMovie[] = personalisedMovies.filter(function(item, pos) {
+      return personalisedMovies.indexOf(item) == pos;
+    })
+    // console.log(uniqueArray);
+    this.personalisedMoviesDisplay = uniqueArray;
+    var LanguageBasedPersonalisedMovies = [];
+    uniqueArray.forEach(o => {
+      this.currentCustomer.preferredLanguages.forEach(element => {
+        console.log(o.language.includes(element))
+        if(o.language.includes(element))
+        {
+          LanguageBasedPersonalisedMovies.push(o)
+        }
+      });
+    });
+    // console.log(LanguageBasedPersonalisedMovies)
+    // console.log(this.personalisedMoviesDisplay)
+    this.personalisedMoviesDisplay = LanguageBasedPersonalisedMovies
+    console.log(this.personalisedMoviesDisplay)
   }
 
   showPosition(position) {
@@ -297,6 +374,54 @@ export class HomeComponent implements OnInit {
   launchModal(key)
   {
     //document.querySelector(".exampleModalCenter").on()
+  }
+
+  addMovieToWishlist(key)
+  {
+    console.log(key)
+    var wishlisted = []
+    this.wishlistedMovies.push(key)
+    wishlisted.push(key)
+    if(!this.currentCustomer.wishlistedMovies)
+    {
+      console.log("new");
+      this.currentCustomer.wishlistedMovies = wishlisted;
+    }
+    else
+    {
+      this.currentCustomer.wishlistedMovies.push(key);
+    }
+    console.log(this.currentCustomer)
+    this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+  }
+
+  startRateMovie(key)
+  {
+    this.MovieToBeRated = this.allMovies.find(o => o.key ===key)
+    console.log(this.MovieToBeRated);
+  }
+
+  rateMovie(key)
+  {
+    this.MovieToBeRated.rating = Number(this.MovieToBeRated.rating) + Number(this.rating);
+    var movieKey = this.MovieToBeRated.key
+    delete this.MovieToBeRated.key
+    this.movieService.updateMovie(movieKey,this.MovieToBeRated)
+    var ratedMovieLocal : RatedMovies = new RatedMovies();
+    var arr = [];
+    ratedMovieLocal.movieId = key;
+    ratedMovieLocal.rating = Number(this.rating)
+    if(!this.currentCustomer.ratedMovies)
+    {
+      arr.push(ratedMovieLocal)
+      this.currentCustomer.ratedMovies = arr
+    }
+    else
+    {
+      this.currentCustomer.ratedMovies.push(ratedMovieLocal)
+    }
+    console.log(this.currentCustomer)
+    this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
   }
 
 }

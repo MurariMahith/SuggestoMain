@@ -1,5 +1,5 @@
 export class RatedMovies
 {
     movieId : string = '';
-    rating : string = '';
+    rating : number = 0;
 }

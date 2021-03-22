@@ -49,14 +49,31 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Man Of Steel</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">{{MovieToBeRated.title}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div class="embed-responsive embed-responsive-16by9">
+        <!-- <div class="embed-responsive embed-responsive-16by9">
           <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/T6DJcgm3wNY?rel=0" allowfullscreen></iframe>
+        </div> -->
+        <div class="rating" style="margin: 5%;">
+          <div class="form-group">            
+            <img src="{{MovieToBeRated.imageUrl}}" style="max-width: 100%;max-height: 100%;display: block;">
+            <label for="exampleInputPassword2">Already saw this movie, please give us your rating to this movie</label>     
+            <small id="emailHelp" class="form-text text-muted">It will help us to suggest better movies based on the rating you give. You can only rate one time per movie. (editing rating for movies will be supported in next version) </small> <br>
+            <div style="display: flex;">
+            <select class="form-select browser-default custom-select" id="ratingdropdown" aria-label="Default select example" name="rtingd" [(ngModel)]="rating">
+              <option [value]=0>Rate {{MovieToBeRated.title}} movie here</option>
+              <option [value]="1">Below Average</option>
+              <option [value]="2">Average</option>
+              <option [value]="3">Good</option>
+              <option [value]="4">Extra-ordinary</option>
+              <option [value]="5">Mind blowing</option>
+            </select>   
+            <button type="button" style="margin-left: 1%;width: 100px;" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter" (click)=rateMovie(MovieToBeRated.key)>Submit</button>   </div>
+          </div>
         </div>
       </div>
     </div>
@@ -73,7 +90,36 @@
         <span *ngFor="let movie of sortedArray">
           <div class="item">
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
-            <h6 style="text-align: center;">{{movie.title}}</h6>  
+            <h6 style="text-align: center;">{{movie.title}}</h6> 
+            <div style="display: flex;">
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
+                <span *ngIf="!wishlistedMovies.includes(movie.key)">
+                  <a (click)="addMovieToWishlist(movie.key)">
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                    <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                    </svg> -->
+                    Wishlist
+                  </a>
+                </span>
+                <span *ngIf="wishlistedMovies.includes(movie.key)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                  </svg>
+                </span>
+              </button>
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
+                  <a (click)="startRateMovie(movie.key)">
+                    Rate
+                  </a>
+                </span>
+                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                  </svg>
+                </span>
+              </button>
+            </div> 
           </div>     
         </span>    
       </div>
@@ -105,6 +151,72 @@
     </div>
     <!--find now end here-->
 
+    <!--personalised movies-->
+    <div class="d-flex" style="margin-left: 5%;margin-right: 5%;" *ngIf="!loading && loggedIn">
+      <div class="p-2"><h5 class="text-center display-8">Personalised Movies <span class="badge badge-light"> beta</span></h5>
+        <small id="emailHelp" class="form-text text-muted">These Movies are personalised based on your preferences, to edit preferences click <a routerLink="/personalisation">here</a></small>
+      </div>
+      <div class="ml-auto p-2">
+        <div class="float-right" style="margin-right:3% ;">
+          <span class="badge badge-light">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!loading && loggedIn" class="scrolling-wrapper3">
+      <div class="scrolling-wrapper2">
+        <span *ngFor="let movie of personalisedMoviesDisplay">
+          <div class="item">
+            <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
+            <h6 style="text-align: center;">{{movie.title}}</h6>
+            <div style="display: flex;">
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
+                <span *ngIf="!wishlistedMovies.includes(movie.key)">
+                  <a (click)="addMovieToWishlist(movie.key)">
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                    <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                    </svg> -->
+                    Wishlist
+                  </a>
+                </span>
+                <span *ngIf="wishlistedMovies.includes(movie.key)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                  </svg>
+                </span>
+              </button>
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
+                  <a (click)="startRateMovie(movie.key)">
+                    Rate
+                  </a>
+                </span>
+                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                  </svg>
+                </span>
+              </button>
+            </div>
+            <!-- <span *ngIf="!wishlistedMovies.includes(movie.key)">
+            <a (click)="addMovieToWishlist(movie.key)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+              <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+            </svg></a></span>
+            <span *ngIf="wishlistedMovies.includes(movie.key)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+            </svg></span> -->
+          </div>     
+        </span>    
+      </div>
+    </div>
+
+    <!--personalised movies ends here-->
+
     <!--location based lists-->
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;" *ngIf="!loading">
       <div class="p-2"><h5 class="text-center display-8">Location based Movies <span class="badge badge-light"> beta</span></h5>
@@ -128,7 +240,36 @@
         <span *ngFor="let movie of locationBasedMovies">
           <div class="item">
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
-            <h6 style="text-align: center;">{{movie.title}}</h6>  
+            <h6 style="text-align: center;">{{movie.title}}</h6> 
+            <div style="display: flex;">
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
+                <span *ngIf="!wishlistedMovies.includes(movie.key)">
+                  <a (click)="addMovieToWishlist(movie.key)">
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                    <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                    </svg> -->
+                    Wishlist
+                  </a>
+                </span>
+                <span *ngIf="wishlistedMovies.includes(movie.key)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                  </svg>
+                </span>
+              </button>
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
+                  <a (click)="startRateMovie(movie.key)">
+                    Rate
+                  </a>
+                </span>
+                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                  </svg>
+                </span>
+              </button>
+            </div> 
           </div>     
         </span>    
       </div>
@@ -156,6 +297,24 @@
             <div class="item">
               <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
               <h6 style="text-align: center;">{{movie.title}}</h6>  
+              <div style="display: flex;">
+                <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
+                  <span *ngIf="!wishlistedMovies.includes(movie.key)">
+                    <a (click)="addMovieToWishlist(movie.key)">
+                      <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                      <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                      </svg> -->
+                      Wishlist
+                    </a>
+                  </span>
+                  <span *ngIf="wishlistedMovies.includes(movie.key)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                    </svg>
+                  </span>
+                </button>
+                <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">Rate</button>
+              </div>
             </div>     
           </span> 
  
@@ -245,6 +404,66 @@
     </div>
   </div>
   <!--find now end here-->
+
+  <!--personalised ocntent-->
+  <div *ngIf="!loading && loggedIn">
+    <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
+      <div class="p-2">
+        <h3 class="text-center display-8">Personalised Movies <span class="badge badge-light"> beta</span></h3>
+        <small id="emailHelp" class="form-text text-muted">These Movies are personalised based on your preferences, to edit preferences click <a routerLink="/personalisation">here</a></small>
+      </div>
+      <div class="ml-auto p-2">
+        <div class="float-right" style="margin-right:3% ;">
+          <span class="badge badge-light">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="scrolling-wrapper">
+      <!-- <div style="display: flex;flex-wrap: nowrap;"> -->
+        <div class="card2" *ngFor="let movie of personalisedMoviesDisplay">
+          <div class="movie-card">
+            <!-- <div class="movie-header manOfSteel" style="background-image: url(movie.smallImageUrl);"> -->
+              <a (click)="GoToMovie(movie.key)">
+            <div class="movie-header manOfSteel" [ngStyle]="{'background-image': 'url(' + movie.smallImageUrl + ')'}">
+              <div class="header-icon-container">          
+              </div>
+            </div></a><!--movie-header-->
+            <div class="movie-content">
+              <div class="movie-content-header">
+                <a>
+                  <p class="movie-title">{{movie.title}}</p>
+                </a>
+                
+                <!-- <div class="imax-logo">Watch Trailer</div> ORIGINAL BEFORE MODAL, PASTE THIS LINE IF WE REMOVE BOOTSTRAP MODAL AND REMOVE ABOVE LINE -->
+              </div>
+              <div class="movie-info" style="font-size:small;">
+                <div>
+                  <label>Language : </label>
+                  <span><b> {{movie.language}}</b></span>
+                </div>
+                <div>
+                  <label>Genre : </label>
+                  <span><b> {{movie.genre}}</b></span>
+                </div>
+                <div>
+                  <label>Suggested Date : </label>
+                  <span><b> {{movie.suggestedDate}}</b></span>
+                </div>
+              </div>
+                <div>
+                  <div class="imax-logo" data-toggle="modal" data-target="#exampleModalCenter"><a>Watch Trailer</a></div>
+                </div>            
+            </div>
+          </div>  
+        </div>  
+      </div>
+  </div>
+  <!---personalised content ends here-->
+
 
   <div *ngIf="!loading && locationAccess">
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">

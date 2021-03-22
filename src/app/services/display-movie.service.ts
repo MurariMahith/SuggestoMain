@@ -11,7 +11,7 @@ import { MovieList } from '../models/MovieList'
 })
 export class DisplayMovieService {
 
-  prepareDisplayMovieList(allMoviesFromDb : FMovie[]) : DisplayMovie[]
+  prepareDisplayMovieList(allMoviesFromDb : FMovie[],sort = true) : DisplayMovie[]
   {
     var MovieListForDisplay : DisplayMovie[] = [];
     //console.log(allMoviesFromDb)
@@ -54,10 +54,14 @@ export class DisplayMovieService {
 
       MovieListForDisplay.push(obj);    
     });
-    //sorting display items based on rating
-    MovieListForDisplay.sort((a, b) => {
+    if(sort)
+    {
+      MovieListForDisplay.sort((a, b) => {
         return b.rating - a.rating;
     });
+    }
+    //sorting display items based on rating
+    
 
     return MovieListForDisplay;
   }

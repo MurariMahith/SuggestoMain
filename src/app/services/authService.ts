@@ -29,6 +29,7 @@ export class AuthService {
         .then(a =>
             {
                 localStorage.setItem("loggedIn","false");
+                localStorage.removeItem("uid");
                 window.location.href = "/home"
             })
   }

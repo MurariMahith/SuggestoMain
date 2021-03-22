@@ -55,7 +55,7 @@ export class PersonalisationComponent implements OnInit {
     console.log(this.languagesSelected)
     this.currentCustomer.preferredGenre = this.genreSelected;
     this.currentCustomer.preferredLanguages = this.languagesSelected;
-    this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+    this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer).then(o => window.location.href="/")
   }
 
   selectGenre(g :string)

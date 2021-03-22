@@ -50,8 +50,11 @@
                   <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" *ngIf="!loggedIn">
                     <a class="nav-link" routerLink="/login" style="color: black;" routerLinkActive="active-link">Login</a>
                   </li>
-                  <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" *ngIf="!loggedIn">
+                  <!-- <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" *ngIf="!loggedIn">
                     <a class="nav-link" routerLink="/signup" style="color: black;" routerLinkActive="active-link">Sign Up</a>
+                  </li> -->
+                  <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" *ngIf="loggedIn">
+                    <a class="nav-link" routerLink="/signup" style="color: black;" routerLinkActive="active-link" (click)="logout()">Log Out</a>
                   </li>
               </ul>
           </form>
