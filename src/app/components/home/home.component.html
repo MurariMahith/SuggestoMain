@@ -7,7 +7,7 @@
   <div class="carousel-inner">
     <div class="carousel-item active">      
       <span *ngIf="todayBooleanMovie && loading">
-        <img class="d-block w-100" src="../../../assets/images/loadinggif4.gif" alt="Loading">
+        <img class="d-block w-100" src="../../../assets/movie.gif" alt="Loading" style="height:fit-content;width: auto;">
       </span>
       <span *ngIf="todayBooleanMovie && !loading">
         <img class="d-block w-100" src="../../../assets/images/nomovietoday.PNG" alt="No Movie Today">
@@ -88,10 +88,11 @@
       <h5 class="text-center display-8">Recently Suggested Movies From Us</h5>
       <div class="scrolling-wrapper2">
         <span *ngFor="let movie of sortedArray">
-          <div class="item">
+          <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
+          <!-- <div class="item" *ngIf=(!loggedIn) style="height: 250px;"> -->
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
             <h6 style="text-align: center;">{{movie.title}}</h6> 
-            <div style="display: flex;">
+            <div style="display: flex;" *ngIf="loggedIn">
               <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
                 <span *ngIf="!wishlistedMovies.includes(movie.key)">
                   <a (click)="addMovieToWishlist(movie.key)">
@@ -107,9 +108,9 @@
                   </svg>
                 </span>
               </button>
-              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
                 <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
-                  <a (click)="startRateMovie(movie.key)">
+                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
                     Rate
                   </a>
                 </span>
@@ -153,7 +154,7 @@
 
     <!--personalised movies-->
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;" *ngIf="!loading && loggedIn">
-      <div class="p-2"><h5 class="text-center display-8">Personalised Movies <span class="badge badge-light"> beta</span></h5>
+      <div class="p-2"><h5 class="display-8">Personalised Movies <span class="badge badge-light"> beta</span></h5>
         <small id="emailHelp" class="form-text text-muted">These Movies are personalised based on your preferences, to edit preferences click <a routerLink="/personalisation">here</a></small>
       </div>
       <div class="ml-auto p-2">
@@ -169,10 +170,10 @@
     <div *ngIf="!loading && loggedIn" class="scrolling-wrapper3">
       <div class="scrolling-wrapper2">
         <span *ngFor="let movie of personalisedMoviesDisplay">
-          <div class="item">
+          <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
             <h6 style="text-align: center;">{{movie.title}}</h6>
-            <div style="display: flex;">
+            <div style="display: flex;" *ngIf="loggedIn">
               <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
                 <span *ngIf="!wishlistedMovies.includes(movie.key)">
                   <a (click)="addMovieToWishlist(movie.key)">
@@ -188,9 +189,9 @@
                   </svg>
                 </span>
               </button>
-              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
                 <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
-                  <a (click)="startRateMovie(movie.key)">
+                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
                     Rate
                   </a>
                 </span>
@@ -238,10 +239,10 @@
     <div *ngIf="locationAccess && !loading" class="scrolling-wrapper3">
       <div class="scrolling-wrapper2">
         <span *ngFor="let movie of locationBasedMovies">
-          <div class="item">
+          <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
             <h6 style="text-align: center;">{{movie.title}}</h6> 
-            <div style="display: flex;">
+            <div style="display: flex;" *ngIf="loggedIn">
               <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
                 <span *ngIf="!wishlistedMovies.includes(movie.key)">
                   <a (click)="addMovieToWishlist(movie.key)">
@@ -257,9 +258,9 @@
                   </svg>
                 </span>
               </button>
-              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
                 <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
-                  <a (click)="startRateMovie(movie.key)">
+                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
                     Rate
                   </a>
                 </span>
@@ -294,10 +295,10 @@
       </div>
       <div class="scrolling-wrapper2">
           <span *ngFor="let movie of list.moviesInList">
-            <div class="item">
+            <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
               <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
               <h6 style="text-align: center;">{{movie.title}}</h6>  
-              <div style="display: flex;">
+              <div style="display: flex;" *ngIf="loggedIn">
                 <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
                   <span *ngIf="!wishlistedMovies.includes(movie.key)">
                     <a (click)="addMovieToWishlist(movie.key)">
@@ -313,7 +314,18 @@
                     </svg>
                   </span>
                 </button>
-                <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">Rate</button>
+                <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
+                  <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
+                    <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+                      Rate
+                    </a>
+                  </span>
+                  <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                      <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                    </svg>
+                  </span>
+                </button>
               </div>
             </div>     
           </span> 
@@ -409,7 +421,7 @@
   <div *ngIf="!loading && loggedIn">
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
       <div class="p-2">
-        <h3 class="text-center display-8">Personalised Movies <span class="badge badge-light"> beta</span></h3>
+        <h3 class="display-8">Personalised Movies <span class="badge badge-light"> beta</span></h3>
         <small id="emailHelp" class="form-text text-muted">These Movies are personalised based on your preferences, to edit preferences click <a routerLink="/personalisation">here</a></small>
       </div>
       <div class="ml-auto p-2">

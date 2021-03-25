@@ -16,6 +16,10 @@ import { PersonalisationComponent } from './components/personalisation/personali
 import { TamilComponent } from './components/tamil/tamil.component';
 import { TeluguComponent } from './components/telugu/telugu.component';
 
+import { 
+  AuthGuardService as AuthGuard 
+} from './services/authGuardService';
+
 const routes: Routes = [
   { path: 'home',  component: HomeComponent },
   { path: 'telugu',  component: TeluguComponent },
@@ -27,11 +31,11 @@ const routes: Routes = [
   { path: 'movielist',  component: MovieListComponent },
   { path: 'aboutus',  component: AboutUsComponent },
   { path: 'info',  component: InformationComponent },
-  { path: 'personal',  component: PersonalComponent },
+  { path: 'personal',  component: PersonalComponent,canActivate: [AuthGuard] },
   { path: 'login',  component: LoginComponent },
   { path: 'signup',  component: SignupComponent },
-  { path: 'resetPassword',  component: ResetPasswordComponent },
-  { path: 'personalisation',  component: PersonalisationComponent },
+  { path: 'resetPassword',  component: ResetPasswordComponent,canActivate: [AuthGuard] },
+  { path: 'personalisation',  component: PersonalisationComponent,canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 @NgModule({

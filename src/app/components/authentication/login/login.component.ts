@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
 
   buildCustomer()
   {
+    alert("please wait while we log you In, We will redirect you to home page once login is successfull. Thank you !")
     this.customer.uid = this.user.uid;
     this.customer.name = this.user.displayName;
     this.customer.email = this.user.email;
@@ -92,7 +93,7 @@ export class LoginComponent implements OnInit {
           else
           {
             console.log("customer already present in our db")
-            //window.location.href = "/"
+            window.location.href = "/"
           }
           if(this.dbCust)
           {

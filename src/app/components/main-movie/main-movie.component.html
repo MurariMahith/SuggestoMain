@@ -1,6 +1,6 @@
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 <span *ngIf="loading">
-  <img width="100%" src="../../../assets/images/loadinggif3.gif">
+  <img width="100%" src="../../../assets/movie.gif" style="height:fit-content;;">
 </span>
 
 <span *ngIf="!loading">
@@ -77,7 +77,8 @@
                 </div>
                 <div *ngIf="!eligibleForRating">
                   <h6> You already rated <b>{{rating}}</b> for <b>{{actualMovie.title}}</b>. Thank you !</h6>
-                  <small id="emailHelp" class="form-text "> You can only rate one time per movie. (editing rating for movies will be supported in next version)</small>
+                  <small *ngIf="loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (Editing rating for movies will be supported in next version)</small>
+                  <small *ngIf="!loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (you need to log in to edit rating, click <a routerLink="/login">here to log in</a>)</small>
                 </div>
               </div>
             </div>
@@ -150,8 +151,9 @@
         <button type="button" style="margin-left: 1%;width: 100px;" class="btn btn-outline-primary btn-sm" (click)="rateMovie(actualMovie.key)">Submit</button>   </div>
       </div>
       <div *ngIf="!eligibleForRating">
-        <h4> You already rated <b>{{rating}}</b> for <b>{{actualMovie.title}}</b>. Thank you !</h4>
-        <small id="emailHelp" class="form-text text-muted"> You can only rate one time per movie. (editing rating for movies will be supported in next version)</small>
+        <h4> You already rated <b>{{rating}}</b> for <b>{{actualMovie.title}}</b>. Thank you !</h4>        
+        <small *ngIf="loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (Editing rating for movies will be supported in next version)</small>
+        <small *ngIf="!loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (you need to log in to edit rating, click <a routerLink="/login">here to log in</a>)</small>
       </div>
     </div>
 

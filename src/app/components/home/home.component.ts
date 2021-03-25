@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { combineAll, map } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { FMovie } from 'src/app/models/Fmovie';
 import { MovieServiceService } from 'src/app/services/movie-service.service';
@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
   isMobile : boolean = false;
 
   APIforState = 'https://api.bigdatacloud.net/data/reverse-geocode-client?'
-  //latitude=14.939063&longitude=77.594929&localityLanguage=en'
+
 
   latitude : string = '';
   longitude : string = '';
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
       this.customerService.getLoggedInCustomer()
         .subscribe(o =>
           {
-            console.log(o)
+            //console.log(o)
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
@@ -111,7 +111,7 @@ export class HomeComponent implements OnInit {
               });
             }
             console.log(this.currentCustomer)
-            
+            console.log(this.loggedIn)
           })
     }
     // else
@@ -120,6 +120,7 @@ export class HomeComponent implements OnInit {
     // }
     //console.log(this.customerService.getLoggedInCustomer())
     console.log(this.currentCustomer)
+
     this.allGenres = Object.keys(this.genreObj)
     //console.log(this.allGenres)
     this.movieService.getAllMovies().snapshotChanges().pipe(
@@ -129,7 +130,12 @@ export class HomeComponent implements OnInit {
         )
       )
     ).subscribe(o => {
-      this.allMovies = o;      
+      this.allMovies = o; 
+      if(this.loggedIn)
+      {
+        this.buildPersonalisedContentForLoggedInCustomer()     
+      }
+      
       this.loading = false;
       //console.log(o);
       for(let i=0;i<this.allMovies.length;i++)
@@ -144,8 +150,12 @@ export class HomeComponent implements OnInit {
       }
       var arr = [];
       arr.push(this.todayMovie)
-      this.todayMovieD = this.movieDisplayService.prepareDisplayMovieList(arr)[0]
-      this.buildPersonalisedContentForLoggedInCustomer()
+      console.log(arr)
+      if(arr[0])
+      {
+        this.todayMovieD = this.movieDisplayService.prepareDisplayMovieList(arr)[0]      
+      }
+      
       //this.getMovieListsFromDb();
     })
     this.homelistsservice.getAll().snapshotChanges().pipe(
@@ -175,7 +185,8 @@ export class HomeComponent implements OnInit {
 
   buildPersonalisedContentForLoggedInCustomer()
   {
-    console.log(this.currentCustomer.preferredGenre)
+    console.log("inside")
+    console.log(this.currentCustomer)
     console.log(this.allMovies)
     var i=0;
     var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies);
@@ -219,6 +230,10 @@ export class HomeComponent implements OnInit {
     // console.log(LanguageBasedPersonalisedMovies)
     // console.log(this.personalisedMoviesDisplay)
     this.personalisedMoviesDisplay = LanguageBasedPersonalisedMovies
+    // var uniqueArray2 :DisplayMovie[] = this.personalisedMoviesDisplay.filter(function(item, pos) {
+    //   return this.personalisedMoviesDisplay.indexOf(item) == pos;
+    // })
+    // this.personalisedMoviesDisplay = uniqueArray2;
     console.log(this.personalisedMoviesDisplay)
   }
 

@@ -32,6 +32,8 @@ import { PersonalComponent } from './components/personal/personal.component';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { PersonalisationComponent } from './components/personalisation/personalisation.component';
 
+import { AuthGuardService } from './services/authGuardService'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,7 +67,9 @@ import { PersonalisationComponent } from './components/personalisation/personali
     AngularFireAuthModule,
     // AngularFireStorageModule
   ],
-  providers: [],
+  providers: [
+    AuthGuardService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -34,7 +34,11 @@
   <hr>
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" data-toggle="collapse" data-target="#navbarSupportedContent2">Search <span *ngIf="filterSelected" class="badge badge-dark">filters applied</span></a>
+      <a class="navbar-brand"><input class="form-control mr-sm-2" type="text" placeholder="Search For Movies" name="searchStr" [(ngModel)]="searchString" #searchStr="ngModel" (ngModelChange)="searching($event)">
+        <!-- <span *ngIf="filterSelected" class="badge badge-dark">filters applied</span> -->
+        <small id="emailHelp" style="font-size:x-small;" class="form-text text-muted">Click toggle button on right to use filters</small>
+      </a>
+      <!-- <a class="navbar-brand" data-toggle="collapse" data-target="#navbarSupportedContent2">Search <span *ngIf="filterSelected" class="badge badge-dark">filters applied</span></a> -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent2" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -240,7 +244,105 @@
         <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;" alt="{{movie.title}}"></a>
         <h6 style="text-align: center;">{{movie.title}}</h6>  
       </div>     
-    </span>    
+    </span> 
+    <div *ngIf="noMoviesSearch">
+      <div class="card " style="margin: 2%;">
+        <div class="card-header" style="color: red;">
+          No Movies Present based on your Search and Filter criteria, check for the filters above or check the search key word you entered.
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Didn't Find an expected Movie?</h5>
+          <p class="card-text">If you like to add your movie suggestion so that it helps us to suggest movies better, please type Movie name and Language below.</p>
+          <form novalidate #addForm="ngForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="movieTitle">Movie Title</label> <span class="badge badge-dark" style="margin-left: 1%;">required</span>
+              <input type="text" class="form-control" id="movieTitle" placeholder="Enter Movie Title" required [(ngModel)]="userMovie.title" name="title" #title="ngModel">
+              <div *ngIf="title.invalid && (title.dirty || title.touched)">
+                <p *ngIf="title.errors?.required" class="error">Movie Title is required</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Language</label>
+              <div style="margin: 2%;">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" [(ngModel)]="userMovie.language.english" name="lang" >
+                  <label class="form-check-label"   >English</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" [(ngModel)]="userMovie.language.telugu" name="lang2" >
+                  <label class="form-check-label"   >Telugu</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" [(ngModel)]="userMovie.language.tamil" name="lang3" >
+                  <label class="form-check-label"   >Tamil</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" [(ngModel)]="userMovie.language.malayalam" name="lang4" >
+                  <label class="form-check-label"   >Malayalam</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" [(ngModel)]="userMovie.language.kannada" name="lang5" >
+                  <label class="form-check-label"   >Kannada</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword2">Please Rate the Movie if you have seen it:</label>     
+              <small id="emailHelp" class="form-text text-muted">It will help us to suggest movies better. </small> <br>
+              <select class="form-select browser-default custom-select" id="ratingdropdown" aria-label="Default select example" name="rtingd" [(ngModel)]="userMovie.rating">
+                <option [value]=0></option>
+                <option [value]="1">Below Average</option>
+                <option [value]="2">Average</option>
+                <option [value]="3">Good</option>
+                <option [value]="4">Extrordinary</option>
+                <option [value]="5">Mind blowing</option>
+              </select>      
+            </div>
+            <!-- <form class="rating">
+              <label>
+                <input type="radio" name="stars" value="1" id="1" />
+                <span class="icon">★</span>
+              </label>
+              <label>
+                <input type="radio" name="stars" value="2" id="2"/>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+              </label>
+              <label>
+                <input type="radio" name="stars" value="3" id="3"/>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>   
+              </label>
+              <label>
+                <input type="radio" name="stars" value="4" id="4"/>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+              </label>
+              <label>
+                <input type="radio" name="stars" value="5" id="5"/>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+              </label>
+            </form><br> -->
+            <button type="submit" [disabled]='!addForm.valid' class="btn btn-primary btn-block">Submit</button>
+          </form>
+          <!-- <form-field appearance="fill"> -->
+
+<!-- </form-field> -->
+        </div>
+        <!-- <div class="card-footer text-muted">
+          2 days ago
+        </div> -->
+      </div>    
+    </div>   
   </div>
+
+
 
 </div>

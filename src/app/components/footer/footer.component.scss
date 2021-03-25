@@ -1,0 +1,44 @@
+div.scrollmenu {
+    background-color: #333;
+    opacity: 0.95;
+    overflow: auto;
+    white-space: nowrap;
+  }
+  
+  div.scrollmenu a,h5 {
+    display: inline-block;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+  }
+
+
+  #footer {
+
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 0.2px solid black;
+    border-bottom-color: white;
+    height: 50px;
+    // opacity: 0.85;
+    background-color: rgb(255, 255, 255);
+  }
+
+  .abc
+  {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 3%;
+  }
+
+  .active
+  {
+    border-bottom:2px solid black;
+  }
+
+  *:focus {
+    outline: none;
+}

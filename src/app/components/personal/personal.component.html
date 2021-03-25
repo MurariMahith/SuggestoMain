@@ -1,1 +1,50 @@
-<p>personal works!</p>
+<div class="row" style="width: 100%;">
+    <div class="col-sm-6"> 
+      <hr>
+      <div class="container">
+        <h5>Wishlisted Movies</h5>   
+        <table class="table table-sm table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Movie Name</th>
+              <th scope="col">Langugae</th>
+              <th scope="col">Remove from wishlist</th>
+              <th scope="col">Go To Movie</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let movie of wishlistedMoviesDisplay">
+              <td>{{movie.title}}</td>
+              <td>{{movie.language}}</td>
+              <td><button type="button" class="btn btn-danger" (click)="removeWishlist(movie.key)">Delete</button></td>
+              <td><button type="button" class="btn btn-primary" (click)="Goto(movie.key)">Go</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-sm-6"> 
+      <hr>
+      <div class="container">
+        <h5>Rated Movies</h5>
+        <table class="table table-sm table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Movie Name</th>
+              <th scope="col">Langugae</th>
+              <th scope="col">Your Rating</th>
+              <th scope="col">Go To Movie</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let movie of ratedMoviesDisplay">
+              <td>{{movie.title}}</td>
+              <td>{{movie.language}}</td>
+              <td>{{movie.rating}} stars</td>
+              <td><button type="button" class="btn btn-primary" (click)="Goto(movie.key)">Go</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>   
+    </div>
+  </div>
