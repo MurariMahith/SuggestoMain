@@ -1,0 +1,22 @@
+<h6 class="text-center" style="margin: 2%;">{{ListForDisplay.listName | titlecase}}</h6>
+<div class="profile-content">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="tab-content p-0">
+                <div class="tab-pane fade active show" id="profile-followers">
+                    <div class="list-group">
+                        <div *ngFor="let m of ListForDisplay.moviesInList" class="list-group-item d-flex align-items-center">
+                            <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
+                            <div class="flex-fill pl-3 pr-3">
+                                <div><a (click)="goto(m.key)" class="text-dark font-weight-600">{{m.title | titlecase}}</a></div>
+                                <div class="text-muted fs-13px">Released Year : {{m.releaseYear}}</div>
+                                <div class="text-muted fs-13px" style="font-size: small;">Genre : {{ (m.genre.length>20)? (m.genre | slice:0:20)+'..':(m.genre) }}</div>
+                            </div>
+                            <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
+                        </div>                                  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

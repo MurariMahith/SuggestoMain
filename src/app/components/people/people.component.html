@@ -1,0 +1,92 @@
+<div *ngIf="loading">
+    <img class="d-block w-100" src="../../../assets/movie.gif" alt="Loading" style="height:fit-content;width: auto;">
+</div>
+<div *ngIf="!loading">
+    <div class="container">
+        <h5 class="text-center">People</h5>
+        </div>
+        <div *ngIf="isMobile" class="container" style="margin-bottom: 70px;">
+            <div class="profile">
+                <div class="profile-header">
+                    <div class="profile-header-cover"></div>
+                    <div class="profile-header-content">
+                        <div class="profile-header-img">
+                            <!-- <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" /> -->
+                            <img  src="{{currentCustomer.customerPhotoUrl}}" alt="" />
+                        </div>
+                        <p>Name : <span>{{currentCustomer.name | titlecase}}</span></p>
+                        <p>Email : {{currentCustomer.email}}</p>
+                        <p>Your Wishlisted Movies : {{myWCount}}</p>
+                        <p>Share your wishlist to people :               
+                        <label class="switch">
+                          <input type="checkbox" [(ngModel)]="share" name="Adventure">
+                          <span class="slider round"></span>
+                        </label></p><br>
+                        <ul class="profile-header-tab nav nav-tabs nav-tabs-v2">
+                            <!-- <li class="nav-item">
+                                <a class="nav-link" (click)="wishSelect()">
+                                    <div class="nav-field" style="font-size: medium;">People who shared their wishlists</div>
+                                    <div class="nav-value" style="font-size: small;">Note : Other people can see your wishlist only if you enable 'share wishlist' above.</div>
+                                </a>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+          
+                <div class="profile-container">
+                    <div class="profile-sidebar">
+                        <div class="desktop-sticky-top">
+                            <h4>John Smith</h4>
+                            <div class="font-weight-600 mb-3 text-muted mt-n2">@johnsmith</div>
+                            <p>
+                                Principal UXUI Design &amp; Brand Architecture for Studio. Creator of SeanTheme. Bringing the world closer together. Studied Computer Science and Psychology at Harvard University.
+                            </p>
+                            <div class="mb-1"><i class="fa fa-map-marker-alt fa-fw text-muted"></i> New York, NY</div>
+                            <div class="mb-3"><i class="fa fa-link fa-fw text-muted"></i> seantheme.com/studio</div>
+                            <hr class="mt-4 mb-4" />
+                        </div>
+                    </div>
+          
+                    <div class="profile-content">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="tab-content p-0">
+                                    <div class="tab-pane fade active show" id="profile-followers">
+                                        <div class="list-group">
+                                            <h6>People Who shared their Wishlisted Movies</h6>
+                                            <div *ngFor="let m of allCustomers" class="list-group-item d-flex align-items-center">
+                                                <img src="{{m.customerPhotoUrl}}" alt="{{m.customerPhotoUrl}}" width="50px" class="rounded-sm ml-n2" />
+                                                <div class="flex-fill pl-3 pr-3">
+                                                    <div><a class="text-dark font-weight-600">{{m.name | titlecase}}</a></div>
+                                                    <div class=" fs-13px" style="font-size: small;">WishListed Movies : {{m.wishlistedMovies.length}}</div>
+                                                    <div class=" fs-13px" style="font-size: x-small;">{{m.email}}</div>
+                                                </div>
+                                                <a (click)="goto(m.key)" class="btn btn-outline-primary">Go</a>
+                                            </div>                                  
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="tab2-content p-0">
+                                  <div class="tab2-pane fade active show" id="profile-followers">
+                                      <div class="list-group">
+                                          <div *ngFor="let m of ratedMoviesDisplay" class="list-group-item d-flex align-items-center">
+                                              <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
+                                              <div class="flex-fill pl-3 pr-3">
+                                                  <div><a href="#" class="text-dark font-weight-600">hahahaha</a></div>
+                                                  <div class="text-muted fs-13px">{{m.releaseYear}}</div>
+                                              </div>
+                                              <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
+                                          </div>                                  
+                                      </div>
+                                      <div class="text-center p-3">
+                                          <a href="#" class="text-dark text-decoration-none">Show more <b class="caret"></b></a>
+                                      </div>
+                                  </div>
+                              </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+</div>

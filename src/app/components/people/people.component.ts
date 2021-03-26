@@ -23,36 +23,25 @@ import { concat } from 'rxjs';
 import { AuthService } from 'src/app/services/authService';
 
 @Component({
-  selector: 'app-malayalam',
-  templateUrl: './malayalam.component.html',
-  styleUrls: ['./malayalam.component.scss']
+  selector: 'app-people',
+  templateUrl: './people.component.html',
+  styleUrls: ['./people.component.scss']
 })
-export class MalayalamComponent implements OnInit {
+export class PeopleComponent implements OnInit {
 
   currentCustomer : Customer;
 
-  allMovies : FMovie[] = [];
-
-  wishlistedMovies : FMovie[] = [];
-  ratedMovies : FMovie[] = [];
-
-  wishlistedMoviesDisplay : DisplayMovie[] = [];
-  ratedMoviesDisplay : DisplayMovie[] = [];
+  allCustomers : Customer[] = []
 
   loggedIn : boolean = false;
 
   isMobile : boolean = false;
 
-  genres : string = '';
-  languages : string = '';
+  loading : boolean = true;
 
-  wcount : number = 0;
-  rcount : number = 0;
+  myWCount : number = 0;
 
   share : boolean = true;
-
-  ratebool : boolean = false;
-  wishbool : boolean = true;
 
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
@@ -65,7 +54,7 @@ export class MalayalamComponent implements OnInit {
     private authService : AuthService,
     private customerService : CustomerService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     if( screen.width <= 480 ) {     
       this.isMobile = true;
@@ -79,84 +68,54 @@ export class MalayalamComponent implements OnInit {
       this.customerService.getLoggedInCustomer()
         .subscribe(o =>
           {
+            this.allCustomers = o;
             //console.log(o)
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
               this.loggedIn = true
+              this.loading = false;
+              this.share = this.currentCustomer.shareWishlistedMovies;
+              console.log(this.allCustomers)
+              this.allCustomers.forEach(element => {
+
+                let chars = element.wishlistedMovies
+                let uniqueChars = chars.filter((c, index) => {
+                    return chars.indexOf(c) === index;
+                });
+                element.wishlistedMovies = uniqueChars;
+
+                if(element.name == null || element.name == '')
+                  element.name = 'Not Provided';
+                if(element.customerPhotoUrl == null || element.customerPhotoUrl == '')
+                  element.customerPhotoUrl = '../../../assets/images/defaultuser.png'
+              });
+
+
+              //remove current customer from customer list
+              for( var i = 0; i < this.allCustomers.length; i++)
+              {     
+                if (this.allCustomers[i].uid == this.currentCustomer.uid) 
+                {   
+                  this.allCustomers.splice(i, 1); 
+                  break;
+                }
+              }
+
+              if(this.currentCustomer.customerPhotoUrl === null || this.currentCustomer.customerPhotoUrl === '' || this.currentCustomer.customerPhotoUrl === '../../../assets/images/defaultuser.png')
+              {
+                this.currentCustomer.customerPhotoUrl = '../../../assets/images/logo.jpg'
+              }
+              this.myWCount = this.currentCustomer.wishlistedMovies.length;
             }
-            this.genres = this.currentCustomer.preferredGenre.join(",")
-            this.languages = this.currentCustomer.preferredLanguages.join(",")
           })
     }
-
-
-    //getting all movies
-    this.movieService.getAllMovies().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ key: c.payload.key, ...c.payload.val() })
-        )
-      )
-    ).subscribe(o =>
-      {
-        this.allMovies = o;
-        this.allMovies.forEach(element => {
-          if(this.currentCustomer.wishlistedMovies && this.currentCustomer.wishlistedMovies.includes(element.key))
-          {
-            this.wishlistedMovies.push(element)
-          }
-          this.currentCustomer.ratedMovies.forEach(x => {
-            if(element.key === x.movieId)
-            {
-              this.ratedMovies.push(element)
-            }
-          });
-        });
-        this.wishlistedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.wishlistedMovies)
-        this.ratedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.ratedMovies)
-        // console.log(this.wishlistedMoviesDisplay)
-        // console.log(this.ratedMoviesDisplay)
-        this.ratedMoviesDisplay.forEach(x => {
-          this.currentCustomer.ratedMovies.forEach(y => {
-            
-            if(x.key === y.movieId)
-            {
-              x.rating = y.rating;
-            }            
-          });
-        });
-        this.wcount = this.wishlistedMoviesDisplay.length;
-        this.rcount = this.ratedMoviesDisplay.length;
-        this.share = this.currentCustomer.shareWishlistedMovies;
-        console.log(this.wishlistedMoviesDisplay)
-        console.log(this.ratedMoviesDisplay)
-      })
-
-      console.log(this.wishlistedMoviesDisplay)
-      console.log(this.ratedMoviesDisplay)
-
   }
 
   goto(key)
   {
-    this.router.navigateByUrl('/movie/'+key)
-  }
-
-  wishSelect()
-  {
-    this.ratebool = false;
-    this.wishbool = true;
-  }
-  rateSelect()
-  {
-    this.ratebool = true;
-    this.wishbool = false;
-  }
-
-  logout()
-  {
-    this.authService.logOut();
+    //we will navigate to mail-list component with customer key as parameter
+    this.router.navigateByUrl('/wlist/'+key)
   }
 
 }

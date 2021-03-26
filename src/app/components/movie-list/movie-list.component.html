@@ -3,7 +3,8 @@
     <h3 class="display-8 text-center">Movie Lists</h3>
     <h3 class="display-8 text-center"></h3>
     <span *ngFor="let list of MovieListsForView" style="margin: 1%;">
-      <button type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)="scroll(list.key)">{{list.listName}}</button>
+      <button *ngIf="!isMobile" type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)="scroll(list.key)">{{list.listName}}</button>
+      <button *ngIf="isMobile" type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)="goto(list.key)">{{list.listName}}</button>
     </span>
     
   </div>
@@ -11,6 +12,7 @@
     <!-- <div class="jumbotron"> -->
       <!-- <h1 class="display-8 text-center">All Movie Lists</h1> -->
       <h3 class="text-center display-6" id="scrollToThis">{{selectedList.listName}}</h3>
+      <h5 *ngIf="!isMobile" class="text-center" (click)="goto(selectedList.key)">see this list in better view</h5>
       <div class="scrolling-wrapper">
         
         <div class="card2" *ngFor="let movie of selectedList.moviesInList">

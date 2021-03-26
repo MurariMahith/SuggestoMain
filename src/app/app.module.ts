@@ -32,7 +32,15 @@ import { PersonalComponent } from './components/personal/personal.component';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { PersonalisationComponent } from './components/personalisation/personalisation.component';
 
-import { AuthGuardService } from './services/authGuardService'
+import { AuthGuardService } from './services/authGuardService';
+import { PeopleComponent } from './components/people/people.component';
+import { MainListComponent } from './components/main-list/main-list.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { WishListComponent } from './components/wish-list/wish-list.component';
+import { SuggestMovieComponent } from './components/suggest-movie/suggest-movie.component';
+import { AllSuggestedMoviesComponent } from './components/all-suggested-movies/all-suggested-movies.component';
+import { CreateCustomListComponent } from './components/create-custom-list/create-custom-list.component';
+import { FeedComponent } from './components/feed/feed.component'
 
 @NgModule({
   declarations: [
@@ -53,7 +61,15 @@ import { AuthGuardService } from './services/authGuardService'
     SignupComponent,
     ResetPasswordComponent,
     PersonalComponent,
-    PersonalisationComponent
+    PersonalisationComponent,
+    PeopleComponent,
+    MainListComponent,
+    ProfileComponent,
+    WishListComponent,
+    SuggestMovieComponent,
+    AllSuggestedMoviesComponent,
+    CreateCustomListComponent,
+    FeedComponent
   ],
   imports: [
     BrowserModule,

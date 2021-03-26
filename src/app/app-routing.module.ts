@@ -8,13 +8,17 @@ import { SignupComponent } from './components/authentication/signup/signup.compo
 import { HomeComponent } from './components/home/home.component';
 import { InformationComponent } from './components/information/information.component';
 import { KannadaComponent } from './components/kannada/kannada.component';
+import { MainListComponent } from './components/main-list/main-list.component';
 import { MainMovieComponent } from './components/main-movie/main-movie.component';
 import { MalayalamComponent } from './components/malayalam/malayalam.component';
 import { MovieListComponent } from './components/movie-list/movie-list.component';
+import { PeopleComponent } from './components/people/people.component';
 import { PersonalComponent } from './components/personal/personal.component';
 import { PersonalisationComponent } from './components/personalisation/personalisation.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { TamilComponent } from './components/tamil/tamil.component';
 import { TeluguComponent } from './components/telugu/telugu.component';
+import { WishListComponent } from './components/wish-list/wish-list.component';
 
 import { 
   AuthGuardService as AuthGuard 
@@ -25,9 +29,10 @@ const routes: Routes = [
   { path: 'telugu',  component: TeluguComponent },
   { path: 'tamil',  component: TamilComponent },
   { path: 'kannada',  component: KannadaComponent },
-  { path: 'malayalam',  component: MalayalamComponent },
+  { path: 'profile2',  component: MalayalamComponent,canActivate: [AuthGuard] },
   { path: 'all',  component: AllMoviesComponent },
   { path: 'movie/:key',  component: MainMovieComponent },
+  { path: 'list/:key',  component: MainListComponent },
   { path: 'movielist',  component: MovieListComponent },
   { path: 'aboutus',  component: AboutUsComponent },
   { path: 'info',  component: InformationComponent },
@@ -36,6 +41,9 @@ const routes: Routes = [
   { path: 'signup',  component: SignupComponent },
   { path: 'resetPassword',  component: ResetPasswordComponent,canActivate: [AuthGuard] },
   { path: 'personalisation',  component: PersonalisationComponent,canActivate: [AuthGuard] },
+  { path: 'profile',  component: ProfileComponent,canActivate: [AuthGuard] },
+  { path: 'people',  component: PeopleComponent,canActivate: [AuthGuard] },
+  { path: 'wlist/:key',  component: WishListComponent,canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 @NgModule({

@@ -23,9 +23,19 @@ export class MovieListComponent implements OnInit {
 
   selectedList : DisplayMovieList = new DisplayMovieList();
 
+  isMobile : boolean = false;
+
   constructor(private movieService : MovieServiceService,private listService : MovieListService,private router : Router) { }
 
   ngOnInit() {
+
+    if( screen.width <= 480 ) {     
+      this.isMobile = true;
+      //console.log("mobile");
+    }
+    else{
+      //console.log("laptop")
+    }
 
     this.movieService.getAllMovies().snapshotChanges().pipe(
       map(changes =>
@@ -128,6 +138,11 @@ export class MovieListComponent implements OnInit {
     var arr = [];
     arr.push(this.MovieListsForView.find( o => o.key === str))
     this.selectedList = arr[0]
+  }
+
+  goto(key)
+  {
+    this.router.navigateByUrl('/list/'+key);
   }
 
 }

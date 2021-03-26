@@ -68,10 +68,11 @@ export class LoginComponent implements OnInit {
     this.customer.name = this.user.displayName;
     this.customer.email = this.user.email;
     this.customer.emailVerified = this.user.emailVerified;
+    this.customer.customerPhotoUrl = this.user.photoURL;
     this.customer.preferredGenre = [];
     this.customer.preferredLanguages = [];
     this.customer.wishlistedMovies = [];
-    console.log(this.customer)
+    console.log(this.user)
     this.checkCustomer()
   }
 
@@ -93,7 +94,7 @@ export class LoginComponent implements OnInit {
           else
           {
             console.log("customer already present in our db")
-            window.location.href = "/"
+            window.location.href = "/home"
           }
           if(this.dbCust)
           {

@@ -26,6 +26,8 @@ export class PersonalisationComponent implements OnInit {
 
   currentCustomer : Customer;
 
+  shareWishList : boolean = true;
+
   constructor(private customerService : CustomerService) { }
 
   ngOnInit(): void {
@@ -55,6 +57,7 @@ export class PersonalisationComponent implements OnInit {
     console.log(this.languagesSelected)
     this.currentCustomer.preferredGenre = this.genreSelected;
     this.currentCustomer.preferredLanguages = this.languagesSelected;
+    this.currentCustomer.shareWishlistedMovies = this.shareWishList;
     this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer).then(o => window.location.href="/")
   }
 

@@ -201,7 +201,7 @@ export class HomeComponent implements OnInit {
         //console.log(this.currentCustomer.preferredGenre.includes(element))
         //console.log(element)
         
-        if(this.currentCustomer.preferredGenre.includes(element))
+        if(this.currentCustomer.preferredGenre && this.currentCustomer.preferredGenre.includes(element))
         {
           i=i+1;
           personalisedMovies.push(o)

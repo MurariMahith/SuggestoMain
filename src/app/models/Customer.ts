@@ -6,6 +6,7 @@ export class Customer
     name : string = '';
     email : string = '';
     emailVerified  : boolean = false;
+    customerPhotoUrl : string = '';
     wishlistedMovies : string[] = [];
     ratedMovies : RatedMovies[] = [];
     watchedMovies : string[] = [];
@@ -14,5 +15,5 @@ export class Customer
     preferredLanguages : string[] = [];
     seePersonalisedContent : boolean = false;
     personalisedContentStartTime : string = '';
-
+    shareWishlistedMovies : boolean = false;
 }
