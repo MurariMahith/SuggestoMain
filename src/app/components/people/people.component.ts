@@ -79,10 +79,17 @@ export class PeopleComponent implements OnInit {
               console.log(this.allCustomers)
               this.allCustomers.forEach(element => {
 
-                let chars = element.wishlistedMovies
-                let uniqueChars = chars.filter((c, index) => {
+
+                //removing duplicates from wishlisted movies of other customers
+                let chars = element.wishlistedMovies;
+                let uniqueChars;
+                if(chars)
+                {
+                  uniqueChars = chars.filter((c, index) => {
                     return chars.indexOf(c) === index;
-                });
+                  });
+                }
+
                 element.wishlistedMovies = uniqueChars;
 
                 if(element.name == null || element.name == '')
@@ -107,6 +114,8 @@ export class PeopleComponent implements OnInit {
                 this.currentCustomer.customerPhotoUrl = '../../../assets/images/logo.jpg'
               }
               this.myWCount = this.currentCustomer.wishlistedMovies.length;
+
+              this.allCustomers = this.allCustomers.filter(x => x.shareWishlistedMovies)
             }
           })
     }
@@ -116,6 +125,14 @@ export class PeopleComponent implements OnInit {
   {
     //we will navigate to mail-list component with customer key as parameter
     this.router.navigateByUrl('/wlist/'+key)
+  }
+
+  UpdateCustomerWhenSharingEvent()
+  {
+    console.log(this.share);
+    this.currentCustomer.shareWishlistedMovies = this.share;
+    console.log(this.currentCustomer)
+    this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
   }
 
 }

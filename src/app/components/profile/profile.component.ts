@@ -110,12 +110,15 @@ export class ProfileComponent implements OnInit {
             {
               this.wishlistedMovies.push(element)
             }
-            this.currentCustomer.ratedMovies.forEach(x => {
-              if(element.key === x.movieId)
-              {
-                this.ratedMovies.push(element)
-              }
-            });
+            if(this.currentCustomer.ratedMovies){
+              this.currentCustomer.ratedMovies.forEach(x => {
+                if(element.key === x.movieId)
+                {
+                  this.ratedMovies.push(element)
+                }
+              });
+            }
+            
           });
           this.wishlistedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.wishlistedMovies)
           this.ratedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.ratedMovies)
@@ -146,6 +149,14 @@ export class ProfileComponent implements OnInit {
   goto(key)
   {
     this.router.navigateByUrl('/movie/'+key)
+  }
+
+  UpdateCustomerWhenSharingEvent()
+  {
+    console.log(this.share);
+    this.currentCustomer.shareWishlistedMovies = this.share;
+    console.log(this.currentCustomer)
+    this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
   }
 
   wishSelect()

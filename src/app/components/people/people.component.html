@@ -19,7 +19,7 @@
                         <p>Your Wishlisted Movies : {{myWCount}}</p>
                         <p>Share your wishlist to people :               
                         <label class="switch">
-                          <input type="checkbox" [(ngModel)]="share" name="Adventure">
+                          <input type="checkbox" (change)="UpdateCustomerWhenSharingEvent()" [(ngModel)]="share" name="Adventure">
                           <span class="slider round"></span>
                         </label></p><br>
                         <ul class="profile-header-tab nav nav-tabs nav-tabs-v2">
@@ -58,10 +58,11 @@
                                                 <img src="{{m.customerPhotoUrl}}" alt="{{m.customerPhotoUrl}}" width="50px" class="rounded-sm ml-n2" />
                                                 <div class="flex-fill pl-3 pr-3">
                                                     <div><a class="text-dark font-weight-600">{{m.name | titlecase}}</a></div>
-                                                    <div class=" fs-13px" style="font-size: small;">WishListed Movies : {{m.wishlistedMovies.length}}</div>
+                                                    <div *ngIf="m.wishlistedMovies" class=" fs-13px" style="font-size: small;">WishListed Movies : {{m.wishlistedMovies.length}}</div>
+                                                    <div *ngIf="!m.wishlistedMovies" class=" fs-13px" style="font-size: small;">WishListed Movies : 0</div>
                                                     <div class=" fs-13px" style="font-size: x-small;">{{m.email}}</div>
                                                 </div>
-                                                <a (click)="goto(m.key)" class="btn btn-outline-primary">Go</a>
+                                                <a (click)="goto(m.key)" *ngIf="m.wishlistedMovies" class="btn btn-outline-primary">Go</a>
                                             </div>                                  
                                         </div>
                                     </div>

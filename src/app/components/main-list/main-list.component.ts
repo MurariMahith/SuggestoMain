@@ -100,4 +100,9 @@ export class MainListComponent implements OnInit {
     })
   }
 
+  goto(key)
+  {
+    this.router.navigateByUrl('/movie/'+key);
+  }
+
 }

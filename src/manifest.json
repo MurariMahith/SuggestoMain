@@ -1,6 +1,6 @@
 {
-  "name": "suggesto",
-  "short_name": "suggesto",
+  "name": "Suggesto",
+  "short_name": "Suggesto",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
@@ -51,8 +51,34 @@
   "shortcuts": [
     {
       "name": "Home",
-      "description": "Home page of Suggesto Admin",
+      "description": "Home page of Suggesto",
       "url": "/home",
+      "icons": [
+         {
+            "src": "assets/icons/icon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "any"
+         }
+      ]
+    },
+    {
+      "name": "Profile",
+      "description": "Login / Profile",
+      "url": "/profile",
+      "icons": [
+         {
+            "src": "assets/icons/icon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "any"
+         }
+      ]
+    },
+    {
+      "name": "People",
+      "description": "People Around You who share their wish lists",
+      "url": "/people",
       "icons": [
          {
             "src": "assets/icons/icon-96x96.png",
@@ -76,7 +102,7 @@
       ]
     },
     {
-      "name": "All Movie Lists",
+      "name": "Movie Lists",
       "description": "Home page of Suggesto Admin",
       "url": "/movielist",
       "icons": [
