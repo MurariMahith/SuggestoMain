@@ -48,7 +48,21 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("uid",this.user.uid);
           this.email = '';
           this.password = '';
-        });    
+        })
+      .catch(e =>
+          {
+            console.log(e);
+          if(e['code'] == "auth/account-exists-with-different-credential")
+          {
+            alert(e['message']+" Email address used to login : "+e['email']);             
+          }
+          else
+          {
+            alert(e['message']); 
+          }          
+          this.loginLoad = false;
+          window.location.reload();
+          });    
   }
 
   async  loginWithFacebook(){
@@ -63,7 +77,21 @@ export class LoginComponent implements OnInit {
           this.email = '';
           this.password = '';
           console.log(a)
-        });    
+        })
+      .catch(e =>
+          {
+            console.log(e);
+          if(e['code'] == "auth/account-exists-with-different-credential")
+          {
+            alert(e['message']+" Email address used to login : "+e['email']);             
+          }
+          else
+          {
+            alert(e['message']); 
+          }          
+          this.loginLoad = false;
+          window.location.reload();
+          });    
   }
 
   async loginWithGithub()
@@ -83,8 +111,16 @@ export class LoginComponent implements OnInit {
       .catch(e =>
         {
           console.log(e);
-          alert(e['message']+" Email address used to login : "+e['email']);
+          if(e['code'] == "auth/account-exists-with-different-credential")
+          {
+            alert(e['message']+" Email address used to login : "+e['email']);             
+          }
+          else
+          {
+            alert(e['message']); 
+          }          
           this.loginLoad = false;
+          window.location.reload();
         })
   }
 

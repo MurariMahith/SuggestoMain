@@ -89,5 +89,63 @@
                     </div>
                 </div>
             </div>
-          </div>
+        
+        </div>
+        <!--for laptop below-->
+        <div *ngIf="!isMobile" class="container" style="margin-bottom: 70px;">
+            <div class="profile">
+                <div class="profile-header">
+                    <div class="profile-header-cover"></div>
+                    <div class="profile-header-content">
+                        <div class="profile-header-img">
+                            <!-- <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" /> -->
+                            <img  src="{{currentCustomer.customerPhotoUrl}}" alt="" />
+                        </div><br>
+                        <ul class="profile-header-tab nav nav-tabs nav-tabs-v2">
+                        </ul>
+                    </div>
+                </div>
+          
+                <div class="profile-container">
+                    <div class="profile-sidebar">
+                        <div class="desktop-sticky-top">
+                            <h4>{{currentCustomer.name | titlecase}}</h4>
+                            <div class="font-weight-600 mb-3 text-muted mt-n2">{{currentCustomer.email}}</div>
+                            <p>Your Wishlisted Movies : {{myWCount}}</p>
+                            <p>Share your wishlist to people :               
+                            <label class="switch">
+                              <input type="checkbox" (change)="UpdateCustomerWhenSharingEvent()" [(ngModel)]="share" name="Adventure">
+                              <span class="slider round"></span>
+                            </label></p>
+                            <hr class="mt-4 mb-4" />
+                        </div>
+                    </div>
+          
+                    <div class="profile-content">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="tab-content p-0">
+                                    <div class="tab-pane fade active show" id="profile-followers">
+                                        <div class="list-group">
+                                            <h6>People Who shared their Wishlisted Movies</h6>
+                                            <div *ngFor="let m of allCustomers" class="list-group-item d-flex align-items-center">
+                                                <img src="{{m.customerPhotoUrl}}" alt="{{m.customerPhotoUrl}}" width="50px" class="rounded-sm ml-n2" />
+                                                <div class="flex-fill pl-3 pr-3">
+                                                    <div><a class="text-dark font-weight-600">{{m.name | titlecase}}</a></div>
+                                                    <div *ngIf="m.wishlistedMovies" class=" fs-13px" style="font-size: small;">WishListed Movies : {{m.wishlistedMovies.length}}</div>
+                                                    <div *ngIf="!m.wishlistedMovies" class=" fs-13px" style="font-size: small;">WishListed Movies : 0</div>
+                                                    <div class=" fs-13px" style="font-size: x-small;">{{m.email}}</div>
+                                                </div>
+                                                <a (click)="goto(m.key)" *ngIf="m.wishlistedMovies" class="btn btn-outline-primary">Go</a>
+                                            </div>                                  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
 </div>

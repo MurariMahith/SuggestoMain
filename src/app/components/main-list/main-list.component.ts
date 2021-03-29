@@ -18,6 +18,7 @@ import { HomePageListsService } from 'src/app/services/home-page-lists.service';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/services/authService';
 import { DisplayMovieList } from 'src/app/models/DisplayMovieList';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-main-list',
@@ -34,6 +35,8 @@ export class MainListComponent implements OnInit {
 
   isMobile : boolean = false;
 
+  showCopiedClipboard : boolean = false;
+
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
@@ -44,7 +47,8 @@ export class MainListComponent implements OnInit {
     private http : HttpClient,
     private authService : AuthService,
     private customerService : CustomerService,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private location: Location) { }
 
   ngOnInit(): void {
 
@@ -103,6 +107,22 @@ export class MainListComponent implements OnInit {
   goto(key)
   {
     this.router.navigateByUrl('/movie/'+key);
+  }
+
+  copyToClipboard()
+  {
+    document.addEventListener('copy', (e: ClipboardEvent) => {
+      e.clipboardData.setData('text/plain', (window.location.href));
+      e.preventDefault();
+      document.removeEventListener('copy', null);
+    });
+    document.execCommand('copy');
+    this.showCopiedClipboard = true
+  }
+
+  goBack() 
+  {
+    this.location.back();
   }
 
 }

@@ -129,3 +129,129 @@
         </div>
     </div>
   </div>
+
+
+
+<!--for laptop-->
+<div *ngIf="!isMobile" class="container">
+    <div class="profile">
+        <div class="profile-header">
+            <div class="profile-header-cover"></div>
+            <div class="profile-header-content">
+                <div class="profile-header-img">
+                    <!-- <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" /> -->
+                    <img *ngIf="currentCustomer.customerPhotoUrl" src="{{currentCustomer.customerPhotoUrl}}" alt="" />
+                    <img *ngIf="!currentCustomer.customerPhotoUrl" src="../../../assets/images/logo.jpg" alt="" />
+                </div>
+                <br>
+                <ul class="profile-header-tab nav nav-tabs nav-tabs-v2">
+                    <li class="nav-item">
+                        <a class="nav-link" (click)="wishSelect()">
+                            <div class="nav-field">Wishlisted Movies</div>
+                            <div class="nav-value">{{wcount}}</div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" (click)="rateSelect()">
+                            <div class="nav-field">Rated Movies</div>
+                            <div class="nav-value">{{rcount}}</div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link">
+                          <div class="nav-field"><button type="button" (click)="logout()" class="btn btn-sm btn-danger">Log Out</button></div>
+                          <!-- <div class="nav-value">{{rcount}}</div> -->
+                      </a>
+                  </li>
+                    <!-- <li class="nav-item">
+                        <a href="#profile-media" class="nav-link" data-toggle="tab">
+                            <div class="nav-field">Photos</div>
+                            <div class="nav-value">1,397</div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#profile-media" class="nav-link" data-toggle="tab">
+                            <div class="nav-field">Videos</div>
+                            <div class="nav-value">120</div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#profile-followers" class="nav-link" data-toggle="tab">
+                            <div class="nav-field">Following</div>
+                            <div class="nav-value">2,592</div>
+                        </a>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+  
+        <div class="profile-container">
+            <div class="profile-sidebar">
+                <div class="desktop-sticky-top">
+                    <h4>{{currentCustomer.name}}</h4>
+                    <div class="font-weight-600 mb-3 text-muted mt-n2">{{currentCustomer.email}}</div>
+                    <p>Preferred Languages : {{languages}}</p>
+                    <p>Preferred Genres : {{genres}}</p>
+                    <p>Share your wishlist to people :               
+                    <label class="switch">
+                    <input type="checkbox" (change)="UpdateCustomerWhenSharingEvent()" [(ngModel)]="share" name="Adventure">
+                    <span class="slider round"></span>
+                    </label></p>
+                    <hr class="mt-4 mb-4" />
+                </div>
+            </div>
+  
+            <div class="profile-content">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="tab-content p-0">
+                            <div class="tab-pane fade active show" id="profile-followers">
+                                <div class="list-group" *ngIf="ratebool">
+                                    <h6>Rated Movies</h6>
+                                    <div *ngFor="let m of ratedMoviesDisplay" class="list-group-item d-flex align-items-center">
+                                        <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
+                                        <div class="flex-fill pl-3 pr-3">
+                                            <div><a href="#" class="text-dark font-weight-600">{{m.title}}</a></div>
+                                            <div class="text-muted fs-13px">Your rating : {{m.rating}}</div>
+                                        </div>
+                                        <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
+                                    </div>                                  
+                                </div>
+                            </div>
+                            <div class="tab-pane fade active show" id="profile-followers">
+                              <div class="list-group" *ngIf="wishbool">
+                                  <h6>WishListed Movies</h6>
+                                  <div *ngFor="let m of wishlistedMoviesDisplay" class="list-group-item d-flex align-items-center">
+                                      <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
+                                      <div class="flex-fill pl-3 pr-3">
+                                          <div><a href="#" class="text-dark font-weight-600">{{m.title}}</a></div>
+                                          <div class="text-muted fs-13px">{{m.releaseYear}}</div>
+                                      </div>
+                                      <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
+                                  </div>                                  
+                              </div>
+                          </div>
+                        </div>
+                        <!-- <div class="tab2-content p-0">
+                          <div class="tab2-pane fade active show" id="profile-followers">
+                              <div class="list-group">
+                                  <div *ngFor="let m of ratedMoviesDisplay" class="list-group-item d-flex align-items-center">
+                                      <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
+                                      <div class="flex-fill pl-3 pr-3">
+                                          <div><a href="#" class="text-dark font-weight-600">hahahaha</a></div>
+                                          <div class="text-muted fs-13px">{{m.releaseYear}}</div>
+                                      </div>
+                                      <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
+                                  </div>                                  
+                              </div>
+                              <div class="text-center p-3">
+                                  <a href="#" class="text-dark text-decoration-none">Show more <b class="caret"></b></a>
+                              </div>
+                          </div>
+                      </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
