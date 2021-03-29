@@ -22,6 +22,8 @@ export class LoginComponent implements OnInit {
 
   dbCust : boolean = false;
 
+  loginLoad : boolean = false;
+
   constructor(private  authService : AuthService,private afAuth : AngularFireAuth,private customerService : CustomerService) { }
 
   ngOnInit(): void {
@@ -31,10 +33,12 @@ export class LoginComponent implements OnInit {
   {
     console.log(this.email);
     console.log(this.password);
+    this.loginLoad = true;
     this.loginTheUser();
   }
 
   async  loginWithGoogle(){
+    this.loginLoad = true;
     await  this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
       .then(a => 
         {
@@ -45,6 +49,43 @@ export class LoginComponent implements OnInit {
           this.email = '';
           this.password = '';
         });    
+  }
+
+  async  loginWithFacebook(){
+    this.loginLoad = true;
+    await  this.afAuth.auth.signInWithPopup(new auth.FacebookAuthProvider())
+      .then(a => 
+        {
+          this.user = a.user;
+          this.buildCustomer();
+          localStorage.setItem("loggedIn","true");
+          localStorage.setItem("uid",this.user.uid);
+          this.email = '';
+          this.password = '';
+          console.log(a)
+        });    
+  }
+
+  async loginWithGithub()
+  {
+    this.loginLoad = true;
+    await  this.afAuth.auth.signInWithPopup(new auth.GithubAuthProvider())
+      .then(a => 
+        {
+          this.user = a.user;
+          this.buildCustomer();
+          localStorage.setItem("loggedIn","true");
+          localStorage.setItem("uid",this.user.uid);
+          this.email = '';
+          this.password = '';
+          console.log(a)
+        })
+      .catch(e =>
+        {
+          console.log(e);
+          alert(e['message']+" Email address used to login : "+e['email']);
+          this.loginLoad = false;
+        })
   }
 
   async loginTheUser()
@@ -63,7 +104,7 @@ export class LoginComponent implements OnInit {
 
   buildCustomer()
   {
-    alert("please wait while we log you In, We will redirect you to home page once login is successfull. Thank you !")
+    //alert("please wait while we log you In, We will redirect you to home page once login is successfull. Thank you !")
     this.customer.uid = this.user.uid;
     this.customer.name = this.user.displayName;
     this.customer.email = this.user.email;
