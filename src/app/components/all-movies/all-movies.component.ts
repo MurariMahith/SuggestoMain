@@ -43,6 +43,8 @@ export class AllMoviesComponent implements OnInit {
 
   isMobile : boolean = false;
 
+  loading : boolean = true;
+
 
   constructor(private movieService : MovieServiceService,
     private router : Router, 
@@ -77,6 +79,7 @@ export class AllMoviesComponent implements OnInit {
       this.DisplayMovieList = this.prepareDisplayMovieList(this.allMovies)
       this.DisplayMovieListOriginal = this.prepareDisplayMovieList(this.allMovies)
       this.paramsBasedSort()
+      this.loading = false;
 
     })
   }

@@ -56,6 +56,8 @@ export class ProfileComponent implements OnInit {
   ratebool : boolean = false;
   wishbool : boolean = true;
 
+  loading : boolean = true;
+
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
@@ -136,12 +138,21 @@ export class ProfileComponent implements OnInit {
           this.wcount = this.wishlistedMoviesDisplay.length;
           this.rcount = this.ratedMoviesDisplay.length;
           this.share = this.currentCustomer.shareWishlistedMovies;
+          this.loading = false;
           console.log(this.wishlistedMoviesDisplay)
           console.log(this.ratedMoviesDisplay)
         })
   
         console.log(this.wishlistedMoviesDisplay)
         console.log(this.ratedMoviesDisplay)
+
+      setTimeout(()=>{
+        if(this.loading)
+        {
+          alert("Something went wrong, please refresh !!");
+          window.location.reload();
+        }        
+      },20000)
   
     }
 
@@ -149,6 +160,13 @@ export class ProfileComponent implements OnInit {
   goto(key)
   {
     this.router.navigateByUrl('/movie/'+key)
+  }
+
+  GoToMyList()
+  {
+    console.log(localStorage.getItem["uid"])
+    console.log(this.currentCustomer.uid);
+    this.router.navigateByUrl('movielist/'+this.currentCustomer.uid)
   }
 
   UpdateCustomerWhenSharingEvent()

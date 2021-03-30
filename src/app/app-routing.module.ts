@@ -5,6 +5,7 @@ import { AllMoviesComponent } from './components/all-movies/all-movies.component
 import { LoginComponent } from './components/authentication/login/login.component';
 import { ResetPasswordComponent } from './components/authentication/reset-password/reset-password.component';
 import { SignupComponent } from './components/authentication/signup/signup.component';
+import { CreateCustomListComponent } from './components/create-custom-list/create-custom-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { InformationComponent } from './components/information/information.component';
 import { KannadaComponent } from './components/kannada/kannada.component';
@@ -16,6 +17,7 @@ import { PeopleComponent } from './components/people/people.component';
 import { PersonalComponent } from './components/personal/personal.component';
 import { PersonalisationComponent } from './components/personalisation/personalisation.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { SuggestMovieComponent } from './components/suggest-movie/suggest-movie.component';
 import { TamilComponent } from './components/tamil/tamil.component';
 import { TeluguComponent } from './components/telugu/telugu.component';
 import { WishListComponent } from './components/wish-list/wish-list.component';
@@ -34,6 +36,7 @@ const routes: Routes = [
   { path: 'movie/:key',  component: MainMovieComponent },
   { path: 'list/:key',  component: MainListComponent },
   { path: 'movielist',  component: MovieListComponent },
+  { path: 'movielist/:key',  component: MovieListComponent, canActivate: [AuthGuard]  },
   { path: 'aboutus',  component: AboutUsComponent },
   { path: 'info',  component: InformationComponent },
   { path: 'personal',  component: PersonalComponent,canActivate: [AuthGuard] },
@@ -44,6 +47,8 @@ const routes: Routes = [
   { path: 'profile',  component: ProfileComponent,canActivate: [AuthGuard] },
   { path: 'people',  component: PeopleComponent,canActivate: [AuthGuard] },
   { path: 'wlist/:key',  component: WishListComponent,canActivate: [AuthGuard] },
+  { path: 'suggest',  component: SuggestMovieComponent,canActivate: [AuthGuard] },
+  { path: 'createList',  component: CreateCustomListComponent,canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 @NgModule({

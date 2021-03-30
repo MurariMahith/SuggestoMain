@@ -25,6 +25,8 @@ export class PersonalComponent implements OnInit {
   wishlistedMoviesDisplay : DisplayMovie[] = [];
   ratedMoviesDisplay : DisplayMovie[] = [];
 
+  loading : boolean = true;
+
   constructor(private customerService : CustomerService,private movieService : MovieServiceService,private movieDisplayService : DisplayMovieService,private router : Router) { }
 
   ngOnInit(): void {
@@ -79,6 +81,7 @@ export class PersonalComponent implements OnInit {
           });
         });
       })
+      this.loading = false;
 
   }
 

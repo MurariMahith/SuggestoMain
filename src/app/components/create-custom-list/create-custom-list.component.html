@@ -1,1 +1,50 @@
-<p>create-custom-list works!</p>
+
+
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">Create New Movie List</h1>
+      <!-- <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p> -->
+      <!-- <p>below is form</p> -->
+      <div>
+        <form novalidate #addForm="ngForm" (ngSubmit)="onSubmit()">
+          <div class="form-group"><!--title-->
+            <label for="movieTitle">List Name</label> <span class="badge badge-light" style="margin-left: 1%;">required</span>
+            <input type="text" class="form-control" id="movieTitle" placeholder="Enter List Name" required [(ngModel)]="newMovieList.listName" name="title" #title="ngModel">
+            <div *ngIf="title.invalid && (title.dirty || title.touched)">
+              <p *ngIf="title.errors?.required" class="error">List Name is required</p>
+            </div>
+          </div>   
+          <div class="form-group">
+              <label>Selected Movies</label><br>
+              <small id="emailHelp" style="color: coral;">To remove selected movie from list just click on the button with movie name you want to remove.</small><br>
+              <span *ngFor='let movie of selectedMovies' style="margin: 1%;">
+                <button class="btn btn-warning" style="margin: 1%;" (click)="removeThisMovieFromList(movie)">{{movie.title}} ({{movie.releaseYear}}) <span aria-hidden="true">&times;</span>
+                </button>
+              </span>
+          </div>      
+          <div class="form-group">
+            <label>Search for Movies here and add them to the list</label>
+            <span style="display: flex;justify-content: center;">
+            <input type="text" style="margin-right: 10px;" class="form-control" placeholder="Start typing here" name="searchStr" [(ngModel)]="searchString" #searchStr="ngModel" (ngModelChange)="searching($event)" autocomplete="off">
+            <button class="btn btn-primary" type="submit" [disabled]='!addForm.valid' >Submit</button></span>
+          </div>
+          <div style="display: flex;flex-wrap: wrap;justify-content: center;overflow: hidden;">
+            <span *ngFor="let movie of searchResultsObjects">
+                <div class="item">
+                  <a (click)="addThisMovieToList(movie)"><img src="{{movie.cardImageUrl}}" class="img-thumbnail" style="height: 180px;width: 150px;" alt="{{movie.title}}"></a>
+                  <h6 style="text-align: center;">{{ (movie.title.length>20)? (movie.title | slice:0:20)+'..':(movie.title) }}</h6>  
+                </div>     
+            </span>
+            <!-- <span *ngFor='let movie of searchResultsObjects' style="margin: 1%;">
+                <img src="{{movie.imageUrl}}" width="100px" height="150px">
+                <button class="btn btn-info" (click)="addThisMovieToList(movie)">{{movie.title}} ({{movie.releaseYear}}) </button>
+            </span> -->
+          </div>
+
+
+          <!-- <button class="btn btn-primary" type="submit" [disabled]='!addForm.valid' >Submit</button> -->
+        </form>
+      </div>
+    </div>
+  </div>

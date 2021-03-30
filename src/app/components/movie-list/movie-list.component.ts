@@ -25,7 +25,11 @@ export class MovieListComponent implements OnInit {
 
   isMobile : boolean = false;
 
-  constructor(private movieService : MovieServiceService,private listService : MovieListService,private router : Router) { }
+  loading : boolean = true;
+
+  customerLists : boolean = false;
+
+  constructor(private movieService : MovieServiceService,private listService : MovieListService,private router : Router,private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
 
@@ -35,6 +39,10 @@ export class MovieListComponent implements OnInit {
     }
     else{
       //console.log("laptop")
+    }
+    if(this.activatedRoute.snapshot.params.key)
+    {
+      this.customerLists = true;
     }
 
     this.movieService.getAllMovies().snapshotChanges().pipe(
@@ -62,8 +70,42 @@ export class MovieListComponent implements OnInit {
     ).subscribe(o => {
       console.log(o)
       this.allMovieLists = o;
-      this.BuildMovieListForDisplay(this.allMovieLists);
+      var adminList = [];
+      var customerList = [];
+      console.log(this.activatedRoute.snapshot.params.key)
+      var customerUID = this.activatedRoute.snapshot.params.key;
+      if(customerUID)
+      {
+        for(let i=0;i<this.allMovieLists.length;i++)
+        {
+          if(this.allMovieLists[i].createdBy === customerUID)
+          {
+            customerList.push(this.allMovieLists[i])
+          }
+        }
+        console.log(customerList);
+        this.BuildMovieListForDisplay(customerList);
+      }
+      else
+      {
+        for(let i=0;i<this.allMovieLists.length;i++)
+        {
+          if(!this.allMovieLists[i].createdBy)
+          {
+            adminList.push(this.allMovieLists[i])
+          }
+          else if(this.allMovieLists[i].createdBy === 'ADMIN')
+          {
+            adminList.push(this.allMovieLists[i])
+          }
+        }
+        console.log("hai")
+        console.log(adminList);
+        this.BuildMovieListForDisplay(adminList);
+      }
+
       console.log(this.MovieListsForView)
+      this.loading = false;
     })
   }
 
@@ -75,19 +117,19 @@ export class MovieListComponent implements OnInit {
       obj.listName = o.listName;
       obj.key = o["key"]
       o.moviesInThisList.forEach(element => {
-        console.log(this.allMovies.find(a => a.key===element))        
+        //console.log(this.allMovies.find(a => a.key===element))        
         movieListForDisplay.push(this.allMovies.find(a => a.key===element));
       });
-      console.log(movieListForDisplay);
+      //console.log(movieListForDisplay);
       obj.moviesInList = this.prepareDisplayMovieList(movieListForDisplay); 
-      this.MovieListsForView.push(obj);     
+      this.MovieListsForView.push(obj);  
     });
   }
 
   prepareDisplayMovieList(arr : FMovie[]) : DisplayMovie[]
   {
     var MovieListForDisplay2 : DisplayMovie[] = [];
-    console.log(arr)
+    //console.log(arr)
     arr.forEach(o => {
       var obj = new DisplayMovie()
 

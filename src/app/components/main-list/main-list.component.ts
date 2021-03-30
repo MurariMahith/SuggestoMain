@@ -37,6 +37,14 @@ export class MainListComponent implements OnInit {
 
   showCopiedClipboard : boolean = false;
 
+  customList : boolean = false;
+
+  allCustomers : Customer[] = [];
+
+  customerName : string = '';
+  customerUID : string = '';
+
+
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
@@ -90,7 +98,7 @@ export class MainListComponent implements OnInit {
     ).subscribe(o => {
       console.log(o)
       this.allMovieLists = o;
-      var tempList = [];
+      var tempList : MovieList[] = [];
       var listKey = this.activatedRoute.snapshot.params.key;
       for(let i=0;i<this.allMovieLists.length;i++)
       {
@@ -100,8 +108,27 @@ export class MainListComponent implements OnInit {
           break;         
         }
       }
+      console.log(tempList)
+      this.customerUID = tempList[0].createdBy;
       this.ListForDisplay = this.listDisplayService.BuildMovieListForDisplay(tempList,this.allMovies)[0]
+      if(tempList[0].createdBy)
+      {
+        this.customList = true;
+        this.getCustomerName()
+      }
     })
+  }
+
+  getCustomerName()
+  {
+    this.customerService.getLoggedInCustomer()
+          .subscribe(o =>
+            {
+              this.allCustomers = o;
+              //console.log(o)
+              this.customerName = this.allCustomers.find(x => x.uid === this.customerUID).name
+
+            })
   }
 
   goto(key)

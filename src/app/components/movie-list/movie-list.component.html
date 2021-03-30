@@ -1,11 +1,21 @@
+<div *ngIf="loading" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
+background-color: rgba(255,255,255,0.5)">
+  <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
+  <img src="../../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
+</div>
+
+
+<div *ngIf="!loading">
 <div class="row" style="margin: 2%;">
   <div class="col-sm-3">
     <h3 class="display-8 text-center">Movie Lists</h3>
+    <h5 *ngIf="customerLists" class="display-8 text-center">Custom Movie Lists created by You</h5>    
     <h3 class="display-8 text-center"></h3>
     <span *ngFor="let list of MovieListsForView" style="margin: 1%;">
       <button *ngIf="!isMobile" type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)="scroll(list.key)">{{list.listName}}</button>
       <button *ngIf="isMobile" type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)="goto(list.key)">{{list.listName}}</button>
     </span>
+    <button *ngIf="customerLists" type="button" class="btn btn-success btn-sm btn-block" (click)="this.router.navigateByUrl('/createList')">Add New List</button>
     
   </div>
   <div class="col-sm-9">
@@ -54,7 +64,7 @@
     <!-- </div> -->
   </div>
 </div>
-
+</div>
 
 <!-- <div class="jumbotron">
   <h1 class="display-8 text-center">All Movie Lists</h1>
