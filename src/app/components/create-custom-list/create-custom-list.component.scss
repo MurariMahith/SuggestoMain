@@ -1,0 +1,29 @@
+//below here is style for commented html at start of allmovies html page
+.item{
+    left: 0;
+    top: 0;
+    position: relative;
+    overflow: hidden;
+    // margin-top:20px;
+    // margin-left: 10%;
+    // margin-right: 10%;
+    height: 250px;
+    width: 150px;
+    //border: 1px solid rgb(196, 196, 196);
+    border-radius: 5px;
+    
+  }
+  .item img{
+    -webkit-transition: 0.6s ease;
+      transition: 0.6s ease;
+      
+  }
+  .item img:hover{
+    -webkit-transform: scale(1.2);
+      transform: scale(1.2);
+  
+  }
+  .img-thumbnail{
+      border:0px;
+      border-radius:0px;
+  }

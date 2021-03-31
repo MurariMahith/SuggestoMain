@@ -186,10 +186,10 @@ export class HomeComponent implements OnInit {
   buildPersonalisedContentForLoggedInCustomer()
   {
     console.log("inside")
-    console.log(this.currentCustomer)
-    console.log(this.allMovies)
+    //console.log(this.currentCustomer)
+    //console.log(this.allMovies)
     var i=0;
-    var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies);
+    var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,false,true,false,false);
     var personalisedMovies = []
     allDisplayMovies.forEach(o => {
 
@@ -220,7 +220,7 @@ export class HomeComponent implements OnInit {
     var LanguageBasedPersonalisedMovies = [];
     uniqueArray.forEach(o => {
       this.currentCustomer.preferredLanguages.forEach(element => {
-        console.log(o.language.includes(element))
+        //console.log(o.language.includes(element))
         if(o.language.includes(element))
         {
           LanguageBasedPersonalisedMovies.push(o)
@@ -234,7 +234,7 @@ export class HomeComponent implements OnInit {
     //   return this.personalisedMoviesDisplay.indexOf(item) == pos;
     // })
     // this.personalisedMoviesDisplay = uniqueArray2;
-    console.log(this.personalisedMoviesDisplay)
+    //console.log(this.personalisedMoviesDisplay)
   }
 
   showPosition(position) {
@@ -317,8 +317,8 @@ export class HomeComponent implements OnInit {
               }              
             });
 
-            this.locationBasedMovies = this.movieDisplayService.prepareDisplayMovieList(allmovies2)
-            //console.log(this.locationBasedMovies)
+            this.locationBasedMovies = this.movieDisplayService.prepareDisplayMovieList(allmovies2,true,false,false,false)
+            console.log(this.locationBasedMovies)
 
           })
           .catch(() => {

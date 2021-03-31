@@ -11,7 +11,7 @@ import { MovieList } from '../models/MovieList'
 })
 export class DisplayMovieService {
 
-  prepareDisplayMovieList(allMoviesFromDb : FMovie[],sort = true) : DisplayMovie[]
+  prepareDisplayMovieList(allMoviesFromDb : FMovie[],sort = true,random = false,sortYearDesc = false,sortYearAsc = false) : DisplayMovie[]
   {
     var MovieListForDisplay : DisplayMovie[] = [];
     //console.log(allMoviesFromDb)
@@ -54,15 +54,48 @@ export class DisplayMovieService {
 
       MovieListForDisplay.push(obj);    
     });
+    //sorting display items based on rating
     if(sort)
     {
       MovieListForDisplay.sort((a, b) => {
         return b.rating - a.rating;
     });
     }
-    //sorting display items based on rating
+
+    console.log(random)
+    
+    //randomising display array items
+    if(random)
+    {
+      MovieListForDisplay = this.shuffleArr(MovieListForDisplay);
+    }
+
+    //sorting based on release year descending order
+    if(sortYearDesc)
+    {
+      MovieListForDisplay.sort((a, b) => {
+        return Number(b.releaseYear) - Number(a.releaseYear);
+      });
+    }
+
+    //sorting based on release year ascending order
+    if(sortYearDesc)
+    {
+      MovieListForDisplay.sort((a, b) => {
+        return Number(a.releaseYear) - Number(b.releaseYear);
+      });
+    }
     
 
     return MovieListForDisplay;
+  }
+
+  shuffleArr (array) : any[]
+  {
+    for (var i = array.length - 1; i > 0; i--) {
+        var rand = Math.floor(Math.random() * (i + 1));
+        [array[i], array[rand]] = [array[rand], array[i]]
+    }
+    return array;
   }
 }

@@ -1,6 +1,6 @@
 <!-- <p>-----------------------------------------------------------------------------------------------------------------------------</p> -->
 <!-- <p>main suggestion for that day</p> -->
-<div *ngIf="loading" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
+<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
 background-color: rgba(255,255,255,0.5)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
   <img src="../../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
@@ -98,31 +98,37 @@ background-color: rgba(255,255,255,0.5)">
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
             <h6 style="text-align: center;">{{movie.title}}</h6> 
             <div style="display: flex;" *ngIf="loggedIn">
-              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
+              <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
                 <span *ngIf="!wishlistedMovies.includes(movie.key)">
                   <a (click)="addMovieToWishlist(movie.key)">
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                    <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                    </svg> -->
-                    Wishlist
+                    <i class="bi bi-heart" style="color: black;"></i>
                   </a>
                 </span>
                 <span *ngIf="wishlistedMovies.includes(movie.key)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                  </svg>
+                  <i class="bi bi-heart-fill" style="color: red;"></i>
                 </span>
               </button>
-              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
+              <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Rating">
                 <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
                   <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
-                    Rate
+                    <i class="bi bi-star" style="color: black;"></i>
                   </a>
                 </span>
                 <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
                     <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                  </svg>
+                  </svg> -->
+                  <i class="bi bi-star-fill" style="color: gold;"></i>
+                </span>
+              </button>
+              <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Watched Movie">
+                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
+                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+                    <i class="bi bi-tv" style="color: black;"></i>
+                  </a>
+                </span>
+                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
+                  <i class="bi bi-tv-fill" style="color: black;"></i>
                 </span>
               </button>
             </div> 
@@ -247,13 +253,10 @@ background-color: rgba(255,255,255,0.5)">
           <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
             <h6 style="text-align: center;">{{movie.title}}</h6> 
-            <div style="display: flex;" *ngIf="loggedIn">
+            <!-- <div style="display: flex;" *ngIf="loggedIn">
               <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
                 <span *ngIf="!wishlistedMovies.includes(movie.key)">
                   <a (click)="addMovieToWishlist(movie.key)">
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                    <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                    </svg> -->
                     Wishlist
                   </a>
                 </span>
@@ -275,7 +278,42 @@ background-color: rgba(255,255,255,0.5)">
                   </svg>
                 </span>
               </button>
-            </div> 
+            </div>  -->
+            <div style="display: flex;" *ngIf="loggedIn">
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
+                <span *ngIf="!wishlistedMovies.includes(movie.key)">
+                  <a (click)="addMovieToWishlist(movie.key)">
+                    <i class="bi bi-heart" style="color: black;"></i>
+                  </a>
+                </span>
+                <span *ngIf="wishlistedMovies.includes(movie.key)">
+                  <i class="bi bi-heart-fill" style="color: red;"></i>
+                </span>
+              </button>
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Rating">
+                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
+                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+                    <i class="bi bi-star" style="color: black;"></i>
+                  </a>
+                </span>
+                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                  </svg> -->
+                  <i class="bi bi-star-fill" style="color: gold;"></i>
+                </span>
+              </button>
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Watched Movie">
+                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
+                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+                    <i class="bi bi-tv" style="color: black;"></i>
+                  </a>
+                </span>
+                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
+                  <i class="bi bi-tv-fill" style="color: black;"></i>
+                </span>
+              </button>
+            </div>
           </div>     
         </span>    
       </div>

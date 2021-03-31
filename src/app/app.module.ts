@@ -41,6 +41,7 @@ import { SuggestMovieComponent } from './components/suggest-movie/suggest-movie.
 import { AllSuggestedMoviesComponent } from './components/all-suggested-movies/all-suggested-movies.component';
 import { CreateCustomListComponent } from './components/create-custom-list/create-custom-list.component';
 import { FeedComponent } from './components/feed/feed.component'
+import { AppUpdateService } from './services/app-update.service';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { FeedComponent } from './components/feed/feed.component'
     // AngularFireStorageModule
   ],
   providers: [
-    AuthGuardService
+    AuthGuardService,
+    AppUpdateService
   ],
   bootstrap: [AppComponent]
 })

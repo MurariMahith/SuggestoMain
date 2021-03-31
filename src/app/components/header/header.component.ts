@@ -28,4 +28,14 @@ export class HeaderComponent implements OnInit {
     this.authService.logOut();
   }
 
+  reload()
+  {
+    window.location.reload();
+  }
+
+  home()
+  {
+    window.location.href = '/';
+  }
+
 }
