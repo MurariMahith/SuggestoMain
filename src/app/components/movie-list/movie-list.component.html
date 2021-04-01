@@ -7,18 +7,24 @@ background-color: rgba(255,255,255,0.5)">
 
 <div *ngIf="!loading">
 <div class="row" style="margin: 2%;">
-  <div class="col-sm-3">
+  <div class="col-sm-4">
     <h3 class="display-8 text-center">Movie Lists</h3>
     <h5 *ngIf="customerLists" class="display-8 text-center">Custom Movie Lists created by You</h5>    
     <h3 class="display-8 text-center"></h3>
-    <span *ngFor="let list of MovieListsForView" style="margin: 1%;">
+    <span *ngFor="let list of MovieListsForView" style="margin: 1%;display: flex;">
       <button *ngIf="!isMobile" type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)="scroll(list.key)">{{list.listName}}</button>
       <button *ngIf="isMobile" type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)="goto(list.key)">{{list.listName}}</button>
+      <button type="button" (click)="addListToWishlist(list.key)" class="btn btn-sm btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
+            <i class="bi bi-heart" style="color: black;"></i>
+      </button>
+      <button type="button" (click)="rateList(list.key)" class="btn btn-sm btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
+        <i class="bi bi-star" style="color: black;"></i>
+      </button>
     </span>
     <button *ngIf="customerLists" type="button" class="btn btn-success btn-sm btn-block" (click)="this.router.navigateByUrl('/createList')">Add New List</button>
     
   </div>
-  <div class="col-sm-9">
+  <div class="col-sm-8">
     <!-- <div class="jumbotron"> -->
       <!-- <h1 class="display-8 text-center">All Movie Lists</h1> -->
       <h3 class="text-center display-6" id="scrollToThis">{{selectedList.listName}}</h3>

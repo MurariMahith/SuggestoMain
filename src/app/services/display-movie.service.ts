@@ -62,7 +62,7 @@ export class DisplayMovieService {
     });
     }
 
-    console.log(random)
+    //console.log(random)
     
     //randomising display array items
     if(random)

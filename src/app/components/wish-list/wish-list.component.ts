@@ -121,13 +121,25 @@ export class WishListComponent implements OnInit {
 
   copyToClipboard()
   {
-    document.addEventListener('copy', (e: ClipboardEvent) => {
-      e.clipboardData.setData('text/plain', (window.location.href));
-      e.preventDefault();
-      document.removeEventListener('copy', null);
-    });
-    document.execCommand('copy');
-    this.showCopiedClipboard = true
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Suggesto : '+this.ListForDisplay.listName,
+        url: window.location.toString(),
+      }).then(() => {
+        console.log('Thanks for sharing!');
+      })
+      .catch(console.error);
+    } else 
+    {
+      document.addEventListener('copy', (e: ClipboardEvent) => {
+        e.clipboardData.setData('text/plain', (window.location.href));
+        e.preventDefault();
+        document.removeEventListener('copy', null);
+      });
+      document.execCommand('copy');
+      this.showCopiedClipboard = true
+    }
   }
   
   goBack() 

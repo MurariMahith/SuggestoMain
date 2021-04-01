@@ -10,15 +10,8 @@ constructor(private readonly updates: SwUpdate) {
   });
 }
 showAppUpdateAlert() {
-  var updateBool = confirm("A new update is available, do you want to update?")
-  if(updateBool)
-  {
-    this.doAppUpdate();
-  }
-  else
-  {
-    
-  }
+  alert("A new update is available, Please update its takes just 2 seconds...")
+  this.doAppUpdate()
 }
 doAppUpdate() {
     this.updates.activateUpdate().then(() => document.location.reload());

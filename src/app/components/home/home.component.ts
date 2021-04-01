@@ -32,6 +32,15 @@ export class HomeComponent implements OnInit {
   editorsChoice : DisplayMovieList[] = [];
 
   todayMovie : FMovie;
+
+  corouselWishlistedMovie : FMovie;
+  corouselWishlistedMovieD : DisplayMovie;
+  corouselWishlistedMovieBool : Boolean = false;
+
+  corouselPersonalisedMovie : FMovie;
+  corouselPersonalisedMovieD : DisplayMovie;
+  corouselPersonalisedMovieBool : Boolean = false;
+
   todayMovieD : DisplayMovie;
   //todayBooleanMovie is used to check whether tody we have suggested movie or not
   todayBooleanMovie : boolean = true;
@@ -111,7 +120,7 @@ export class HomeComponent implements OnInit {
               });
             }
             console.log(this.currentCustomer)
-            console.log(this.loggedIn)
+            //console.log(this.loggedIn)
           })
     }
     // else
@@ -119,7 +128,7 @@ export class HomeComponent implements OnInit {
     //   this.loading = false
     // }
     //console.log(this.customerService.getLoggedInCustomer())
-    console.log(this.currentCustomer)
+    //console.log(this.currentCustomer)
 
     this.allGenres = Object.keys(this.genreObj)
     //console.log(this.allGenres)
@@ -135,6 +144,31 @@ export class HomeComponent implements OnInit {
       {
         this.buildPersonalisedContentForLoggedInCustomer()     
       }
+      var shuffledwishlistedMoviesOfCustomer = []
+      shuffledwishlistedMoviesOfCustomer = this.shuffleArr(this.wishlistedMovies)
+      //this.corouselWishlistedMovie = this.allMovies.find(x => x.key === shuffledwishlistedMoviesOfCustomer[0])
+      for(let x=0;x<this.allMovies.length;x++)
+      {
+        if(this.allMovies[x].key == shuffledwishlistedMoviesOfCustomer[0])
+        {
+            //console.log(this.allMovies[x].imageUrl);
+            this.corouselWishlistedMovie = this.allMovies[x];
+        }
+      }
+
+      var fakearr2 = [];
+      fakearr2.push(this.corouselWishlistedMovie)
+      //console.log(arr)
+      if(fakearr2[0])
+      {
+        this.corouselWishlistedMovieD = this.movieDisplayService.prepareDisplayMovieList(fakearr2)[0]; 
+        if(this.corouselPersonalisedMovieD)
+        {
+          this.corouselWishlistedMovieBool = true;
+        }
+      }
+      // console.log(shuffledwishlistedMoviesOfCustomer);
+      // console.log(this.corouselPersonalisedMovie)
       
       this.loading = false;
       //console.log(o);
@@ -150,7 +184,7 @@ export class HomeComponent implements OnInit {
       }
       var arr = [];
       arr.push(this.todayMovie)
-      console.log(arr)
+      //console.log(arr)
       if(arr[0])
       {
         this.todayMovieD = this.movieDisplayService.prepareDisplayMovieList(arr)[0]      
@@ -183,9 +217,18 @@ export class HomeComponent implements OnInit {
 
   }
 
+  shuffleArr (array) : any[]
+  {
+    for (var i = array.length - 1; i > 0; i--) {
+        var rand = Math.floor(Math.random() * (i + 1));
+        [array[i], array[rand]] = [array[rand], array[i]]
+    }
+    return array;
+  }
+
   buildPersonalisedContentForLoggedInCustomer()
   {
-    console.log("inside")
+    //console.log("inside")
     //console.log(this.currentCustomer)
     //console.log(this.allMovies)
     var i=0;
@@ -210,7 +253,7 @@ export class HomeComponent implements OnInit {
       });
 
     });
-    console.log(i)
+    //console.log(i)
     //console.log(personalisedMovies)
     var uniqueArray :DisplayMovie[] = personalisedMovies.filter(function(item, pos) {
       return personalisedMovies.indexOf(item) == pos;
@@ -230,6 +273,17 @@ export class HomeComponent implements OnInit {
     // console.log(LanguageBasedPersonalisedMovies)
     // console.log(this.personalisedMoviesDisplay)
     this.personalisedMoviesDisplay = LanguageBasedPersonalisedMovies
+    //murari
+
+    //get any random movie for corousel
+    var shuffledpersonalisedmovies = [];
+    shuffledpersonalisedmovies = this.shuffleArr(this.personalisedMoviesDisplay)
+    this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[0];
+    if(this.corouselPersonalisedMovieD)
+    {
+      this.corouselPersonalisedMovieBool = true;
+    }
+
     // var uniqueArray2 :DisplayMovie[] = this.personalisedMoviesDisplay.filter(function(item, pos) {
     //   return this.personalisedMoviesDisplay.indexOf(item) == pos;
     // })
@@ -318,7 +372,7 @@ export class HomeComponent implements OnInit {
             });
 
             this.locationBasedMovies = this.movieDisplayService.prepareDisplayMovieList(allmovies2,true,false,false,false)
-            console.log(this.locationBasedMovies)
+            //console.log(this.locationBasedMovies)
 
           })
           .catch(() => {
@@ -406,14 +460,14 @@ export class HomeComponent implements OnInit {
     {
       this.currentCustomer.wishlistedMovies.push(key);
     }
-    console.log(this.currentCustomer)
+    //console.log(this.currentCustomer)
     this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
   }
 
   startRateMovie(key)
   {
     this.MovieToBeRated = this.allMovies.find(o => o.key ===key)
-    console.log(this.MovieToBeRated);
+    //console.log(this.MovieToBeRated);
   }
 
   rateMovie(key)
@@ -435,8 +489,13 @@ export class HomeComponent implements OnInit {
     {
       this.currentCustomer.ratedMovies.push(ratedMovieLocal)
     }
-    console.log(this.currentCustomer)
+    //console.log(this.currentCustomer)
     this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+  }
+
+  gotolist(key)
+  {
+    this.router.navigateByUrl('/list/'+key);
   }
 
 }

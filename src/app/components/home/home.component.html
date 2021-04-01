@@ -6,9 +6,11 @@ background-color: rgba(255,255,255,0.5)">
   <img src="../../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
 </div>
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-  <!-- <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-  </ol> -->
+  <ol class="carousel-indicators" *ngIf="!loading" >
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active" style="color: black;background-color: black;"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1" style="color: black;background-color: black;"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2" style="color: black;background-color: black;"></li>
+  </ol>
   <div class="carousel-inner">
     <div class="carousel-item active">      
       <!-- <span *ngIf="todayBooleanMovie && loading">
@@ -19,12 +21,19 @@ background-color: rgba(255,255,255,0.5)">
       </span>
       <span *ngIf="!todayBooleanMovie && !loading">
         <a (click)="GoToMovie(this.todayMovie.key)">
-        <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"></a>
+        <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}" style="height: 200px;">
+        <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
+          <span class="badge badge-primary">
+            Today Suggestion
+          </span>
+        </span>
+        </a>
         <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
           <h5>{{this.todayMovie.title}}</h5><br>          
         </div>
         <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
-          <h6 class="text-muted text-centre">"{{this.todayMovie.description}}"</h6>         
+          <span class="badge badge-primary">Today Suggestion</span>
+          <!-- <h6 class="text-muted text-centre" style="margin: 2%;font-size: small;align-items: center;">"{{this.todayMovie.description}}"</h6>          -->
         </div>
         
         <div class="row" style="margin-left: 3%;margin-right: 3%;margin-top: 0;">
@@ -38,17 +47,88 @@ background-color: rgba(255,255,255,0.5)">
           </div>
         </div>
       </span>
-      
-      <!-- <p>show details of suggested movies in below div</p> -->
-
     </div>
+    <div class="carousel-item" *ngIf="loggedIn && corouselWishlistedMovieBool">
+      <span *ngIf="todayBooleanMovie && !loading">
+        <img class="d-block w-100" src="../../../assets/images/nomovietoday.PNG" alt="No Movie Today">
+      </span>
+      <span *ngIf="!todayBooleanMovie && !loading">
+        <a (click)="GoToMovie(this.corouselWishlistedMovie.key)">
+          <img class="d-block w-100" src="{{this.corouselWishlistedMovie.imageUrl}}" alt="{{this.corouselWishlistedMovie.title}}" style="height: 200px;">
+          <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
+            <span class="badge badge-primary">
+              From Wishlist
+            </span>
+          </span>
+        </a>
+        <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
+          <h5>{{this.corouselWishlistedMovie.title}}</h5><br>          
+        </div>
+        <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
+          <span class="badge badge-primary">From Wishlist</span>
+          <!-- <h6 class="text-muted text-centre" style="margin: 2%;font-size: small;align-items: center;">"{{this.corouselWishlistedMovie.description}}"</h6>          -->
+        </div>
+        
+        <div class="row" style="margin-left: 3%;margin-right: 3%;margin-top: 0;">
+          <div class="col-sm-6">
+            <p><b>Language : </b>{{this.corouselWishlistedMovieD.language}}</p>
+            <p><b>Genre : </b>{{this.corouselWishlistedMovieD.genre}}</p>
+          </div>
+          <div class="col-sm-6">
+            <p><b>Released Year : </b>{{this.corouselWishlistedMovieD.releaseYear}}</p>
+            <p><b>Trailer : </b><button type="button" class="btn btn-outline-primary btn-sm" (click)="GoToMovie(this.corouselWishlistedMovie.key)">Watch here</button></p>
+          </div>
+        </div>
+      </span>      
+    </div>
+    <div class="carousel-item" *ngIf="loggedIn && corouselPersonalisedMovieBool">
+      <span *ngIf="todayBooleanMovie && !loading">
+        <img class="d-block w-100" src="../../../assets/images/nomovietoday.PNG" alt="No Movie Today">
+      </span>
+      <span *ngIf="!todayBooleanMovie && !loading">
+        <a (click)="GoToMovie(this.corouselWishlistedMovie.key)">
+          <img class="d-block w-100" src="{{this.corouselPersonalisedMovieD.bigImageUrl}}" alt="{{this.corouselPersonalisedMovieD.title}}" style="height: 200px;">
+          <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
+            <span class="badge badge-primary">
+              From Personalised Movies
+            </span>
+          </span>
+        </a>
+        <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
+          <h5>{{this.corouselPersonalisedMovieD.title}}</h5><br>          
+        </div>
+        <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
+          <span class="badge badge-primary">From Personalised Movies</span>
+          <!-- <h6 class="text-muted text-centre" style="margin: 2%;font-size: small;align-items: center;">"{{this.corouselWishlistedMovie.description}}"</h6>          -->
+        </div>
+        
+        <div class="row" style="margin-left: 3%;margin-right: 3%;margin-top: 0;">
+          <div class="col-sm-6">
+            <p><b>Language : </b>{{this.corouselPersonalisedMovieD.language}}</p>
+            <p><b>Genre : </b>{{this.corouselPersonalisedMovieD.genre}}</p>
+          </div>
+          <div class="col-sm-6">
+            <p><b>Released Year : </b>{{this.corouselPersonalisedMovieD.releaseYear}}</p>
+            <p><b>Trailer : </b><button type="button" class="btn btn-outline-primary btn-sm" (click)="GoToMovie(this.corouselPersonalisedMovieD.key)">Watch here</button></p>
+          </div>
+        </div>
+      </span>      
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
   </div>
   <hr *ngIf="!loading">
 </div>
 
 <!-- MODAL STARTS HERE --> 
 
-<!--its very buggy may need to go to different approach for modals in home page-->
+<!--modal for ratinge-->
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -86,10 +166,12 @@ background-color: rgba(255,255,255,0.5)">
 </div>
 <!-- MODAL ENDS HERE -->
 
-<!--very important for responsive ness between mobile and laptop-->
+<!--check for loading-->
+<div *ngIf="!loading" style="margin-bottom: 45px ;">
+<!--very important for responsiveness between mobile and laptop-->
 <span *ngIf="isMobile">
       <!--testing-->
-    <div *ngIf="!loading">
+    <div>
       <h5 class="text-center display-8">Recently Suggested Movies From Us</h5>
       <div class="scrolling-wrapper2">
         <span *ngFor="let movie of sortedArray">
@@ -139,7 +221,7 @@ background-color: rgba(255,255,255,0.5)">
     <!--testing end here-->
 
     <!--find now-->
-    <div *ngIf="!loading" style="margin-top: 3%;margin-bottom: 3%;">
+    <div  style="margin-top: 3%;margin-bottom: 3%;">
       <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
         <div class="p-2"><h5 class="text-center display-8">Find Now</h5></div>
         <div class="ml-auto p-2">
@@ -164,7 +246,7 @@ background-color: rgba(255,255,255,0.5)">
     <!--find now end here-->
 
     <!--personalised movies-->
-    <div class="d-flex" style="margin-left: 5%;margin-right: 5%;" *ngIf="!loading && loggedIn">
+    <div class="d-flex" style="margin-left: 5%;margin-right: 5%;" *ngIf="loggedIn">
       <div class="p-2"><h5 class="display-8">Personalised Movies <span class="badge badge-light"> beta</span></h5>
         <small id="emailHelp" class="form-text text-muted">These Movies are personalised based on your preferences, to edit preferences click <a routerLink="/personalisation">here</a></small>
       </div>
@@ -178,7 +260,7 @@ background-color: rgba(255,255,255,0.5)">
         </div>
       </div>
     </div>
-    <div *ngIf="!loading && loggedIn" class="scrolling-wrapper3">
+    <div *ngIf="loggedIn" class="scrolling-wrapper3">
       <div class="scrolling-wrapper2">
         <span *ngFor="let movie of personalisedMoviesDisplay">
           <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
@@ -230,7 +312,7 @@ background-color: rgba(255,255,255,0.5)">
     <!--personalised movies ends here-->
 
     <!--location based lists-->
-    <div class="d-flex" style="margin-left: 5%;margin-right: 5%;" *ngIf="!loading">
+    <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
       <div class="p-2"><h5 class="text-center display-8">Location based Movies <span class="badge badge-light"> beta</span></h5>
         <small id="emailHelp" class="form-text text-muted">Preferred Language : {{locationPreferreLanguage}}</small>
       </div>
@@ -244,10 +326,10 @@ background-color: rgba(255,255,255,0.5)">
         </div>
       </div>
     </div>
-    <div *ngIf="!locationAccess && !loading" style="display: flex;justify-content: center;">
+    <div *ngIf="!locationAccess" style="display: flex;justify-content: center;">
       <button type="button" class="btn btn-outline-dark" (click)="buildMovieSuggestionBasedOnLocation()">See Location based content</button>
     </div>
-    <div *ngIf="locationAccess && !loading" class="scrolling-wrapper3">
+    <div *ngIf="locationAccess" class="scrolling-wrapper3">
       <div class="scrolling-wrapper2">
         <span *ngFor="let movie of locationBasedMovies">
           <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
@@ -329,9 +411,10 @@ background-color: rgba(255,255,255,0.5)">
         <div class="ml-auto p-2">
           <div class="float-right" style="margin-right:3% ;">
             <span class="badge badge-light">
+              <a (click)="gotolist(list.key)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-              </svg>
+              </svg></a>
             </span>
           </div>
         </div>
@@ -383,7 +466,7 @@ background-color: rgba(255,255,255,0.5)">
 <span *ngIf="!isMobile">
 
 
-<div *ngIf="!loading">
+<div>
   <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
     <div class="p-2"><h3 class="text-center display-8">Recently Suggested Movies From Us</h3></div>
     <div class="ml-auto p-2">
@@ -437,7 +520,7 @@ background-color: rgba(255,255,255,0.5)">
     </div>
 </div>
   <!--find now-->
-  <div *ngIf="!loading" style="margin-top: 3%;margin-bottom: 3%;">
+  <div  style="margin-top: 3%;margin-bottom: 3%;">
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
       <div class="p-2"><h3 class="text-center display-8">Find Now</h3></div>
       <div class="ml-auto p-2">
@@ -461,7 +544,7 @@ background-color: rgba(255,255,255,0.5)">
   <!--find now end here-->
 
   <!--personalised ocntent-->
-  <div *ngIf="!loading && loggedIn">
+  <div *ngIf="loggedIn">
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
       <div class="p-2">
         <h3 class="display-8">Personalised Movies <span class="badge badge-light"> beta</span></h3>
@@ -520,7 +603,7 @@ background-color: rgba(255,255,255,0.5)">
   <!---personalised content ends here-->
 
 
-  <div *ngIf="!loading && locationAccess">
+  <div *ngIf="locationAccess">
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
       <div class="p-2">
         <h3 class="text-center display-8">Location Based Movies <span class="badge badge-light"> beta</span></h3>
@@ -577,7 +660,7 @@ background-color: rgba(255,255,255,0.5)">
       </div>
   </div>
   
-  <div *ngIf="!locationAccess && !loading" style="display: flex;justify-content: center;">
+  <div *ngIf="!locationAccess" style="display: flex;justify-content: center;">
     <button type="button" class="btn btn-outline-dark" (click)="buildMovieSuggestionBasedOnLocation()">See Location based content</button>
   </div>
 
@@ -640,3 +723,4 @@ background-color: rgba(255,255,255,0.5)">
 <!---ts file movie list end here-->
 </span>
 
+</div>

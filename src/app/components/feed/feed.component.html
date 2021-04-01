@@ -1,1 +1,153 @@
-<p>feed works!</p>
+<div class="container" style="margin-bottom: 45px;">
+
+<!--top rated and today movie-->
+<div *ngIf="!loading">
+    <div class="scrolling-wrapper2">
+        <div class="item" [ngStyle]="{'height': (loggedIn) ? '300px' : '260px'}">
+          <h6 style="text-align: center;">Today Suggestion</h6> 
+          <a (click)="GoToMovie(todayMovie.key)"><img src="{{todayMovieD.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
+          <h6 style="text-align: center;">{{todayMovie.title}}</h6> 
+          <div style="display: flex;" *ngIf="loggedIn">
+            <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
+              <span *ngIf="!wishlistedMovies.includes(todayMovie.key)">
+                <a (click)="addMovieToWishlist(todayMovie.key)">
+                  <i class="bi bi-heart" style="color: black;"></i>
+                </a>
+              </span>
+              <span *ngIf="wishlistedMovies.includes(todayMovie.key)">
+                <i class="bi bi-heart-fill" style="color: red;"></i>
+              </span>
+            </button>
+            <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Rating">
+              <span *ngIf="!ratedMoviesForThisCustomer.includes(todayMovie.key)">
+                <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(todayMovie.key)">
+                  <i class="bi bi-star" style="color: black;"></i>
+                </a>
+              </span>
+              <span *ngIf="ratedMoviesForThisCustomer.includes(todayMovie.key)">
+                <i class="bi bi-star-fill" style="color: gold;"></i>
+              </span>
+            </button>
+            <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Watched Movie">
+              <span *ngIf="!ratedMoviesForThisCustomer.includes(todayMovie.key)">
+                <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(todayMovie.key)">
+                  <i class="bi bi-tv" style="color: black;"></i>
+                </a>
+              </span>
+              <span *ngIf="ratedMoviesForThisCustomer.includes(todayMovie.key)">
+                <i class="bi bi-tv-fill" style="color: black;"></i>
+              </span>
+            </button>
+          </div> 
+        </div>
+        <div class="item" [ngStyle]="{'height': (loggedIn) ? '300px' : '260px'}">
+            <!-- <div class="item" *ngIf=(!loggedIn) style="height: 250px;"> -->
+                <h6 style="text-align: center;">Top Rated Movie</h6>; 
+              <a (click)="GoToMovie(topRatedMovieD.key)"><img src="{{topRatedMovieD.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
+              <h6 style="text-align: center;">{{topRatedMovieD.title}}</h6> 
+              <div style="display: flex;" *ngIf="loggedIn">
+                <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
+                  <span *ngIf="!wishlistedMovies.includes(topRatedMovieD.key)">
+                    <a (click)="addMovieToWishlist(topRatedMovieD.key)">
+                      <i class="bi bi-heart" style="color: black;"></i>
+                    </a>
+                  </span>
+                  <span *ngIf="wishlistedMovies.includes(topRatedMovieD.key)">
+                    <i class="bi bi-heart-fill" style="color: red;"></i>
+                  </span>
+                </button>
+                <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Rating">
+                  <span *ngIf="!ratedMoviesForThisCustomer.includes(topRatedMovieD.key)">
+                    <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(topRatedMovieD.key)">
+                      <i class="bi bi-star" style="color: black;"></i>
+                    </a>
+                  </span>
+                  <span *ngIf="ratedMoviesForThisCustomer.includes(topRatedMovieD.key)">
+                    <i class="bi bi-star-fill" style="color: gold;"></i>
+                  </span>
+                </button>
+                <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Watched Movie">
+                  <span *ngIf="!ratedMoviesForThisCustomer.includes(topRatedMovieD.key)">
+                    <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(topRatedMovieD.key)">
+                      <i class="bi bi-tv" style="color: black;"></i>
+                    </a>
+                  </span>
+                  <span *ngIf="ratedMoviesForThisCustomer.includes(topRatedMovieD.key)">
+                    <i class="bi bi-tv-fill" style="color: black;"></i>
+                  </span>
+                </button>
+              </div> 
+        </div>        
+    </div>
+    <h6 style="text-align: center;">Random Movie Generator</h6> 
+    <div class="random-Movie" style="display: flex;justify-content: center;align-items: center;">
+        <div class="item" [ngStyle]="{'height': (loggedIn) ? '300px' : '260px'}">
+            
+            <a (click)="GoToMovie(randomMovieD.key)"><img src="{{randomMovieD.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
+            <h6 style="text-align: center;">{{randomMovieD.title}}</h6> 
+            <div style="display: flex;" *ngIf="loggedIn">
+              <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
+                <span *ngIf="!wishlistedMovies.includes(randomMovieD.key)">
+                  <a (click)="addMovieToWishlist(randomMovieD.key)">
+                    <i class="bi bi-heart" style="color: black;"></i>
+                  </a>
+                </span>
+                <span *ngIf="wishlistedMovies.includes(randomMovieD.key)">
+                  <i class="bi bi-heart-fill" style="color: red;"></i>
+                </span>
+              </button>
+              <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Rating">
+                <span *ngIf="!ratedMoviesForThisCustomer.includes(randomMovieD.key)">
+                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(randomMovieD.key)">
+                    <i class="bi bi-star" style="color: black;"></i>
+                  </a>
+                </span>
+                <span *ngIf="ratedMoviesForThisCustomer.includes(randomMovieD.key)">
+                  <i class="bi bi-star-fill" style="color: gold;"></i>
+                </span>
+              </button>
+              <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Watched Movie">
+                <span *ngIf="!ratedMoviesForThisCustomer.includes(randomMovieD.key)">
+                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(randomMovieD.key)">
+                    <i class="bi bi-tv" style="color: black;"></i>
+                  </a>
+                </span>
+                <span *ngIf="ratedMoviesForThisCustomer.includes(randomMovieD.key)">
+                  <i class="bi bi-tv-fill" style="color: black;"></i>
+                </span>
+              </button>
+            </div> 
+        </div>
+        <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
+            <button type="button" (click)="generateRandomMovie()" class="btn btn-sm btn-outline-secondary" style="margin-top: 100px;">Pick Random Movie</button>
+        </div>
+    </div>
+    <hr>
+    <div style="border: 1px solid black;border-radius: 20px;width: 100%;height: 220px;padding: 2%;align-items: center;">
+        <div style="border-radius: 20px;">
+        <img src="http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg" style="  height: 150px;width: 24%;">
+        <img src="http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg" style="  height: 150px;width: 24%;">
+        <img src="http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg" style="  height: 150px;width: 24%;">
+        <img src="http://henrycavill.org/images/Films/2013-Man-of-Steel/posters/3-Walmart-Superman-a.jpg" style="  height: 150px;width: 24%;">
+        </div>  
+        <h4 class="text-center">List Name</h4>
+    
+        
+        
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

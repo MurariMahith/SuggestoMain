@@ -17,7 +17,7 @@ background-color: rgba(255,255,255,0.5)">
                     <div class="profile-header-content">
                         <div class="profile-header-img">
                             <!-- <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" /> -->
-                            <img  src="{{currentCustomer.customerPhotoUrl}}" alt="" />
+                            <img  src="{{currentCustomer.customerPhotoUrl}}" alt="{{currentCustomer.name}}" />
                         </div>
                         <p>Name : <span>{{currentCustomer.name | titlecase}}</span></p>
                         <p>Email : {{currentCustomer.email}}</p>
@@ -60,7 +60,7 @@ background-color: rgba(255,255,255,0.5)">
                                         <div class="list-group">
                                             <h6>People Who shared their Wishlisted Movies</h6>
                                             <div *ngFor="let m of allCustomers" class="list-group-item d-flex align-items-center">
-                                                <img src="{{m.customerPhotoUrl}}" alt="{{m.customerPhotoUrl}}" width="50px" class="rounded-sm ml-n2" />
+                                                <img src="{{m.customerPhotoUrl}}" alt="{{m.name}}" width="50px" class="rounded-sm ml-n2" />
                                                 <div class="flex-fill pl-3 pr-3">
                                                     <div><a class="text-dark font-weight-600">{{m.name | titlecase}}</a></div>
                                                     <div *ngIf="m.wishlistedMovies" class=" fs-13px" style="font-size: small;">WishListed Movies : {{m.wishlistedMovies.length}}</div>
@@ -134,7 +134,7 @@ background-color: rgba(255,255,255,0.5)">
                                         <div class="list-group">
                                             <h6>People Who shared their Wishlisted Movies</h6>
                                             <div *ngFor="let m of allCustomers" class="list-group-item d-flex align-items-center">
-                                                <img src="{{m.customerPhotoUrl}}" alt="{{m.customerPhotoUrl}}" width="50px" class="rounded-sm ml-n2" />
+                                                <img src="{{m.customerPhotoUrl}}" alt="{{m.name}}" width="50px" class="rounded-sm ml-n2" />
                                                 <div class="flex-fill pl-3 pr-3">
                                                     <div><a class="text-dark font-weight-600">{{m.name | titlecase}}</a></div>
                                                     <div *ngIf="m.wishlistedMovies" class=" fs-13px" style="font-size: small;">WishListed Movies : {{m.wishlistedMovies.length}}</div>

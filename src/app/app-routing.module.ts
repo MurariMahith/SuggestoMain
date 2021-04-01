@@ -6,6 +6,7 @@ import { LoginComponent } from './components/authentication/login/login.componen
 import { ResetPasswordComponent } from './components/authentication/reset-password/reset-password.component';
 import { SignupComponent } from './components/authentication/signup/signup.component';
 import { CreateCustomListComponent } from './components/create-custom-list/create-custom-list.component';
+import { FeedComponent } from './components/feed/feed.component';
 import { HomeComponent } from './components/home/home.component';
 import { InformationComponent } from './components/information/information.component';
 import { KannadaComponent } from './components/kannada/kannada.component';
@@ -49,6 +50,7 @@ const routes: Routes = [
   { path: 'wlist/:key',  component: WishListComponent,canActivate: [AuthGuard] },
   { path: 'suggest',  component: SuggestMovieComponent,canActivate: [AuthGuard] },
   { path: 'createList',  component: CreateCustomListComponent,canActivate: [AuthGuard] },
+  { path: 'news-feed',  component: FeedComponent,canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 @NgModule({
