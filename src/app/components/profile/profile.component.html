@@ -1,10 +1,10 @@
 <div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
 background-color: rgba(255,255,255,0.5)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
-  <img src="../../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
+  <img src="../../../../assets/loading animation/Ghost.gif" style="opacity: 1;"></div>
 </div>
 
-<div *ngIf="!loading">
+<div *ngIf="!loading" style="margin-bottom: 50px;">
 <div class="container">
 <h5 class="text-center">Profile</h5>
 </div>
@@ -18,16 +18,25 @@ background-color: rgba(255,255,255,0.5)">
                     <img *ngIf="currentCustomer.customerPhotoUrl" src="{{currentCustomer.customerPhotoUrl}}" alt="" />
                     <img *ngIf="!currentCustomer.customerPhotoUrl" src="../../../assets/images/logo.jpg" alt="" />
                 </div>
-                <p>Name : <span *ngIf="currentCustomer.name">{{currentCustomer.name}}</span><span *ngIf="!currentCustomer.name" class="text-muted">name not provided</span></p>
-                <p>Email : {{currentCustomer.email}}</p>
-                <p>Preferred Languages : {{languages}}</p>
-                <p>Preferred Genres : {{genres}}</p>
-                <p>Share your wishlist to people :               
+                <span style="overflow-wrap: break-word;-ms-word-break: break-all;word-wrap: break-word;word-break: break-all;">
+                <p><b>Name : </b><span *ngIf="currentCustomer.name">{{currentCustomer.name}} </span>
+                    <span><i *ngIf="bronze" style="color: brown;" class="bi bi-star-fill"></i></span>
+                    <span><i *ngIf="silver" style="color: silver;" class="bi bi-star-fill"></i></span>
+                    <span><i *ngIf="gold" style="color: gold;" class="bi bi-star-fill"></i></span>
+                    <span><img *ngIf="platinum" src="../../../assets/star-status/platinum.jpg" width="20" height="20"></span>
+                    <span><img *ngIf="diamond" src="../../../assets/star-status/diamond.png" width="20" height="20"></span>
+                    <span *ngIf="!currentCustomer.name" class="text-muted">name not provided</span></p>
+                <!-- <p><b>Email : </b>{{currentCustomer.email}}</p> -->
+                <p><b>Preferred Languages : </b>{{languages}}</p>
+                <p><b>Preferred Genres : </b>{{genres}}</p>
+                </span>
+                <p><b>Share your wishlist to people and include in MovieBuff Board :  </b>             
                 <label class="switch">
                   <input type="checkbox" (change)="UpdateCustomerWhenSharingEvent()" [(ngModel)]="share" name="Adventure">
                   <span class="slider round"></span>
                 </label></p>
-                <p>Movie Lists created By you : <button type="button" class="btn btn-primary btn-sm" (click)="GoToMyList()"><i class="bi bi-hand-index">  here</i></button>
+                <p><b>Movie Lists created By you : </b><button type="button" class="btn btn-primary btn-sm" (click)="GoToMyList()"><i class="bi bi-hand-index">  here</i></button>
+                    <br><small>You can delete lists creted by you by clicking here button above.</small>
                    </p>
                 <ul class="profile-header-tab nav nav-tabs nav-tabs-v2">
                     <li class="nav-item">
@@ -42,35 +51,17 @@ background-color: rgba(255,255,255,0.5)">
                             <div class="nav-value">{{rcount}}</div>
                         </a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link">
-                            <div class="nav-field"><button type="button" (click)="logout()" class="btn btn-sm btn-secondary">Lists by You</button></div>
+                    <li class="nav-item">
+                        <a class="nav-link" (click)="watchedSelect()">
+                            <div class="nav-field">Watched Movies</div>
+                            <div class="nav-value">{{watchedcount}}</div>
                         </a>
-                      </li> -->
+                    </li>
                     <li class="nav-item">
                       <a class="nav-link">
                           <div class="nav-field"><button type="button" (click)="logout()" class="btn btn-sm btn-danger">Log Out</button></div>
-                          <!-- <div class="nav-value">{{rcount}}</div> -->
                       </a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a href="#profile-media" class="nav-link" data-toggle="tab">
-                            <div class="nav-field">Photos</div>
-                            <div class="nav-value">1,397</div>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#profile-media" class="nav-link" data-toggle="tab">
-                            <div class="nav-field">Videos</div>
-                            <div class="nav-value">120</div>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#profile-followers" class="nav-link" data-toggle="tab">
-                            <div class="nav-field">Following</div>
-                            <div class="nav-value">2,592</div>
-                        </a>
-                    </li> -->
                 </ul>
             </div>
         </div>
@@ -99,7 +90,7 @@ background-color: rgba(255,255,255,0.5)">
                                     <div *ngFor="let m of ratedMoviesDisplay" class="list-group-item d-flex align-items-center">
                                         <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
                                         <div class="flex-fill pl-3 pr-3">
-                                            <div><a href="#" class="text-dark font-weight-600">{{m.title}}</a></div>
+                                            <div><a (click)="goto(m.key)" class="text-dark font-weight-600">{{m.title}}</a></div>
                                             <div class="text-muted fs-13px">Your rating : {{m.rating}}</div>
                                         </div>
                                         <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
@@ -112,13 +103,27 @@ background-color: rgba(255,255,255,0.5)">
                                   <div *ngFor="let m of wishlistedMoviesDisplay" class="list-group-item d-flex align-items-center">
                                       <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
                                       <div class="flex-fill pl-3 pr-3">
-                                          <div><a href="#" class="text-dark font-weight-600">{{m.title}}</a></div>
+                                          <div><a (click)="goto(m.key)" class="text-dark font-weight-600">{{m.title}}</a></div>
                                           <div class="text-muted fs-13px">{{m.releaseYear}}</div>
                                       </div>
                                       <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
                                   </div>                                  
                               </div>
-                          </div>
+                            </div>
+                            <div class="tab-pane fade active show" id="profile-followers">
+                                <div class="list-group" *ngIf="watchedbool">
+                                    <h6>Watched Movies</h6>
+                                    <div *ngFor="let m of watchedMoviesDisplay" class="list-group-item d-flex align-items-center">
+                                        <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
+                                        <div class="flex-fill pl-3 pr-3">
+                                            <div><a (click)="goto(m.key)" class="text-dark font-weight-600">{{m.title}}</a></div>
+                                            <div class="text-muted fs-13px">{{m.releaseYear}}</div>
+                                        </div>
+                                        <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
+                                    </div>                                  
+                                </div>
+                            </div>
+
                         </div>
                         <!-- <div class="tab2-content p-0">
                           <div class="tab2-pane fade active show" id="profile-followers">
@@ -201,7 +206,7 @@ background-color: rgba(255,255,255,0.5)">
             <div class="profile-sidebar">
                 <div class="desktop-sticky-top">
                     <h4>{{currentCustomer.name}}</h4>
-                    <div class="font-weight-600 mb-3 text-muted mt-n2">{{currentCustomer.email}}</div>
+                    <!-- <div class="font-weight-600 mb-3 text-muted mt-n2">{{currentCustomer.email}}</div> -->
                     <p>Preferred Languages : {{languages}}</p>
                     <p>Preferred Genres : {{genres}}</p>
                     <p>Share your wishlist to people :               
@@ -223,7 +228,7 @@ background-color: rgba(255,255,255,0.5)">
                                     <div *ngFor="let m of ratedMoviesDisplay" class="list-group-item d-flex align-items-center">
                                         <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
                                         <div class="flex-fill pl-3 pr-3">
-                                            <div><a href="#" class="text-dark font-weight-600">{{m.title}}</a></div>
+                                            <div><a (click)="goto(m.key)" class="text-dark font-weight-600">{{m.title}}</a></div>
                                             <div class="text-muted fs-13px">Your rating : {{m.rating}}</div>
                                         </div>
                                         <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
@@ -236,7 +241,7 @@ background-color: rgba(255,255,255,0.5)">
                                   <div *ngFor="let m of wishlistedMoviesDisplay" class="list-group-item d-flex align-items-center">
                                       <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
                                       <div class="flex-fill pl-3 pr-3">
-                                          <div><a href="#" class="text-dark font-weight-600">{{m.title}}</a></div>
+                                          <div><a (click)="goto(m.key)" class="text-dark font-weight-600">{{m.title}}</a></div>
                                           <div class="text-muted fs-13px">{{m.releaseYear}}</div>
                                       </div>
                                       <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>

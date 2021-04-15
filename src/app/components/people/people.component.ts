@@ -31,7 +31,11 @@ export class PeopleComponent implements OnInit {
 
   currentCustomer : Customer;
 
-  allCustomers : Customer[] = []
+  allCustomers : Customer[] = [];
+
+  allCustomersWithoutCurrentCustomer : Customer[] = [];
+
+  allCustomersScoreSorted : Customer[] = [];
 
   loggedIn : boolean = false;
 
@@ -42,6 +46,9 @@ export class PeopleComponent implements OnInit {
   myWCount : number = 0;
 
   share : boolean = true;
+
+  leaderbool : boolean = false;
+  wishbool : boolean = true;
 
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
@@ -69,6 +76,21 @@ export class PeopleComponent implements OnInit {
         .subscribe(o =>
           {
             this.allCustomers = o;
+            this.allCustomers.sort((a,b) => {
+              if(a.wishlistedMovies && b.wishlistedMovies)
+              {
+                return b.wishlistedMovies.length - a.wishlistedMovies.length;
+              } 
+            })
+            this.allCustomers.forEach(element => {
+              if(!element.watchedMovies)
+              {
+                element.watchedMovies = [];
+              }
+            });
+
+            
+
             //console.log(o)
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
@@ -113,10 +135,28 @@ export class PeopleComponent implements OnInit {
               {
                 this.currentCustomer.customerPhotoUrl = '../../../assets/images/logo.jpg'
               }
-              this.myWCount = this.currentCustomer.wishlistedMovies.length;
-
+              if(this.currentCustomer.wishlistedMovies)
+              {
+                this.myWCount = this.currentCustomer.wishlistedMovies.length;
+              }              
+              this.allCustomersWithoutCurrentCustomer = this.allCustomers
               this.allCustomers = this.allCustomers.filter(x => x.shareWishlistedMovies)
+              console.log(this.allCustomers);
             }
+
+            var customersWhoEnabledSharing = this.allCustomersWithoutCurrentCustomer;
+            customersWhoEnabledSharing.forEach(element => {
+              if(!element.shareWishlistedMovies)
+              {
+                element.name = "Name Hidden";
+                element.customerPhotoUrl = "../../../assets/images/defaultuser.png"
+              }
+            });
+
+            this.allCustomersScoreSorted = customersWhoEnabledSharing.sort((a,b) => {
+                return b.watchedMovies.length - a.watchedMovies.length;             
+            })
+            console.log(this.allCustomers);
           })
     }
   }
@@ -133,6 +173,17 @@ export class PeopleComponent implements OnInit {
     this.currentCustomer.shareWishlistedMovies = this.share;
     console.log(this.currentCustomer)
     this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+  }
+
+  wishSelect()
+  {
+    this.leaderbool = false;
+    this.wishbool = true;
+  }
+  leaderSelect()
+  {
+    this.leaderbool = true
+    this.wishbool = false;
   }
 
 }

@@ -23,10 +23,10 @@ export class CustomerService {
   }
 
   createCustomer(customer: Customer): void {
-    this.customerRef.push(customer);
+    this.customerRef.push(customer);;
   }
 
-  updateCustomer(key: string, value: any): Promise<void> 
+  updateCustomer(key: string, value: Customer): Promise<void> 
   {
     if(value.hasOwnProperty('key'))
     {
@@ -34,7 +34,33 @@ export class CustomerService {
     }
     console.log(value);
     console.log(key);
+    if(value.wishlistedMovies)
+    {
+      value.wishlistedMovies = this.removeDuplicates(value.wishlistedMovies);
+    }
+    if(value.watchedMovies)
+    {
+      value.watchedMovies = this.removeDuplicates(value.watchedMovies);
+    }
+    //console.log(this.removeDuplicateWishlistedMovies(value.wishlistedMovies));    
+    console.log(value)
+    for( var k in value)
+    {
+        if(value[k]=== undefined)
+        {
+          delete value[k];
+        }
+    }
     return this.customerRef.update(key, value);
+  }
+
+  removeDuplicates(arr)
+  {
+    var uniqueArray
+    uniqueArray = arr.filter(function(item, pos, self) {
+      return self.indexOf(item) == pos;
+    })
+    return uniqueArray;
   }
 
   getLoggedInCustomer() : Observable<Customer[]>

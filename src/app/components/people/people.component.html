@@ -4,7 +4,7 @@
 <div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
 background-color: rgba(255,255,255,0.5)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
-  <img src="../../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
+  <img src="../../../../assets/loading animation/Walk.gif" style="opacity: 1;"></div>
 </div>
 <div *ngIf="!loading">
     <div class="container">
@@ -20,26 +20,32 @@ background-color: rgba(255,255,255,0.5)">
                             <img  src="{{currentCustomer.customerPhotoUrl}}" alt="{{currentCustomer.name}}" />
                         </div>
                         <p>Name : <span>{{currentCustomer.name | titlecase}}</span></p>
-                        <p>Email : {{currentCustomer.email}}</p>
+                        <!-- <p>Email : {{currentCustomer.email}}</p> -->
                         <p>Your Wishlisted Movies : {{myWCount}}</p>
-                        <p>Share your wishlist to people :               
+                        <p>Share your wishlist to people and include in MovieBuff Board :               
                         <label class="switch">
                           <input type="checkbox" (change)="UpdateCustomerWhenSharingEvent()" [(ngModel)]="share" name="Adventure">
                           <span class="slider round"></span>
                         </label></p><br>
                         <ul class="profile-header-tab nav nav-tabs nav-tabs-v2">
-                            <!-- <li class="nav-item">
-                                <a class="nav-link" (click)="wishSelect()">
-                                    <div class="nav-field" style="font-size: medium;">People who shared their wishlists</div>
-                                    <div class="nav-value" style="font-size: small;">Note : Other people can see your wishlist only if you enable 'share wishlist' above.</div>
+                            <li class="nav-item">
+                                <a class="nav-link">
+                                    <div class="nav-field" style="font-size: medium;" (click)="wishSelect()">Wishlists</div>
+                                    <!-- <div class="nav-value" style="font-size: small;">Note : Other people can see your wishlist only if you enable 'share wishlist' above.</div> -->
                                 </a>
-                            </li> -->
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link">
+                                    <div class="nav-field" style="font-size: medium;" (click)="leaderSelect()">MovieBuff Board</div>
+                                    <!-- <div class="nav-value" style="font-size: small;">Note : Other people can see your wishlist only if you enable 'share wishlist' above.</div> -->
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
           
                 <div class="profile-container">
-                    <div class="profile-sidebar">
+                    <!-- <div class="profile-sidebar">
                         <div class="desktop-sticky-top">
                             <h4>John Smith</h4>
                             <div class="font-weight-600 mb-3 text-muted mt-n2">@johnsmith</div>
@@ -50,24 +56,40 @@ background-color: rgba(255,255,255,0.5)">
                             <div class="mb-3"><i class="fa fa-link fa-fw text-muted"></i> seantheme.com/studio</div>
                             <hr class="mt-4 mb-4" />
                         </div>
-                    </div>
+                    </div> -->
           
                     <div class="profile-content">
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="tab-content p-0">
                                     <div class="tab-pane fade active show" id="profile-followers">
-                                        <div class="list-group">
+                                        <div class="list-group" *ngIf="wishbool">
                                             <h6>People Who shared their Wishlisted Movies</h6>
+                                            <div class="nav-value" style="font-size: small;">Note : Other people can see your wishlist only if you enable 'share your wishlist to people' above.</div>
                                             <div *ngFor="let m of allCustomers" class="list-group-item d-flex align-items-center">
                                                 <img src="{{m.customerPhotoUrl}}" alt="{{m.name}}" width="50px" class="rounded-sm ml-n2" />
                                                 <div class="flex-fill pl-3 pr-3">
-                                                    <div><a class="text-dark font-weight-600">{{m.name | titlecase}}</a></div>
+                                                    <div><a (click)="goto(m.key)" class="text-dark font-weight-600">{{m.name | titlecase}}</a></div>
                                                     <div *ngIf="m.wishlistedMovies" class=" fs-13px" style="font-size: small;">WishListed Movies : {{m.wishlistedMovies.length}}</div>
                                                     <div *ngIf="!m.wishlistedMovies" class=" fs-13px" style="font-size: small;">WishListed Movies : 0</div>
-                                                    <div class=" fs-13px" style="font-size: x-small;">{{m.email}}</div>
+                                                    <!-- <div class=" fs-13px" style="font-size: x-small;">{{m.email}}</div> -->
                                                 </div>
                                                 <a (click)="goto(m.key)" *ngIf="m.wishlistedMovies" class="btn btn-outline-primary">Go</a>
+                                            </div>                                  
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade active show" id="profile-followers">
+                                        <div class="list-group" *ngIf="leaderbool">
+                                            <h6>MovieBuff Board</h6>
+                                            <div class="nav-value" style="font-size: small;">Note : We don't show other users what movies you have watched.</div>
+                                            <div *ngFor="let m of allCustomersScoreSorted" class="list-group-item d-flex align-items-center">
+                                                <img src="{{m.customerPhotoUrl}}" alt="{{m.name}}" width="50px" class="rounded-sm ml-n2" />
+                                                <div class="flex-fill pl-3 pr-3">
+                                                    <div><a class="text-dark font-weight-600">{{m.name | titlecase}}</a></div>
+                                                    <div *ngIf="m.watchedMovies" class=" fs-13px" style="font-size: small;">Watched Movies : {{m.watchedMovies.length}}</div>
+                                                    <!-- <div *ngIf="!m.watchedMovies" class=" fs-13px" style="font-size: small;">Watched Movies : 0</div> -->
+                                                    <!-- <div class=" fs-13px" style="font-size: x-small;">{{m.email}}</div> -->
+                                                </div>                                                
                                             </div>                                  
                                         </div>
                                     </div>
@@ -115,7 +137,7 @@ background-color: rgba(255,255,255,0.5)">
                     <div class="profile-sidebar">
                         <div class="desktop-sticky-top">
                             <h4>{{currentCustomer.name | titlecase}}</h4>
-                            <div class="font-weight-600 mb-3 text-muted mt-n2">{{currentCustomer.email}}</div>
+                            <!-- <div class="font-weight-600 mb-3 text-muted mt-n2">{{currentCustomer.email}}</div> -->
                             <p>Your Wishlisted Movies : {{myWCount}}</p>
                             <p>Share your wishlist to people :               
                             <label class="switch">
@@ -139,7 +161,7 @@ background-color: rgba(255,255,255,0.5)">
                                                     <div><a class="text-dark font-weight-600">{{m.name | titlecase}}</a></div>
                                                     <div *ngIf="m.wishlistedMovies" class=" fs-13px" style="font-size: small;">WishListed Movies : {{m.wishlistedMovies.length}}</div>
                                                     <div *ngIf="!m.wishlistedMovies" class=" fs-13px" style="font-size: small;">WishListed Movies : 0</div>
-                                                    <div class=" fs-13px" style="font-size: x-small;">{{m.email}}</div>
+                                                    <!-- <div class=" fs-13px" style="font-size: x-small;">{{m.email}}</div> -->
                                                 </div>
                                                 <a (click)="goto(m.key)" *ngIf="m.wishlistedMovies" class="btn btn-outline-primary">Go</a>
                                             </div>                                  

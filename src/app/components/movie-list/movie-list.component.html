@@ -1,9 +1,10 @@
 <div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
 background-color: rgba(255,255,255,0.5)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
-  <img src="../../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
+  <img src="../../../../assets/loading animation/Fidget-spinner.gif" style="opacity: 1;"></div>
 </div>
 
+<div style="margin-bottom: 50px;">
 
 <div *ngIf="!loading">
 <div class="row" style="margin: 2%;">
@@ -12,16 +13,34 @@ background-color: rgba(255,255,255,0.5)">
     <h5 *ngIf="customerLists" class="display-8 text-center">Custom Movie Lists created by You</h5>    
     <h3 class="display-8 text-center"></h3>
     <span *ngFor="let list of MovieListsForView" style="margin: 1%;display: flex;">
-      <button *ngIf="!isMobile" type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)="scroll(list.key)">{{list.listName}}</button>
-      <button *ngIf="isMobile" type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)="goto(list.key)">{{list.listName}}</button>
-      <button type="button" (click)="addListToWishlist(list.key)" class="btn btn-sm btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
-            <i class="bi bi-heart" style="color: black;"></i>
+
+      <button *ngIf="!isMobile && list.createdBy !== 'ADMIN'" type="button" class="btn btn-success btn-sm btn-block" (click)="scroll(list.key)">
+        {{list.listName | titlecase}}
       </button>
-      <button type="button" (click)="rateList(list.key)" class="btn btn-sm btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
-        <i class="bi bi-star" style="color: black;"></i>
+      <button *ngIf="!isMobile && list.createdBy === 'ADMIN'" type="button" class="btn btn-primary btn-sm btn-block" (click)="scroll(list.key)">
+        {{list.listName | titlecase}}
       </button>
+        
+
+        <button *ngIf="isMobile && list.createdBy !== 'ADMIN'" type="button" class="btn btn-success btn-sm btn-block" (click)="goto(list.key)">
+          {{list.listName | titlecase}}
+        </button>
+        <button *ngIf="isMobile && list.createdBy === 'ADMIN'" type="button" class="btn btn-primary btn-sm btn-block" (click)="goto(list.key)">
+          {{list.listName | titlecase}}
+        </button>
+        <button type="button" *ngIf="customerLists" class="btn btn-danger btn-sm" style="width: 20%;" (click)="deleteList(list.key)">
+          Delete
+        </button>
     </span>
-    <button *ngIf="customerLists" type="button" class="btn btn-success btn-sm btn-block" (click)="this.router.navigateByUrl('/createList')">Add New List</button>
+    <br><br>
+    <button *ngIf="customerLists || loggedIn" type="button" class="btn btn-outline-success btn-block" (click)="this.router.navigateByUrl('/createList')">Add New List</button>
+    <br><br>
+    <div *ngIf="!customerLists" style="margin: 2%;padding: 2%;border: 1px solid rgb(206, 206, 206);">
+      <h6>Information : </h6>
+      <button type="button" class="btn btn-success btn-sm btn-block">created By Users like you</button><br>    
+      <button type="button" class="btn btn-primary btn-sm btn-block" >created By ADMIN</button>
+    </div>
+    
     
   </div>
   <div class="col-sm-8">
@@ -121,3 +140,41 @@ background-color: rgba(255,255,255,0.5)">
   </div>
 </div>
  -->
+
+
+ <!--rating modal for list-->
+<div class="modal fade" id="ratingModalList" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" *ngIf="listToBeRated">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Rate {{listToBeRated.listName | titlecase}} List</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="rating" style="margin: 5%;">
+              <div class="form-group">            
+                <label for="exampleInputPassword2">Please give us your rating to this List</label>     
+                <small id="emailHelp" class="form-text text-muted">It will help us to suggest better Movie List based on the rating you give. You can only rate one time per movie. (editing rating for movies will be supported in next version) </small> <br>
+                <p>Movie in this List : {{listToBeRated.moviesInList.length}}</p>
+                <div style="display: flex;">
+                <select class="form-select browser-default custom-select" id="ratingdropdown" aria-label="Default select example" name="rtingd" [(ngModel)]="rating">
+                  <option [value]=0>Rate {{listToBeRated.listName | titlecase}} Movie list</option>
+                  <option [value]="1">Below Average</option>
+                  <option [value]="2">Average</option>
+                  <option [value]="3">Good</option>
+                  <option [value]="4">Extra-ordinary</option>
+                  <option [value]="5">Mind blowing</option>
+                </select>   
+                <button type="button" style="margin-left: 1%;width: 100px;" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#ratingModalList" (click)=rateList(listToBeRated.key)>Submit</button>   </div>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

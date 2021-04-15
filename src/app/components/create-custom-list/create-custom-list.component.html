@@ -14,6 +14,14 @@
             <div *ngIf="title.invalid && (title.dirty || title.touched)">
               <p *ngIf="title.errors?.required" class="error">List Name is required</p>
             </div>
+          </div> 
+          <div class="form-group"><!--title-->
+            <label for="movieTitle">Is this series : &nbsp;</label>            
+            <label class="switch">
+              <input type="checkbox" name="IsThisSeries" [(ngModel)]="series">
+              <span class="slider round"></span>
+            </label>
+            <small id="emailHelp" class="form-text text-muted">If this list is series (example: John wick,Marvel,Mission Impossible) the movies will be displayed in ascending order based on release.</small>
           </div>   
           <div class="form-group">
               <label>Selected Movies</label><br>

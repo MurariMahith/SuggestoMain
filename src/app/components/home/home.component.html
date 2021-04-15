@@ -1,27 +1,111 @@
 <!-- <p>-----------------------------------------------------------------------------------------------------------------------------</p> -->
 <!-- <p>main suggestion for that day</p> -->
-<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
-background-color: rgba(255,255,255,0.5)">
+<div *ngIf="loading" style="position: absolute;top: 170px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
+background-color: rgba(255, 255, 255, 0.3)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
-  <img src="../../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
+  <img src="../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
 </div>
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators" *ngIf="!loading" >
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active" style="color: black;background-color: black;"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1" style="color: black;background-color: black;"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2" style="color: black;background-color: black;"></li>
-  </ol>
+<div *ngIf="!loggedIn">
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+      <!--today movie-->
+      <div class="carousel-item active">      
+        <span *ngIf="todayBooleanMovie && !loading">
+          <img class="d-block w-100" src="../../../assets/images/nomovietoday2.PNG" alt="No Movie Today">
+        </span>
+        <span *ngIf="!todayBooleanMovie && !loading">
+          <a (click)="GoToMovie(this.todayMovie.key)">
+          <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"  [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+          <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
+            <span class="badge badge-primary">
+              Today Suggestion
+            </span>
+          </span>
+          </a>
+          <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
+            <h5>{{this.todayMovie.title}}</h5><br>          
+          </div>
+          <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
+            <span class="badge badge-primary">Today Suggestion</span>
+            <!-- <h6 class="text-muted text-centre" style="margin: 2%;font-size: small;align-items: center;">"{{this.todayMovie.description}}"</h6>          -->
+          </div>
+          
+          <div class="row" style="margin-left: 3%;margin-right: 3%;margin-top: 0;">
+            <div class="col-sm-6">
+              <p><b>Language : </b>{{this.todayMovieD.language | commapipe}}</p>
+              <p><b>Genre : </b>{{this.todayMovieD.genre | commapipe}}</p>
+            </div>
+            <div class="col-sm-6">
+              <p><b>Released Year : </b>{{this.todayMovieD.releaseYear}}</p>
+              <p><b>Quick view : </b><button type="button" class="btn btn-outline-primary btn-sm" (click)="startQuickView(this.todayMovieD.key)" data-toggle="modal" data-target="#quickviewmodal" >Watch here</button></p>
+            </div>
+          </div>
+        </span>
+      </div>
+  
+      
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    <!-- <hr *ngIf="!loading"> -->
+  </div>
+</div>
+
+<!--guide-->
+
+<!-- <div *ngIf="!loading" style="position: absolute;top:0;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
+background-color: rgba(0,0,0,0.8)">
+  <div style="position: relative;display: flex;justify-content: center">
+    <h5 style="color: white;margin: 60px;">Welcome to Suggesto, here is a small tour of our application.</h5>
+  </div>
+  <div style="position: relative;top: 10%;left: 20px;width: 87%;display: flex;justify-content: center">
+    <button type="button" class="btn btn-primary btn-sm" style="margin: 10px;">Next</button> 
+    <button type="button" class="btn btn-danger btn-sm"  style="margin: 10px;">End Tour</button>
+  </div>
+  <div style="color: white;position: absolute;top: 70%;left: 1%;">
+    <h4>Home : </h4><h6>daily suggestion, recently suggested movies and personalised content.</h6>
+  <h1><i class="bi bi-arrow-down-square-fill"></i></h1></div>
+</div> -->
+<!--guide ends here-->
+<div *ngIf="loggedIn" id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
+    <!--today movie-->
     <div class="carousel-item active">      
-      <!-- <span *ngIf="todayBooleanMovie && loading">
-        <img class="d-block w-100" src="../../../assets/movie.gif" alt="Loading" style="height:fit-content;width: auto;">
+      <!-- <span *ngIf="todayBooleanMovie && !loading">
+        <img class="d-block w-100" src="../../../assets/images/nomovietoday.PNG" alt="No Movie Today">
       </span> -->
       <span *ngIf="todayBooleanMovie && !loading">
-        <img class="d-block w-100" src="../../../assets/images/nomovietoday.PNG" alt="No Movie Today">
+        <a (click)="GoToMovie(this.todayMovie.key)">
+        <img class="d-block w-100" src="../../../assets/images/nomovietoday2.PNG" alt="No Movie Today"  [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+        </a>
+        <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
+          <h5>No Movie Today</h5><br>          
+        </div>
+        <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
+          <span class="badge badge-primary">Not a weekend day</span>
+          <!-- <h6 class="text-muted text-centre" style="margin: 2%;font-size: small;align-items: center;">"{{this.todayMovie.description}}"</h6>          -->
+        </div>
+        
+        <div class="row" style="margin-left: 3%;margin-right: 3%;margin-top: 0;">
+          <div class="col-sm-6">
+            <p><b>Language : </b>None</p>
+            <p><b>Genre : </b>None</p>
+          </div>
+          <div class="col-sm-6">
+            <p><b>Released Year : </b>None</p>
+            <p><b>Quick view : </b>None</p>
+          </div>
+        </div>
       </span>
       <span *ngIf="!todayBooleanMovie && !loading">
         <a (click)="GoToMovie(this.todayMovie.key)">
-        <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}" style="height: 200px;">
+        <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"  [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
         <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
           <span class="badge badge-primary">
             Today Suggestion
@@ -43,18 +127,16 @@ background-color: rgba(255,255,255,0.5)">
           </div>
           <div class="col-sm-6">
             <p><b>Released Year : </b>{{this.todayMovieD.releaseYear}}</p>
-            <p><b>Trailer : </b><button type="button" class="btn btn-outline-primary btn-sm" (click)="GoToMovie(this.todayMovieD.key)">Watch here</button></p>
+            <p><b>Quick view : </b><button type="button" class="btn btn-outline-primary btn-sm" (click)="startQuickView(this.todayMovieD.key)" data-toggle="modal" data-target="#quickviewmodal" >Watch here</button></p>
           </div>
         </div>
       </span>
     </div>
+    <!--wishlisted movie-->
     <div class="carousel-item" *ngIf="loggedIn && corouselWishlistedMovieBool">
-      <span *ngIf="todayBooleanMovie && !loading">
-        <img class="d-block w-100" src="../../../assets/images/nomovietoday.PNG" alt="No Movie Today">
-      </span>
-      <span *ngIf="!todayBooleanMovie && !loading">
+      <span *ngIf="!loading">
         <a (click)="GoToMovie(this.corouselWishlistedMovie.key)">
-          <img class="d-block w-100" src="{{this.corouselWishlistedMovie.imageUrl}}" alt="{{this.corouselWishlistedMovie.title}}" style="height: 200px;">
+          <img class="d-block w-100" src="{{this.corouselWishlistedMovie.imageUrl}}" alt="{{this.corouselWishlistedMovie.title}}" [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
           <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
             <span class="badge badge-primary">
               From Wishlist
@@ -71,23 +153,55 @@ background-color: rgba(255,255,255,0.5)">
         
         <div class="row" style="margin-left: 3%;margin-right: 3%;margin-top: 0;">
           <div class="col-sm-6">
-            <p><b>Language : </b>{{this.corouselWishlistedMovieD.language}}</p>
-            <p><b>Genre : </b>{{this.corouselWishlistedMovieD.genre}}</p>
+            <p><b>Language : </b>{{this.corouselWishlistedMovieD.language | commapipe}}</p>
+            <p><b>Genre : </b>{{this.corouselWishlistedMovieD.genre | commapipe}}</p>
           </div>
           <div class="col-sm-6">
             <p><b>Released Year : </b>{{this.corouselWishlistedMovieD.releaseYear}}</p>
-            <p><b>Trailer : </b><button type="button" class="btn btn-outline-primary btn-sm" (click)="GoToMovie(this.corouselWishlistedMovie.key)">Watch here</button></p>
+            <p><b>Quick view : </b><button type="button" class="btn btn-outline-primary btn-sm" (click)="startQuickView(this.corouselWishlistedMovie.key)" data-toggle="modal" data-target="#quickviewmodal" >Watch here</button></p>
           </div>
         </div>
       </span>      
     </div>
-    <div class="carousel-item" *ngIf="loggedIn && corouselPersonalisedMovieBool">
+    <!--today movie-->
+    <div class="carousel-item" *ngIf="!todayBooleanMovie">      
       <span *ngIf="todayBooleanMovie && !loading">
-        <img class="d-block w-100" src="../../../assets/images/nomovietoday.PNG" alt="No Movie Today">
+        <img class="d-block w-100" src="../../../assets/images/nomovietoday2.PNG" alt="No Movie Today">
       </span>
       <span *ngIf="!todayBooleanMovie && !loading">
+        <a (click)="GoToMovie(this.todayMovie.key)">
+        <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"  [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+        <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
+          <span class="badge badge-primary">
+            Today Suggestion
+          </span>
+        </span>
+        </a>
+        <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
+          <h5>{{this.todayMovie.title}}</h5><br>          
+        </div>
+        <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
+          <span class="badge badge-primary">Today Suggestion</span>
+          <!-- <h6 class="text-muted text-centre" style="margin: 2%;font-size: small;align-items: center;">"{{this.todayMovie.description}}"</h6>          -->
+        </div>
+        
+        <div class="row" style="margin-left: 3%;margin-right: 3%;margin-top: 0;">
+          <div class="col-sm-6">
+            <p><b>Language : </b>{{this.todayMovieD.language | commapipe}}</p>
+            <p><b>Genre : </b>{{this.todayMovieD.genre | commapipe}}</p>
+          </div>
+          <div class="col-sm-6">
+            <p><b>Released Year : </b>{{this.todayMovieD.releaseYear}}</p>
+            <p><b>Quick view : </b><button type="button" class="btn btn-outline-primary btn-sm" (click)="startQuickView(this.todayMovieD.key)" data-toggle="modal" data-target="#quickviewmodal" >Watch here</button></p>
+          </div>
+        </div>
+      </span>
+    </div>
+    <!--personalised movie-->
+    <div class="carousel-item" *ngIf="loggedIn && corouselPersonalisedMovieBool">
+      <span *ngIf="!loading">
         <a (click)="GoToMovie(this.corouselWishlistedMovie.key)">
-          <img class="d-block w-100" src="{{this.corouselPersonalisedMovieD.bigImageUrl}}" alt="{{this.corouselPersonalisedMovieD.title}}" style="height: 200px;">
+          <img class="d-block w-100" src="{{this.corouselPersonalisedMovieD.bigImageUrl}}" alt="{{this.corouselPersonalisedMovieD.title}}" [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
           <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
             <span class="badge badge-primary">
               From Personalised Movies
@@ -104,16 +218,18 @@ background-color: rgba(255,255,255,0.5)">
         
         <div class="row" style="margin-left: 3%;margin-right: 3%;margin-top: 0;">
           <div class="col-sm-6">
-            <p><b>Language : </b>{{this.corouselPersonalisedMovieD.language}}</p>
-            <p><b>Genre : </b>{{this.corouselPersonalisedMovieD.genre}}</p>
+            <p><b>Language : </b>{{this.corouselPersonalisedMovieD.language | commapipe}}</p>
+            <p><b>Genre : </b>{{this.corouselPersonalisedMovieD.genre | commapipe}}</p>
           </div>
           <div class="col-sm-6">
             <p><b>Released Year : </b>{{this.corouselPersonalisedMovieD.releaseYear}}</p>
-            <p><b>Trailer : </b><button type="button" class="btn btn-outline-primary btn-sm" (click)="GoToMovie(this.corouselPersonalisedMovieD.key)">Watch here</button></p>
+            <p><b>Quick view : </b><button type="button" class="btn btn-outline-primary btn-sm" (click)="startQuickView(this.corouselPersonalisedMovieD.key)" data-toggle="modal" data-target="#quickviewmodal" >Watch here</button></p>
           </div>
         </div>
       </span>      
     </div>
+
+    
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
@@ -123,10 +239,34 @@ background-color: rgba(255,255,255,0.5)">
       <span class="sr-only">Next</span>
     </a>
   </div>
-  <hr *ngIf="!loading">
+  <!-- <hr *ngIf="!loading"> -->
 </div>
+<hr *ngIf="!loading">
 
 <!-- MODAL STARTS HERE --> 
+
+
+<!--notification modal-->
+<div class="modal fade" id="exampleModalCenterNotify" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Notification</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        We notify you of our new movie suggestion on friday, Saturday and Sunday. We don't spam you with other notifications. Please allow notifications..
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="pushSubscription()" data-toggle="modal" data-target="#exampleModalCenterNotify">Allow</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--notification modal ends here-->
 
 <!--modal for ratinge-->
 
@@ -145,7 +285,10 @@ background-color: rgba(255,255,255,0.5)">
         </div> -->
         <div class="rating" style="margin: 5%;">
           <div class="form-group">            
-            <img src="{{MovieToBeRated.imageUrl}}" style="max-width: 100%;max-height: 100%;display: block;">
+            <!-- <img src="{{MovieToBeRated.imageUrl}}" style="max-width: 100%;max-height: 100%;display: block;"> -->
+            <div id="trailer-mobile" class="embed-responsive embed-responsive-16by9" style="border-radius: 10px;">
+              <iframe class="embed-responsive-item" [src]="safeSrc" allowfullscreen></iframe>
+            </div>
             <label for="exampleInputPassword2">Already saw this movie, please give us your rating to this movie</label>     
             <small id="emailHelp" class="form-text text-muted">It will help us to suggest better movies based on the rating you give. You can only rate one time per movie. (editing rating for movies will be supported in next version) </small> <br>
             <div style="display: flex;">
@@ -166,59 +309,309 @@ background-color: rgba(255,255,255,0.5)">
 </div>
 <!-- MODAL ENDS HERE -->
 
+<!-- <div style="display: flex;justify-content: center;margin: 4%;" *ngIf="!notificationEnabled && loggedIn && !loading">
+  <button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#exampleModalCenterNotify">
+    Get Notification for new Movie Suggestions
+  </button>
+</div> -->
+
+<!--quick view modal-->
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+<div class="modal fade" id="quickviewmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">{{quickViewMovie.title}} ({{quickViewMovie.releaseYear}})</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeQuickView()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="trailer-mobile" class="embed-responsive embed-responsive-16by9" style="border-radius: 10px;">
+          <iframe class="embed-responsive-item" [src]="quickViewSafeSrc" allowfullscreen></iframe>
+        </div>
+        <br>
+        <span *ngIf="quickViewMovie.runTime">
+          <p class="text-center">Run Time : {{quickViewMovie.runTime}} minutes</p>
+        </span>
+        <p class="text-center">{{quickViewMovie.title}} Available In : </p>
+        <!-- <h6 class="mb-3"><label class="top-label">Available In : </label></h6> -->
+        <div style="display: flex;justify-content: center;flex-wrap: wrap;">
+          <a (click)="GoToMovieExternalSiteQuickView()">
+          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Netflix" src="../../../assets/ott-icons/netflix.jpg" width="50" height="50">
+          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Prime_Video" src="../../../assets/ott-icons/prime.png" width="50" height="50">
+          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" width="50" height="50">
+          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Aha" src="../../../assets/ott-icons/aha.jpeg" width="50" height="50">
+          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" width="50" height="50">
+          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.JioCinema" src="../../../assets/ott-icons/jiocinema.png" width="50" height="50">
+          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" width="50" height="50">
+          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Zee5" src="../../../assets/ott-icons/zee5.png" width="50" height="50">
+          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Youtube" src="../../../assets/ott-icons/youtube.jpg" width="50" height="50"></a>
+        </div><br>
+        <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieExternalSiteQuickView()"> Watch Movie <i class="fa fa-play-circle-o"></i></a>
+        <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieHref(quickViewMovie.key)"> Detail view about Movie <i class="fa fa-info-circle"></i></a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeQuickView()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--quick view modal ends-->
+
 <!--check for loading-->
-<div *ngIf="!loading" style="margin-bottom: 45px ;">
+<div *ngIf="!loading"  style="margin-bottom: 50px ;">
 <!--very important for responsiveness between mobile and laptop-->
+<!--------------------------------------------------------MOBILE BELOW -------------------------------------------------------------->
 <span *ngIf="isMobile">
-      <!--testing-->
+    <!--recently-->
     <div>
       <h5 class="text-center display-8">Recently Suggested Movies From Us</h5>
       <div class="scrolling-wrapper2">
         <span *ngFor="let movie of sortedArray">
-          <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
+          <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
           <!-- <div class="item" *ngIf=(!loggedIn) style="height: 250px;"> -->
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
             <h6 style="text-align: center;">{{movie.title}}</h6> 
-            <div style="display: flex;" *ngIf="loggedIn">
-              <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
-                <span *ngIf="!wishlistedMovies.includes(movie.key)">
-                  <a (click)="addMovieToWishlist(movie.key)">
+            <div style="display: flex;justify-content: center;">
+             <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
+             <span style="margin: 2%">
+              <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
+                <a (click)="GoToMovieExternalSite(movie.key)">
+                  <img *ngIf="movie.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.Prime_Video" src="../../../assets/ott-icons/prime.png" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.Aha" src="../../../assets/ott-icons/aha.jpeg" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.JioCinema" src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 5px;height: 32px;">
+                </a>
+             </span>
+            </div>
+
+            <div style="display: flex;justify-content: center;">
+              <span *ngIf="!wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
                     <i class="bi bi-heart" style="color: black;"></i>
-                  </a>
-                </span>
-                <span *ngIf="wishlistedMovies.includes(movie.key)">
+                </button>
+              </span>
+              <span *ngIf="wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
                   <i class="bi bi-heart-fill" style="color: red;"></i>
-                </span>
-              </button>
-              <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Rating">
-                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
-                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+                </button>
+              </span>
+              <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
+                <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
                     <i class="bi bi-star" style="color: black;"></i>
-                  </a>
-                </span>
-                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
-                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                  </svg> -->
+                </button>
+              </span>
+              <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button type="button" class="btn btn-sm btn-block btn-outline-dark">
                   <i class="bi bi-star-fill" style="color: gold;"></i>
-                </span>
-              </button>
-              <button type="button" class="btn btn-sm btn-block btn-outline-light" style="margin: 2%;" data-toggle="tooltip" title="Watched Movie">
-                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
-                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
-                    <i class="bi bi-tv" style="color: black;"></i>
-                  </a>
-                </span>
-                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
-                  <i class="bi bi-tv-fill" style="color: black;"></i>
-                </span>
-              </button>
+                </button>
+              </span>
+
+              <span *ngIf="!watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                  <span style="font-size: xx-small;"> Watched?</span>
+                </button>
+              </span>
+              <span *ngIf="watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                  <i class="bi bi-check-circle-fill" style="color: black;"></i>
+                </button>
+              </span>
+
             </div> 
           </div>     
         </span>    
       </div>
     </div>
-    <!--testing end here-->
+    <!--recently end here-->
+
+
+    <!--recomended movies based on watched movie-->
+    <div *ngIf="recommendationsBool" class="d-flex" style="margin-left: 5%;margin-right: 5%;">
+      <div class="p-2"><h5 class="display-8">Because You have watched <b>{{spotLightMovie.title | titlecase}}</b></h5>
+        <small id="emailHelp" class="form-text text-muted" *ngIf="recommendedMovieTitles.length === 0">No Recommendation for {{spotLightMovie.title | titlecase}}. Please mark more movies as watched to see recommendations.</small>
+      </div>
+      <div class="ml-auto p-2">
+        <div class="float-right" style="margin-right:3% ;">
+          <span class="badge badge-light">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="recommendationsBool" class="scrolling-wrapper-reco">      
+      <span *ngFor="let movie of recommendedMovieTitles">
+        <div class="item-reco" style="margin: 2%;margin-right: 0;">
+            <button (click)="goToRecommendedMovieImdb(movie.id,movie.title)" class="btn btn-outline-primary btn-block" style="margin: 2%;width: 96%;">{{movie.title}}</button>
+        </div>     
+      </span>    
+    </div>
+            
+        
+            <!--recomended movies based on watched movie end here-->
+
+    <!--not watched-->
+    <div>
+      <div class="d-flex" style="margin-left: 5%;margin-right: 5%;" *ngIf="loggedIn">
+        <div class="p-2"><h5 class="display-8">Movie You Haven't Watched Yet</h5>
+          <small id="emailHelp" class="form-text text-muted">These Movies are top rated movies from our DB, you haven't watched yet. Click 'Watched?' below movie to mark that movie as watched movie.</small>
+        </div>
+        <div class="ml-auto p-2">
+          <div class="float-right" style="margin-right:3% ;">
+            <span class="badge badge-light">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="scrolling-wrapper2">
+        <span *ngFor="let movie of moviesNotYetWatchedDisplay">
+          <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
+          <!-- <div class="item" *ngIf=(!loggedIn) style="height: 250px;"> -->
+            <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
+            <h6 style="text-align: center;">{{movie.title}}</h6> 
+             <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
+             <div style="display: flex;justify-content: center;">
+              <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
+              <span style="margin: 2%">
+               <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
+                 <a (click)="GoToMovieExternalSite(movie.key)">
+                   <img *ngIf="movie.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Prime_Video" src="../../../assets/ott-icons/prime.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Aha" src="../../../assets/ott-icons/aha.jpeg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.JioCinema" src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 5px;height: 32px;">
+                 </a>
+              </span>
+             </div>
+            <div style="display: flex;justify-content: center;">
+              <span *ngIf="!wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
+                    <i class="bi bi-heart" style="color: black;"></i>
+                </button>
+              </span>
+              <span *ngIf="wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
+                  <i class="bi bi-heart-fill" style="color: red;"></i>
+                </button>
+              </span>
+              <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
+                <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                    <i class="bi bi-star" style="color: black;"></i>
+                </button>
+              </span>
+              <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
+                <button type="button" class="btn btn-sm btn-block btn-outline-dark">
+                  <i class="bi bi-star-fill" style="color: gold;"></i>
+                </button>
+              </span>
+              <span *ngIf="!watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                  <span style="font-size: xx-small;"> Watched?</span>
+                </button>
+              </span>
+              <span *ngIf="watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                  <i class="bi bi-check-circle-fill" style="color: black;"></i>
+                </button>
+              </span>
+
+            </div> 
+          </div>     
+        </span>    
+      </div>
+    </div>
+
+    <!--not watched end here-->
+
+
+
+    <!--personalised movies-->
+    <div class="d-flex" style="margin-left: 5%;margin-right: 5%;" *ngIf="loggedIn">
+      <div class="p-2"><h5 class="display-8">Personalised Movies <span class="badge badge-light"> beta</span></h5>
+        <small id="emailHelp" *ngIf="!personalisedMoviesDisplay.length === 0" class="form-text text-muted">These Movies are personalised based on your preferences, to edit preferences click <a routerLink="/personalisation" style="color: blue;">here</a></small>
+        <small id="emailHelp" *ngIf="personalisedMoviesDisplay.length === 0" class="form-text text-muted">You haven't saved your preferences, to add your preferences click <a routerLink="/personalisation" style="color: blue;">here</a></small>
+      </div>
+      <div class="ml-auto p-2">
+        <div class="float-right" style="margin-right:3% ;">
+          <span class="badge badge-light">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="loggedIn" class="scrolling-wrapper3">
+      <div class="scrolling-wrapper2">
+        <span *ngFor="let movie of personalisedMoviesDisplay">
+          <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
+            <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
+            <h6 style="text-align: center;">{{movie.title}}</h6>
+             <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
+             <div style="display: flex;justify-content: center;">
+              <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
+              <span style="margin: 2%">
+               <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
+                 <a (click)="GoToMovieExternalSite(movie.key)">
+                   <img *ngIf="movie.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Prime_Video" src="../../../assets/ott-icons/prime.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Aha" src="../../../assets/ott-icons/aha.jpeg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.JioCinema" src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 5px;height: 32px;">
+                 </a>
+              </span>
+             </div>
+            <div style="display: flex;" *ngIf="loggedIn">
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
+                <span *ngIf="!wishlistedMovies.includes(movie.key)">
+                  <a (click)="addMovieToWishlist(movie.key)">
+                    Wishlist
+                  </a>
+                </span>
+                <span *ngIf="wishlistedMovies.includes(movie.key)">
+                  <a (click)="removeFromWishlist(movie.key)">
+                    <i class="bi bi-heart-fill" style="color: red;"></i>
+                  </a>
+                </span>
+              </button>
+              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
+                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
+                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
+                    Rate
+                  </a>
+                </span>
+                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>     
+        </span>    
+      </div>
+    </div>
+
+    <!--personalised movies ends here-->
 
     <!--find now-->
     <div  style="margin-top: 3%;margin-bottom: 3%;">
@@ -245,71 +638,6 @@ background-color: rgba(255,255,255,0.5)">
     </div>
     <!--find now end here-->
 
-    <!--personalised movies-->
-    <div class="d-flex" style="margin-left: 5%;margin-right: 5%;" *ngIf="loggedIn">
-      <div class="p-2"><h5 class="display-8">Personalised Movies <span class="badge badge-light"> beta</span></h5>
-        <small id="emailHelp" class="form-text text-muted">These Movies are personalised based on your preferences, to edit preferences click <a routerLink="/personalisation">here</a></small>
-      </div>
-      <div class="ml-auto p-2">
-        <div class="float-right" style="margin-right:3% ;">
-          <span class="badge badge-light">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-            </svg>
-          </span>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="loggedIn" class="scrolling-wrapper3">
-      <div class="scrolling-wrapper2">
-        <span *ngFor="let movie of personalisedMoviesDisplay">
-          <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
-            <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
-            <h6 style="text-align: center;">{{movie.title}}</h6>
-            <div style="display: flex;" *ngIf="loggedIn">
-              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
-                <span *ngIf="!wishlistedMovies.includes(movie.key)">
-                  <a (click)="addMovieToWishlist(movie.key)">
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                    <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                    </svg> -->
-                    Wishlist
-                  </a>
-                </span>
-                <span *ngIf="wishlistedMovies.includes(movie.key)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                  </svg>
-                </span>
-              </button>
-              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
-                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
-                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
-                    Rate
-                  </a>
-                </span>
-                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                  </svg>
-                </span>
-              </button>
-            </div>
-            <!-- <span *ngIf="!wishlistedMovies.includes(movie.key)">
-            <a (click)="addMovieToWishlist(movie.key)">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-              <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-            </svg></a></span>
-            <span *ngIf="wishlistedMovies.includes(movie.key)">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-            </svg></span> -->
-          </div>     
-        </span>    
-      </div>
-    </div>
-
-    <!--personalised movies ends here-->
 
     <!--location based lists-->
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
@@ -332,36 +660,62 @@ background-color: rgba(255,255,255,0.5)">
     <div *ngIf="locationAccess" class="scrolling-wrapper3">
       <div class="scrolling-wrapper2">
         <span *ngFor="let movie of locationBasedMovies">
-          <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
+          <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
             <h6 style="text-align: center;">{{movie.title}}</h6> 
+             <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
+             <div style="display: flex;justify-content: center;">
+              <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
+              <span style="margin: 2%">
+               <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
+                 <a (click)="GoToMovieExternalSite(movie.key)">
+                   <img *ngIf="movie.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Prime_Video" src="../../../assets/ott-icons/prime.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Aha" src="../../../assets/ott-icons/aha.jpeg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.JioCinema" src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 5px;height: 32px;">
+                   <img *ngIf="movie.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 5px;height: 32px;">
+                 </a>
+              </span>
+             </div>
+            <div style="display: flex;justify-content: center;">
+              <span *ngIf="!wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
+                    <i class="bi bi-heart" style="color: black;"></i>
+                </button>
+              </span>
+              <span *ngIf="wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
+                  <i class="bi bi-heart-fill" style="color: red;"></i>
+                </button>
+              </span>
+              <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
+                <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                    <i class="bi bi-star" style="color: black;"></i>
+                </button>
+              </span>
+              <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
+                <button type="button" class="btn btn-sm btn-block btn-outline-dark">
+                  <i class="bi bi-star-fill" style="color: gold;"></i>
+                </button>
+              </span>
+              <span *ngIf="!watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                  <span style="font-size: xx-small;"> Watched?</span>
+                </button>
+              </span>
+              <span *ngIf="watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                  <i class="bi bi-check-circle-fill" style="color: black;"></i>
+                </button>
+              </span>
+
+            </div> 
+            
             <!-- <div style="display: flex;" *ngIf="loggedIn">
-              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
-                <span *ngIf="!wishlistedMovies.includes(movie.key)">
-                  <a (click)="addMovieToWishlist(movie.key)">
-                    Wishlist
-                  </a>
-                </span>
-                <span *ngIf="wishlistedMovies.includes(movie.key)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                  </svg>
-                </span>
-              </button>
-              <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
-                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
-                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
-                    Rate
-                  </a>
-                </span>
-                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                  </svg>
-                </span>
-              </button>
-            </div>  -->
-            <div style="display: flex;" *ngIf="loggedIn">
               <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
                 <span *ngIf="!wishlistedMovies.includes(movie.key)">
                   <a (click)="addMovieToWishlist(movie.key)">
@@ -369,7 +723,9 @@ background-color: rgba(255,255,255,0.5)">
                   </a>
                 </span>
                 <span *ngIf="wishlistedMovies.includes(movie.key)">
-                  <i class="bi bi-heart-fill" style="color: red;"></i>
+                  <a (click)="removeFromWishlist(movie.key)">
+                    <i class="bi bi-heart-fill" style="color: red;"></i>
+                  </a>
                 </span>
               </button>
               <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Rating">
@@ -379,23 +735,22 @@ background-color: rgba(255,255,255,0.5)">
                   </a>
                 </span>
                 <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
-                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                  </svg> -->
                   <i class="bi bi-star-fill" style="color: gold;"></i>
                 </span>
               </button>
               <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Watched Movie">
-                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
-                  <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
-                    <i class="bi bi-tv" style="color: black;"></i>
+                <span *ngIf="!watchedMovies.includes(movie.key)">
+                  <a  (click)="addToWatchedMovies(movie.key)">
+                    <span style="font-size: xx-small;"> Watched?</span>
                   </a>
                 </span>
-                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
-                  <i class="bi bi-tv-fill" style="color: black;"></i>
+                <span *ngIf="watchedMovies.includes(movie.key)">
+                  <a (click)="removeFromWatched(movie.key)">
+                    <i class="bi bi-check-circle-fill" style="color: black;"></i>
+                  </a>
                 </span>
               </button>
-            </div>
+            </div> -->
           </div>     
         </span>    
       </div>
@@ -421,38 +776,96 @@ background-color: rgba(255,255,255,0.5)">
       </div>
       <div class="scrolling-wrapper2">
           <span *ngFor="let movie of list.moviesInList">
-            <div class="item" [ngStyle]="{'height': (loggedIn) ? '280px' : '240px'}">
+            <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
               <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
-              <h6 style="text-align: center;">{{movie.title}}</h6>  
-              <div style="display: flex;" *ngIf="loggedIn">
-                <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
+              <h6 style="text-align: center;">{{movie.title}}</h6> 
+               <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
+               <div style="display: flex;justify-content: center;">
+                <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
+                <span style="margin: 2%">
+                 <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
+                   <a (click)="GoToMovieExternalSite(movie.key)">
+                     <img *ngIf="movie.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 5px;height: 32px;">
+                     <img *ngIf="movie.ott.Prime_Video" src="../../../assets/ott-icons/prime.png" style="border-radius: 5px;height: 32px;">
+                     <img *ngIf="movie.ott.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" style="border-radius: 5px;height: 32px;">
+                     <img *ngIf="movie.ott.Aha" src="../../../assets/ott-icons/aha.jpeg" style="border-radius: 5px;height: 32px;">
+                     <img *ngIf="movie.ott.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" style="border-radius: 5px;height: 32px;">
+                     <img *ngIf="movie.ott.JioCinema" src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 5px;height: 32px;">
+                     <img *ngIf="movie.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 5px;height: 32px;">
+                     <img *ngIf="movie.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 5px;height: 32px;">
+                     <img *ngIf="movie.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 5px;height: 32px;">
+                   </a>
+                </span>
+               </div>
+              <div style="display: flex;justify-content: center;">
+                <span *ngIf="!wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                  <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
+                      <i class="bi bi-heart" style="color: black;"></i>
+                  </button>
+                </span>
+                <span *ngIf="wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                  <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
+                    <i class="bi bi-heart-fill" style="color: red;"></i>
+                  </button>
+                </span>
+                <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
+                  <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                      <i class="bi bi-star" style="color: black;"></i>
+                  </button>
+                </span>
+                <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
+                  <button type="button" class="btn btn-sm btn-block btn-outline-dark">
+                    <i class="bi bi-star-fill" style="color: gold;"></i>
+                  </button>
+                </span>
+                <span *ngIf="!watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                  <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                    <span style="font-size: xx-small;"> Watched?</span>
+                  </button>
+                </span>
+                <span *ngIf="watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
+                  <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                    <i class="bi bi-check-circle-fill" style="color: black;"></i>
+                  </button>
+                </span>
+  
+              </div> 
+              <!-- <div style="display: flex;" *ngIf="loggedIn">
+                <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Wishlist">
                   <span *ngIf="!wishlistedMovies.includes(movie.key)">
                     <a (click)="addMovieToWishlist(movie.key)">
-                      <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                      <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                      </svg> -->
-                      Wishlist
+                      <i class="bi bi-heart" style="color: black;"></i>
                     </a>
                   </span>
                   <span *ngIf="wishlistedMovies.includes(movie.key)">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                    </svg>
+                    <a (click)="removeFromWishlist(movie.key)">
+                      <i class="bi bi-heart-fill" style="color: red;"></i>
+                    </a>
                   </span>
                 </button>
-                <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;">
+                <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Rating">
                   <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key)">
                     <a data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)">
-                      Rate
+                      <i class="bi bi-star" style="color: black;"></i>
                     </a>
                   </span>
                   <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                      <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                    </svg>
+                    <i class="bi bi-star-fill" style="color: gold;"></i>
                   </span>
                 </button>
-              </div>
+                <button type="button" class="btn btn-sm btn-block btn-outline-dark" style="margin: 2%;" data-toggle="tooltip" title="Watched Movie">
+                  <span *ngIf="!watchedMovies.includes(movie.key)">
+                    <a  (click)="addToWatchedMovies(movie.key)">
+                      <span style="font-size: xx-small;"> Watched?</span>
+                    </a>
+                  </span>
+                  <span *ngIf="watchedMovies.includes(movie.key)">
+                    <a (click)="removeFromWatched(movie.key)">
+                      <i class="bi bi-check-circle-fill" style="color: black;"></i>
+                    </a>
+                  </span>
+                </button>
+              </div>  -->
             </div>     
           </span> 
  
@@ -461,6 +874,8 @@ background-color: rgba(255,255,255,0.5)">
 
 
 </span>
+<!--------------------------------------------------------MOBILE END HERE-------------------------------------------------------------->
+
 
 <!--------------------------------------------------------LAPTOP BELOW -------------------------------------------------------------->
 <span *ngIf="!isMobile">
@@ -724,3 +1139,62 @@ background-color: rgba(255,255,255,0.5)">
 </span>
 
 </div>
+<div class="backdrop" [ngStyle]="{'display':display}"></div>
+<div style="height: 100vh;display: flex;justify-content: center;align-items: center;flex-wrap: wrap;position: absolute;top: 0;" [ngStyle]="{'display':display}">
+  <div class="modal-content" style="margin: 2%;top: 10%;width: 95%;">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLongTitle">Suggesto</h5>
+      <button type="button" class="close" (click)="onCloseHandled()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" *ngIf="oldCustomer">
+      <h6>Have you been logged out, please log In again to see your wishlists, ratings, personalised movies, news feed, leader board and lot lot more</h6>
+      <hr>
+      <h6>Please log in with any of your social media accounts</h6>
+      <p style="font-size: small;">we don't send you spam emails, random notification, 
+        we don't store your personal data all we store is name,email,photo url that too provided by your social media login service.
+      </p>
+    </div>
+    <div class="modal-body" *ngIf="newCustomer">
+      <h6>You are missing out these amazing features</h6>
+      <ul class="list-group list-group-flush" style="font-size: small;">
+        <li class="list-group-item">Personalised movies just for you</li>
+        <li class="list-group-item">News -feed</li>
+        <li class="list-group-item">Wishlisting movies</li>
+        <li class="list-group-item">Creating custom lists</li>
+        <li class="list-group-item">sharing wishlist to other friends(can turn off any time)</li>
+        <li class="list-group-item">Our handpicked suggestion based on your preferences</li>
+      </ul>
+      <h6>Please log in with any of your social media accounts</h6>
+      <p style="font-size: small;">we don't send you spam emails, random notification, 
+        we don't store your personal data all we store is name,email,photo url that too provided by your social media login service.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <a role="button" class="btn btn-success" href="/login" style="color: white;">Log In</a>
+      <button type="button" class="btn btn-secondary" (click)="onCloseHandled()">Close</button>
+    </div>
+  </div>
+</div>
+<div id="testmurari" [ngStyle]="{'display':display}">
+  <h1>here</h1>
+</div>
+<!-- <div class="modal fade" [ngStyle]="{'display':display}" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h1>ikkada modal lopala</h1>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCloseHandled()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>  -->

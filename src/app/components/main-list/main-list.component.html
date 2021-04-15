@@ -1,10 +1,20 @@
-<div class="container">
+<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
+background-color: rgba(255,255,255,0.5)">
+  <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
+  <img src="../../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
+</div>
+
+<div class="container" *ngIf="!loading">
 <div style="margin-left: 20px;">
     <i class="bi bi-arrow-left-square" style="font-size: x-large;" (click)="goBack()"></i>
 </div>
 
 <h5 class="text-center" style="margin: 2%;">{{ListForDisplay.listName | titlecase}}</h5>
 <p class="text-center" *ngIf="customList">Created By {{customerName | titlecase}}</p>
+<p class="text-center" *ngIf="eligibleForRating">
+    <button type="button" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#ratingModalList">
+        Rate this List <i class="bi bi-star"></i>
+    </button></p>
 <div class="profile-content" style="margin-bottom: 60px;">
     <div class="row">
         <div class="col-xl-12">
@@ -33,3 +43,39 @@
     </div> 
 </div>
 </div>
+
+<!--rating modal for list-->
+<div class="modal fade" id="ratingModalList" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Rate {{ListForDisplay.listName | titlecase}} List</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="rating" style="margin: 5%;">
+                <div class="form-group">            
+                  <label for="exampleInputPassword2">Please give us your rating to this List</label>     
+                  <small id="emailHelp" class="form-text text-muted">It will help us to suggest better Movie List based on the rating you give. You can only rate one time per movie. (editing rating for movies will be supported in next version) </small> <br>
+                  <p>Movie in this List : {{ListForDisplay.moviesInList.length}}</p>
+                  <div style="display: flex;">
+                  <select class="form-select browser-default custom-select" id="ratingdropdown" aria-label="Default select example" name="rtingd" [(ngModel)]="rating">
+                    <option [value]=0>Rate {{ListForDisplay.listName | titlecase}} Movie list</option>
+                    <option [value]="1">Below Average</option>
+                    <option [value]="2">Average</option>
+                    <option [value]="3">Good</option>
+                    <option [value]="4">Extra-ordinary</option>
+                    <option [value]="5">Mind blowing</option>
+                  </select>   
+                  <button type="button" style="margin-left: 1%;width: 100px;" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#ratingModalList" (click)=rateList(ListForDisplay.key)>Submit</button>   </div>
+                </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -12,4 +12,9 @@ export class AboutUsComponent implements OnInit {
   ngOnInit() {
   }
 
+  features()
+  {
+    document.getElementById("here").scrollIntoView({ behavior: "smooth"})
+  }
+
 }

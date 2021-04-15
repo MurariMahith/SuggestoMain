@@ -32,6 +32,7 @@ export class FeedComponent implements OnInit {
   allMoviesD : Array<DisplayMovie> = [];
   allMovieLists : Array<MovieList> = [];
   editorsChoice : DisplayMovieList[] = [];
+  topRatedCustomList : DisplayMovieList[] = [];
 
   todayMovie : FMovie;
   topRatedMovieD : DisplayMovie;
@@ -40,9 +41,11 @@ export class FeedComponent implements OnInit {
 
   corouselWishlistedMovie : FMovie;
   corouselWishlistedMovieD : DisplayMovie;
+  corouselWishlistedMovieBool : Boolean = false;
 
   corouselPersonalisedMovie : FMovie;
   corouselPersonalisedMovieD : DisplayMovie;
+  corouselPersonalisedMovieBool : Boolean = false;
 
   todayMovieD : DisplayMovie;
   //todayBooleanMovie is used to check whether tody we have suggested movie or not
@@ -72,6 +75,7 @@ export class FeedComponent implements OnInit {
   currentCustomer : Customer;
 
   wishlistedMovies : string[] = [];
+  watchedMovies : string[] = [];
   ratedMoviesForThisCustomer : string[] = [];
 
   personalisedMoviesDisplay : DisplayMovie[] = [];
@@ -114,6 +118,10 @@ export class FeedComponent implements OnInit {
               if(this.currentCustomer.wishlistedMovies)
               {
                 this.wishlistedMovies = this.currentCustomer.wishlistedMovies;
+              }
+              if(this.currentCustomer.watchedMovies)
+              {
+                this.watchedMovies = this.currentCustomer.watchedMovies;
               }
               if(this.currentCustomer.ratedMovies)
               {
@@ -169,6 +177,10 @@ export class FeedComponent implements OnInit {
         if(fakearr2[0])
         {
           this.corouselWishlistedMovieD = this.movieDisplayService.prepareDisplayMovieList(fakearr2)[0]; 
+          if(this.corouselPersonalisedMovieD)
+          {
+            this.corouselWishlistedMovieBool = true;
+          }
         }
         // console.log(shuffledwishlistedMoviesOfCustomer);
         // console.log(this.corouselPersonalisedMovie)
@@ -193,7 +205,7 @@ export class FeedComponent implements OnInit {
           this.todayMovieD = this.movieDisplayService.prepareDisplayMovieList(arr)[0]      
         }
         
-        //this.getMovieListsFromDb();
+        this.getMovieListsFromDb();
       })
       this.homelistsservice.getAll().snapshotChanges().pipe(
         map(changes =>
@@ -289,6 +301,10 @@ export class FeedComponent implements OnInit {
       var shuffledpersonalisedmovies = [];
       shuffledpersonalisedmovies = this.shuffleArr(this.personalisedMoviesDisplay)
       this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[0];
+      if(this.corouselPersonalisedMovieD)
+      {
+        this.corouselPersonalisedMovieBool = true;
+      }
   
       // var uniqueArray2 :DisplayMovie[] = this.personalisedMoviesDisplay.filter(function(item, pos) {
       //   return this.personalisedMoviesDisplay.indexOf(item) == pos;
@@ -427,13 +443,32 @@ export class FeedComponent implements OnInit {
         )
       ).subscribe(o => {
         this.allMovieLists = o;
-        this.buildeditorChoiceMovieListForDisplay()
+        this.buildTopRatedCustomeMovieListsForDisplay();
+        //this.buildeditorChoiceMovieListForDisplay()
       })
+    }
+
+    buildTopRatedCustomeMovieListsForDisplay()
+    {
+      //console.log("here")
+      console.log(this.personalisedMoviesDisplay);
+      var fake = this.allMovieLists.filter(x => {
+        if(x.createdBy && x.createdBy !== 'ADMIN')
+        {
+          return true;
+        }
+      })
+      this.topRatedCustomList = this.listDisplayService.BuildMovieListForDisplay(fake,this.allMovies);
+      this.topRatedCustomList.sort((a, b) => {
+        return b.rating - a.rating;
+      });
+      //console.log(fake);
     }
   
     buildeditorChoiceMovieListForDisplay()
     {
       this.editorsChoice = this.listDisplayService.BuildMovieListForDisplay(this.homePageList.listsToIncludeInHomePage,this.allMovies);
+      //console.log(this.editorsChoice[0])
     }
   
     GoToGenre(str:string)
@@ -450,54 +485,153 @@ export class FeedComponent implements OnInit {
     {
       //document.querySelector(".exampleModalCenter").on()
     }
-  
+
     addMovieToWishlist(key)
+  {
+    console.log(key)
+    var wishlisted = []
+    this.wishlistedMovies.push(key)
+    wishlisted.push(key)
+    if(!this.currentCustomer.wishlistedMovies)
     {
-      console.log(key)
-      var wishlisted = []
-      this.wishlistedMovies.push(key)
-      wishlisted.push(key)
-      if(!this.currentCustomer.wishlistedMovies)
-      {
-        console.log("new");
-        this.currentCustomer.wishlistedMovies = wishlisted;
-      }
-      else
-      {
-        this.currentCustomer.wishlistedMovies.push(key);
-      }
-      //console.log(this.currentCustomer)
-      this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+      console.log("new");
+      this.currentCustomer.wishlistedMovies = wishlisted;
     }
+    else
+    {
+      this.currentCustomer.wishlistedMovies.push(key);
+    }
+    //console.log(this.currentCustomer)
+    this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+  }
+
+  removeFromWishlist(key)
+  {
+    console.log(this.currentCustomer.wishlistedMovies)
+    if(this.currentCustomer.wishlistedMovies.includes(key))
+    {
+      for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
+      {     
+        if (this.currentCustomer.wishlistedMovies[i] == key) 
+        {   
+          this.currentCustomer.wishlistedMovies.splice(i, 1); 
+        }
+      }
+      console.log(this.currentCustomer.wishlistedMovies)
+      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
+    }
+  }
+
+  addToWatchedMovies(key)
+  {
+    this.watchedMovies.push(key)
+    if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.length >1)
+    {
+      this.currentCustomer.watchedMovies.push(key);
+
+    }
+    else
+    {
+      var arr :string[] = [];
+      arr.push(key);
+      this.currentCustomer.watchedMovies = arr;
+    }
+
+    this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+  }
+
+  removeFromWatched(key)
+  {
+    if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(key))
+    {
+      for( var i = 0; i < this.currentCustomer.watchedMovies.length; i++)
+      {     
+        if (this.currentCustomer.watchedMovies[i] == key) 
+        {   
+          this.currentCustomer.watchedMovies.splice(i, 1); 
+        }
+      }
+      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    }
+
+  }
+
+  startRateMovie(key)
+  {
+    this.MovieToBeRated = this.allMovies.find(o => o.key ===key)
+    //console.log(this.MovieToBeRated);
+  }
+
+  rateMovie(key)
+  {
+    this.MovieToBeRated.rating = Number(this.MovieToBeRated.rating) + Number(this.rating);
+    var movieKey = this.MovieToBeRated.key
+    delete this.MovieToBeRated.key
+    this.movieService.updateMovie(movieKey,this.MovieToBeRated)
+    var ratedMovieLocal : RatedMovies = new RatedMovies();
+    var arr = [];
+    ratedMovieLocal.movieId = key;
+    ratedMovieLocal.rating = Number(this.rating)
+    if(!this.currentCustomer.ratedMovies)
+    {
+      arr.push(ratedMovieLocal)
+      this.currentCustomer.ratedMovies = arr
+    }
+    else
+    {
+      this.currentCustomer.ratedMovies.push(ratedMovieLocal)
+    }
+    //console.log(this.currentCustomer)
+    this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+  }
   
-    startRateMovie(key)
-    {
-      this.MovieToBeRated = this.allMovies.find(o => o.key ===key)
-      //console.log(this.MovieToBeRated);
-    }
+    // addMovieToWishlist(key)
+    // {
+    //   console.log(key)
+    //   var wishlisted = []
+    //   this.wishlistedMovies.push(key)
+    //   wishlisted.push(key)
+    //   if(!this.currentCustomer.wishlistedMovies)
+    //   {
+    //     console.log("new");
+    //     this.currentCustomer.wishlistedMovies = wishlisted;
+    //   }
+    //   else
+    //   {
+    //     this.currentCustomer.wishlistedMovies.push(key);
+    //   }
+    //   //console.log(this.currentCustomer)
+    //   this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+    // }
   
-    rateMovie(key)
-    {
-      this.MovieToBeRated.rating = Number(this.MovieToBeRated.rating) + Number(this.rating);
-      var movieKey = this.MovieToBeRated.key
-      delete this.MovieToBeRated.key
-      this.movieService.updateMovie(movieKey,this.MovieToBeRated)
-      var ratedMovieLocal : RatedMovies = new RatedMovies();
-      var arr = [];
-      ratedMovieLocal.movieId = key;
-      ratedMovieLocal.rating = Number(this.rating)
-      if(!this.currentCustomer.ratedMovies)
-      {
-        arr.push(ratedMovieLocal)
-        this.currentCustomer.ratedMovies = arr
-      }
-      else
-      {
-        this.currentCustomer.ratedMovies.push(ratedMovieLocal)
-      }
-      //console.log(this.currentCustomer)
-      this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
-    }
+    // startRateMovie(key)
+    // {
+    //   this.MovieToBeRated = this.allMovies.find(o => o.key ===key)
+    //   //console.log(this.MovieToBeRated);
+    // }
+  
+    // rateMovie(key)
+    // {
+    //   this.MovieToBeRated.rating = Number(this.MovieToBeRated.rating) + Number(this.rating);
+    //   var movieKey = this.MovieToBeRated.key
+    //   delete this.MovieToBeRated.key
+    //   this.movieService.updateMovie(movieKey,this.MovieToBeRated)
+    //   var ratedMovieLocal : RatedMovies = new RatedMovies();
+    //   var arr = [];
+    //   ratedMovieLocal.movieId = key;
+    //   ratedMovieLocal.rating = Number(this.rating)
+    //   if(!this.currentCustomer.ratedMovies)
+    //   {
+    //     arr.push(ratedMovieLocal)
+    //     this.currentCustomer.ratedMovies = arr
+    //   }
+    //   else
+    //   {
+    //     this.currentCustomer.ratedMovies.push(ratedMovieLocal)
+    //   }
+    //   //console.log(this.currentCustomer)
+    //   this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+    // }
   
     gotolist(key)
     {

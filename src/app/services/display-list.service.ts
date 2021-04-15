@@ -29,12 +29,38 @@ export class DisplayListService {
             var movieListForDisplay : FMovie[] = []
             obj.listName = o.listName;
             obj.key = o["key"]
+            if(o.isThisSeries)
+            {
+                obj.isThisSeries = o.isThisSeries;
+            }
+            else{obj.isThisSeries = false}
+            
+            if(o.rating)
+            {
+                obj.rating = o.rating;
+            }
+            else{obj.rating = 0}
+            if(o.createdBy)
+            {
+                obj.createdBy = o.createdBy;
+            }
+            else{obj.createdBy = 'ADMIN'}
+            
+            
             o.moviesInThisList.forEach(element => {
                 //console.log(allMoviesFromDb.find(a => a.key===element))        
                 movieListForDisplay.push(allMoviesFromDb.find(a => a.key===element));
             });
             //console.log(movieListForDisplay);
-            obj.moviesInList = this.displaymovieservice.prepareDisplayMovieList(movieListForDisplay); 
+            if(obj.isThisSeries)
+            {
+                obj.moviesInList = this.displaymovieservice.prepareDisplayMovieList(movieListForDisplay,false,false,false,true); 
+            }
+            else
+            {
+                obj.moviesInList = this.displaymovieservice.prepareDisplayMovieList(movieListForDisplay); 
+            }
+            
             MovieListsForView.push(obj);            
         });
         return MovieListsForView;

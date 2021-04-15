@@ -9,10 +9,20 @@ import { AuthService } from 'src/app/services/authService';
 export class HeaderComponent implements OnInit {
 
   loggedIn : boolean = false;
+  isMobile : boolean = false;
 
   constructor(private authService : AuthService) { }
 
   ngOnInit() {
+
+    if( screen.width <= 480 ) {     
+      this.isMobile = true;
+      //this.pushSubscription()
+      //console.log("mobile");
+    }
+    else{
+      //console.log("laptop")
+    }
 
     if(!(localStorage.getItem("loggedIn") === null))
     {

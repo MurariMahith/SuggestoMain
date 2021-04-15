@@ -15,7 +15,7 @@
                 We don't take data from IMDB or other services so movie rating is purely based on rating given by users just like you.
             </p>
 		    <p>Please go through all the features offere by us below for better use of 'Suggesto'</p>
-		    <button type="button" class="btn btn-success">Let's Know More</button>
+		    <button type="button" class="btn btn-success" (click)="features()">Let's Know More</button>
 
 		</div>
 		<div class="col-md-6">
@@ -37,30 +37,30 @@
 <!-- Services section -->
 	<section id="what-we-do">
 		<div class="container-fluid">
-			<h2 class="section-title mb-2 h1">Features of Suggesto</h2>
-			<p class="text-center text-muted h5">This is a gist of what we offer in our application, you can read more about each feature in detail when u click 'Know more';</p>
+			<h2 class="section-title mb-2 h1" id="here">Features of Suggesto</h2>
+			<p class="text-center text-muted h5">This is a gist of what we offer in our application, you can read more about each feature in detail by clicking on them.</p>
 			<div class="row mt-5">
 				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-1">
+						<div class="card-block block-1" data-toggle="modal" data-target="#exampleModalLong1w3m">
 							<h3 class="card-title">One Weekend - Three Movies </h3>
 							<p class="card-text">We suggest one hand picked movie each on friday, saturday and sunday.</p>
 							<a data-toggle="modal" data-target="#exampleModalLong1w3m" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-2">
-							<h3 class="card-title">Recently Suggested Movies</h3>
-							<p class="card-text">If you don't like the suggested movie or already seen it, we got you covered, we also show all recently suggested movies in descending order.</p>
-							<a data-toggle="modal" data-target="#exampleModalLongsuggested" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
+						<div class="card-block block-2" data-toggle="modal" data-target="#exampleModalLonglogin">
+							<h3 class="card-title">Feed</h3>
+							<p class="card-text">For better security and ease for users, you can log in to Suggesto using your google, facebook, github and twitter. So you need not to go through sign up reset password etc.,. We take only your name email address and photo provided by sign in providers.</p>
+							<a data-toggle="modal" data-target="#exampleModalLonglogin" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
 						</div>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-3">
+						<div class="card-block block-3" data-toggle="modal" data-target="#exampleModalLongpersonalised">
 							<h3 class="card-title">Personalised Movies</h3>
 							<p class="card-text">We have an algorithm to find personalised movies unique for you based on your preferred genres and languages you submitted when you first logged In.</p>
 							<a data-toggle="modal" data-target="#exampleModalLongpersonalised" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
@@ -71,7 +71,7 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-4">
+						<div class="card-block block-4" data-toggle="modal" data-target="#exampleModalLongwish">
 							<h3 class="card-title">Wish List and Ratings</h3>
 							<p class="card-text">You can wishlist the movies just by tapping wishlist button below the movie and give rating for the movies you love right away on that page, it will really help us to suggest better personalised movies to you and others. You can See all the wishlisted movies and Rated movies by you in Profile section.</p>
 							<a data-toggle="modal" data-target="#exampleModalLongwish" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
@@ -80,7 +80,7 @@
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-5">
+						<div class="card-block block-5" data-toggle="modal" data-target="#exampleModalLongpeople">
 							<h3 class="card-title">People</h3>
 							<p class="card-text">Here you can find all the people who shared their wishlist, you can view their wishlist and add those to your wishlist if you like. We don't share wishlists of users who don't enable 'Share wishlist' toggle in their profile.</p>
 							<a data-toggle="modal" data-target="#exampleModalLongpeople" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
@@ -89,7 +89,7 @@
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-6">
+						<div class="card-block block-6" data-toggle="modal" data-target="#exampleModalLongall">
 							<h3 class="card-title">All Movies</h3>
 							<p class="card-text">Here you find all movies and you can also search movies and filter movies based on our various genres,languages etc.,. Read more you find lot in this section</p>
 							<a data-toggle="modal" data-target="#exampleModalLongall" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
@@ -98,7 +98,7 @@
 				</div>
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-3">
+						<div class="card-block block-3" data-toggle="modal" data-target="#exampleModalLongcustom">
 							<h3 class="card-title">Custom Movie Lists</h3>
 							<p class="card-text">Here you can create a custom movie list you want and you can also share that list to your friends. We also use these custom lists for feed and users can give rating for these lists.</p>
 							<a data-toggle="modal" data-target="#exampleModalLongcustom" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
@@ -107,7 +107,7 @@
 				</div>
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-6">
+						<div class="card-block block-6" data-toggle="modal" data-target="#exampleModalLonglist">
 							<h3 class="card-title">Movie Lists</h3>
 							<p class="card-text">These are admin created hand picked movie series same as custome movie lists but created by admin.</p>
 							<a data-toggle="modal" data-target="#exampleModalLonglist" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
@@ -116,7 +116,7 @@
 				</div>
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-1">
+						<div class="card-block block-1" data-toggle="modal" data-target="#exampleModalLongusersuggest">
 							<h3 class="card-title">Suggest a Movie</h3>
 							<p class="card-text">We really repect all the love you have given us and please if you have a movie in your mind thats not on our database, please suggest the movie name in 'Suggest a Movie' sectiom, we will add it to our database.</p>
 							<a data-toggle="modal" data-target="#exampleModalLongusersuggest" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
@@ -125,28 +125,28 @@
 				</div>
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-5">
+						<div class="card-block block-5" data-toggle="modal" data-target="#exampleModalLongusersocial">
 							<h3 class="card-title">Log In with Social Media accounts</h3>
 							<p class="card-text">For better security and ease for users, you can log in to Suggesto using your google, facebook, github and twitter. So you need not to go through sign up reset password etc.,. We take only your name email address and photo provided by sign in providers.</p>
-							<a data-toggle="modal" data-target="#exampleModalLongsocial" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
+							<a data-toggle="modal" data-target="#exampleModalLongusersocial" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
 						</div>
 					</div>
 				</div>
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-2">
+						<div class="card-block block-2" data-toggle="modal" data-target="#exampleModalLonguseropen">
 							<h3 class="card-title">Open Source</h3>
 							<p class="card-text">This is an open source project developed using Angular and Firebase for database, Storage and Authentication, so we don't be spamming you with mails ,notifications and we application is completely free.</p>
-							<a data-toggle="modal" data-target="#exampleModalLongopen" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
+							<a data-toggle="modal" data-target="#exampleModalLonguseropen" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
 						</div>
 					</div>
 				</div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
 					<div class="card">
-						<div class="card-block block-1">
-							<h3 class="card-title">Log In with Social Media accounts</h3>
-							<p class="card-text">For better security and ease for users, you can log in to Suggesto using your google, facebook, github and twitter. So you need not to go through sign up reset password etc.,. We take only your name email address and photo provided by sign in providers.</p>
-							<a href="https://www.fiverr.com/share/qb8D02" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
+						<div class="card-block block-2" data-toggle="modal" data-target="#exampleModalLongsuggested">
+							<h3 class="card-title">Recently Suggested Movies</h3>
+							<p class="card-text">If you don't like the suggested movie or already seen it, we got you covered, we also show all recently suggested movies in descending order.</p>
+							<a data-toggle="modal" data-target="#exampleModalLongsuggested" title="Read more" class="read-more" >Read more<i class="fa fa-angle-double-right ml-2"></i></a>
 						</div>
 					</div>
 				</div>
@@ -335,105 +335,12 @@
                     </div>
                 </div>
             </div>
-            <!-- ./Team member -->
-            <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="./../../../assets/images/lodda.jpeg" alt="card image"></p>
-                                    <h4 class="card-title">Aravind Reddy</h4>
-                                    <p class="card-text">M.Tech Integrated, VIT University, <br>Intern at SysCloud</p>
-                                    <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Aravind Reddy</h4>
-                                    <p class="card-text">I worked on various technologies such as python-django and also I have a good amount of knowledge in cloud technologies and React took.</p>
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.instagram.com/aravind___reddy____/">
-                                                <i class="fa fa-instagram"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="https://github.com/malluriaravind">
-                                                <i class="fa fa-github"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="mailto:malluriaravindreddy@gmail.com">
-                                                <i class="fa fa-google"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ./Team member -->
-            <!-- Team member -->
-            <!-- <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="https://sunlimetech.com/portfolio/boot4menu/assets/imgs/team/img_06.jpg" alt="card image"></p>
-                                    <h4 class="card-title">Pavan </h4>
-                                    <p class="card-text">This is basic card with image on top, title, description and button.</p>
-                                    <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="backside">
-                            <div class="card">
-                                <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">Sunlimetech</h4>
-                                    <p class="card-text">This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.</p>
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                <i class="fa fa-facebook"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                <i class="fa fa-twitter"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                <i class="fa fa-skype"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                <i class="fa fa-google"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- ./Team member -->
-
         </div>
     </div>
 </section>
 <!-- Team -->
 
-<div style="width:100%;">
+<!-- <div style="width:100%;">
     <div class="card text-center">
         <div class="card-header">
           <h5>About this Web Application</h5>
@@ -451,7 +358,7 @@
            <small>last updated : </small>31th December 2020
         </div>
     </div>
-    </div>
+</div> -->
 
 
 
@@ -461,13 +368,18 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Three Movies - One Weekend</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">One Weekend - Three Movies</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">We suggest one hand picked movie on every weekend day.</li>
+            <li class="list-group-item">If you have already seen it or not interested with our suggestion, below there is a list of all the recently suggested movies based on date in descending order.</li>
+            <li class="list-group-item">You can choose from these hand picked list of movies.</li>
+            <li class="list-group-item">We also show one movie from your wishlist and one suggested movie unique for you based on your liking you have entered while logging in.</li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -486,7 +398,12 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">We suggest one hand picked movie on every weekend day.</li>
+            <li class="list-group-item">If you have already seen it or not interested with our suggestion, below there is a list of all the recently suggested movies based on date in descending order.</li>
+            <li class="list-group-item">You can choose from these hand picked list of movies.</li>
+            <li class="list-group-item">We also show one movie from your wishlist and one suggested movie unique for you based on your liking you have entered while logging in.</li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -505,7 +422,13 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">These personalised movies are just for you and unique for you based on your interests in Genre and Language you have given us while logging in for the first time in 'Suggesto'.</li>
+            <li class="list-group-item">You can always edit your personalisation from the link given in the help text below 'Personalised Movies'  title in home page or feed page.</li>
+            <li class="list-group-item">These personalised movies are top rated movies that satisfies your Genre selection and language selection.</li>
+            <li class="list-group-item">These movies differ from person to person just as google feed differ from person to person.</li>
+            <li class="list-group-item"><a href="/personalisation">click here</a> to add/edit favourite genres and preferred languages.</li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -524,7 +447,12 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">You can add any movie to your wishlist and remove those movies from your wishlist any time.</li>
+            <li class="list-group-item">You can rate any movie from 1- 5 , this rating help us suggest better movies for users like you.</li>
+            <li class="list-group-item">You can always check your wishlisted movies and rated movies in profile section.</li>
+            <li class="list-group-item">But you need to log in to use this feature, <a href="/login">click here to login</a>.</li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -543,7 +471,12 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">This is by far the best feature we offer to connect with your friends and family, who are movieBuffs just like us.</li>
+            <li class="list-group-item">You can see the wishlisted movies of  users "WHO ONLY SHARE THEIR WISHLIST TO PUBLIC" and .</li>
+            <li class="list-group-item">You can share or stop sharing your wishlist to other users in personalisation page.</li>
+            <li class="list-group-item"><a href="/personalisation">click here</a> to see and edit this feature.</li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -562,7 +495,22 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Here you can search for your movie based on many search criteria we offer as mentioned below .</li>
+            <li class="list-group-item">You can search with
+              <ul class="list-group">
+                <li class="list-group-item">Movie title</li>
+                <li class="list-group-item list-group-item-primary">Released Year</li>
+                <li class="list-group-item list-group-item-secondary">Cast</li>
+                <li class="list-group-item list-group-item-success">tags such as 'smash' for hulk,avengers etc.,.</li>
+                <li class="list-group-item list-group-item-danger">Genre</li>
+                <li class="list-group-item list-group-item-warning">Available OTT platform ex: prime,netflix</li>
+                <li class="list-group-item list-group-item-info">small description or characters in the movie</li>
+              </ul>
+            </li>
+            <li class="list-group-item">You can also see movie based on filters on "Years", "Genre", "Language".</li>
+            <li class="list-group-item">To use all these filters toggle the button on right side of search bar in 'Search page'.</li>            
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -581,7 +529,13 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">You can also create a custom list of movies and these movie lists can be viewed in movie lists section based on rating.</li>
+            <li class="list-group-item">You can delete these lists, you and other users can also rate these list of movies so we will show your list on top if it has good rating.</li>
+            <li class="list-group-item">You can see lists created by in profile section.</li>
+            <li class="list-group-item">You can select a list to show as series so that we will show them in a serial manner in ascending order based on release year. Ex: joh wick series, Mission impossible series.</li>
+            <li class="list-group-item">But you need to log in to use this feature, <a href="/login">click here to login</a>.</li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -600,7 +554,11 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Same as custom lists we also have some admin lists which are created by admin and these movie lists can be viewed in movie lists section based on rating.</li>
+            <li class="list-group-item">You can also rate these list of movies so we will show this list on top if it has good rating.</li>
+            <li class="list-group-item">But you need not to be logged in to use this feature.</li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -619,7 +577,11 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">If you don't find a movie in our db and you like that movie much, you can suggest a movie so that we will see those suggestions and add that movie to our db.</li>
+            <li class="list-group-item">In our next version, We will inform you when we add your suggestion or if the suggestion is duplicated.</li>
+            <li class="list-group-item">But you need to log in to use this feature, <a href="/login">click here to login</a>.</li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -638,7 +600,12 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">For better security we use authentication provided by "Google", "facebook" and "github". Twitter coming soon.</li>
+            <li class="list-group-item">So we don't save or share or sell any data about you, we take your name email and photo url provided by above mentioned companies.</li>
+            <li class="list-group-item">We don't show your email address in our application, we just use it for uniquely identifying you.</li>
+            <li class="list-group-item"><a href="/login">click here to login</a>.</li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -657,11 +624,41 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">This application is a natively PWA packed in to apk file.</li>
+            <li class="list-group-item">This is developed in Angular and used Firebase for "Hosting", "Database" and "Authentication". We used Bootstrap for styling and responsiveness between big and small screens.</li>
+            <li class="list-group-item">This is originally hosted on <a href="https://weekendmoviesuggestion.web.app/">https://weekendmoviesuggestion.web.app/</a></li>
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
+</div>
+
+<div class="modal fade" id="exampleModalLonglogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">News Feed</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">This section is something that you can do some interesting things.</li>
+          <li class="list-group-item">Firstly we show top rated movie and today suggested movie and the we show custom lists created by users like you based on rating.</li>
+          <li class="list-group-item">Then we show a movie each from personalised movies just for you and a movie from your wishlist.</li>
+          <li class="list-group-item">If you are really confused to select a movie to watch you can use our "Random Movie Generator", it will show you some random movie from our database each time you click generate button.</li>
+          <li class="list-group-item">Then we have editor choice lists and all personalised movies and location based movies all in one place .</li>
+          <li class="list-group-item"><a href="/news-feed">click here</a> to go to News-Feed section</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>

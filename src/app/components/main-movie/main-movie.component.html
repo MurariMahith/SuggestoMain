@@ -1,66 +1,132 @@
-<div class="container">
-<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
-<span *ngIf="loading">
-  <img width="100%" src="../../../assets/movie.gif" style="height:fit-content;;">
+<!--better improvements-->
+
+<!-- <img src="{{actualMovie.smallImageUrl}}" width="100%"> -->
+<p id="scrollhere" style="display: none;"></p>
+<!--end here-->
+<span *ngIf="!isMobile" style="width: 100%;">
+  <div class="row" *ngIf="!isMobile">
+    <div class="col-sm-8" id="yt-trailermm">    
+      <div class="embed-responsive embed-responsive-16by9" style="margin: 20px;border-radius: 10px;">
+        <iframe class="embed-responsive-item" [src]="safeSrc" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="movie-card">
+        <!-- <div class="movie-header manOfSteel" style="background-image: url(movie.smallImageUrl);"> -->
+        <div class="movie-header manOfSteel" [ngStyle]="{'background-image': 'url(' + actualMovie.smallImageUrl + ')'}">
+          <div class="header-icon-container">          
+          </div>
+        </div><!--movie-header-->
+        <div class="movie-content">
+          <div class="movie-content-header">
+            <a>
+              <p class="movie-title">{{actualMovie.title}}</p>
+            </a>
+            
+            <!-- <div class="imax-logo">Watch Trailer</div> ORIGINAL BEFORE MODAL, PASTE THIS LINE IF WE REMOVE BOOTSTRAP MODAL AND REMOVE ABOVE LINE -->
+          </div>
+          <div class="movie-info" style="font-size:small;">
+            <div>
+              <label>Language : </label>
+              <span><b> {{actualMovie.language}}</b></span>
+            </div>
+            <div>
+              <label>Genre : </label>
+              <span><b> {{actualMovie.genre}}</b></span>
+            </div>
+            <div>
+              <label>Year of Release : </label>
+              <span><b> {{actualMovie.releaseYear}}</b></span>
+            </div>
+          </div>
+            <div>
+              <div class="imax-logo" data-toggle="modal" data-target="#exampleModalCenter"><a (click)='trailer()'>Watch Trailer</a></div>
+            </div>
+          
+        </div>
+      </div> 
+
+    </div>
+  </div>
 </span>
+
+
+<!--mobile below-->
+
+<div class="container" *ngIf="isMobile" style="margin-bottom: 50px;">
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;
+background-color: #fff;
+background-color: rgba(255,255,255,0.5)">
+  <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
+  <img src="../../../../assets/loading animation/Search.gif" style="opacity: 1;"></div>
+</div>
 
 <span *ngIf="!loading">
 
   <div class="top">
-    <header>
-      <!-- Navbar -->
-      <!-- <nav class="navbar navbar-expand-lg navbar-light bg-white">
-        <div class="container-fluid">
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-mdb-toggle="collapse"
-            data-mdb-target="#navbarExample01"
-            aria-controls="navbarExample01"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i class="fas fa-bars"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarExample01">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item active">
-                <a class="nav-link" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav> -->
-      <!-- Navbar -->
-    
+    <header>   
       <!-- Background image -->
       <div
         class="p-5 text-center bg-image"
-        style="background-repeat: no-repeat;background-attachment: fixed;background-position: center;"
+        style="
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size:cover;"
         [ngStyle]="{'background-image': 'url(' + actualMovie.smallImageUrl + ')'}"
       >
-        <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);padding: 2%;word-wrap: break-word;white-space: initial;">
+        <div class="mask" style="background-color: rgba(0, 0, 0, 0.8);padding: 2%;word-wrap: break-word;white-space: initial;width: 100%;">
           <div class="d-flex justify-content-center align-items-center h-100">
             <div class="text-white">
-              <h1 class="mb-3">{{actualMovie.title}}</h1>
-              <h6 class="mb-3"><label class="top-label">Language : </label> {{actualMovie.language}}</h6>
-              <h6 class="mb-3"><label class="top-label">Available In : </label> {{actualMovie.availableIn}}</h6>
-              <h6 class="mb-3"><label class="top-label">Genre : </label> {{actualMovie.genre}}</h6>
-              <h6 class="mb-3"><label class="top-label">Released In : </label> {{actualMovie.releaseYear}}</h6>
-              <h6 class="mb-3"><label class="top-label">Cast : </label> {{actualMovie.cast}}</h6>
-              <a class="btn btn-outline-light btn-lg buttons-top" role="button" (click)="MoreAboutMovie()">More About Movie <i class="fa fa-info-circle" aria-hidden="true"></i></a>
-              <a class="btn btn-outline-light btn-lg buttons-top" role="button" (click)="GoToMovieExternalSite()">Watch Movie <i class="fa fa-play-circle-o"></i></a>
-              <a class="btn btn-outline-light btn-lg buttons-top" role="button" (click)='trailer()'>Watch Trailer <i class="fa fa-play-circle-o"></i></a>
-              <a class="btn btn-outline-light btn-lg buttons-top" role="button" (click)='wishlist()'>Wishlist <i class="fa fa-heart" aria-hidden="true"></i></a>
+              <!-- <img src="{{actualMovie.bigImageUrl}}" width="100%"> -->
+              <h3 class="mb-3" id="title-scroll">{{actualMovie.title | titlecase}}</h3>
+              <div id="trailer-mobile" class="embed-responsive embed-responsive-16by9" style="border-radius: 10px;">
+                <iframe class="embed-responsive-item" [src]="safeSrc" allowfullscreen></iframe>
+              </div>
+              <br>
+              <span style="overflow-wrap: break-word;-ms-word-break: break-all;word-wrap: break-word;word-break: break-all;">
+                <h6 class="mb-3"><label class="top-label">Language : </label> {{actualMovie.language | commapipe}}</h6>
+                <h6 class="mb-3"><label class="top-label">Released In : </label> {{actualMovie.releaseYear}}</h6>
+                <h6 class="mb-3"><label class="top-label">Runtime : </label> {{actualMovie.runTime}} Minutes</h6>
+                <h6 class="mb-3"><label class="top-label">Available In : </label></h6>
+                <div class="icons">
+                  <a (click)="GoToMovieExternalSite()">
+                  <img *ngIf="movieHere.availableIn.Netflix" src="../../../assets/ott-icons/netflix.jpg" width="50" height="50">
+                  <img *ngIf="movieHere.availableIn.Prime_Video" src="../../../assets/ott-icons/prime.png" width="50" height="50">
+                  <img *ngIf="movieHere.availableIn.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" width="50" height="50">
+                  <img *ngIf="movieHere.availableIn.Aha" src="../../../assets/ott-icons/aha.jpeg" width="50" height="50">
+                  <img *ngIf="movieHere.availableIn.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" width="50" height="50">
+                  <img *ngIf="movieHere.availableIn.JioCinema" src="../../../assets/ott-icons/jiocinema.png" width="50" height="50">
+                  <img *ngIf="movieHere.availableIn.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" width="50" height="50">
+                  <img *ngIf="movieHere.availableIn.Zee5" src="../../../assets/ott-icons/zee5.png" width="50" height="50">
+                  <img *ngIf="movieHere.availableIn.Youtube" src="../../../assets/ott-icons/youtube.jpg" width="50" height="50"></a>
+                </div><br>
+                <a class="btn btn-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieExternalSite()">Watch Movie <i class="fa fa-play-circle-o"></i></a>
+                <a class="btn btn-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)='trailer()'>Watch Trailer <i class="fa fa-play-circle-o"></i></a>
+                <br>
+                <h6 class="mb-3"><label class="top-label">Genre : </label> {{actualMovie.genre | commapipe}}</h6>
+                <h6 class="mb-3"><label class="top-label">Cast : </label> {{actualMovie.cast | titlecase}}</h6>
+              </span>
+
+              <a class="btn btn-info  buttons-top btn-block" style="width: 95%;" role="button" (click)="MoreAboutMovie()">More About Movie <i class="fa fa-info-circle" aria-hidden="true"></i></a>
+              <span *ngIf="eligibleForWishList && loggedIn ">
+                <a class="btn btn-success  buttons-top btn-block" style="width: 95%;" role="button" (click)='wishListMovie(actualMovie.key)'>Add to Wishlist <i class="fa fa-heart" aria-hidden="true"></i></a>
+              </span >
+              <span *ngIf="!eligibleForWishList && loggedIn">
+                <a class="btn btn-success buttons-top btn-block" style="width: 95%;" role="button" (click)='removeFromWishlist(actualMovie.key)'>Wishlisted <i class="bi bi-heart-fill" style="color: red;" aria-hidden="true"></i> Remove?</a>
+              </span> 
+
+              <span *ngIf="eligibleForWatched && loggedIn">
+                <a class="btn btn-success buttons-top btn-block" style="width: 95%;" role="button" (click)="addToWatchedMovies(actualMovie.key)">Add to Watched Movies <i class="bi bi-tv"></i></a>
+              </span >
+              <span *ngIf="!eligibleForWatched && loggedIn">
+                <a class="btn btn-success  buttons-top btn-block" style="width: 95%;" role="button" (click)='removeFromWatched(actualMovie.key)'>Added to watched <i class="bi bi-tv-fill" aria-hidden="true"></i> Remove?</a>
+              </span> 
+
+              <a class="btn btn-success  buttons-top btn-block" style="width: 95%;" role="button" *ngIf="!loggedIn" (click)='router.navigateByUrl("/login")'>Login to wishlist and Watched Movies <i class="fa fa-heart" aria-hidden="true"></i></a>
+
+              <small  id="emailHelp" class="form-text "><h6>Description about Movie : <br></h6>{{actualMovie.description}}</small>
               <div class="rating" style="margin: 5%;">
                 <div class="form-group" *ngIf="eligibleForRating">
                   <h5 class="mb-3"><label class="top-label">Rate {{actualMovie.title}}</label></h5> 
@@ -68,11 +134,11 @@
                   <div style="display: flex;">
                   <select class="form-select browser-default custom-select" id="ratingdropdown" aria-label="Default select example" name="rtingd" [(ngModel)]="rating">
                     <option [value]=0>Rate {{actualMovie.title}} movie here</option>
-                    <option [value]="1">Below Average</option>
-                    <option [value]="2">Average</option>
-                    <option [value]="3">Good</option>
-                    <option [value]="4">Extrordinary</option>
-                    <option [value]="5">Mind blowing</option>
+                    <option [value]="1">Below Average : 1/5</option>
+                    <option [value]="2">Average : 2/5</option>
+                    <option [value]="3">Good : 3/5</option>
+                    <option [value]="4">Extrordinary : 4/5</option>
+                    <option [value]="5">Mind blowing : 5/5</option>
                   </select>   
                   <button type="button" style="margin-left: 1%;width: 100px;" class="btn btn-outline-light btn-sm" (click)="rateMovie(actualMovie.key)">Submit</button>   </div>
                 </div>
@@ -80,6 +146,14 @@
                   <h6> You already rated <b>{{rating}}</b> for <b>{{actualMovie.title}}</b>. Thank you !</h6>
                   <small *ngIf="loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (Editing rating for movies will be supported in next version)</small>
                   <small *ngIf="!loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (you need to log in to edit rating, click <a routerLink="/login">here to log in</a>)</small>
+                </div><br>
+                <h6 *ngIf="recommendedMovieTitles.length !== 0">Similar Movies</h6>
+                <div class="recommendedMovieTitles" >                  
+                  <span *ngFor="let movie of recommendedMovieTitles">
+                    <div class="item-reco" style="margin: 2%;margin-right: 0;">
+                        <button (click)="goToRecommendedMovieImdb(movie.id,movie.title)" class="btn btn-sm btn-primary btn-block" style="margin: 2%;">{{movie.title}}</button>
+                    </div>
+                  </span>
                 </div>
               </div>
             </div>
@@ -89,54 +163,9 @@
       <!-- Background image -->
     </header>
   </div>
-  
-  
-    <div class="row">
-      <div class="col-sm-8" id="yt-trailermm">    
-        <div class="embed-responsive embed-responsive-16by9" style="margin: 20px;border-radius: 10px;">
-          <iframe class="embed-responsive-item" [src]="safeSrc" allowfullscreen></iframe>
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="movie-card">
-          <!-- <div class="movie-header manOfSteel" style="background-image: url(movie.smallImageUrl);"> -->
-          <div class="movie-header manOfSteel" [ngStyle]="{'background-image': 'url(' + actualMovie.smallImageUrl + ')'}">
-            <div class="header-icon-container">          
-            </div>
-          </div><!--movie-header-->
-          <div class="movie-content">
-            <div class="movie-content-header">
-              <a>
-                <p class="movie-title">{{actualMovie.title}}</p>
-              </a>
-              
-              <!-- <div class="imax-logo">Watch Trailer</div> ORIGINAL BEFORE MODAL, PASTE THIS LINE IF WE REMOVE BOOTSTRAP MODAL AND REMOVE ABOVE LINE -->
-            </div>
-            <div class="movie-info" style="font-size:small;">
-              <div>
-                <label>Language : </label>
-                <span><b> {{actualMovie.language}}</b></span>
-              </div>
-              <div>
-                <label>Genre : </label>
-                <span><b> {{actualMovie.genre}}</b></span>
-              </div>
-              <div>
-                <label>Year of Release : </label>
-                <span><b> {{actualMovie.releaseYear}}</b></span>
-              </div>
-            </div>
-              <div>
-                <div class="imax-logo" data-toggle="modal" data-target="#exampleModalCenter"><a (click)='trailer()'>Watch Trailer</a></div>
-              </div>
-            
-          </div>
-        </div> 
 
-      </div>
-    </div>
 
-    <div class="rating" style="margin: 5%;">
+    <!-- <div class="rating" style="margin: 5%;">
       <div class="form-group" *ngIf="eligibleForRating">
         <label for="exampleInputPassword2">Already saw this movie, please give us your rating to this movie</label>     
         <small id="emailHelp" class="form-text text-muted">It will help us to suggest better movies. You can only rate one time per movie. (editing rating for movies will be supported in next version) </small> <br>
@@ -156,17 +185,14 @@
         <small *ngIf="loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (Editing rating for movies will be supported in next version)</small>
         <small *ngIf="!loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (you need to log in to edit rating, click <a routerLink="/login">here to log in</a>)</small>
       </div>
-    </div>
+    </div> -->
 
-    <div class="movie-links" style="display: flex;justify-content: center">
-      <!-- <h3>description goes here</h3> -->
+    <!-- <div class="movie-links" style="display: flex;justify-content: center">
       <button type="button" style="margin: 1%;" class="btn btn-outline-primary btn-lg btn-block" (click)="GoToMovieExternalSite()">Watch Movie <i class="fa fa-play-circle-o"></i></button>      
       <button type="button" style="margin: 1%;" class="btn btn-outline-primary btn-lg btn-block" (click)="MoreAboutMovie()">More About Movie <i class="fa fa-info-circle" aria-hidden="true"></i></button>      
       <button type="button" style="margin: 1%;" class="btn btn-outline-primary btn-lg btn-block" (click)="trailer()">Watch Trailer <i class="fa fa-play-circle-o"></i></button>      
       <button type="button" style="margin: 1%;" class="btn btn-outline-primary btn-lg btn-block" (click)="wishlist()">Wishlist <i class="fa fa-heart" aria-hidden="true"></i></button>      
-      <!--this below line implementation is hidden until our app gets good response-->
-      <!-- <button type="button" style="margin: 1%;" class="btn btn-outline-primary btn-lg btn-block">Download Movie From Torrent <i class="fa fa-play-circle-o"></i></button>       -->
-    </div>
+    </div> -->
 
 </span>
 </div>

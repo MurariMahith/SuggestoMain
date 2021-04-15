@@ -30,6 +30,8 @@ import { PersonalComponent } from './components/personal/personal.component';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
 // import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+
+import { AngularFireMessagingModule } from 'angularfire2/messaging';
 import { PersonalisationComponent } from './components/personalisation/personalisation.component';
 
 import { AuthGuardService } from './services/authGuardService';
@@ -42,6 +44,10 @@ import { AllSuggestedMoviesComponent } from './components/all-suggested-movies/a
 import { CreateCustomListComponent } from './components/create-custom-list/create-custom-list.component';
 import { FeedComponent } from './components/feed/feed.component'
 import { AppUpdateService } from './services/app-update.service';
+import { DownloadOurAppComponent } from './components/download-our-app/download-our-app.component';
+import { ComplaintComponent } from './components/complaint/complaint.component';
+
+import { CommaPipe } from './services/CommaPipe'
 
 @NgModule({
   declarations: [
@@ -70,7 +76,10 @@ import { AppUpdateService } from './services/app-update.service';
     SuggestMovieComponent,
     AllSuggestedMoviesComponent,
     CreateCustomListComponent,
-    FeedComponent
+    FeedComponent,
+    DownloadOurAppComponent,
+    ComplaintComponent,
+    CommaPipe
   ],
   imports: [
     BrowserModule,
@@ -80,9 +89,8 @@ import { AppUpdateService } from './services/app-update.service';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    // AngularFirestoreModule,
     AngularFireAuthModule,
-    // AngularFireStorageModule
+    AngularFireMessagingModule
   ],
   providers: [
     AuthGuardService,

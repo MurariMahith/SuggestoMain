@@ -1,3 +1,5 @@
+import { MoviePlatForm } from "./MoviePlatform";
+
 export class DisplayMovie
 {
     title : string = '';
@@ -5,6 +7,7 @@ export class DisplayMovie
     //movieLink : string = 'https://www.primevideo.com/detail/0RZFTNZ3FJJB8TD0JNI63TJ7AA/ref=atv_hm_hom_c_8pZiqd_2_1';
     language : string = '';
     availableIn : string = '';
+    ott : MoviePlatForm = new MoviePlatForm();
     genre : string = '';
     releaseYear : string = '';
     bigImageUrl : string = '';
@@ -19,4 +22,6 @@ export class DisplayMovie
     ottLink : string = 'https://www.primevideo.com/detail/0RZFTNZ3FJJB8TD0JNI63TJ7AA/ref=atv_hm_hom_c_8pZiqd_2_1';
     torrentDownloadLink : string = '';
     torrentOnlineLink : string = '';
+    runTime : string = '';
+    visitedCount : number = 0;
 }

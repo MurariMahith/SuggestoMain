@@ -9,6 +9,27 @@ body {
   color: #010b26;
 }
 
+
+//styles for ott icons
+.icons
+{
+  display: flex;
+  justify-content: center;
+  flex-wrap:wrap;
+}
+
+a >img
+{
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.blink
+{
+  border: 5px soild white;
+}
+
+
 .buttons-top
 {
   margin: 2%;

@@ -1,3 +1,9 @@
+<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100vh;z-index: 2;background-color: #fff;
+background-color: rgba(255,255,255,0.5)">
+  <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
+  <img src="../../../../assets/loading animation/Hourglass.gif" style="opacity: 1;"></div>
+</div>
+
 <div class="jumbotron">
 <div class="jumbotron" *ngIf="showGenreWindow" id="genre">
     <div  style="margin-top: 3%;margin-bottom: 3%;">
@@ -96,7 +102,7 @@
                       <button type="button" class="btn btn-outline-primary" style="margin: 2%;">{{g}}</button>
                     </div>      
                 </span>
-                <p>Do you want to share your wishlist to other users inside "Suggesto"
+                <p>Do you want to share your wishlist to other users and be included in MovieBuff Board inside "Suggesto"
                 <label class="switch">
                   <input type="checkbox" [(ngModel)]="shareWishList">
                   <span class="slider round"></span>
@@ -108,6 +114,6 @@
         </div>
       </div>
       <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="languageBack()">Previous</button>
-      <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="submitPreferences()">Submit</button>
+      <button type="button" class="btn btn-success btn-lg btn-block" (click)="submitPreferences()">Submit</button>
 </div>
 </div>

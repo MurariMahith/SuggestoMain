@@ -44,6 +44,11 @@ export class MainListComponent implements OnInit {
   customerName : string = '';
   customerUID : string = '';
 
+  rating : number = 5;
+  eligibleForRating : boolean = true;
+
+  loading : boolean = true;
+
 
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
@@ -111,6 +116,12 @@ export class MainListComponent implements OnInit {
       console.log(tempList)
       this.customerUID = tempList[0].createdBy;
       this.ListForDisplay = this.listDisplayService.BuildMovieListForDisplay(tempList,this.allMovies)[0]
+      //this.ListForDisplay.moviesInList.sort((a,b) => b.rating - a.rating)
+      this.loading = false;
+
+      if(localStorage.getItem(this.ListForDisplay.key)  === "rated"){
+        this.eligibleForRating = false;
+      }
       if(tempList[0].createdBy)
       {
         this.customList = true;
@@ -126,8 +137,9 @@ export class MainListComponent implements OnInit {
             {
               this.allCustomers = o;
               //console.log(o)
-              this.customerName = this.allCustomers.find(x => x.uid === this.customerUID).name
 
+              this.customerName = this.allCustomers.find(x => x.uid === this.customerUID).name
+              
             })
   }
 
@@ -162,6 +174,30 @@ export class MainListComponent implements OnInit {
   goBack() 
   {
     this.location.back();
+  }
+
+  rateList(key)
+  {
+    console.log(key);
+    var list = this.allMovieLists.find(x => x['key'] == key);
+    delete list['key'];
+    console.log(list)
+    if(list.rating)
+    {
+      list.rating = Number(list.rating)+this.rating;
+    }
+    else
+    {
+      list.rating = this.rating
+    }
+    console.log(list);
+    this.listService.updateMovieList(key,list);  
+    localStorage.setItem(key,"rated");  
+  }
+
+  deleteList(key)
+  {
+    //
   }
 
 }

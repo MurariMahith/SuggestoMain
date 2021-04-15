@@ -44,6 +44,8 @@ export class WishListComponent implements OnInit {
 
   showCopiedClipboard : boolean = false;
 
+  loading : boolean = true;
+
 
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
@@ -106,6 +108,10 @@ export class WishListComponent implements OnInit {
                 {
                   this.allMovies = o;  
                   this.ListForDisplay = this.listDisplayService.BuildMovieListForDisplay(this.movieListArr,this.allMovies)[0];
+                  this.ListForDisplay.moviesInList.sort((a,b) => {
+                    return b.rating - a.rating;
+                  })
+                  this.loading = false
                   console.log(this.ListForDisplay)
                 })
 

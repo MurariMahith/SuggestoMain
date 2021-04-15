@@ -24,6 +24,8 @@ export class CreateCustomListComponent implements OnInit {
   searchResultsObjects = [];
   clicked : boolean = false;
 
+  series : boolean = false;
+
   constructor(private movieService : MovieServiceService,private listService : MovieListService,private router : Router) { }
 
   ngOnInit(): void {
@@ -112,13 +114,21 @@ export class CreateCustomListComponent implements OnInit {
 
   onSubmit()
   {
-    this.selectedMovies.forEach(element => {
-      this.newMovieList.moviesInThisList.push(element.key)
-    });
-    this.newMovieList.createdBy = localStorage.getItem("uid");
-    console.log(this.newMovieList)
-    this.listService.createMovieList(this.newMovieList);
-    this.router.navigateByUrl('/profile')
+    if(this.selectedMovies.length<3)
+    {
+      alert('You should select atleast 3 Movies to make a list.')
+    }
+    else
+    {
+      this.selectedMovies.forEach(element => {
+        this.newMovieList.moviesInThisList.push(element.key)
+      });
+      this.newMovieList.createdBy = localStorage.getItem("uid");
+      this.newMovieList.isThisSeries = this.series;
+      console.log(this.newMovieList)
+      this.listService.createMovieList(this.newMovieList);
+      this.router.navigateByUrl('/profile')
+    } 
   }
 
 }

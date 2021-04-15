@@ -20,4 +20,6 @@ export class FMovie
     ottLink : string = '';
     torrentDownloadLink : string = '';
     torrentOnlineLink : string = '';
+    runTime : string = '';
+    visitedCount : number = 0;
 }

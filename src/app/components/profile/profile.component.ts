@@ -37,9 +37,11 @@ export class ProfileComponent implements OnInit {
 
   wishlistedMovies : FMovie[] = [];
   ratedMovies : FMovie[] = [];
+  watchedMovies : FMovie[] = [];
 
   wishlistedMoviesDisplay : DisplayMovie[] = [];
   ratedMoviesDisplay : DisplayMovie[] = [];
+  watchedMoviesDisplay : DisplayMovie[] = [];
 
   loggedIn : boolean = false;
 
@@ -50,11 +52,19 @@ export class ProfileComponent implements OnInit {
 
   wcount : number = 0;
   rcount : number = 0;
+  watchedcount : number = 0;
+
+  bronze : boolean = false;
+  silver : boolean = false;
+  gold : boolean = false;
+  platinum : boolean = false;
+  diamond : boolean = false;
 
   share : boolean = true;
 
   ratebool : boolean = false;
   wishbool : boolean = true;
+  watchedbool : boolean = false;
 
   loading : boolean = true;
 
@@ -91,8 +101,14 @@ export class ProfileComponent implements OnInit {
                 this.loggedIn = true
                 console.log(this.currentCustomer)
               }
-              this.genres = this.currentCustomer.preferredGenre.join(",")
-              this.languages = this.currentCustomer.preferredLanguages.join(",")
+              if(this.currentCustomer.preferredGenre)
+              {
+                this.genres = this.currentCustomer.preferredGenre.join(", ")
+              }
+              if(this.currentCustomer.preferredLanguages)
+              {
+                this.languages = this.currentCustomer.preferredLanguages.join(", ") 
+              }                            
             })
       }
   
@@ -107,23 +123,36 @@ export class ProfileComponent implements OnInit {
       ).subscribe(o =>
         {
           this.allMovies = o;
-          this.allMovies.forEach(element => {
-            if(this.currentCustomer.wishlistedMovies && this.currentCustomer.wishlistedMovies.includes(element.key))
-            {
-              this.wishlistedMovies.push(element)
-            }
-            if(this.currentCustomer.ratedMovies){
-              this.currentCustomer.ratedMovies.forEach(x => {
-                if(element.key === x.movieId)
-                {
-                  this.ratedMovies.push(element)
-                }
-              });
-            }
-            
-          });
+          try
+          {
+            this.allMovies.forEach(element => {
+              if(this.currentCustomer.wishlistedMovies && this.currentCustomer.wishlistedMovies.includes(element.key))
+              {
+                this.wishlistedMovies.push(element)
+              }
+              if(this.currentCustomer.ratedMovies){
+                this.currentCustomer.ratedMovies.forEach(x => {
+                  if(element.key === x.movieId)
+                  {
+                    this.ratedMovies.push(element)
+                  }
+                });
+              }
+              if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(element.key))
+              {
+                this.watchedMovies.push(element)
+              }
+              
+            });
+          }
+          catch
+          {
+            //window.location.reload();
+          }
+          
           this.wishlistedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.wishlistedMovies)
           this.ratedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.ratedMovies)
+          this.watchedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.watchedMovies);
           // console.log(this.wishlistedMoviesDisplay)
           // console.log(this.ratedMoviesDisplay)
           this.ratedMoviesDisplay.forEach(x => {
@@ -137,7 +166,29 @@ export class ProfileComponent implements OnInit {
           });
           this.wcount = this.wishlistedMoviesDisplay.length;
           this.rcount = this.ratedMoviesDisplay.length;
-          this.share = this.currentCustomer.shareWishlistedMovies;
+          this.watchedcount = this.watchedMoviesDisplay.length;
+          //this.watchedcount = 49
+          if(this.watchedcount < 10)
+          {
+            this.bronze = true;
+          }
+          else if(this.watchedcount >= 10 && this.watchedcount <25)
+          {
+            this.silver = true
+          }
+          else if(this.watchedcount >= 25 && this.watchedcount <50)
+          {
+            this.gold = true;
+          }
+          else if(this.watchedcount >= 50 && this.watchedcount <75)
+          {
+            this.platinum = true;
+          }
+          else if(this.watchedcount >= 75)
+          {
+            this.diamond = true;
+          }
+          this.share = this.currentCustomer.shareWishlistedMovies ? this.currentCustomer.shareWishlistedMovies : false;
           this.loading = false;
           console.log(this.wishlistedMoviesDisplay)
           console.log(this.ratedMoviesDisplay)
@@ -149,7 +200,7 @@ export class ProfileComponent implements OnInit {
       setTimeout(()=>{
         if(this.loading)
         {
-          alert("Something went wrong, please refresh !!");
+          alert("Something went wrong, please refresh !! OR Log Out and Log in again.");
           window.location.reload();
         }        
       },20000)
@@ -180,16 +231,26 @@ export class ProfileComponent implements OnInit {
   wishSelect()
   {
     this.ratebool = false;
+    this.watchedbool = false;
     this.wishbool = true;
   }
   rateSelect()
   {
     this.ratebool = true;
     this.wishbool = false;
+    this.watchedbool = false;
+  }
+
+  watchedSelect()
+  {
+    this.ratebool = false;
+    this.wishbool = false;
+    this.watchedbool = true;
   }
 
   logout()
   {
+    this.loading = true;
     this.authService.logOut();
   }
 

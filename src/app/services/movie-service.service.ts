@@ -21,6 +21,10 @@ export class MovieServiceService {
   }
 
   updateMovie(key: string, value: any): Promise<void> {
+    if(value.hasOwnProperty('key'))
+    {
+        delete value["key"];
+    }
     return this.movieRef.update(key, value);
   }
 

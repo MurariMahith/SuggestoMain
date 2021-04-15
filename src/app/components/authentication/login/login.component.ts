@@ -24,17 +24,34 @@ export class LoginComponent implements OnInit {
 
   loginLoad : boolean = false;
 
+  isMobile : boolean = false;
+
   constructor(private  authService : AuthService,private afAuth : AngularFireAuth,private customerService : CustomerService) { }
 
   ngOnInit(): void {
+    if( screen.width <= 480 ) {     
+      this.isMobile = true;
+      //this.pushSubscription()
+      //console.log("mobile");
+    }
+    else{
+      //console.log("laptop")
+    }
   }
 
   submit()
   {
     console.log(this.email);
     console.log(this.password);
-    this.loginLoad = true;
-    this.loginTheUser();
+    if(this.email ==="" || this.password === "")
+    {
+      alert("Please provide credentials before logging In");
+    }
+    else
+    {
+      this.loginLoad = true;
+      this.loginTheUser();
+    }
   }
 
   async  loginWithGoogle(){
@@ -46,6 +63,7 @@ export class LoginComponent implements OnInit {
           this.buildCustomer();
           localStorage.setItem("loggedIn","true");
           localStorage.setItem("uid",this.user.uid);
+          localStorage.setItem("onceLoggedIn","true");
           this.email = '';
           this.password = '';
         })
@@ -74,6 +92,7 @@ export class LoginComponent implements OnInit {
           this.buildCustomer();
           localStorage.setItem("loggedIn","true");
           localStorage.setItem("uid",this.user.uid);
+          localStorage.setItem("onceLoggedIn","true");
           this.email = '';
           this.password = '';
           console.log(a)
@@ -104,6 +123,7 @@ export class LoginComponent implements OnInit {
           this.buildCustomer();
           localStorage.setItem("loggedIn","true");
           localStorage.setItem("uid",this.user.uid);
+          localStorage.setItem("onceLoggedIn","true");
           this.email = '';
           this.password = '';
           console.log(a)
@@ -133,9 +153,22 @@ export class LoginComponent implements OnInit {
           this.buildCustomer();
           localStorage.setItem("loggedIn","true");
           localStorage.setItem("uid",this.user.uid);
+          localStorage.setItem("onceLoggedIn","true");
           this.email = '';
           this.password = '';
         })
+    .catch(e => 
+      {
+        if(e['code'] == "auth/wrong-password")
+          {
+            alert(e['message']+" Please try again with correct credentials");             
+          }
+          else
+          {
+            alert(e['message']); 
+          }          
+          this.loginLoad = false;
+      })
   }
 
   buildCustomer()

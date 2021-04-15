@@ -28,6 +28,8 @@ export class PersonalisationComponent implements OnInit {
 
   shareWishList : boolean = true;
 
+  loading : boolean = false;
+
   constructor(private customerService : CustomerService) { }
 
   ngOnInit(): void {
@@ -55,9 +57,18 @@ export class PersonalisationComponent implements OnInit {
   {
     console.log(this.genreSelected)
     console.log(this.languagesSelected)
+    if(this.genreSelected.length == 0 || this.languagesSelected.length == 0)
+    {
+      alert("You must atleast select one language or genre for your personalised content. ")
+      this.genreBack();
+      return;
+    }
+    this.genreBack();
     this.currentCustomer.preferredGenre = this.genreSelected;
     this.currentCustomer.preferredLanguages = this.languagesSelected;
     this.currentCustomer.shareWishlistedMovies = this.shareWishList;
+    this.loading = true;
+    
     this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer).then(o => window.location.href="/")
   }
 

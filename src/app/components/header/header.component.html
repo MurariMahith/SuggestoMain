@@ -6,11 +6,18 @@
   <nav class="navbar navbar-expand-lg navbar-dark">
       <a class="navbar-brand" (click)="home()" style="color: black;">
         <img src="../../../assets/images/logo.jpg" width="50px" height="50px" style="border-radius: 10px;">
-        Suggesto
+        Suggesto<br>
+        <small style="font-size: small;color: red;">Testing phase.Report bug right side.</small>
       </a>
-      <button class="navbar-toggler" type="button"  style="background-color: rgb(233,236,239);" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <!-- <button class="navbar-toggler" type="button"  style="background-color: rgb(233,236,239);" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-      </button>
+      </button> -->
+      <a role="button" routerLink="/complaint" class="navbar-toggler" type="button">
+        <i class="bi bi-bug-fill" style="color: red;"></i>
+      </a>
+      <!-- <button (click)="reload()" class="navbar-toggler" type="button">
+        <img src="../../../assets/images/refresh.png" style="border-radius: 100px;" width="30">
+      </button> -->
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
@@ -25,12 +32,12 @@
               </li>
               <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
                 <a class="nav-link btnm" style="color: black;" routerLink="/kannada" routerLinkActive="active-link">Kannada</a>
-              </li>
-              <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
-                  <a class="nav-link btnm" style="color: black;" routerLink="/malayalam" routerLinkActive="active-link">Malayalam</a>
               </li> -->
               <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
-                  <a class="nav-link btnm" style="color: black;" routerLink="/all" routerLinkActive="active-link">All Movies</a>
+                  <a class="nav-link btnm" style="color: black;" routerLink="/complaint" routerLinkActive="active-link">Bug/Complaint</a>
+              </li>
+              <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
+                  <a class="nav-link btnm" style="color: black;" routerLink="/all" routerLinkActive="active-link">Search</a>
               </li>
               <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
                 <a class="nav-link btnm" style="color: black;" routerLink="/movielist" routerLinkActive="active-link">Movie's Lists</a>
@@ -73,25 +80,19 @@
 
 <!-- <div style="display: none;">If you are playing around in this area I see that you are interested in this stack. Dont worry this SPA is open source except for some areas and you can find this SPA source code in https://github.com/RohithReddy86/dineWithUs and if anywhere in source code anything asks for password it is MuRodinewuAnFiYtv3</div> -->
 
-<!-- <div class="scrollmenu">
-  <h5 class="nav-link btnm" routerLink="/">Suggesto</h5>
+<div class="scrollmenu" *ngIf="isMobile">
   <a class="nav-link btnm" routerLink="/">Home</a>
-  <a class="nav-link btnm" routerLink="/telugu" routerLinkActive="active-link">Telugu</a>
-  <a class="nav-link btnm" routerLink="/tamil" routerLinkActive="active-link">Tamil</a>
-  <a class="nav-link btnm" routerLink="/kannada" routerLinkActive="active-link">Kannada</a>
-  <a class="nav-link btnm" routerLink="/malayalam" routerLinkActive="active-link">Malayalam</a>
-  <a class="nav-link btnm" routerLink="/all" routerLinkActive="active-link">All Movies</a>
-  <a class="nav-link btnm" routerLink="/movielist" routerLinkActive="active-link">Movie's Lists</a> 
-  <a class="nav-link btnm" routerLink="/personal" routerLinkActive="active-link">Personal</a> 
+  <!-- <a class="nav-link btnm" routerLink="/complaint" routerLinkActive="active-link">Bug/Complaint</a> -->
+  <a class="nav-link btnm" routerLink="/all" routerLinkActive="active-link">Search</a>
+  <a class="nav-link btnm" routerLink="/movielist" routerLinkActive="active-link">Movie Lists</a> 
+  <a class="nav-link btnm" routerLink="/personalisation" routerLinkActive="active-link">Personalisation</a> 
+  <a class="nav-link btnm" routerLink="/suggest" routerLinkActive="active-link">Suggest Movie to us</a> 
+  <a class="nav-link btnm" routerLink="/profile" routerLinkActive="active-link">Profile</a>
+  <a class="nav-link btnm" routerLink="/people" routerLinkActive="active-link">People</a>
+  <a class="nav-link btnm" routerLink="/personal" routerLinkActive="active-link">Personal</a>   
   <a class="nav-link btnm" routerLink="/login" routerLinkActive="active-link" *ngIf="!loggedIn">LogIn</a> 
-  <a class="nav-link btnm" routerLink="/signup" routerLinkActive="active-link" *ngIf="!loggedIn">Sign Up</a> 
+  <!-- <a class="nav-link btnm" routerLink="/signup" routerLinkActive="active-link" *ngIf="!loggedIn">Sign Up</a>  -->
   <a class="nav-link btnm" (click)="logout()" routerLinkActive="active-link" *ngIf="loggedIn">Log Out!</a> 
-  <a class="nav-link btnm" routerLink="/info" routerLinkActive="active-link">Information</a>
-  <a href="#custom">Custom</a>
-  <a href="#more">More</a>
-  <a href="#logo">Logo</a>
-  <a href="#friends">Friends</a>
-  <a href="#partners">Partners</a>
-  <a href="#people">People</a>
-  <a href="#work">Work</a>
-</div> -->
+  <a class="nav-link btnm" routerLink="/download" routerLinkActive="active-link">Download App</a>
+  <a class="nav-link btnm" routerLink="/aboutus" routerLinkActive="active-link">About Suggesto</a>
+</div>

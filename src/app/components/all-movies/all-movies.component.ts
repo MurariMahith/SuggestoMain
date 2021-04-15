@@ -115,6 +115,7 @@ export class AllMoviesComponent implements OnInit {
       obj.key = o.key;
       obj.rating = o.rating;
       obj.ottLink = o.ottLink;
+      obj.runTime = o.runTime;
       obj.torrentOnlineLink = o.torrentOnlineLink;
       obj.torrentDownloadLink = o.torrentDownloadLink;
       obj.cast = o.cast.join(",")
@@ -132,6 +133,12 @@ export class AllMoviesComponent implements OnInit {
         this.allGenres.push(key.trim().toLocaleLowerCase());
         if(o.movieGenre[key])
           obj.genre += key +','
+      } 
+      for(var key in o.availableIn)
+      {
+        //this.allGenres.push(key.trim().toLocaleLowerCase());
+        if(o.availableIn[key])
+          obj.availableIn += key +','
       }      
       DisplayMovieArray.push(obj);  
       //this.DisplayMovieListOriginal.push(obj);  
@@ -170,7 +177,7 @@ export class AllMoviesComponent implements OnInit {
     const fakeVar = this.DisplayMovieList;  
     this.DisplayMovieList.length = 0;
     var titles = Object.keys(this.allTitles2);
-    console.log(fakeVar.length)
+    //console.log(fakeVar.length)
     titles.forEach(element => {
       if(element.search(event) != -1)
       {
@@ -181,7 +188,9 @@ export class AllMoviesComponent implements OnInit {
     });
     if(this.advancedSearch)
     {
+      //console.log(this.DisplayMovieListOriginal)
       this.DisplayMovieListOriginal.forEach(mov => {
+        //console.log(mov.availableIn);
         if(mov.genre.trim().toLocaleLowerCase().search(event) != -1)
         {
           this.DisplayMovieList.push(mov);
@@ -198,17 +207,28 @@ export class AllMoviesComponent implements OnInit {
         if(castBool)
         {
           this.DisplayMovieList.push(mov)
-          console.log(mov.title);
+          //console.log(mov.title);
         }
         if(mov.language.trim().toLocaleLowerCase().search(event) != -1)
         {
           this.DisplayMovieList.push(mov)
         }
+        var ottBool = mov.availableIn.trim().toLocaleLowerCase().search(event) != -1
+        //console.log(mov.availableIn + "here")
+        if(ottBool)
+        {
+          //console.log(mov.availableIn)
+          this.DisplayMovieList.push(mov);
+        }
+        if(mov.description.toLocaleLowerCase().search(event) != -1)
+        {
+          this.DisplayMovieList.push(mov);
+        }
       });
     }    
     var uniqueDisplayMovies = new Set(this.DisplayMovieList)
     this.DisplayMovieList = Array.from(uniqueDisplayMovies);
-    console.log(this.DisplayMovieList);
+    //console.log(this.DisplayMovieList);
     if(this.DisplayMovieList.length === 0)
     {
       console.log("no movies based on your search criteria")

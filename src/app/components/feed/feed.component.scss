@@ -39,3 +39,16 @@
       // width: 300px;
     }
   }
+
+  .scrolling-wrapper3 {
+    //border: 2px solid black;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+  
+    .item3 {
+      display: inline-block;
+      // margin: 10px;
+      // width: 300px;
+    }
+  }

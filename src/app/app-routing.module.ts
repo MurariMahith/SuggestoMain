@@ -5,7 +5,9 @@ import { AllMoviesComponent } from './components/all-movies/all-movies.component
 import { LoginComponent } from './components/authentication/login/login.component';
 import { ResetPasswordComponent } from './components/authentication/reset-password/reset-password.component';
 import { SignupComponent } from './components/authentication/signup/signup.component';
+import { ComplaintComponent } from './components/complaint/complaint.component';
 import { CreateCustomListComponent } from './components/create-custom-list/create-custom-list.component';
+import { DownloadOurAppComponent } from './components/download-our-app/download-our-app.component';
 import { FeedComponent } from './components/feed/feed.component';
 import { HomeComponent } from './components/home/home.component';
 import { InformationComponent } from './components/information/information.component';
@@ -43,6 +45,8 @@ const routes: Routes = [
   { path: 'personal',  component: PersonalComponent,canActivate: [AuthGuard] },
   { path: 'login',  component: LoginComponent },
   { path: 'signup',  component: SignupComponent },
+  { path: 'download',  component: DownloadOurAppComponent },
+  { path: 'complaint',  component: ComplaintComponent },
   { path: 'resetPassword',  component: ResetPasswordComponent,canActivate: [AuthGuard] },
   { path: 'personalisation',  component: PersonalisationComponent,canActivate: [AuthGuard] },
   { path: 'profile',  component: ProfileComponent,canActivate: [AuthGuard] },
@@ -50,7 +54,7 @@ const routes: Routes = [
   { path: 'wlist/:key',  component: WishListComponent,canActivate: [AuthGuard] },
   { path: 'suggest',  component: SuggestMovieComponent,canActivate: [AuthGuard] },
   { path: 'createList',  component: CreateCustomListComponent,canActivate: [AuthGuard] },
-  { path: 'news-feed',  component: FeedComponent,canActivate: [AuthGuard] },
+  { path: 'news-feed',  component: FeedComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 @NgModule({

@@ -209,6 +209,14 @@ a:hover {
   }
 }
 
+.backdrop{
+  background-color:rgba(0,0,0,0.6);
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100vh;
+  }
 
 .scrolling-wrapper {
   //border: 2px solid black;
@@ -223,9 +231,9 @@ a:hover {
   }
 }
 
-.scrolling-wrapper::-webkit-scrollbar {
-  display: none;
-}
+// .scrolling-wrapper::-webkit-scrollbar {
+//   display: none;
+// }
 
 //below here is style for commented html at start of allmovies html page
 .item{
@@ -264,6 +272,19 @@ a:hover {
   white-space: nowrap;
 
   .item {
+    display: inline-block;
+    // margin: 10px;
+    // width: 300px;
+  }
+}
+
+.scrolling-wrapper-reco {
+  //border: 2px solid black;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .item-reco {
     display: inline-block;
     // margin: 10px;
     // width: 300px;

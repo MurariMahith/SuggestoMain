@@ -9,6 +9,13 @@ export class Genre
     Fantasy : boolean = false;
     Crime : boolean = false;
     Suspense : boolean = false;
+    Alien_and_Space : boolean =false;
+    Monsters : boolean = false;
+    Money : boolean = false;
+    Horror : boolean = false;
+    Mystery : boolean = false;
+    Romance : boolean = false;
+    Thriller : boolean = false;
     SuggestedByUsers : boolean = false;
     Family_Entertainer : boolean = false;
     Chill_With_Friends : boolean = false;    
@@ -17,11 +24,6 @@ export class Genre
     War : boolean = false;
     Military : boolean = false;
     Smuggling : boolean = false;    
-    Alien_and_Space : boolean =false;
-    Horror : boolean = false;
-    Mystery : boolean = false;
-    Romance : boolean = false;
-    Thriller : boolean = false;
     Western : boolean = false;
     Animated : boolean = false;
     Korean : boolean = false;

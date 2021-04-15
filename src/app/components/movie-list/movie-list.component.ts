@@ -27,11 +27,22 @@ export class MovieListComponent implements OnInit {
 
   loading : boolean = true;
 
+  loggedIn : boolean = false;
+
   customerLists : boolean = false;
+
+  rating : number = 5;
+  listToBeRated : MovieList;
+
 
   constructor(private movieService : MovieServiceService,private listService : MovieListService,private router : Router,private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+
+    if(localStorage.getItem('loggedIn') == 'true')
+    {
+      this.loggedIn = true;
+    }
 
     if( screen.width <= 480 ) {     
       this.isMobile = true;
@@ -94,7 +105,7 @@ export class MovieListComponent implements OnInit {
           {
             adminList.push(this.allMovieLists[i])
           }
-          else if(this.allMovieLists[i].createdBy === 'ADMIN')
+          else if(this.allMovieLists[i].createdBy === 'ADMIN' || this.allMovieLists[i].createdBy !== 'ADMIN' )
           {
             adminList.push(this.allMovieLists[i])
           }
@@ -105,6 +116,9 @@ export class MovieListComponent implements OnInit {
       }
 
       console.log(this.MovieListsForView)
+      this.MovieListsForView.sort((a, b) => {
+        return b.rating - a.rating;
+      });
       this.loading = false;
     })
   }
@@ -116,6 +130,16 @@ export class MovieListComponent implements OnInit {
       var movieListForDisplay : FMovie[] = []
       obj.listName = o.listName;
       obj.key = o["key"]
+      if(o.rating)
+      {
+          obj.rating = o.rating;
+      }
+      else{obj.rating = 0}
+      if(o.createdBy)
+      {
+          obj.createdBy = o.createdBy;
+      }
+      else{obj.createdBy = 'ADMIN'}
       o.moviesInThisList.forEach(element => {
         //console.log(this.allMovies.find(a => a.key===element))        
         movieListForDisplay.push(this.allMovies.find(a => a.key===element));
@@ -142,6 +166,7 @@ export class MovieListComponent implements OnInit {
       obj.key = o.key;
       obj.rating = o.rating;
       obj.ottLink = o.ottLink;
+      obj.runTime = o.runTime;
       obj.torrentDownloadLink = o.torrentDownloadLink;
       obj.torrentOnlineLink = o.torrentOnlineLink;
       obj.cast = o.cast.join(",")
@@ -185,6 +210,32 @@ export class MovieListComponent implements OnInit {
   goto(key)
   {
     this.router.navigateByUrl('/list/'+key);
+  }
+
+  startRating(key)
+  {
+    this.listToBeRated = this.allMovieLists.find(x => x['key'] === key);
+
+  }
+  rateList(key)
+  {
+    var fake = this.listToBeRated
+    this.listToBeRated.rating = Number(this.listToBeRated.rating ) + this.rating;
+    delete fake['key'];
+    this.listService.updateMovieList(key,fake);  
+    localStorage.setItem(key,"rated");
+  }
+
+  deleteList(key)
+  {
+    console.log(key)
+    var conf = confirm("Do you really want to delete this list?")
+    if(conf)
+    {
+      this.listService.deleteMovieList(key);
+      location.reload()
+    }
+   
   }
 
 }
