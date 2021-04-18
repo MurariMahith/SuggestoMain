@@ -68,6 +68,8 @@ export class ProfileComponent implements OnInit {
 
   loading : boolean = true;
 
+  timeOutError;
+
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
@@ -197,7 +199,7 @@ export class ProfileComponent implements OnInit {
         console.log(this.wishlistedMoviesDisplay)
         console.log(this.ratedMoviesDisplay)
 
-      setTimeout(()=>{
+      this.timeOutError =setTimeout(()=>{
         if(this.loading)
         {
           alert("Something went wrong, please refresh !! OR Log Out and Log in again.");
@@ -207,6 +209,11 @@ export class ProfileComponent implements OnInit {
   
     }
 
+
+  ngOnDestroy()
+  {
+    clearTimeout(this.timeOutError);
+  }
 
   goto(key)
   {

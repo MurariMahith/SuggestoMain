@@ -37,6 +37,8 @@ export class MovieListComponent implements OnInit {
 
   constructor(private movieService : MovieServiceService,private listService : MovieListService,private router : Router,private activatedRoute: ActivatedRoute) { }
 
+
+  
   ngOnInit() {
 
     if(localStorage.getItem('loggedIn') == 'true')

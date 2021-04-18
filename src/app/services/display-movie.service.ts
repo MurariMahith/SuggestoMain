@@ -102,14 +102,14 @@ export class DisplayMovieService {
     }
 
     //sorting based on release year ascending order
-    if(sortYearDesc)
+    if(sortYearAsc)
     {
       MovieListForDisplay.sort((a, b) => {
         return Number(a.releaseYear) - Number(b.releaseYear);
       });
-      MovieListForDisplay.sort((a, b) => {
-        return Number(b.visitedCount) - Number(a.visitedCount);
-      });
+      // MovieListForDisplay.sort((a, b) => {
+      //   return Number(b.visitedCount) - Number(a.visitedCount);
+      // });
     }
 
     if(sortVisitedCountDesc)

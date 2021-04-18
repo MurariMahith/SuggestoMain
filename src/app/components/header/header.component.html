@@ -4,20 +4,28 @@
 </div> -->
 <div>
   <nav class="navbar navbar-expand-lg navbar-dark">
-      <a class="navbar-brand" (click)="home()" style="color: black;">
-        <img src="../../../assets/images/logo.jpg" width="50px" height="50px" style="border-radius: 10px;">
-        Suggesto<br>
-        <small style="font-size: small;color: red;">Testing phase.Report bug right side.</small>
+    <!-- <h3 style="width: 30px;"><i (click)="openSideBar()" class="fa fa-bars" aria-hidden="true"></i></h3> -->
+    <button (click)="openSideBar()" class="navbar-toggler" type="button">
+      <img src="../../../assets/images/threebars.png"  width="30" height="20">
+    </button>
+      <a class="navbar-brand"  style="color: black;align-items: center;margin-left: 20px;">
+        <img *ngIf="DomPageLoadDone" src="../../../assets/images/logo2.png" width="50px" height="50px" style="border-radius: 10px;">
+        <img  *ngIf="!DomPageLoadDone" src="../../../assets/loading animation/Fidget-spinner.gif" width="50px" height="50px" style="border-radius: 10px;">
+        Suggesto
       </a>
       <!-- <button class="navbar-toggler" type="button"  style="background-color: rgb(233,236,239);" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
       </button> -->
-      <a role="button" routerLink="/complaint" class="navbar-toggler" type="button">
+      <!-- <a role="button" class="navbar-toggler" type="button" (click)="openSideBar()">
         <i class="bi bi-bug-fill" style="color: red;"></i>
-      </a>
-      <!-- <button (click)="reload()" class="navbar-toggler" type="button">
+      </a> -->
+      
+      <button *ngIf="internetStatusOnline" (click)="reload()" class="navbar-toggler" type="button">
         <img src="../../../assets/images/refresh.png" style="border-radius: 100px;" width="30">
-      </button> -->
+      </button>
+      <button *ngIf="!internetStatusOnline" class="navbar-toggler" type="button">
+        <i style="color: black;" class="bi bi-wifi-off"></i>
+      </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
@@ -80,9 +88,9 @@
 
 <!-- <div style="display: none;">If you are playing around in this area I see that you are interested in this stack. Dont worry this SPA is open source except for some areas and you can find this SPA source code in https://github.com/RohithReddy86/dineWithUs and if anywhere in source code anything asks for password it is MuRodinewuAnFiYtv3</div> -->
 
-<div class="scrollmenu" *ngIf="isMobile">
+<!-- <div class="scrollmenu" *ngIf="isMobile">
   <a class="nav-link btnm" routerLink="/">Home</a>
-  <!-- <a class="nav-link btnm" routerLink="/complaint" routerLinkActive="active-link">Bug/Complaint</a> -->
+  <a class="nav-link btnm" routerLink="/complaint" routerLinkActive="active-link">Bug/Complaint</a>
   <a class="nav-link btnm" routerLink="/all" routerLinkActive="active-link">Search</a>
   <a class="nav-link btnm" routerLink="/movielist" routerLinkActive="active-link">Movie Lists</a> 
   <a class="nav-link btnm" routerLink="/personalisation" routerLinkActive="active-link">Personalisation</a> 
@@ -91,8 +99,27 @@
   <a class="nav-link btnm" routerLink="/people" routerLinkActive="active-link">People</a>
   <a class="nav-link btnm" routerLink="/personal" routerLinkActive="active-link">Personal</a>   
   <a class="nav-link btnm" routerLink="/login" routerLinkActive="active-link" *ngIf="!loggedIn">LogIn</a> 
-  <!-- <a class="nav-link btnm" routerLink="/signup" routerLinkActive="active-link" *ngIf="!loggedIn">Sign Up</a>  -->
   <a class="nav-link btnm" (click)="logout()" routerLinkActive="active-link" *ngIf="loggedIn">Log Out!</a> 
   <a class="nav-link btnm" routerLink="/download" routerLinkActive="active-link">Download App</a>
   <a class="nav-link btnm" routerLink="/aboutus" routerLinkActive="active-link">About Suggesto</a>
+</div> -->
+
+
+<div id="mySidebar" class="sidebar">
+  <p  class="closebtn" (click)="closeSideBar()">×</p>
+  <h5 style="padding-left:32px;">Suggesto</h5>
+  <p class="nav-link btnm" routerLink="/" (click)="closeSideBar()"><i class="bi bi-house-fill"></i> Home</p>  
+  <p class="nav-link btnm" routerLink="/all" routerLinkActive="active-link" (click)="closeSideBar()"><i class="bi bi-search"></i> Search</p>
+  <p class="nav-link btnm" routerLink="/profile" routerLinkActive="active-link" (click)="closeSideBar()"><i  class="bi bi-person-fill"></i> Profile</p>
+  <p class="nav-link btnm" routerLink="/people" routerLinkActive="active-link" (click)="closeSideBar()"><i class="bi bi-people-fill"></i> People</p>
+  <p class="nav-link btnm" routerLink="/movielist" routerLinkActive="active-link" (click)="closeSideBar()"><i class="bi bi-collection-play"></i> Movie Lists</p> 
+  <p class="nav-link btnm" routerLink="/personalisation" routerLinkActive="active-link" (click)="closeSideBar()"><i class="bi bi-person-lines-fill"></i> Personalisation</p> 
+  <p class="nav-link btnm" routerLink="/suggest" routerLinkActive="active-link" (click)="closeSideBar()"><i class="bi bi-play-fill"></i> Suggest Movie to us</p> 
+  <!-- <p class="nav-link btnm" routerLink="/personal" routerLinkActive="active-link" (click)="closeSideBar()"><i class="bi bi-person-circle"></i> Personal</p>    -->
+  <p class="nav-link btnm" routerLink="/login" routerLinkActive="active-link" (click)="closeSideBar()" *ngIf="!loggedIn"><i class="bi bi-person-check-fill"></i> LogIn</p> 
+  <!-- <p class="nav-link btnm" routerLink="/download" routerLinkActive="active-link" (click)="closeSideBar()"><i class="bi bi-cloud-download-fill"></i> Download App</p> -->
+  <p class="nav-link btnm" routerLink="/aboutus" routerLinkActive="active-link" (click)="closeSideBar()"><i class="bi bi-info-circle-fill"></i> About Suggesto</p>
+  <p class="nav-link btnm" routerLink="/complaint" routerLinkActive="active-link" (click)="closeSideBar()"><i class="bi bi-bug-fill"></i> Bug/Complaint</p>
+  <p class="nav-link btnm" (click)="logout()" routerLinkActive="active-link" (click)="closeSideBar()" *ngIf="loggedIn"><i class="bi bi-person-dash-fill"></i> Log Out!</p> 
+  <p class="closebtn2" (click)="closeSideBar()"><i style="color: white;" class="bi bi-x-circle-fill"></i></p>
 </div>

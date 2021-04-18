@@ -99,17 +99,17 @@ export class FeedComponent implements OnInit {
     {
       if( screen.width <= 480 ) {     
         this.isMobile = true;
-        //console.log("mobile");
+        ////console.log("mobile");
       }
       else{
-        //console.log("laptop")
+        ////console.log("laptop")
       }
       if(localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
       {
         this.customerService.getLoggedInCustomer()
           .subscribe(o =>
             {
-              //console.log(o)
+              ////console.log(o)
               if(o.find(x => x.uid === localStorage.getItem("uid")))
               {
                 this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
@@ -129,8 +129,8 @@ export class FeedComponent implements OnInit {
                   this.ratedMoviesForThisCustomer.push(element.movieId)
                 });
               }
-              console.log(this.currentCustomer)
-              //console.log(this.loggedIn)
+              ////console.log(this.currentCustomer)
+              ////console.log(this.loggedIn)
             })
       }
       // else
@@ -154,7 +154,7 @@ export class FeedComponent implements OnInit {
         this.topRatedMovieD = this.allMoviesD[0];
         this.generateRandomMovie()
         
-        console.log(this.topRatedMovieD);
+        //console.log(this.topRatedMovieD);
         if(this.loggedIn)
         {
           this.buildPersonalisedContentForLoggedInCustomer()     
@@ -166,14 +166,14 @@ export class FeedComponent implements OnInit {
         {
           if(this.allMovies[x].key == shuffledwishlistedMoviesOfCustomer[0])
           {
-              //console.log(this.allMovies[x].imageUrl);
+              ////console.log(this.allMovies[x].imageUrl);
               this.corouselWishlistedMovie = this.allMovies[x];
           }
         }
   
         var fakearr2 = [];
         fakearr2.push(this.corouselWishlistedMovie)
-        //console.log(arr)
+        ////console.log(arr)
         if(fakearr2[0])
         {
           this.corouselWishlistedMovieD = this.movieDisplayService.prepareDisplayMovieList(fakearr2)[0]; 
@@ -182,11 +182,11 @@ export class FeedComponent implements OnInit {
             this.corouselWishlistedMovieBool = true;
           }
         }
-        // console.log(shuffledwishlistedMoviesOfCustomer);
-        // console.log(this.corouselPersonalisedMovie)
+        // //console.log(shuffledwishlistedMoviesOfCustomer);
+        // //console.log(this.corouselPersonalisedMovie)
         
         this.loading = false;
-        //console.log(o);
+        ////console.log(o);
         for(let i=0;i<this.allMovies.length;i++)
         {
           var newDate = this.buildProperDate(this.allMovies[i].suggestedDate);       
@@ -199,7 +199,7 @@ export class FeedComponent implements OnInit {
         }
         var arr = [];
         arr.push(this.todayMovie)
-        //console.log(arr)
+        ////console.log(arr)
         if(arr[0])
         {
           this.todayMovieD = this.movieDisplayService.prepareDisplayMovieList(arr)[0]      
@@ -214,9 +214,9 @@ export class FeedComponent implements OnInit {
           )
         )
       ).subscribe(o => {
-        //console.log(o)
+        ////console.log(o)
         this.homePageList = o[0];
-        //console.log(this.homePageList.listsToIncludeInHomePage)
+        ////console.log(this.homePageList.listsToIncludeInHomePage)
         this.buildeditorChoiceMovieListForDisplay()
         this.buildRecentlySuggestedMovieList()
         if(navigator.geolocation)
@@ -236,7 +236,7 @@ export class FeedComponent implements OnInit {
     {
       var shuffleD = this.shuffleArr(this.allMoviesD);
       this.randomMovieD = shuffleD[2];
-      console.log(this.randomMovieD);
+      //console.log(this.randomMovieD);
     }
   
     shuffleArr (array) : any[]
@@ -250,21 +250,21 @@ export class FeedComponent implements OnInit {
   
     buildPersonalisedContentForLoggedInCustomer()
     {
-      //console.log("inside")
-      //console.log(this.currentCustomer)
-      //console.log(this.allMovies)
+      ////console.log("inside")
+      ////console.log(this.currentCustomer)
+      ////console.log(this.allMovies)
       var i=0;
       var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,false,true,false,false);
       var personalisedMovies = []
       allDisplayMovies.forEach(o => {
   
         var genresForMovie = o.genre.trim().split(',')
-        //console.log(genresForMovie)
+        ////console.log(genresForMovie)
         
         genresForMovie.forEach(element => {
   
-          //console.log(this.currentCustomer.preferredGenre.includes(element))
-          //console.log(element)
+          ////console.log(this.currentCustomer.preferredGenre.includes(element))
+          ////console.log(element)
           
           if(this.currentCustomer.preferredGenre && this.currentCustomer.preferredGenre.includes(element))
           {
@@ -275,25 +275,25 @@ export class FeedComponent implements OnInit {
         });
   
       });
-      //console.log(i)
-      //console.log(personalisedMovies)
+      ////console.log(i)
+      ////console.log(personalisedMovies)
       var uniqueArray :DisplayMovie[] = personalisedMovies.filter(function(item, pos) {
         return personalisedMovies.indexOf(item) == pos;
       })
-      // console.log(uniqueArray);
+      // //console.log(uniqueArray);
       this.personalisedMoviesDisplay = uniqueArray;
       var LanguageBasedPersonalisedMovies = [];
       uniqueArray.forEach(o => {
         this.currentCustomer.preferredLanguages.forEach(element => {
-          //console.log(o.language.includes(element))
+          ////console.log(o.language.includes(element))
           if(o.language.includes(element))
           {
             LanguageBasedPersonalisedMovies.push(o)
           }
         });
       });
-      // console.log(LanguageBasedPersonalisedMovies)
-      // console.log(this.personalisedMoviesDisplay)
+      // //console.log(LanguageBasedPersonalisedMovies)
+      // //console.log(this.personalisedMoviesDisplay)
       this.personalisedMoviesDisplay = LanguageBasedPersonalisedMovies
       //murari
   
@@ -310,14 +310,14 @@ export class FeedComponent implements OnInit {
       //   return this.personalisedMoviesDisplay.indexOf(item) == pos;
       // })
       // this.personalisedMoviesDisplay = uniqueArray2;
-      //console.log(this.personalisedMoviesDisplay)
+      ////console.log(this.personalisedMoviesDisplay)
     }
   
     showPosition(position) {
-      //console.log(position)
+      ////console.log(position)
       this.latitude = position.coords["latitude"]
       this.longitude = position.coords["longitude"];
-      //console.log(this.latitude+","+this.longitude)
+      ////console.log(this.latitude+","+this.longitude)
     }
   
     buildMovieSuggestionBasedOnLocation()
@@ -331,14 +331,14 @@ export class FeedComponent implements OnInit {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.showPosition.bind(this));
         this.locationAccess = true;
-        //console.log(this.latitude+","+this.longitude)
+        ////console.log(this.latitude+","+this.longitude)
       } else { 
         this.locationAccess = false;
         alert("Location access is needed to suggest movies based on location, Its not mandatory to give location access to us.")
       }
       this.http.get(this.APIforState+"latitude="+this.latitude+"&longitude="+this.longitude+"&localityLanguage=en").toPromise()
             .then(a => {
-              //console.log(a)
+              ////console.log(a)
               if(a["principalSubdivision"] == "Karnataka")
               {
                 telugu = true;
@@ -394,11 +394,11 @@ export class FeedComponent implements OnInit {
               });
   
               this.locationBasedMovies = this.movieDisplayService.prepareDisplayMovieList(allmovies2,true,false,false,false)
-              //console.log(this.locationBasedMovies)
+              ////console.log(this.locationBasedMovies)
   
             })
             .catch(() => {
-                console.log("location access denied user can't get location based content")
+                //console.log("location access denied user can't get location based content")
             });
     }
   
@@ -414,15 +414,15 @@ export class FeedComponent implements OnInit {
       });
   
       var sortedArrayTS = this.movieDisplayService.prepareDisplayMovieList(allmovies2)
-      // console.log(this.sortedArray)
+      // //console.log(this.sortedArray)
   
       this.sortedArray = _.orderBy(sortedArrayTS, (o: DisplayMovie) => {
-        //console.log(moment(new Date(this.buildProperDate(o.suggestedDate))))
+        ////console.log(moment(new Date(this.buildProperDate(o.suggestedDate))))
         return moment(new Date(this.buildProperDate(o.suggestedDate)))
       }, ['desc']);
       
       // this.sortedArray.forEach(element => {
-      //   console.log(element.suggestedDate);
+      //   //console.log(element.suggestedDate);
       // });
       
     }
@@ -450,8 +450,8 @@ export class FeedComponent implements OnInit {
 
     buildTopRatedCustomeMovieListsForDisplay()
     {
-      //console.log("here")
-      console.log(this.personalisedMoviesDisplay);
+      ////console.log("here")
+      //console.log(this.personalisedMoviesDisplay);
       var fake = this.allMovieLists.filter(x => {
         if(x.createdBy && x.createdBy !== 'ADMIN')
         {
@@ -462,13 +462,13 @@ export class FeedComponent implements OnInit {
       this.topRatedCustomList.sort((a, b) => {
         return b.rating - a.rating;
       });
-      //console.log(fake);
+      ////console.log(fake);
     }
   
     buildeditorChoiceMovieListForDisplay()
     {
       this.editorsChoice = this.listDisplayService.BuildMovieListForDisplay(this.homePageList.listsToIncludeInHomePage,this.allMovies);
-      //console.log(this.editorsChoice[0])
+      ////console.log(this.editorsChoice[0])
     }
   
     GoToGenre(str:string)
@@ -488,26 +488,26 @@ export class FeedComponent implements OnInit {
 
     addMovieToWishlist(key)
   {
-    console.log(key)
+    //console.log(key)
     var wishlisted = []
     this.wishlistedMovies.push(key)
     wishlisted.push(key)
     if(!this.currentCustomer.wishlistedMovies)
     {
-      console.log("new");
+      //console.log("new");
       this.currentCustomer.wishlistedMovies = wishlisted;
     }
     else
     {
       this.currentCustomer.wishlistedMovies.push(key);
     }
-    //console.log(this.currentCustomer)
+    ////console.log(this.currentCustomer)
     this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
   }
 
   removeFromWishlist(key)
   {
-    console.log(this.currentCustomer.wishlistedMovies)
+    //console.log(this.currentCustomer.wishlistedMovies)
     if(this.currentCustomer.wishlistedMovies.includes(key))
     {
       for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
@@ -517,7 +517,7 @@ export class FeedComponent implements OnInit {
           this.currentCustomer.wishlistedMovies.splice(i, 1); 
         }
       }
-      console.log(this.currentCustomer.wishlistedMovies)
+      //console.log(this.currentCustomer.wishlistedMovies)
       this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
     }
   }
@@ -559,7 +559,7 @@ export class FeedComponent implements OnInit {
   startRateMovie(key)
   {
     this.MovieToBeRated = this.allMovies.find(o => o.key ===key)
-    //console.log(this.MovieToBeRated);
+    ////console.log(this.MovieToBeRated);
   }
 
   rateMovie(key)
@@ -581,33 +581,33 @@ export class FeedComponent implements OnInit {
     {
       this.currentCustomer.ratedMovies.push(ratedMovieLocal)
     }
-    //console.log(this.currentCustomer)
+    ////console.log(this.currentCustomer)
     this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
   }
   
     // addMovieToWishlist(key)
     // {
-    //   console.log(key)
+    //   //console.log(key)
     //   var wishlisted = []
     //   this.wishlistedMovies.push(key)
     //   wishlisted.push(key)
     //   if(!this.currentCustomer.wishlistedMovies)
     //   {
-    //     console.log("new");
+    //     //console.log("new");
     //     this.currentCustomer.wishlistedMovies = wishlisted;
     //   }
     //   else
     //   {
     //     this.currentCustomer.wishlistedMovies.push(key);
     //   }
-    //   //console.log(this.currentCustomer)
+    //   ////console.log(this.currentCustomer)
     //   this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
     // }
   
     // startRateMovie(key)
     // {
     //   this.MovieToBeRated = this.allMovies.find(o => o.key ===key)
-    //   //console.log(this.MovieToBeRated);
+    //   ////console.log(this.MovieToBeRated);
     // }
   
     // rateMovie(key)
@@ -629,7 +629,7 @@ export class FeedComponent implements OnInit {
     //   {
     //     this.currentCustomer.ratedMovies.push(ratedMovieLocal)
     //   }
-    //   //console.log(this.currentCustomer)
+    //   ////console.log(this.currentCustomer)
     //   this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
     // }
   

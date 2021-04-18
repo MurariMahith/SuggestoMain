@@ -38,6 +38,7 @@ export class AllMoviesComponent implements OnInit {
 
   genreFromParam : string = '';
   langFromParam : string = '';
+  ottFromParam : string = '';
 
   filterSelected : boolean = false;
 
@@ -64,6 +65,7 @@ export class AllMoviesComponent implements OnInit {
 
     this.genreFromParam = this.activatedRote.snapshot.queryParamMap.get('genre')
     this.langFromParam = this.activatedRote.snapshot.queryParamMap.get('lang')
+    this.ottFromParam = this.activatedRote.snapshot.queryParamMap.get('ott');
     //console.log(genreFromParam + langFromParam)
 
     this.movieService.getAllMovies().snapshotChanges().pipe(
@@ -91,6 +93,11 @@ export class AllMoviesComponent implements OnInit {
     {
       this.genresToIncludeInSort.push(this.genreFromParam.trim().toLocaleLowerCase());
       this.sortAccordingToGenreAndYear();
+    }
+    //write logic here to show movies which are avilable in ott platform fom param.
+    if(this.ottFromParam)
+    {
+
     }
 
     if(this.langFromParam && this.allGenres.includes(this.langFromParam))
