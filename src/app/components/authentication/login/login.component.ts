@@ -41,8 +41,8 @@ export class LoginComponent implements OnInit {
 
   submit()
   {
-    console.log(this.email);
-    console.log(this.password);
+    //console.log(this.email);
+    //console.log(this.password);
     if(this.email ==="" || this.password === "")
     {
       alert("Please provide credentials before logging In");
@@ -176,7 +176,7 @@ export class LoginComponent implements OnInit {
     //alert("please wait while we log you In, We will redirect you to home page once login is successfull. Thank you !")
     this.customer.uid = this.user.uid;
     this.customer.name = this.user.displayName;
-    this.customer.email = this.user.email;
+    //this.customer.email = this.user.email;
     this.customer.emailVerified = this.user.emailVerified;
     this.customer.customerPhotoUrl = this.user.photoURL;
     this.customer.preferredGenre = [];

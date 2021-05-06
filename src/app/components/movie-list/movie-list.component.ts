@@ -174,15 +174,15 @@ export class MovieListComponent implements OnInit {
       obj.cast = o.cast.join(",")
       obj.subTags = o.subTags.join(",")
       if(o.language.english)
-        obj.language += 'English, '
+        obj.language += 'English,'
       if(o.language.telugu)
-        obj.language += 'Telugu, '
+        obj.language += 'Telugu,'
       if(o.language.tamil)
-        obj.language += 'Tamil, '
+        obj.language += 'Tamil,'
       if(o.language.malayalam)
-        obj.language += 'Malayalam, '
+        obj.language += 'Malayalam,'
       if(o.language.kannada)
-        obj.language += 'Kannada, '
+        obj.language += 'Kannada,'
       for(var key in o.movieGenre)
       {
         if(o.movieGenre[key])

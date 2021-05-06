@@ -29,7 +29,7 @@ background-color: rgba(255,255,255,0.5)">
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <label class="dropdown-item" (click)="resetGenreFilter()">Reset</label>
               <span *ngFor="let g of allGenres">
-                <button type="button" id="{{g}}" (click)="addGenreToSort(g)" class="btn btn-secondary btn-sm" style="margin: 2%;">{{g}}</button>
+                <button type="button" id="{{g}}" (click)="addGenreToSort(g)" class="btn btn-secondary btn-sm" style="margin: 2%;">{{g | titlecase}}</button>
               </span>              
             </div>
           </li>
@@ -51,7 +51,7 @@ background-color: rgba(255,255,255,0.5)">
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <label class="dropdown-item" (click)="resetLanguageFilter()">Reset</label>
               <span *ngFor="let lang of allLanguages">
-                <button type="button" id="{{lang}}" (click)="addLanguageToSort(lang)" class="btn btn-secondary btn-sm" style="margin: 1%;">{{lang}}</button>
+                <button type="button" id="{{lang}}" (click)="addLanguageToSort(lang)" class="btn btn-secondary btn-sm" style="margin: 1%;">{{lang | titlecase}}</button>
               </span>              
             </div>
           </li>
@@ -318,5 +318,5 @@ background-color: rgba(255,255,255,0.5)">
   </div>
 
 
-
+  <app-tamil></app-tamil>
 </div>

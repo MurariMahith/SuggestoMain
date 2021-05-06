@@ -258,7 +258,7 @@ export class FeedComponent implements OnInit {
       var personalisedMovies = []
       allDisplayMovies.forEach(o => {
   
-        var genresForMovie = o.genre.trim().split(',')
+        var genresForMovie = o.genre.trim().split(' ')
         ////console.log(genresForMovie)
         
         genresForMovie.forEach(element => {

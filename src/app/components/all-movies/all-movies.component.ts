@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
+import { element } from 'protractor';
 import { map } from 'rxjs/operators';
 import { DisplayMovie } from 'src/app/models/DisplayMovie';
 import { FMovie } from 'src/app/models/Fmovie';
@@ -33,6 +34,7 @@ export class AllMoviesComponent implements OnInit {
   yearsToIncludeInSort : string[] = [];
   genresToIncludeInSort : string[] = []; 
   languagesToIncludeInSort : string[] = []; 
+  ottToIncludeInSort : string[] = [];
 
   userMovie : UserSuggestedMovie = new UserSuggestedMovie();
 
@@ -82,6 +84,7 @@ export class AllMoviesComponent implements OnInit {
       this.DisplayMovieListOriginal = this.prepareDisplayMovieList(this.allMovies)
       this.paramsBasedSort()
       this.loading = false;
+      //this.ottToIncludeInSort.push("prime_video")
 
     })
   }
@@ -97,7 +100,9 @@ export class AllMoviesComponent implements OnInit {
     //write logic here to show movies which are avilable in ott platform fom param.
     if(this.ottFromParam)
     {
-
+      this.ottToIncludeInSort.push(this.ottFromParam.trim().toLocaleLowerCase())
+      this.sortAccordingToGenreAndYear();
+      console.log(this.ottToIncludeInSort);
     }
 
     if(this.langFromParam && this.allGenres.includes(this.langFromParam))
@@ -327,7 +332,7 @@ export class AllMoviesComponent implements OnInit {
     console.log("languages")
     console.log(this.languagesToIncludeInSort);
     
-    if(this.yearsToIncludeInSort.length === 0 && this.genresToIncludeInSort.length === 0) 
+    if(this.yearsToIncludeInSort.length === 0 && this.genresToIncludeInSort.length === 0 && this.ottToIncludeInSort.length === 0) 
     {
       console.log("0 & 0")
       // document.getElementById("navbarDropdownG").classList.remove("active")
@@ -338,7 +343,7 @@ export class AllMoviesComponent implements OnInit {
     {
       this.DisplayMovieList.length =0;
       //sorting genres
-      if(this.genresToIncludeInSort.length === 0)
+      if(this.genresToIncludeInSort.length === 0 && this.ottToIncludeInSort.length === 0)
       {
         this.DisplayMovieList = this.DisplayMovieListOriginal;
       }
@@ -352,6 +357,16 @@ export class AllMoviesComponent implements OnInit {
         }
         this.DisplayMovieListOriginal.forEach(o => {
           var genresForMovie = o.genre.trim().toLocaleLowerCase().split(',')
+          var ottForMovie = o.availableIn.trim().toLocaleLowerCase().split(',')
+          //console.log(ottForMovie);
+          //murari
+          ottForMovie.forEach(element => {
+            console.log(this.ottToIncludeInSort)
+            if(this.ottToIncludeInSort.includes(element))
+            {
+              this.DisplayMovieList.push(o);
+            }
+          })
           
           genresForMovie.forEach(element => {
 

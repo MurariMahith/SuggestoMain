@@ -54,25 +54,25 @@ export class DisplayMovieService {
       obj.cast = obj.cast + " etc.,."
       obj.subTags = o.subTags.join(",")
       if(o.language.english)
-        obj.language += 'English, '
+        obj.language += 'English '
       if(o.language.telugu)
-        obj.language += 'Telugu, '
+        obj.language += 'Telugu '
       if(o.language.tamil)
-        obj.language += 'Tamil, '
+        obj.language += 'Tamil '
       if(o.language.malayalam)
-        obj.language += 'Malayalam, '
+        obj.language += 'Malayalam '
       if(o.language.kannada)
-        obj.language += 'Kannada, '
+        obj.language += 'Kannada '
       for(var key in o.movieGenre)
       {
         if(o.movieGenre[key])
-          obj.genre += key +','
+          obj.genre += key +' '
       }
 
       for(var key in o.availableIn)
       {
         if(o.availableIn[key])
-          obj.availableIn += key +','
+          obj.availableIn += key +' '
       }
 
       MovieListForDisplay.push(obj);    
@@ -162,15 +162,15 @@ export class DisplayMovieService {
       obj.ott.Zee5 = o.availableIn.Zee5
       obj.subTags = o.subTags.join(",")
       if(o.language.english)
-        obj.language += 'English, '
+        obj.language += 'English,'
       if(o.language.telugu)
-        obj.language += 'Telugu, '
+        obj.language += 'Telugu,'
       if(o.language.tamil)
-        obj.language += 'Tamil, '
+        obj.language += 'Tamil,'
       if(o.language.malayalam)
-        obj.language += 'Malayalam, '
+        obj.language += 'Malayalam,'
       if(o.language.kannada)
-        obj.language += 'Kannada, '
+        obj.language += 'Kannada,'
       for(var key in o.movieGenre)
       {
         if(o.movieGenre[key])

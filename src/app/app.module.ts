@@ -47,7 +47,9 @@ import { AppUpdateService } from './services/app-update.service';
 import { DownloadOurAppComponent } from './components/download-our-app/download-our-app.component';
 import { ComplaintComponent } from './components/complaint/complaint.component';
 
-import { CommaPipe } from './services/CommaPipe'
+import { CommaPipe } from './services/CommaPipe';
+import { UnderScorePipe } from './services/UnderScorePipe';
+import { PersonalisedMoviesComponent } from './components/personalised-movies/personalised-movies.component'
 
 @NgModule({
   declarations: [
@@ -79,7 +81,9 @@ import { CommaPipe } from './services/CommaPipe'
     FeedComponent,
     DownloadOurAppComponent,
     ComplaintComponent,
-    CommaPipe
+    CommaPipe,
+    UnderScorePipe,
+    PersonalisedMoviesComponent
   ],
   imports: [
     BrowserModule,

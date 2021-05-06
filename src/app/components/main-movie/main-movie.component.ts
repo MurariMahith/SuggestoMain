@@ -71,16 +71,16 @@ export class MainMovieComponent implements OnInit {
       this.customerService.getLoggedInCustomer()
         .subscribe(o =>
           {
-            console.log(o)
+            //console.log(o)
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
             }
-            console.log(this.currentCustomer) 
+            //console.log(this.currentCustomer) 
             if(this.currentCustomer)
             {
               this.loggedIn = true;
-              //console.log(this.currentCustomer.wishlistedMovies.includes(movieKey))
+              ////console.log(this.currentCustomer.wishlistedMovies.includes(movieKey))
               if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(movieKey))
               {
                 this.eligibleForWatched = false;
@@ -91,15 +91,15 @@ export class MainMovieComponent implements OnInit {
               }
               if(this.currentCustomer.wishlistedMovies && this.currentCustomer.wishlistedMovies.includes(movieKey))
               {
-                console.log("here eligible is false")
+                //console.log("here eligible is false")
                 this.eligibleForWishList = false
-                console.log(this.eligibleForWishList);
+                //console.log(this.eligibleForWishList);
               }
               else
               {
-                console.log("eligible is rtrue")
+                //console.log("eligible is rtrue")
                 this.eligibleForWishList = true;
-                console.log(this.eligibleForWishList);
+                //console.log(this.eligibleForWishList);
               }
             }
             else
@@ -140,7 +140,7 @@ export class MainMovieComponent implements OnInit {
       )
     ).subscribe(o => {
       this.loading = false;
-      console.log(o);
+      //console.log(o);
       this.allMovies = o;
       if(this.activatedRoute.snapshot.params.key)
       {
@@ -159,12 +159,12 @@ export class MainMovieComponent implements OnInit {
           // {
           //   m.visitedCount = 1;
           //   this.movieService.updateMovie(m.key,m);
-          //   console.log(m)
+          //   //console.log(m)
           //   obs.unsubscribe();
           // }
           this.foundMovies.push(m);
           this.movieHere = m;
-          console.log(this.movieHere.availableIn.Aha)
+          //console.log(this.movieHere.availableIn.Aha)
           //console.log(m.ytTrailerLink);
           this.actualMovieEmbedTrailer = "https://www.youtube.com/embed/"+m.ytTrailerLink.slice(32,)
           //add below line to above str to have autoplay feature
@@ -173,13 +173,13 @@ export class MainMovieComponent implements OnInit {
           this.safeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.actualMovieEmbedTrailer)
           this.actualMovie = this.displaymovieservice.prepareDisplayMovieList(this.foundMovies)[0];
           this.findSimilarMovies()
-          console.log(this.actualMovie)
+          //console.log(this.actualMovie)
           if(!this.loggedIn)
           {
-            console.log(movieKey)
-            console.log(window.localStorage.getItem(movieKey))
-            console.log(localStorage.getItem("loggedIn"))
-            console.log(window.localStorage.getItem(movieKey))
+            //console.log(movieKey)
+            //console.log(window.localStorage.getItem(movieKey))
+            //console.log(localStorage.getItem("loggedIn"))
+            //console.log(window.localStorage.getItem(movieKey))
             var prevRating = window.localStorage.getItem(movieKey);
             if(prevRating != null && window.localStorage)
             {
@@ -207,13 +207,13 @@ export class MainMovieComponent implements OnInit {
       {
         m.visitedCount = m.visitedCount+1;
         this.movieService.updateMovie(m.key,m);
-        console.log(m)
+        //console.log(m)
       }
       else
       {
         m.visitedCount = 1;
         this.movieService.updateMovie(m.key,m);
-        console.log(m)
+        //console.log(m)
       }
     }
   }
@@ -307,15 +307,15 @@ export class MainMovieComponent implements OnInit {
         arr.push(ratedMovieLocal)
         this.currentCustomer.ratedMovies = arr
       }
-      console.log(this.currentCustomer)
+      //console.log(this.currentCustomer)
       this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
     }
   }
 
   wishListMovie(key)
   {
-    console.log(this.currentCustomer)
-    console.log(key);
+    //console.log(this.currentCustomer)
+    //console.log(key);
     if(this.currentCustomer.wishlistedMovies && this.currentCustomer.wishlistedMovies.length >0)
     {
       this.currentCustomer.wishlistedMovies.push(key);
@@ -328,12 +328,12 @@ export class MainMovieComponent implements OnInit {
     }
     //this.currentCustomer.wishlistedMovies.push(key);
     this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
-    console.log(this.currentCustomer);
+    //console.log(this.currentCustomer);
   }
 
   removeFromWishlist(key)
   {
-    console.log(this.currentCustomer.wishlistedMovies)
+    //console.log(this.currentCustomer.wishlistedMovies)
     if(this.currentCustomer.wishlistedMovies.includes(key))
     {
       for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
@@ -343,7 +343,7 @@ export class MainMovieComponent implements OnInit {
           this.currentCustomer.wishlistedMovies.splice(i, 1); 
         }
       }
-      console.log(this.currentCustomer.wishlistedMovies)
+      //console.log(this.currentCustomer.wishlistedMovies)
       this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
     }
   }
@@ -412,7 +412,7 @@ export class MainMovieComponent implements OnInit {
       }
       if(this.foundMovieID === "")
       {
-        console.log("movie not found");
+        //console.log("movie not found");
         this.recommendationsBool = false;
       }
       else{
@@ -428,11 +428,11 @@ export class MainMovieComponent implements OnInit {
     {
       this.http.get(this.recommendedMoviesUrl+id+this.recommendedMoviesUrlPart2).toPromise()
       .then(res => {
-        console.log(res);
+        //console.log(res);
         if(res['results'].length<=2)
         {
           this.recommendationsBool = false
-          console.log(res['results'].length<=2)
+          //console.log(res['results'].length<=2)
         }
         for(let i=0;i<res['results'].length;i++)
         {
@@ -443,7 +443,7 @@ export class MainMovieComponent implements OnInit {
             break;
           }
         }
-        console.log(this.recommendedMovieTitles);
+        //console.log(this.recommendedMovieTitles);
       })
     }
   }
@@ -452,7 +452,7 @@ export class MainMovieComponent implements OnInit {
   {
     var link = "https://www.imdb.com/title/"
     var movFromOurDb = this.allMovies.find(x => x.title === title)
-    console.log(movFromOurDb);
+    //console.log(movFromOurDb);
     if(movFromOurDb && movFromOurDb !== null)
     {
       //this.router.navigate('/movie/'+movFromOurDb.key)
@@ -462,8 +462,8 @@ export class MainMovieComponent implements OnInit {
     {
       this.http.get(this.findMovieUrl+id+this.findMovieUrlPart2).toPromise()
       .then(res => {
-        console.log("imdb forward")
-        console.log(res);
+        //console.log("imdb forward")
+        //console.log(res);
         var go = confirm(title+" is not available on our Database, redirecting you to external site.You want to go?")
         if(go)
         {

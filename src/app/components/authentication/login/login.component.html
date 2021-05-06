@@ -16,7 +16,7 @@ background-color: rgba(255,255,255,0.5)">
       <!-- <p class="text-muted" style="font-size: small;">click more about login If you are concerned about</p> -->
   
       <!-- Login Form -->
-      <form *ngIf="!isMobile">
+      <form>
         <input type="text" id="login" class="fadeIn second" name="Email" [(ngModel)]="email" #Email="ngModel" placeholder="E-mail Id">
         <input type="password" id="password" class="fadeIn third" name="Pass" [(ngModel)]="password" #Pass="ngModel" placeholder="Password">
         <!-- <input type="submit" class="fadeIn fourth" value="Log In"> -->
@@ -70,9 +70,9 @@ background-color: rgba(255,255,255,0.5)">
         <div class="modal-body">
           <ul>
             <li>We don't store any of your personal data.</li>
+            <li>We don't store your email address.</li>
             <li>We can't access any of your social media accounts.</li>
-            <li>We just store name, email-id and photo url provided by authentication service.</li>
-            <li>We don't share your email-id to other users.</li>
+            <li>We just store name and photo url provided by authentication service.</li>
           </ul>          
         </div>
         <div class="modal-footer">

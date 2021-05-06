@@ -82,7 +82,7 @@ export class WishListComponent implements OnInit {
               this.loggedIn = true
               console.log(this.customerNeeded)
               if(!this.customerNeeded.name || this.customerNeeded.name === '')
-                this.customerNeeded.name = this.customerNeeded.email;
+                this.customerNeeded.name = "Not Provided";
 
               //removing duplicates from wishlists
               let chars = this.customerNeeded.wishlistedMovies

@@ -470,11 +470,12 @@ export class HomeComponent implements OnInit {
       ////console.log(this.homePageList.listsToIncludeInHomePage)
       this.buildeditorChoiceMovieListForDisplay()
       this.buildRecentlySuggestedMovieList()
-      if(navigator.geolocation)
-        this.locationAccess = true;
-      else
-        this.locationAccess = false;
-      if(this.locationAccess)
+      //uncomment below code if location based movies doesn't work and remove or condition in below if actual if condition : if(this.locationAccess)
+      // if(navigator.geolocation)
+      //   this.locationAccess = true;
+      // else
+      //   this.locationAccess = false;
+      if(this.locationAccess || !this.locationAccess)
       {
         this.buildMovieSuggestionBasedOnLocation()
       }      
@@ -640,9 +641,11 @@ export class HomeComponent implements OnInit {
     var i=0;
     var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,false,true,false,false);
     var personalisedMovies = []
+    console.log(this.currentCustomer.preferredGenre)
+    //console.log()
     allDisplayMovies.forEach(o => {
 
-      var genresForMovie = o.genre.trim().split(',')
+      var genresForMovie = o.genre.trim().split(' ')
       
       genresForMovie.forEach(element => {
         if(this.currentCustomer.preferredGenre && this.currentCustomer.preferredGenre.includes(element))
@@ -654,6 +657,7 @@ export class HomeComponent implements OnInit {
       });
 
     });
+    console.log(personalisedMovies);
     var uniqueArray :DisplayMovie[] = personalisedMovies.filter(function(item, pos) {
       return personalisedMovies.indexOf(item) == pos;
     })
@@ -680,7 +684,9 @@ export class HomeComponent implements OnInit {
 
     }
     shuffledpersonalisedmovies = this.shuffleArr(this.personalisedMoviesDisplay)
+    console.log(this.personalisedMoviesDisplay)
     this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[0];
+    console.log(this.corouselPersonalisedMovieD)
     if(this.todayMovieD && this.corouselWishlistedMovieD && this.todayMovieD.key === this.corouselPersonalisedMovieD.key)
     {
       this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[1];
@@ -731,15 +737,16 @@ export class HomeComponent implements OnInit {
     var malayalam : boolean = false;
     var kannada : boolean = false;
     var english : boolean = false; 
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.showPosition.bind(this));
-      this.locationAccess = true;
-      ////console.log(this.latitude+","+this.longitude)
-    } else { 
-      this.locationAccess = false;
-      alert("Location access is needed to suggest movies based on location, Its not mandatory to give location access to us.")
-    }
+    //uncomment below code if location based movies doesn't work
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition(this.showPosition.bind(this));
+    //   this.locationAccess = true;
+    //   ////console.log(this.latitude+","+this.longitude)
+    // } else { 
+    //   this.locationAccess = false;
+    //   alert("Location access is needed to suggest movies based on location, Its not mandatory to give location access to us.")
+    // }
+    this.locationAccess = true;
     this.http.get(this.APIforState+"latitude="+this.latitude+"&longitude="+this.longitude+"&localityLanguage=en").toPromise()
           .then(a => {
             ////console.log(a)

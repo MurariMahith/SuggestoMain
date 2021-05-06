@@ -17,10 +17,12 @@ div.scrollmenu {
   #footer {
 
     width: 100%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    // border-top-left-radius: 10px;
+    // border-top-right-radius: 10px;
     border: 0.2px solid black;
     border-bottom-color: white;
+    border-left: none;
+    border-right: none;
     height: 53px;
     // opacity: 0.85;
     background-color: rgb(255, 255, 255);
@@ -31,7 +33,7 @@ div.scrollmenu {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 3%;
+      margin-top: 2%;
   }
 
   .active

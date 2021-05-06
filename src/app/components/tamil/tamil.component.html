@@ -1,22 +1,4 @@
-<div class="scrollmenu">
-  <h5 class="nav-link btnm" routerLink="/">Suggesto</h5>
-  <a class="nav-link btnm" routerLink="/">Home</a>
-  <!-- <a class="nav-link btnm" routerLink="/telugu" routerLinkActive="active-link">Telugu</a>
-  <a class="nav-link btnm" routerLink="/tamil" routerLinkActive="active-link">Tamil</a>
-  <a class="nav-link btnm" routerLink="/kannada" routerLinkActive="active-link">Kannada</a>
-  <a class="nav-link btnm" routerLink="/malayalam" routerLinkActive="active-link">Malayalam</a> -->
-  <a class="nav-link btnm" routerLink="/all" routerLinkActive="active-link">All Movies</a>
-  <a class="nav-link btnm" routerLink="/movielist" routerLinkActive="active-link">Movie's Lists</a> 
-  <a class="nav-link btnm" routerLink="/personal" routerLinkActive="active-link">Personal</a> 
-  <a class="nav-link btnm" routerLink="/login" routerLinkActive="active-link" *ngIf="!loggedIn">LogIn</a> 
-  <a class="nav-link btnm" routerLink="/signup" routerLinkActive="active-link" *ngIf="!loggedIn">Sign Up</a> 
-  <a class="nav-link btnm" (click)="logout()" routerLinkActive="active-link" *ngIf="loggedIn">Log Out!</a> 
-  <!-- <a class="nav-link btnm" routerLink="/info" routerLinkActive="active-link">Information</a>
-  <a href="#custom">Custom</a>
-  <a href="#more">More</a>
-  <a href="#logo">Logo</a>
-  <a href="#friends">Friends</a>
-  <a href="#partners">Partners</a>
-  <a href="#people">People</a>
-  <a href="#work">Work</a> -->
+<div class="text-center center-block">
+  <button type="button" class="btn btn-outline-primary" style="border-radius: 100px;margin: 2%;" (click)="copyToClipboard()"><i class="bi bi-share-fill"></i> Share our app</button>
+  <button type="button" class="btn btn-outline-primary" style="border-radius: 100px;margin: 2%;"(click)="goToPlayStore()"><i class="fab fa-google-play"></i> Rate on playstore</button>
 </div>

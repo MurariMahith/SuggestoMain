@@ -105,6 +105,8 @@ export class MainListComponent implements OnInit {
       this.allMovieLists = o;
       var tempList : MovieList[] = [];
       var listKey = this.activatedRoute.snapshot.params.key;
+      // console.log(this.allMovieLists)
+      // console.log(listKey)
       for(let i=0;i<this.allMovieLists.length;i++)
       {
         if(this.allMovieLists[i]['key'] === listKey)
@@ -114,6 +116,10 @@ export class MainListComponent implements OnInit {
         }
       }
       console.log(tempList)
+      if(tempList.length==0)
+      {
+        this.router.navigateByUrl('/movielist')
+      }
       this.customerUID = tempList[0].createdBy;
       this.ListForDisplay = this.listDisplayService.BuildMovieListForDisplay(tempList,this.allMovies)[0]
       //this.ListForDisplay.moviesInList.sort((a,b) => b.rating - a.rating)
@@ -137,8 +143,12 @@ export class MainListComponent implements OnInit {
             {
               this.allCustomers = o;
               //console.log(o)
-
-              this.customerName = this.allCustomers.find(x => x.uid === this.customerUID).name
+              //if(window.localStorage.getItem())
+              if(this.allCustomers.find(x => x.uid === this.customerUID))
+              {
+                this.customerName = this.allCustomers.find(x => x.uid === this.customerUID).name
+              }
+              
               
             })
   }
