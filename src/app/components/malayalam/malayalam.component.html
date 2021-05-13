@@ -1,107 +1,358 @@
-<!-- <div *ngIf="isMobile" class="container">
-  <div class="profile">
-      <div class="profile-header">
-          <div class="profile-header-cover"></div>
-          <div class="profile-header-content">
-              <div class="profile-header-img">
-                  <img src="../../../assets/images/logo.jpg" alt="" />
-              </div>
-              <p>Name : <span *ngIf="currentCustomer.name">{{currentCustomer.name}}</span><span *ngIf="!currentCustomer.name" class="text-muted">name not provided</span></p>
-              <p>Email : {{currentCustomer.email}}</p>
-              <p>Preferred Languages : {{languages}}</p>
-              <p>Preferred Genres : {{genres}}</p>
-              <p>Share your wishlist to people :               
-              <label class="switch">
-                <input type="checkbox" [(ngModel)]="share" name="Adventure">
-                <span class="slider round"></span>
-              </label></p><br>
-              <ul class="profile-header-tab nav nav-tabs nav-tabs-v2">
-                  <li class="nav-item">
-                      <a class="nav-link" (click)="wishSelect()">
-                          <div class="nav-field">Wishlisted Movies</div>
-                          <div class="nav-value">{{wcount}}</div>
-                      </a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" (click)="rateSelect()">
-                          <div class="nav-field">Rated Movies</div>
-                          <div class="nav-value">{{rcount}}</div>
-                      </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link">
-                        <div class="nav-field"><button type="button" (click)="logout()" class="btn btn-sm btn-danger">Log Out</button></div>
-                    </a>
-                </li>
-              </ul>
-          </div>
-      </div>
+<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,0)">
+    <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
+    <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
+</div>
 
-      <div class="profile-container">
-          <div class="profile-sidebar">
-              <div class="desktop-sticky-top">
-                  <h4>John Smith</h4>
-                  <div class="font-weight-600 mb-3 text-muted mt-n2">@johnsmith</div>
-                  <p>
-                      Principal UXUI Design &amp; Brand Architecture for Studio. Creator of SeanTheme. Bringing the world closer together. Studied Computer Science and Psychology at Harvard University.
-                  </p>
-                  <div class="mb-1"><i class="fa fa-map-marker-alt fa-fw text-muted"></i> New York, NY</div>
-                  <div class="mb-3"><i class="fa fa-link fa-fw text-muted"></i> seantheme.com/studio</div>
-                  <hr class="mt-4 mb-4" />
-              </div>
-          </div>
+<div *ngIf="!loading" style="margin-bottom: 50px;background-color: rgb(22,22,22);color: white;">
+<b>
+<div style="width: 100%;background-color: rgba(50, 32, 118, 1);color: white;padding: 2%;padding-bottom: 40px;">
+    <div style="display: flex;justify-content: flex-end;" (click)="logout()">
+        Log Out
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;">
+        <img *ngIf="currentCustomer.customerPhotoUrl" src="{{currentCustomer.customerPhotoUrl}}" alt="" style="border-radius: 100px;border: 4px solid white;" />
+        <img *ngIf="!currentCustomer.customerPhotoUrl" src="../../../assets/images/logo.jpg" alt="" />
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;">
+        <h4>{{currentCustomer.name | titlecase}}</h4>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;">
+        <p>Preferred Languages : {{languages}}</p>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;" *ngIf="!elongatedgenre">
+        <p>Preferred Genres : {{ (genres.length>20)? (genres | slice:0:20)+'....':(genres) }}</p>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;" *ngIf="!elongatedgenre">
+        <span *ngIf="genres.length>20" (click)="showAllGenres()">see all genres.</span>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;" *ngIf="elongatedgenre">
+        <p>Preferred Genres : {{genres}}</p>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;" *ngIf="elongatedgenre">
+        <span (click)="showAllGenres()">see less genres.</span>
+    </div>
+    <div class="d-flex justify-content-center nums" style="padding-bottom: 0;margin-bottom: 0;">
+        <div class="nums-inside">
+            <h6>{{wcount}}</h6>
+        </div>
+        <div class="nums-inside">
+            <h6>{{rcount}}</h6>
+        </div>
+        <div class="nums-inside">
+            <h6>{{watchedcount}}</h6>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center nums">
+        <div class="nums-inside">
+            <p>wishlisted</p>
+        </div>
+        <div class="nums-inside">
+            <p>rated</p>
+        </div>
+        <div class="nums-inside">
+            <p>watched</p>
+        </div>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;">
+        <p>Share your wishlist :  
+            <label class="switch">
+            <input type="checkbox" (change)="UpdateCustomerWhenSharingEvent()" [(ngModel)]="share" name="Adventure">
+            <span class="slider round"></span>
+            </label>
+        </p>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;">
+        <button type="button" class="btn btn-primary" style="border-radius: 20px;margin-right: 10px;" (click)="this.router.navigateByUrl('/personalisation')">Edit personalisation</button>
+        <button type="button" class="btn btn-primary" style="border-radius: 20px;" (click)="copyToClipboard()">Invite Friends</button>
+    </div>
+</div>
+</b>
 
-          <div class="profile-content">
-              <div class="row">
-                  <div class="col-xl-12">
-                      <div class="tab-content p-0">
-                          <div class="tab-pane fade active show" id="profile-followers">
-                              <div class="list-group" *ngIf="ratebool">
-                                  <h6>Rated Movies</h6>
-                                  <div *ngFor="let m of ratedMoviesDisplay" class="list-group-item d-flex align-items-center">
-                                      <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
-                                      <div class="flex-fill pl-3 pr-3">
-                                          <div><a href="#" class="text-dark font-weight-600">{{m.title}}</a></div>
-                                          <div class="text-muted fs-13px">Your rating : {{m.rating}}</div>
-                                      </div>
-                                      <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
-                                  </div>                                  
-                              </div>
-                          </div>
-                          <div class="tab-pane fade active show" id="profile-followers">
-                            <div class="list-group" *ngIf="wishbool">
-                                <h6>WishListed Movies</h6>
-                                <div *ngFor="let m of wishlistedMoviesDisplay" class="list-group-item d-flex align-items-center">
-                                    <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
-                                    <div class="flex-fill pl-3 pr-3">
-                                        <div><a href="#" class="text-dark font-weight-600">{{m.title}}</a></div>
-                                        <div class="text-muted fs-13px">{{m.releaseYear}}</div>
-                                    </div>
-                                    <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
-                                </div>                                  
+
+<h4 style="margin-left: 5%;margin-top: 2%;"  (click)="GoToMyList()">Lists Created By You</h4>
+
+<div class="content-item">
+    <div class="lists" style="margin: 2%;display: flex;">
+        <div class="scrolling-wrapper3">
+            <div class="list-item item3" (click)="this.router.navigateByUrl('/createList')">
+                <div class="long-word"><b><i class="bi bi-plus-square"></i> Create new List</b></div>
+            </div>
+            <div class="list-item item3" *ngFor="let list of listsByCurrentCustomer" (click)="this.router.navigateByUrl('/list/'+list.key)">
+                <div class="long-word">{{list.listName}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 style="margin-left: 5%;margin-top: 2%;">MovieBuff Board</h4>
+<div class="content-item" (click)="this.router.navigateByUrl('/people')">
+    <div class="lists" style="margin: 2%;display: flex;">
+        <div class="d-flex bd-highlight list-item" style="width: 100%;">
+            <div class="p-2 w-100 bd-highlight">
+                <img src="../../../assets/images/logo2.png" width="40" height="40">
+                Click to see MovieBuff Board 
+            </div>
+            <div class="p-2 flex-shrink-1 bd-highlight">
+                <h3><i class="bi bi-chevron-right"></i></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 style="margin-left: 5%;margin-top: 2%;">Your Movies</h4>
+<b>
+<div class="content-item">
+    <div class="lists" style="margin: 2%;">
+        <div class="d-flex bd-highlight mb-3 list-item" (click)="wishSelect()">
+            <div class="mr-auto p-2 bd-highlight"><i class="bi bi-heart-fill"></i>  Wishlisted Movies</div>
+            <div class="p-2 bd-highlight">{{wcount}} </div>
+            <div class="p-2 bd-highlight"><i class="bi bi-chevron-right"></i></div>
+        </div>
+        <div class="d-flex bd-highlight mb-3 list-item" (click)="rateSelect()">
+            <div class="mr-auto p-2 bd-highlight"><i class="bi bi-person-check-fill"></i>  Rated Movies</div>
+            <div class="p-2 bd-highlight">{{rcount}} </div>
+            <div class="p-2 bd-highlight"><i class="bi bi-chevron-right"></i></div>
+        </div>
+        <div class="d-flex bd-highlight mb-3 list-item" (click)="watchedSelect()" >
+            <div class="mr-auto p-2 bd-highlight"><i class="bi bi-check-circle-fill"></i>  Watched Movies</div>
+            <div class="p-2 bd-highlight">{{watchedcount}} </div>
+            <div class="p-2 bd-highlight"><i class="bi bi-chevron-right"></i></div>
+        </div>
+    </div>
+</div></b>
+
+<p id="pointer"></p>
+<div class="container">
+
+<div *ngIf="wishbool">
+<div style="display: flex;justify-content: center;">
+    <h4>Wishlist</h4>
+</div>
+<div class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;" *ngFor="let m of wishlistedMoviesDisplay" >
+    <div class="content"  [ngStyle]="{'background-image': 'url(' + m.smallImageUrl + ')'}" style="border-top-left-radius: 10px;border-top-right-radius: 10px;height: 130px;">
+        <div style="background-color: rgba(0, 0, 0, 0.616);height: 130px;border-top-left-radius: 10px;border-top-right-radius: 10px;">
+            <div>
+                <div class="d-flex bd-highlight mb-3" style="margin-right: 2%;">
+                    <div class="p-2 bd-highlight" (click)="goto(m.key)"><img src="{{m.smallImageUrl}}" width="70px" height="110"></div>
+                    <div class="p-2 bd-highlight" (click)="goto(m.key)">
+                        <h5>{{ (m.title.length>25)? (m.title | slice:0:25)+'..':(m.title) | titlecase }}</h5>
+                        <p style="font-size: small;">{{m.releaseYear}} . {{ (m.genre.length>35)? (m.genre | slice:0:35)+'..':(m.genre) }}</p>
+                    </div>
+                    <div class="ml-auto p-2 bd-highlight"  style="z-index: 200;">
+                        <a (click)="GoToMovieExternalSite(m.key)">
+                            <img *ngIf="m.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 10px;height: 50px;">
+                            <img *ngIf="m.ott.Prime_Video" src="../../../assets/ott-icons/prime.png" style="border-radius: 10px;height: 50px;">
+                            <img *ngIf="m.ott.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" style="border-radius: 10px;height: 50px;">
+                            <img *ngIf="m.ott.Aha" src="../../../assets/ott-icons/aha.jpeg" style="border-radius: 10px;height: 50px;">
+                            <img *ngIf="m.ott.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" style="border-radius: 10px;height: 50px;">
+                            <img *ngIf="m.ott.JioCinema" src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 10px;height: 50px;">
+                            <img *ngIf="m.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 10px;height: 50px;">
+                            <img *ngIf="m.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 10px;height: 50px;">
+                            <img *ngIf="m.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 10px;height: 50px;">
+                          </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="footer" style="display: flex;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;height: 40px;background-color: rgba(90, 89, 89, 0.76);">
+        <div class="d-flex bd-highlight mb-3" style="font-size: small;">
+            <div class="p-2 bd-highlight" *ngIf="currentCustomer.wishlistedMovies.includes(m.key)" (click)="removeFromWishlist(m.key)">
+                <i class="bi bi-heart-fill" style="color: red;"></i>  Remove from wishlist
+            </div>
+            <div class="p-2 bd-highlight" *ngIf="!currentCustomer.wishlistedMovies.includes(m.key)" (click)="addMovieToWishlist(m.key)">
+                <i class="bi bi-heart" style="color: red;"></i>  Wishlist
+            </div>
+            <div class="p-2 bd-highlight"  *ngIf="currentCustomer.watchedMovies.includes(m.key)"  (click)="removeFromWatched(m.key)">
+                <i class="bi bi-bookmark-dash-fill" style="color: gold;"></i>  Remove from watched
+            </div>
+            <div class="p-2 bd-highlight"  *ngIf="!currentCustomer.watchedMovies.includes(m.key)" (click)="addToWatchedMovies(m.key)">
+                <i class="bi bi-bookmark-plus-fill"></i>  Watched?
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="profile-content" style="margin-bottom: 60px;">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="tab-content p-0">
+                <div class="tab-pane fade active show" id="profile-followers">
+                    <div class="list-group">
+                        <div *ngFor="let m of wishlistedMoviesDisplay" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
+                            <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
+                            <div class="flex-fill pl-3 pr-3">
+                                <div><a (click)="goto(m.key)" class="text-light font-weight-600">{{m.title | titlecase}}</a></div>
+                                <div class="text-muted fs-13px">Released Year : {{m.releaseYear}}</div>
+                                <div class="text-muted fs-13px" style="font-size: small;">Genre : {{ (m.genre.length>20)? (m.genre | slice:0:20)+'..':(m.genre) }}</div>
                             </div>
+                            <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
+                        </div>                                  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+</div>
+
+<div *ngIf="ratebool">
+    <div style="display: flex;justify-content: center;">
+        <h4>Rated Movies</h4>
+    </div>
+    <div class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;" *ngFor="let m of ratedMoviesDisplay" >
+        <div class="content"  [ngStyle]="{'background-image': 'url(' + m.smallImageUrl + ')'}" style="border-top-left-radius: 10px;border-top-right-radius: 10px;height: 130px;">
+            <div style="background-color: rgba(0, 0, 0, 0.616);height: 130px;border-top-left-radius: 10px;border-top-right-radius: 10px;">
+                <div>
+                    <div class="d-flex bd-highlight mb-3" style="margin-right: 2%;">
+                        <div class="p-2 bd-highlight" (click)="goto(m.key)"><img src="{{m.smallImageUrl}}" width="70px" height="110"></div>
+                        <div class="p-2 bd-highlight" (click)="goto(m.key)">
+                            <h5>{{ (m.title.length>25)? (m.title | slice:0:25)+'..':(m.title) | titlecase }}</h5>
+                            <p style="font-size: small;">{{m.releaseYear}} . {{ (m.genre.length>35)? (m.genre | slice:0:35)+'..':(m.genre) }}</p>
                         </div>
-                      </div>
-                      <div class="tab2-content p-0">
-                        <div class="tab2-pane fade active show" id="profile-followers">
-                            <div class="list-group">
-                                <div *ngFor="let m of ratedMoviesDisplay" class="list-group-item d-flex align-items-center">
-                                    <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
-                                    <div class="flex-fill pl-3 pr-3">
-                                        <div><a href="#" class="text-dark font-weight-600">hahahaha</a></div>
-                                        <div class="text-muted fs-13px">{{m.releaseYear}}</div>
-                                    </div>
-                                    <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
-                                </div>                                  
-                            </div>
-                            <div class="text-center p-3">
-                                <a href="#" class="text-dark text-decoration-none">Show more <b class="caret"></b></a>
-                            </div>
+                        <div class="ml-auto p-2 bd-highlight"  style="z-index: 200;">
+                            <h3>{{m.rating}}</h3>
                         </div>
                     </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-</div> -->
+                </div>
+    
+            </div>
+        </div>
+        <div class="footer" style="display: flex;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;height: 40px;background-color: rgba(90, 89, 89, 0.76);">
+            <div class="d-flex bd-highlight mb-3" style="font-size: small;">
+                <div class="p-2 bd-highlight" *ngIf="currentCustomer.wishlistedMovies.includes(m.key)" (click)="removeFromWishlist(m.key)">
+                    <i class="bi bi-heart-fill" style="color: red;"></i>  Remove from wishlist
+                </div>
+                <div class="p-2 bd-highlight" *ngIf="!currentCustomer.wishlistedMovies.includes(m.key)" (click)="addMovieToWishlist(m.key)">
+                    <i class="bi bi-heart" style="color: red;"></i>  Wishlist
+                </div>
+                <div class="p-2 bd-highlight"  *ngIf="currentCustomer.watchedMovies.includes(m.key)"  (click)="removeFromWatched(m.key)">
+                    <i class="bi bi-bookmark-dash-fill" style="color: gold;"></i>  Remove from watched
+                </div>
+                <div class="p-2 bd-highlight"  *ngIf="!currentCustomer.watchedMovies.includes(m.key)" (click)="addToWatchedMovies(m.key)">
+                    <i class="bi bi-bookmark-plus-fill"></i>  Watched?
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="profile-content" style="margin-bottom: 60px;">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="tab-content p-0">
+                    <div class="tab-pane fade active show" id="profile-followers">
+                        <div class="list-group">
+                            <div *ngFor="let m of ratedMoviesDisplay" style="background-color: rgb(22,22,22);color: white;border: 1px solid red;" class="list-group-item d-flex align-items-center">
+                                <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
+                                <div class="flex-fill pl-3 pr-3">
+                                    <div><a (click)="goto(m.key)" class="text-light font-weight-600">{{m.title | titlecase}}</a></div>
+                                    <div class="text-muted fs-13px">Your rating : {{m.rating}}</div>
+                                    <div class="text-muted fs-13px" style="font-size: small;">Genre : {{ (m.genre.length>20)? (m.genre | slice:0:20)+'..':(m.genre) }}</div>
+                                </div>
+                                <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
+                            </div>                                  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+<div *ngIf="watchedbool">
+    <div style="display: flex;justify-content: center;">
+        <h4>Watched Movies</h4>
+    </div>
+    <div class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;" *ngFor="let m of watchedMoviesDisplay" >
+        <div class="content"  [ngStyle]="{'background-image': 'url(' + m.smallImageUrl + ')'}" style="border-top-left-radius: 10px;border-top-right-radius: 10px;height: 130px;">
+            <div style="background-color: rgba(0, 0, 0, 0.616);height: 130px;border-top-left-radius: 10px;border-top-right-radius: 10px;">
+                <div>
+                    <div class="d-flex bd-highlight mb-3" style="margin-right: 2%;">
+                        <div class="p-2 bd-highlight" (click)="goto(m.key)"><img src="{{m.smallImageUrl}}" width="70px" height="110"></div>
+                        <div class="p-2 bd-highlight" (click)="goto(m.key)">
+                            <h5>{{ (m.title.length>25)? (m.title | slice:0:25)+'..':(m.title) | titlecase }}</h5>
+                            <p style="font-size: small;">{{m.releaseYear}} . {{ (m.genre.length>35)? (m.genre | slice:0:35)+'..':(m.genre) }}</p>
+                        </div>
+                        <div class="ml-auto p-2 bd-highlight"  style="z-index: 200;">
+                            <a (click)="GoToMovieExternalSite(m.key)">
+                                <img *ngIf="m.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Prime_Video" src="../../../assets/ott-icons/prime.png" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Aha" src="../../../assets/ott-icons/aha.jpeg" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.JioCinema" src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 10px;height: 50px;">
+                              </a>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+        <div class="footer" style="display: flex;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;height: 40px;background-color: rgba(90, 89, 89, 0.76);">
+            <div class="d-flex bd-highlight mb-3" style="font-size: small;">
+                <div class="p-2 bd-highlight" *ngIf="currentCustomer.wishlistedMovies.includes(m.key)" (click)="removeFromWishlist(m.key)">
+                    <i class="bi bi-heart-fill" style="color: red;"></i>  Remove from wishlist
+                </div>
+                <div class="p-2 bd-highlight" *ngIf="!currentCustomer.wishlistedMovies.includes(m.key)" (click)="addMovieToWishlist(m.key)">
+                    <i class="bi bi-heart" style="color: red;"></i>  Wishlist
+                </div>
+                <div class="p-2 bd-highlight"  *ngIf="currentCustomer.watchedMovies.includes(m.key)"  (click)="removeFromWatched(m.key)">
+                    <i class="bi bi-bookmark-dash-fill" style="color: gold;"></i>  Remove from watched
+                </div>
+                <div class="p-2 bd-highlight"  *ngIf="!currentCustomer.watchedMovies.includes(m.key)" (click)="addToWatchedMovies(m.key)">
+                    <i class="bi bi-bookmark-plus-fill"></i>  Watched?
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="profile-content" style="margin-bottom: 60px;">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="tab-content p-0">
+                    <div class="tab-pane fade active show" id="profile-followers">
+                        <div class="list-group">
+                            <div *ngFor="let m of watchedMoviesDisplay" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
+                                <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
+                                <div class="flex-fill pl-3 pr-3">
+                                    <div><a (click)="goto(m.key)" class="text-light font-weight-600">{{m.title | titlecase}}</a></div>
+                                    <div class="text-muted fs-13px">Released Year : {{m.releaseYear}}</div>
+                                    <div class="text-muted fs-13px" style="font-size: small;">Genre : {{ (m.genre.length>20)? (m.genre | slice:0:20)+'..':(m.genre) }}</div>
+                                </div>
+                                <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
+                            </div>                                  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+</div>
+
+<app-tamil></app-tamil>
+
+
+<div class="movie-list-item" style="margin: 2%;" >
+    <div class="content" style="border-top-left-radius: 10px;border-top-right-radius: 10px;height: 130px;background-color: red;">
+        <div style="background-color: rgba(0, 0, 0, 0.507);height: 130px;">
+            <div>
+                <div class="d-flex bd-highlight mb-3" style="margin: 2%;">
+                    <div class="p-2 bd-highlight"><img src="https://image.tmdb.org/t/p/w500/2Pf0Dtw6P9CWshK6GYVXmmq9NFS.jpg" style="border: 1px solid red;" width="70px" height="100"></div>
+                    <div class="p-2 bd-highlight">
+                        <h6>name</h6>
+                        <p>genre . year</p>
+                    </div>
+                    <div class="ml-auto p-2 bd-highlight"><h2>6</h2></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="footer" style="border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;height: 40px;background-color: white;">
+    </div>
+</div>
+
+</div>

@@ -1,9 +1,8 @@
-<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
-background-color: rgba(255,255,255,0.5)">
+<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color:rgb(22,22,22)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
   <img src="../../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
 </div>
-
+<div class="dark-mode" style="background-color: rgb(22,22,22);color: white;height: 100vh;">
 <div class="container" *ngIf="!loading">
 <div style="margin-left: 20px;">
     <i class="bi bi-arrow-left-square" style="font-size: x-large;" (click)="goBack()"></i>
@@ -12,7 +11,7 @@ background-color: rgba(255,255,255,0.5)">
 <h5 class="text-center" style="margin: 2%;">{{ListForDisplay.listName | titlecase}}</h5>
 <!-- <p class="text-center" *ngIf="customList">Created By {{customerName | titlecase}}</p> -->
 <p class="text-center" *ngIf="eligibleForRating">
-    <button type="button" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#ratingModalList">
+    <button type="button" class="btn btn-sm btn-outline-light" data-toggle="modal" data-target="#ratingModalList">
         Rate this List <i class="bi bi-star"></i>
     </button></p>
 <div class="profile-content" style="margin-bottom: 60px;">
@@ -21,10 +20,10 @@ background-color: rgba(255,255,255,0.5)">
             <div class="tab-content p-0">
                 <div class="tab-pane fade active show" id="profile-followers">
                     <div class="list-group">
-                        <div *ngFor="let m of ListForDisplay.moviesInList" class="list-group-item d-flex align-items-center">
+                        <div *ngFor="let m of ListForDisplay.moviesInList" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
                             <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
                             <div class="flex-fill pl-3 pr-3">
-                                <div><a (click)="goto(m.key)" class="text-dark font-weight-600">{{m.title | titlecase}}</a></div>
+                                <div><a (click)="goto(m.key)" class="text-light font-weight-600">{{m.title | titlecase}}</a></div>
                                 <div class="text-muted fs-13px">Released Year : {{m.releaseYear}}</div>
                                 <div class="text-muted fs-13px" style="font-size: small;">Genre : {{ (m.genre.length>20)? (m.genre | slice:0:20)+'..':(m.genre) }}</div>
                             </div>
@@ -47,7 +46,7 @@ background-color: rgba(255,255,255,0.5)">
 <!--rating modal for list-->
 <div class="modal fade" id="ratingModalList" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
+      <div class="modal-content" style="background-color: rgb(22,22,22);color: white;border: 1px solid white;">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Rate {{ListForDisplay.listName | titlecase}} List</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -73,9 +72,8 @@ background-color: rgba(255,255,255,0.5)">
                 </div>
               </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
       </div>
     </div>
   </div>
+
+</div>

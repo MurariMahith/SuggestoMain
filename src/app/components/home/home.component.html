@@ -1,10 +1,12 @@
 <!-- <p>-----------------------------------------------------------------------------------------------------------------------------</p> -->
 <!-- <p>main suggestion for that day</p> -->
-<div *ngIf="loading" style="position: absolute;top: 170px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
-background-color: rgba(255, 255, 255, 0.3)">
+<div class="dark-mode" style="background-color: rgb(22,22,22);color: white;">
+<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,0);">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
-  <img src="../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
+  <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
 </div>
+
+
 <div *ngIf="!loggedIn">
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
@@ -274,7 +276,7 @@ background-color: rgba(0,0,0,0.8)">
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="background-color: rgb(22,22,22);color: white;border: 1px solid white;">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">{{MovieToBeRated.title}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -319,9 +321,9 @@ background-color: rgba(0,0,0,0.8)">
 
 <!--quick view modal-->
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
-<div class="modal fade" id="quickviewmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="quickviewmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="background-color: rgb(22,22,22);color: white;border: 1px solid white;">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">{{quickViewMovie.title}} ({{quickViewMovie.releaseYear}})</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeQuickView()">
@@ -353,9 +355,6 @@ background-color: rgba(0,0,0,0.8)">
         <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieExternalSiteQuickView()"> Watch Movie <i class="fa fa-play-circle-o"></i></a>
         <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieHref(quickViewMovie.key)"> Detail view about Movie <i class="fa fa-info-circle"></i></a>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeQuickView()">Close</button>
-      </div>
     </div>
   </div>
 </div>
@@ -366,17 +365,22 @@ background-color: rgba(0,0,0,0.8)">
 <!--very important for responsiveness between mobile and laptop-->
 <!--------------------------------------------------------MOBILE BELOW -------------------------------------------------------------->
 <span *ngIf="isMobile">
+    <!-- <div style="margin: 3%;border: 1px solid white;border-radius: 20px;">
+      <h5 style="margin: 2%;align-items: center;">Tip: </h5>
+      <h6 style="margin: 2%;align-items: center;" [innerHTML]="tip"></h6>
+      <button class="btn btn-outline-light btn-sm" (click)="randomTip()" style="margin-left: 80%;margin-bottom: 2%;">Next</button>
+    </div> -->
     <!--recently-->
     <div>
       <h5 class="text-center display-8">Recently Suggested Movies From Us</h5>
       <div class="scrolling-wrapper2">
         <span *ngFor="let movie of sortedArray">
-          <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
+          <div class="item" [ngStyle]="{'height': (loggedIn) ? '320px' : '320px'}" >
           <!-- <div class="item" *ngIf=(!loggedIn) style="height: 250px;"> -->
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
             <h6 style="text-align: center;">{{movie.title}}</h6> 
             <div style="display: flex;justify-content: center;">
-             <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
+             <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-light btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
              <span style="margin: 2%">
               <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
                 <a (click)="GoToMovieExternalSite(movie.key)">
@@ -395,34 +399,34 @@ background-color: rgba(0,0,0,0.8)">
 
             <div style="display: flex;justify-content: center;">
               <span *ngIf="!wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
-                    <i class="bi bi-heart" style="color: black;"></i>
+                <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light" >
+                    <i class="bi bi-heart"></i>
                 </button>
               </span>
               <span *ngIf="wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
+                <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light" >
                   <i class="bi bi-heart-fill" style="color: red;"></i>
                 </button>
               </span>
               <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
-                <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
-                    <i class="bi bi-star" style="color: black;"></i>
+                <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
+                    <i class="bi bi-star"></i>
                 </button>
               </span>
               <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button type="button" class="btn btn-sm btn-block btn-outline-dark">
+                <button type="button" class="btn btn-sm btn-block btn-outline-light">
                   <i class="bi bi-star-fill" style="color: gold;"></i>
                 </button>
               </span>
 
               <span *ngIf="!watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
                   <span style="font-size: xx-small;"> Watched?</span>
                 </button>
               </span>
               <span *ngIf="watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
-                  <i class="bi bi-check-circle-fill" style="color: black;"></i>
+                <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
+                  <i class="bi bi-check-circle-fill"></i>
                 </button>
               </span>
 
@@ -482,9 +486,9 @@ background-color: rgba(0,0,0,0.8)">
           <!-- <div class="item" *ngIf=(!loggedIn) style="height: 250px;"> -->
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
             <h6 style="text-align: center;">{{movie.title}}</h6> 
-             <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
+             <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-light btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
              <div style="display: flex;justify-content: center;">
-              <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
+              <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-light btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
               <span style="margin: 2%">
                <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
                  <a (click)="GoToMovieExternalSite(movie.key)">
@@ -502,33 +506,33 @@ background-color: rgba(0,0,0,0.8)">
              </div>
             <div style="display: flex;justify-content: center;">
               <span *ngIf="!wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
-                    <i class="bi bi-heart" style="color: black;"></i>
+                <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light" >
+                    <i class="bi bi-heart"></i>
                 </button>
               </span>
               <span *ngIf="wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
+                <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light" >
                   <i class="bi bi-heart-fill" style="color: red;"></i>
-                </button>
+                </button>x`
               </span>
               <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
-                <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
-                    <i class="bi bi-star" style="color: black;"></i>
+                <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
+                    <i class="bi bi-star"></i>
                 </button>
               </span>
               <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
-                <button type="button" class="btn btn-sm btn-block btn-outline-dark">
+                <button type="button" class="btn btn-sm btn-block btn-outline-light">
                   <i class="bi bi-star-fill" style="color: gold;"></i>
                 </button>
               </span>
               <span *ngIf="!watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
                   <span style="font-size: xx-small;"> Watched?</span>
                 </button>
               </span>
               <span *ngIf="watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
-                  <i class="bi bi-check-circle-fill" style="color: black;"></i>
+                <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
+                  <i class="bi bi-check-circle-fill"></i>
                 </button>
               </span>
 
@@ -540,11 +544,34 @@ background-color: rgba(0,0,0,0.8)">
 
     <!--not watched end here-->
 
-
+    <!--find Now OTT-->
+    <div  style="margin-top: 3%;margin-bottom: 3%;">
+      <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
+        <div class="p-2"><h5 class="text-center display-8">Find Movies based on OTT</h5></div>
+        <div class="ml-auto p-2">
+          <div class="float-right" style="margin-right:3% ;">
+            <span class="badge badge-light">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="scrolling-wrapper3">
+        <span *ngFor="let g of allPlatforms">
+          <div class="genre-icon" style="margin: 2%;">
+            <button type="button" class="btn btn-outline-primary" (click)="GoToPlatform(g)">{{g}}</button>
+          </div>      
+        </span>   
+      </div>
+    </div>
+    
+    <!--find now OTT end here-->
 
     <!--personalised movies-->
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;" *ngIf="loggedIn">
-      <div class="p-2"><h5 class="display-8">Personalised Movies <span class="badge badge-light"> beta</span></h5>
+      <div class="p-2"><h5 class="display-8">Personalised Movies <span class="badge badge-dark"> beta</span></h5>
         <small id="emailHelp" *ngIf="!(personalisedMoviesDisplay.length === 0)" class="form-text text-muted">These Movies are personalised based on your preferences, to edit preferences click <a routerLink="/personalisation" style="color: blue;">here</a></small>
         <small id="emailHelp" *ngIf="personalisedMoviesDisplay.length === 0" class="form-text text-muted">You haven't saved your preferences, to add your preferences click <a routerLink="/personalisation" style="color: blue;">here</a></small>
       </div>
@@ -564,9 +591,9 @@ background-color: rgba(0,0,0,0.8)">
           <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
             <h6 style="text-align: center;">{{movie.title}}</h6>
-             <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
+             <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-light btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
              <div style="display: flex;justify-content: center;">
-              <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
+              <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-light btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
               <span style="margin: 2%">
                <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
                  <a (click)="GoToMovieExternalSite(movie.key)">
@@ -584,33 +611,33 @@ background-color: rgba(0,0,0,0.8)">
              </div>
              <div style="display: flex;justify-content: center;">
               <span *ngIf="!wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
-                    <i class="bi bi-heart" style="color: black;"></i>
+                <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light" >
+                    <i class="bi bi-heart"></i>
                 </button>
               </span>
               <span *ngIf="wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
+                <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light" >
                   <i class="bi bi-heart-fill" style="color: red;"></i>
                 </button>
               </span>
               <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
-                <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
-                    <i class="bi bi-star" style="color: black;"></i>
+                <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
+                    <i class="bi bi-star"></i>
                 </button>
               </span>
               <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
-                <button type="button" class="btn btn-sm btn-block btn-outline-dark">
+                <button type="button" class="btn btn-sm btn-block btn-outline-light">
                   <i class="bi bi-star-fill" style="color: gold;"></i>
                 </button>
               </span>
               <span *ngIf="!watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
                   <span style="font-size: xx-small;"> Watched?</span>
                 </button>
               </span>
               <span *ngIf="watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
-                  <i class="bi bi-check-circle-fill" style="color: black;"></i>
+                <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
+                  <i class="bi bi-check-circle-fill"></i>
                 </button>
               </span>
 
@@ -673,35 +700,12 @@ background-color: rgba(0,0,0,0.8)">
     </div>
     <!--find now end here-->
 
-    <!--find Now OTT-->
-    <div  style="margin-top: 3%;margin-bottom: 3%;">
-      <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
-        <div class="p-2"><h5 class="text-center display-8">Find Movies based on OTT</h5></div>
-        <div class="ml-auto p-2">
-          <div class="float-right" style="margin-right:3% ;">
-            <span class="badge badge-light">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-              </svg>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="scrolling-wrapper3">
-        <span *ngFor="let g of allPlatforms">
-          <div class="genre-icon" style="margin: 2%;">
-            <button type="button" class="btn btn-outline-primary" (click)="GoToPlatform(g)">{{g}}</button>
-          </div>      
-        </span>   
-      </div>
-    </div>
-    
-    <!--find now OTT end here-->
+
 
 
     <!--location based lists-->
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
-      <div class="p-2"><h5 class="display-8">Location based Movies <span class="badge badge-light"> beta</span></h5>
+      <div class="p-2"><h5 class="display-8">Location based Movies <span class="badge badge-dark"> beta</span></h5>
         <small id="emailHelp" class="form-text text-muted">Preferred Language : {{locationPreferreLanguage}}</small>
         <small id="emailHelp" class="form-text text-muted">We don't know or store your exact location. We can't access your exact location.</small>
       </div>
@@ -716,7 +720,7 @@ background-color: rgba(0,0,0,0.8)">
       </div>
     </div>
     <div *ngIf="!locationAccess" style="display: flex;justify-content: center;">
-      <button type="button" class="btn btn-outline-dark" (click)="buildMovieSuggestionBasedOnLocation()">See Location based content</button>
+      <button type="button" class="btn btn-outline-light" (click)="buildMovieSuggestionBasedOnLocation()">See Location based content</button>
     </div>
     <div *ngIf="locationAccess" class="scrolling-wrapper3">
       <div class="scrolling-wrapper2">
@@ -724,9 +728,9 @@ background-color: rgba(0,0,0,0.8)">
           <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
             <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
             <h6 style="text-align: center;">{{movie.title}}</h6> 
-             <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
+             <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-light btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
              <div style="display: flex;justify-content: center;">
-              <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
+              <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-light btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
               <span style="margin: 2%">
                <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
                  <a (click)="GoToMovieExternalSite(movie.key)">
@@ -744,33 +748,33 @@ background-color: rgba(0,0,0,0.8)">
              </div>
             <div style="display: flex;justify-content: center;">
               <span *ngIf="!wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
-                    <i class="bi bi-heart" style="color: black;"></i>
+                <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light" >
+                    <i class="bi bi-heart"></i>
                 </button>
               </span>
               <span *ngIf="wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
+                <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light" >
                   <i class="bi bi-heart-fill" style="color: red;"></i>
                 </button>
               </span>
               <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
-                <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
-                    <i class="bi bi-star" style="color: black;"></i>
+                <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
+                    <i class="bi bi-star"></i>
                 </button>
               </span>
               <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
-                <button type="button" class="btn btn-sm btn-block btn-outline-dark">
+                <button type="button" class="btn btn-sm btn-block btn-outline-light">
                   <i class="bi bi-star-fill" style="color: gold;"></i>
                 </button>
               </span>
               <span *ngIf="!watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
                   <span style="font-size: xx-small;"> Watched?</span>
                 </button>
               </span>
               <span *ngIf="watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
-                  <i class="bi bi-check-circle-fill" style="color: black;"></i>
+                <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
+                  <i class="bi bi-check-circle-fill"></i>
                 </button>
               </span>
 
@@ -840,9 +844,9 @@ background-color: rgba(0,0,0,0.8)">
             <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
               <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
               <h6 style="text-align: center;">{{movie.title}}</h6> 
-               <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
+               <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-light btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
                <div style="display: flex;justify-content: center;">
-                <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-dark btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
+                <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-light btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button>
                 <span style="margin: 2%">
                  <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
                    <a (click)="GoToMovieExternalSite(movie.key)">
@@ -860,33 +864,33 @@ background-color: rgba(0,0,0,0.8)">
                </div>
               <div style="display: flex;justify-content: center;">
                 <span *ngIf="!wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                  <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
-                      <i class="bi bi-heart" style="color: black;"></i>
+                  <button (click)="addMovieToWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light" >
+                      <i class="bi bi-heart"></i>
                   </button>
                 </span>
                 <span *ngIf="wishlistedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                  <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark" >
+                  <button (click)="removeFromWishlist(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light" >
                     <i class="bi bi-heart-fill" style="color: red;"></i>
                   </button>
                 </span>
                 <span *ngIf="!ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
-                  <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
-                      <i class="bi bi-star" style="color: black;"></i>
+                  <button data-toggle="modal" data-target="#exampleModalCenter" (click)="startRateMovie(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
+                      <i class="bi bi-star"></i>
                   </button>
                 </span>
                 <span *ngIf="ratedMoviesForThisCustomer.includes(movie.key) && loggedIn" style="margin: 2%;width: 100%;">
-                  <button type="button" class="btn btn-sm btn-block btn-outline-dark">
+                  <button type="button" class="btn btn-sm btn-block btn-outline-light">
                     <i class="bi bi-star-fill" style="color: gold;"></i>
                   </button>
                 </span>
                 <span *ngIf="!watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                  <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
+                  <button (click)="addToWatchedMovies(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
                     <span style="font-size: xx-small;"> Watched?</span>
                   </button>
                 </span>
                 <span *ngIf="watchedMovies.includes(movie.key)" style="margin: 2%;width: 100%;">
-                  <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-dark">
-                    <i class="bi bi-check-circle-fill" style="color: black;"></i>
+                  <button (click)="removeFromWatched(movie.key)" type="button" class="btn btn-sm btn-block btn-outline-light">
+                    <i class="bi bi-check-circle-fill"></i>
                   </button>
                 </span>
   
@@ -966,7 +970,7 @@ background-color: rgba(0,0,0,0.8)">
             <div class="header-icon-container">          
             </div>
           </div></a><!--movie-header-->
-          <div class="movie-content">
+          <div class="movie-content" style="color: black;">
             <div class="movie-content-header">
               <a>
                 <p class="movie-title">{{movie.title}}</p>
@@ -1024,7 +1028,7 @@ background-color: rgba(0,0,0,0.8)">
   <div *ngIf="loggedIn">
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
       <div class="p-2">
-        <h3 class="display-8">Personalised Movies <span class="badge badge-light"> beta</span></h3>
+        <h3 class="display-8">Personalised Movies <span class="badge badge-dark"> beta</span></h3>
         <small id="emailHelp" class="form-text text-muted">These Movies are personalised based on your preferences, to edit preferences click <a routerLink="/personalisation">here</a></small>
       </div>
       <div class="ml-auto p-2">
@@ -1047,7 +1051,7 @@ background-color: rgba(0,0,0,0.8)">
               <div class="header-icon-container">          
               </div>
             </div></a><!--movie-header-->
-            <div class="movie-content">
+            <div class="movie-content" style="color: black;">
               <div class="movie-content-header">
                 <a>
                   <p class="movie-title">{{movie.title}}</p>
@@ -1083,7 +1087,7 @@ background-color: rgba(0,0,0,0.8)">
   <div *ngIf="locationAccess">
     <div class="d-flex" style="margin-left: 5%;margin-right: 5%;">
       <div class="p-2">
-        <h3 class="text-center display-8">Location Based Movies <span class="badge badge-light"> beta</span></h3>
+        <h3 class="text-center display-8">Location Based Movies <span class="badge badge-dark"> beta</span></h3>
         <small id="emailHelp" class="form-text text-muted">Preferred Language : {{locationPreferreLanguage}}</small>
       </div>
       <div class="ml-auto p-2">
@@ -1106,7 +1110,7 @@ background-color: rgba(0,0,0,0.8)">
               <div class="header-icon-container">          
               </div>
             </div></a><!--movie-header-->
-            <div class="movie-content">
+            <div class="movie-content" style="color: black;">
               <div class="movie-content-header">
                 <a>
                   <p class="movie-title">{{movie.title}}</p>
@@ -1138,7 +1142,7 @@ background-color: rgba(0,0,0,0.8)">
   </div>
   
   <div *ngIf="!locationAccess" style="display: flex;justify-content: center;">
-    <button type="button" class="btn btn-outline-dark" (click)="buildMovieSuggestionBasedOnLocation()">See Location based content</button>
+    <button type="button" class="btn btn-outline-light" (click)="buildMovieSuggestionBasedOnLocation()">See Location based content</button>
   </div>
 
 
@@ -1167,7 +1171,7 @@ background-color: rgba(0,0,0,0.8)">
             <div class="header-icon-container">          
             </div>
           </div></a><!--movie-header-->
-          <div class="movie-content">
+          <div class="movie-content" style="color: black;">
             <div class="movie-content-header">
               <a>
                 <p class="movie-title">{{movie.title}}</p>
@@ -1243,3 +1247,4 @@ background-color: rgba(0,0,0,0.8)">
   <h1>here</h1>
 </div>
 
+</div>

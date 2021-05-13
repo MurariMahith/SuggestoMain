@@ -56,10 +56,9 @@
 <div class="container" *ngIf="isMobile" style="margin-bottom: 50px;">
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 <div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;
-background-color: #fff;
-background-color: rgba(255,255,255,0.5)">
+background-color: rgb(0, 0, 0)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
-  <img src="../../../../assets/loading animation/Search.gif" style="opacity: 1;"></div>
+  <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
 </div>
 
 <span *ngIf="!loading">
@@ -147,6 +146,7 @@ background-color: rgba(255,255,255,0.5)">
                   <small *ngIf="loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (Editing rating for movies will be supported in next version)</small>
                   <small *ngIf="!loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (you need to log in to edit rating, click <a routerLink="/login">here to log in</a>)</small>
                 </div><br>
+                <button class="btn btn-sm btn-success btn-block" style="margin: 2%;" (click)="copyToClipboard()">Suggest this movie to your friends</button><br>
                 <h6 *ngIf="recommendedMovieTitles.length !== 0">Similar Movies</h6>
                 <div class="recommendedMovieTitles" >                  
                   <span *ngFor="let movie of recommendedMovieTitles">

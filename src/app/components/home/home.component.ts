@@ -1,6 +1,6 @@
 import { combineAll, map } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { FMovie } from 'src/app/models/Fmovie';
 import { MovieServiceService } from 'src/app/services/movie-service.service';
 import * as moment from 'moment';
@@ -193,13 +193,14 @@ export class HomeComponent implements OnInit {
     else{
       ////console.log("laptop")
     }
+    this.randomTip();
 
     //loggingout user if loading is true for more than 30 seconds
     setTimeout(()=> {
       if(this.loading)
       {
-        alert("Either your network connection is slow or something wrong on our side, Please check your internet connection. If you feel something wrong on our side please log a complaint.")
-        this.authService.logOut();
+        //alert("Either your network connection is slow or something wrong on our side, Please check your internet connection. If you feel something wrong on our side please log a complaint.")
+        //this.authService.logOut();
         //localStorage.removeItem("load30");
         // //console.log(localStorage.getItem("load30"))
         // //console.log(Number(localStorage.getItem("load30")) == 2)
@@ -1123,6 +1124,29 @@ export class HomeComponent implements OnInit {
       alert("Sorry External Site link un-available for "+mov.title+". We are working on this, we will update External site link soon. You can Find "+mov.title+" in "+movD.availableIn)
     }
     
+  }
+
+  tips : string[] = [
+    "If you don't like dark mode please log a complaint <a href='/complaint' style='color: #007BFF;'>here</a>. We will revert back to light mode (original state).",
+    "Go To <a href='/profile' style='color: #007BFF;'>Profile</a> page and you can create custom movie lists and share them to your friends.",
+    "Edit your personalisation <a href='/personalisation' style='color: #007BFF;'>here</a> to see personalised content unique for you.",
+    "Search for your desired movie <a href='/all' style='color: #007BFF;'>here</a>, you can search with movie name, cast, key words,release year,genre etc. You can also use our filters.",
+    "Check out <a href='/feed' style='color: #007BFF;'>feed</a> section for a random movie generator.",
+    "Go To <a href='/people' style='color: #007BFF;'>People</a> page you can see wishlists of users (only who accepted to share their wishlists).",
+    "Please check out MovieBuff Board our kind of leaderboard in <a href='/people' style='color: #007BFF;'>People</a> section inside Suggesto.",
+    "If you disable 'Share your wishlist to people and include in MovieBuff Board' in <a href='/profile' style='color: #007BFF;'>Profile</a> section, your wishlist will not be shared and your name will be hidden in Movie Buff Board.",
+    "You can check out 'Wishlisted Movies','Watched Movies' and 'Rated Movies' in <a href='/profile' style='color: #007BFF;'>Profile</a> section.",
+    "Login to use full potential of Suggesto. You are only using 60% of features as a logged out user.",
+    "You can know more about Suggesto in <a href='/aboutus' style='color: #007BFF;'>About Suggesto</a> section.",
+    "If Something goes wrong click refresh icon in the header."
+  ]
+
+  tip :SafeHtml;
+
+  randomTip()
+  {
+    var content = this.shuffleArr(this.tips)[1];
+    this.tip = this.sanitizer.bypassSecurityTrustHtml(content)
   }
 
 }

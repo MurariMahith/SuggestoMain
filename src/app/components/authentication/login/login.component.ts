@@ -204,7 +204,7 @@ export class LoginComponent implements OnInit {
           else
           {
             console.log("customer already present in our db")
-            window.location.href = "/home"
+            window.location.href = "/profile"
           }
           if(this.dbCust)
           {

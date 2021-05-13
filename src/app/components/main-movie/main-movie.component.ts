@@ -53,7 +53,7 @@ export class MainMovieComponent implements OnInit {
     private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    if( screen.width <= 480 ) {     
+    if( screen.width <= 2000 ) {     
       this.isMobile = true;
       //console.log("mobile");
     }
@@ -472,6 +472,28 @@ export class MainMovieComponent implements OnInit {
         
       })
     }  
+  }
+
+  copyToClipboard()
+  {
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Suggesto : Best app to find hand picked Movies and movie suggestions daily.',
+        url: window.location.toString(),
+      }).then(() => {
+        console.log('Thanks for sharing!');
+      })
+      .catch(console.error);
+    } else 
+    {
+      document.addEventListener('copy', (e: ClipboardEvent) => {
+        e.clipboardData.setData('text/plain', (window.location.href));
+        e.preventDefault();
+        document.removeEventListener('copy', null);
+      });
+      document.execCommand('copy');
+    }
   }
 
 

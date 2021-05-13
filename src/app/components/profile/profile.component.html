@@ -1,9 +1,8 @@
-<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: #fff;
-background-color: rgba(255,255,255,0.5)">
+<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,0)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
-  <img src="../../../../assets/loading animation/Ghost.gif" style="opacity: 1;"></div>
+  <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
 </div>
-
+<div class="dark-mode" style="background-color: rgb(22,22,22);color: white;">
 <div *ngIf="!loading" style="margin-bottom: 50px;">
 <div class="container">
 <h5 class="text-center">Profile</h5>
@@ -87,10 +86,10 @@ background-color: rgba(255,255,255,0.5)">
                             <div class="tab-pane fade active show" id="profile-followers">
                                 <div class="list-group" *ngIf="ratebool">
                                     <h6>Rated Movies</h6>
-                                    <div *ngFor="let m of ratedMoviesDisplay" class="list-group-item d-flex align-items-center">
+                                    <div *ngFor="let m of ratedMoviesDisplay" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
                                         <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
                                         <div class="flex-fill pl-3 pr-3">
-                                            <div><a (click)="goto(m.key)" class="text-dark font-weight-600">{{m.title}}</a></div>
+                                            <div><a (click)="goto(m.key)" class="text-light font-weight-600">{{m.title}}</a></div>
                                             <div class="text-muted fs-13px">Your rating : {{m.rating}}</div>
                                         </div>
                                         <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
@@ -100,10 +99,10 @@ background-color: rgba(255,255,255,0.5)">
                             <div class="tab-pane fade active show" id="profile-followers">
                               <div class="list-group" *ngIf="wishbool">
                                   <h6>WishListed Movies</h6>
-                                  <div *ngFor="let m of wishlistedMoviesDisplay" class="list-group-item d-flex align-items-center">
+                                  <div *ngFor="let m of wishlistedMoviesDisplay" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
                                       <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
                                       <div class="flex-fill pl-3 pr-3">
-                                          <div><a (click)="goto(m.key)" class="text-dark font-weight-600">{{m.title}}</a></div>
+                                          <div><a (click)="goto(m.key)" class="text-light font-weight-600">{{m.title}}</a></div>
                                           <div class="text-muted fs-13px">{{m.releaseYear}}</div>
                                       </div>
                                       <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
@@ -113,10 +112,10 @@ background-color: rgba(255,255,255,0.5)">
                             <div class="tab-pane fade active show" id="profile-followers">
                                 <div class="list-group" *ngIf="watchedbool">
                                     <h6>Watched Movies</h6>
-                                    <div *ngFor="let m of watchedMoviesDisplay" class="list-group-item d-flex align-items-center">
+                                    <div *ngFor="let m of watchedMoviesDisplay" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
                                         <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
                                         <div class="flex-fill pl-3 pr-3">
-                                            <div><a (click)="goto(m.key)" class="text-dark font-weight-600">{{m.title}}</a></div>
+                                            <div><a (click)="goto(m.key)" class="text-light font-weight-600">{{m.title}}</a></div>
                                             <div class="text-muted fs-13px">{{m.releaseYear}}</div>
                                         </div>
                                         <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
@@ -273,4 +272,5 @@ background-color: rgba(255,255,255,0.5)">
     </div>
 </div>
 <app-tamil></app-tamil>
+</div>
 </div>

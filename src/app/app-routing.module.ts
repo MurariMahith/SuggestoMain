@@ -34,7 +34,7 @@ const routes: Routes = [
   { path: 'telugu',  component: TeluguComponent },
   { path: 'tamil',  component: TamilComponent },
   { path: 'kannada',  component: KannadaComponent },
-  { path: 'profile2',  component: MalayalamComponent,canActivate: [AuthGuard] },
+  { path: 'profile',  component: MalayalamComponent,canActivate: [AuthGuard] },
   { path: 'all',  component: AllMoviesComponent },
   { path: 'movie/:key',  component: MainMovieComponent },
   { path: 'list/:key',  component: MainListComponent },
@@ -49,13 +49,15 @@ const routes: Routes = [
   { path: 'complaint',  component: ComplaintComponent },
   { path: 'resetPassword',  component: ResetPasswordComponent,canActivate: [AuthGuard] },
   { path: 'personalisation',  component: PersonalisationComponent,canActivate: [AuthGuard] },
-  { path: 'profile',  component: ProfileComponent,canActivate: [AuthGuard] },
+  { path: 'profile2',  component: ProfileComponent,canActivate: [AuthGuard] },
   { path: 'people',  component: PeopleComponent,canActivate: [AuthGuard] },
   { path: 'wlist/:key',  component: WishListComponent,canActivate: [AuthGuard] },
   { path: 'suggest',  component: SuggestMovieComponent,canActivate: [AuthGuard] },
   { path: 'createList',  component: CreateCustomListComponent,canActivate: [AuthGuard] },
   { path: 'news-feed',  component: FeedComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' }
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  {path: '404', component: HomeComponent}
+  //{path: '**', redirectTo: '/home'}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
