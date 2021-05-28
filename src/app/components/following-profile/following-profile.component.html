@@ -1,0 +1,270 @@
+<!-- <button type="button" class="btn btn-secondary" (click)="updateAllCustomers()">
+    Popover on top
+</button> -->
+
+<div *ngIf="loading" style="position: absolute;top: 60px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,0)">
+    <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
+    <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
+</div>
+
+<!-- <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button> -->
+
+<div *ngIf="!loading" style="margin-bottom: 50px;background-color: rgb(0,0,0);color: white;">
+<b>
+<div style="width: 100%;background-color: rgb(50,32,118);color: white;padding: 2%;padding-bottom: 40px;">
+    <!-- <div style="display: flex;justify-content: flex-end;" (click)="logout()">
+        Log Out        
+    </div> -->
+    <br>
+    <div class="prof-flex" style="display: flex;justify-content: center;">
+        <img *ngIf="customerToDisplay.customerPhotoUrl" src="{{customerToDisplay.customerPhotoUrl}}" alt="{{customerToDisplay.name}}" width="100px" height="100px" style="border-radius: 100px;border: 4px solid white;" />
+        <img *ngIf="!customerToDisplay.customerPhotoUrl" src="../../../assets/images/logo.jpg" width="100px" height="100px" alt=""  style="border-radius: 100px;border: 4px solid white;"  />
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;">
+        <h4>{{customerToDisplay.name | titlecase}}'s Profile</h4>
+    </div>
+    <!-- <div class="prof-flex" style="display: flex;justify-content: center;">
+        <p>Preferred Languages : {{languages}}</p>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;" *ngIf="!elongatedgenre">
+        Preferred Genres : {{ (genres.length>20)? (genres | slice:0:20)+'....':(genres) }}
+    </div> 
+    <div class="prof-flex" style="display: flex;justify-content: center;" *ngIf="!elongatedgenre">
+        <span *ngIf="genres.length>20" style="font-weight: normal;" (click)="showAllGenres()">see all genres.</span>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;" *ngIf="elongatedgenre">
+        <p>Preferred Genres : {{genres}}</p>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;">
+        Incognito Mode : {{!(customerToDisplay.shareWishlistedMovies)}}
+    </div> -->
+    <div style="display: flex;justify-content: center;">
+    <table *ngIf="customerToDisplay.following && customerToDisplay.followers" style="text-align: center;margin-top: 4%;">
+        <tr>
+            <td  style="padding-right: 20px;">
+                {{customerToDisplay.following.length}}
+            </td>
+            <td>
+                {{customerToDisplay.followers.length}}
+            </td>
+        </tr>
+        <tr style="font-size: small;">
+            <td  style="padding-right: 20px;">
+                Following
+            </td>
+            <td>
+                Followers
+            </td>
+        </tr>
+    </table>
+    </div>
+    <br>
+    <div style="display: flex;justify-content: center;">
+        MovieBuffScore : {{customerToDisplay.wishlistedMovies.length + customerToDisplay.ratedMovies.length + customerToDisplay.watchedMovies.length}}
+    </div>
+    <div *ngIf="SHOWPROFILE" style="display: flex;justify-content: center;">
+        <table style="text-align: center;margin-top: 4%;">
+            <tr>
+                <td  style="padding-right: 20px;">
+                    {{wishlistedMoviesDisplay.length}}
+                </td>
+                <td>
+                    {{watchedMoviesDisplay.length}}
+                </td>
+            </tr>
+            <tr style="font-size: small;">
+                <td  style="padding-right: 20px;">
+                    Wishlist
+                </td>
+                <td>
+                    Watched
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;margin-top: 8%;">        
+        <button type="button" *ngIf="SHOWPROFILE" class="btn btn-success" (click)="UnfollowCustomer(customerToDisplay.uid)" style="border-radius: 20px;margin-right: 10px;">UnFollow</button>
+        <button type="button" *ngIf="!SHOWPROFILE && !currentCustomer.followRequestSent.includes(customerToDisplay.uid)" (click)="sendFollowRequest(customerToDisplay.key)" class="btn btn-success" style="border-radius: 20px;margin-right: 10px;">Send Follow Request</button>
+        <button type="button" *ngIf="!SHOWPROFILE && currentCustomer.followRequestSent.includes(customerToDisplay.uid)" (click)="deleteFollowRequest(customerToDisplay.uid)" class="btn btn-success" style="border-radius: 20px;margin-right: 10px;">Delete Request</button>
+<!-- 
+        <a *ngIf="!this.currentCustomer.followRequestSent.includes(m.uid) && !allFollowinguids.includes(m.uid)" (click)="sendFollowRequest(m.uid)" class="btn btn-sm btn-outline-primary" style="margin-left: 10px;">Follow</a>
+        <a *ngIf="this.currentCustomer.followRequestSent.includes(m.uid)" (click)="deleteFollowRequest(m.uid)" class="btn btn-sm btn-outline-danger" style="margin-left: 10px;">Unsend</a>
+        <a *ngIf="allFollowinguids.includes(m.uid)" (click)="UnfollowCustomer(m.uid)" class="btn btn-sm btn-outline-danger" style="margin-left: 10px;">Unfollow</a> -->
+
+        <!-- <button type="button" class="btn btn-primary" style="border-radius: 20px;" (click)="this.router.navigateByUrl('/people')">MovieBuff board</button> -->
+    </div>
+</div>
+
+
+<div class="second-div" style="min-height: 60vh;background-color: black;">
+
+    <p id="pointer"></p>
+    <h5 style="margin-left: 5%;margin-top: 2%;">Lists Created By {{customerToDisplay.name}}</h5>
+
+    <div class="content-item">
+        <div class="lists" style="margin: 2%;display: flex;">
+            <div class="scrolling-wrapper3">
+                <div class="list-item item3" style="width: 96%;" *ngIf="listsByThisCustomer.length == 0">
+                    <div class="long-word">{{customerToDisplay.name | titlecase}} hasn't created any lists.</div>
+                </div>
+                <div class="list-item item3" *ngFor="let list of listsByThisCustomer" (click)="this.router.navigateByUrl('/list/'+list.key)">
+                    <div class="long-word">{{list.listName}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class="movies" *ngIf="SHOWPROFILE">
+        <h5 style="margin-left: 5%;margin-top: 2%;">{{customerToDisplay.name}}'s Movies</h5>
+        <b>
+        <div class="content-item">
+            <div class="lists" style="margin: 2%;">
+                <div class="d-flex bd-highlight mb-3 list-item" (click)="wishbool = !wishbool;watchbool = false;">
+                    <div class="mr-auto p-2 bd-highlight"><i style="color: red;" class="bi bi-heart-fill"></i>  Wishlisted Movies</div>
+                    <div class="p-2 bd-highlight" *ngIf="customerToDisplay.showWishlistToFollowers">{{wishlistedMoviesDisplay.length }} </div>
+                    <div class="p-2 bd-highlight">
+                        <i *ngIf="!wishbool" class="bi bi-chevron-right"></i>
+                        <i *ngIf="wishbool" class="bi bi-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div *ngIf="wishbool && customerToDisplay.showWishlistToFollowers">
+                    <div style="display: flex;justify-content: center;">
+                        <h6 *ngIf="!(wishlistedMoviesDisplay.length == 0)">{{customerToDisplay.name}}'s Wishlist</h6>
+                    </div>
+                    <div *ngIf="wishlistedMoviesDisplay.length == 0" style="display: flex;justify-content: center;">
+                        <h6>{{customerToDisplay.name}} haven't wishlisted any movies.</h6>
+                    </div>
+                    <div class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;" *ngFor="let m of wishlistedMoviesDisplay" >
+                        <div class="content"  [ngStyle]="{'background-image': 'url(' + m.smallImageUrl + ')'}" style="border-top-left-radius: 10px;border-top-right-radius: 10px;height: 130px;">
+                            <div style="background-color: rgba(0, 0, 0, 0.616);height: 130px;border-top-left-radius: 10px;border-top-right-radius: 10px;">
+                                <div>
+                                    <div class="d-flex bd-highlight mb-3" style="margin-right: 2%;">
+                                        <div class="p-2 bd-highlight" (click)="goto(m.key)"><img src="{{m.smallImageUrl}}" width="70px" height="110"></div>
+                                        <div class="p-2 bd-highlight" (click)="goto(m.key)">
+                                            <h5>{{ (m.title.length>25)? (m.title | slice:0:25)+'..':(m.title) | titlecase }}</h5>
+                                            <p style="font-size: small;">{{m.releaseYear}} . {{ (m.genre.length>35)? (m.genre | slice:0:35)+'..':(m.genre) }}</p>
+                                        </div>
+                                        <div class="ml-auto p-2 bd-highlight"  style="z-index: 200;">
+                                            <a (click)="GoToMovieExternalSite(m.key)">
+                                                <img *ngIf="m.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Prime_Video" src="../../../assets/ott-icons/prime.png" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Aha" src="../../../assets/ott-icons/aha.jpeg" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.JioCinema" src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 10px;height: 50px;">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                
+                            </div>
+                        </div>
+                        <div class="footer" style="display: flex;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;height: 40px;background-color: rgba(90, 89, 89, 0.76);">
+                            <div class="d-flex bd-highlight mb-3" style="font-size: small;">
+                                <div class="p-2 bd-highlight" *ngIf="currentCustomer.wishlistedMovies.includes(m.key)" (click)="removeFromWishlist(m.key)">
+                                    <i class="bi bi-heart-fill" style="color: red;"></i>  Remove from wishlist
+                                </div>
+                                <div class="p-2 bd-highlight" *ngIf="!currentCustomer.wishlistedMovies.includes(m.key)" (click)="addMovieToWishlist(m.key)">
+                                    <i class="bi bi-heart" style="color: red;"></i>  Wishlist
+                                </div>
+                                <div class="p-2 bd-highlight"  *ngIf="currentCustomer.watchedMovies.includes(m.key)"  (click)="removeFromWatched(m.key)">
+                                    <i class="bi bi-bookmark-dash-fill" style="color: gold;"></i>  Remove from watched
+                                </div>
+                                <div class="p-2 bd-highlight"  *ngIf="!currentCustomer.watchedMovies.includes(m.key)" (click)="addToWatchedMovies(m.key)">
+                                    <i class="bi bi-bookmark-plus-fill"></i>  Watched?
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+                <div *ngIf="wishbool && !customerToDisplay.showWishlistToFollowers">
+                    <div style="display: flex;justify-content: center;margin: 2%;">
+                        <h6>{{customerToDisplay.name}} hasn't shared his wishlist to his followers.</h6>
+                    </div>
+                </div>
+
+                <div class="d-flex bd-highlight mb-3 list-item" (click)="watchbool = !watchbool;wishbool = false" >
+                    <div class="mr-auto p-2 bd-highlight"><i class="bi bi-collection-play-fill" style="color: aqua;"></i>  Watched Movies</div>
+                    <div class="p-2 bd-highlight" *ngIf="customerToDisplay.showWatchedListToFollowers">{{watchedMoviesDisplay.length}} </div>
+                    <div class="p-2 bd-highlight">
+                        <i *ngIf="!watchedbool" class="bi bi-chevron-right"></i>
+                        <i *ngIf="watchedbool" class="bi bi-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div *ngIf="watchbool && customerToDisplay.showWatchedListToFollowers">
+                    <div style="display: flex;justify-content: center;">
+                        <h6 *ngIf="!(watchedMoviesDisplay.length == 0)">{{customerToDisplay.name}}'s Watched Movies</h6>
+                    </div>
+                    <div *ngIf="watchedMoviesDisplay.length == 0" style="display: flex;justify-content: center;">
+                        <h6>{{customerToDisplay.name}} haven't marked any movies as watched.</h6>
+                    </div>
+                    <div class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;" *ngFor="let m of watchedMoviesDisplay" >
+                        <div class="content"  [ngStyle]="{'background-image': 'url(' + m.smallImageUrl + ')'}" style="border-top-left-radius: 10px;border-top-right-radius: 10px;height: 130px;">
+                            <div style="background-color: rgba(0, 0, 0, 0.616);height: 130px;border-top-left-radius: 10px;border-top-right-radius: 10px;">
+                                <div>
+                                    <div class="d-flex bd-highlight mb-3" style="margin-right: 2%;">
+                                        <div class="p-2 bd-highlight" (click)="goto(m.key)"><img src="{{m.smallImageUrl}}" width="70px" height="110"></div>
+                                        <div class="p-2 bd-highlight" (click)="goto(m.key)">
+                                            <h5>{{ (m.title.length>25)? (m.title | slice:0:25)+'..':(m.title) | titlecase }}</h5>
+                                            <p style="font-size: small;">{{m.releaseYear}} . {{ (m.genre.length>35)? (m.genre | slice:0:35)+'..':(m.genre) }}</p>
+                                        </div>
+                                        <div class="ml-auto p-2 bd-highlight"  style="z-index: 200;">
+                                            <a (click)="GoToMovieExternalSite(m.key)">
+                                                <img *ngIf="m.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Prime_Video" src="../../../assets/ott-icons/prime.png" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Aha" src="../../../assets/ott-icons/aha.jpeg" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.JioCinema" src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 10px;height: 50px;">
+                                                <img *ngIf="m.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 10px;height: 50px;">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                            </div>
+                        </div>
+                        <div class="footer" style="display: flex;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;height: 40px;background-color: rgba(90, 89, 89, 0.76);">
+                            <div class="d-flex bd-highlight mb-3" style="font-size: small;">
+                                <div class="p-2 bd-highlight" *ngIf="currentCustomer.wishlistedMovies.includes(m.key)" (click)="removeFromWishlist(m.key)">
+                                    <i class="bi bi-heart-fill" style="color: red;"></i>  Remove from wishlist
+                                </div>
+                                <div class="p-2 bd-highlight" *ngIf="!currentCustomer.wishlistedMovies.includes(m.key)" (click)="addMovieToWishlist(m.key)">
+                                    <i class="bi bi-heart" style="color: red;"></i>  Wishlist
+                                </div>
+                                <div class="p-2 bd-highlight"  *ngIf="currentCustomer.watchedMovies.includes(m.key)"  (click)="removeFromWatched(m.key)">
+                                    <i class="bi bi-bookmark-dash-fill" style="color: gold;"></i>  Remove from watched
+                                </div>
+                                <div class="p-2 bd-highlight"  *ngIf="!currentCustomer.watchedMovies.includes(m.key)" (click)="addToWatchedMovies(m.key)">
+                                    <i class="bi bi-bookmark-plus-fill"></i>  Watched?
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="watchbool && !customerToDisplay.showWatchedListToFollowers">
+                    <div style="display: flex;justify-content: center;margin: 2%;">
+                        <h6>{{customerToDisplay.name}} hasn't shared his watched movies to his followers.</h6>
+                    </div>
+                </div>
+            </div>
+        </div></b>
+    </div>
+    <div style="display: flex;justify-content: center;margin: 5%;" *ngIf="!SHOWPROFILE">
+        <h4>Follow {{customerToDisplay.name | titlecase}} to see his wishlist and watched list</h4>
+    </div>
+
+
+
+    <app-tamil></app-tamil>
+
+</div>
+

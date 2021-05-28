@@ -63,7 +63,7 @@ export class ProfileComponent implements OnInit {
   share : boolean = true;
 
   ratebool : boolean = false;
-  wishbool : boolean = true;
+  wishbool : boolean = false;
   watchedbool : boolean = false;
 
   loading : boolean = true;
@@ -76,10 +76,19 @@ export class ProfileComponent implements OnInit {
     private listDisplayService : DisplayListService,
     private router : Router,
     private homelistsservice : HomePageListsService,
-    private activatedRote : ActivatedRoute,
+    private activatedRoute : ActivatedRoute,
     private http : HttpClient,
     private authService : AuthService,
     private customerService : CustomerService) { }
+
+    getFollowing(cust : Customer) :string[]
+    {
+      var arr = [];
+      cust.following.forEach(element => {
+        arr.push(element.followerUserId)
+      });
+      return arr;
+    }
 
     ngOnInit() {
 
@@ -99,7 +108,24 @@ export class ProfileComponent implements OnInit {
               //console.log(o)
               if(o.find(x => x.uid === localStorage.getItem("uid")))
               {
-                this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
+                var followingKey = this.activatedRoute.snapshot.params.key;
+                
+                var loggedInCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
+                
+                this.currentCustomer = o.find(x => x.uid === followingKey);
+                var followings :string[] = this.getFollowing(loggedInCustomer);
+
+                if(followings.includes(followingKey) && this.currentCustomer)
+                {
+                  this.currentCustomer = o.find(x => x.uid === followingKey);
+                  this.wishbool = this.currentCustomer.showWishlistToFollowers
+                }
+                else
+                {
+                  //alert("You need to follow this user in order to see his profile")
+                  this.router.navigateByUrl('/profile')
+                }
+
                 this.loggedIn = true
                 console.log(this.currentCustomer)
               }

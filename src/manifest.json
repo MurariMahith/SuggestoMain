@@ -77,9 +77,9 @@
       ]
     },
     {
-      "name": "People",
-      "description": "People Around You who share their wish lists",
-      "url": "/people",
+      "name": "MovieBuff Board",
+      "description": "Suggesto's Leaderboard",
+      "url": "/board",
       "icons": [
          {
             "src": "assets/icons/icon-96x96.png",
@@ -90,8 +90,8 @@
       ]
     },
     {
-      "name": "All Movies",
-      "description": "Home page of Suggesto Admin",
+      "name": "Search",
+      "description": "Search your preferred Movie",
       "url": "/all",
       "icons": [
          {
@@ -104,8 +104,21 @@
     },
     {
       "name": "Movie Lists",
-      "description": "Home page of Suggesto Admin",
+      "description": "Movie Lists of Suggesto",
       "url": "/movielist",
+      "icons": [
+         {
+            "src": "assets/icons/icon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "any"
+         }
+      ]
+    },
+    {
+      "name": "Feed",
+      "description": "News Feed of Suggesto",
+      "url": "/news-feed",
       "icons": [
          {
             "src": "assets/icons/icon-96x96.png",

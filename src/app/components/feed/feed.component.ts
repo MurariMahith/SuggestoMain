@@ -19,6 +19,8 @@ import { HttpClient } from '@angular/common/http';
 import { CustomerService } from 'src/app/services/customerService';
 import { Customer } from 'src/app/models/Customer';
 import { RatedMovies } from 'src/app/models/Customer Related/RatedMovies';
+import { FeedItem } from 'src/app/models/FeedItem';
+import { UpcomingOtt } from 'src/app/models/UpcomingOtt';
 
 @Component({
   selector: 'app-feed',
@@ -72,6 +74,7 @@ export class FeedComponent implements OnInit {
 
   locationBasedMovies : DisplayMovie[] = [];
 
+  allCustomers : Customer[] = [];
   currentCustomer : Customer;
 
   wishlistedMovies : string[] = [];
@@ -85,6 +88,17 @@ export class FeedComponent implements OnInit {
   MovieToBeRated : FMovie = new FMovie();
   rating : number = 0;
 
+  allOttObjs : UpcomingOtt[] = [];
+
+  
+
+  tel=true;
+  tam=false;
+  mal=false;
+  eng=false
+
+  
+
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
@@ -97,6 +111,10 @@ export class FeedComponent implements OnInit {
 
     ngOnInit() 
     {
+      // Get the element yourself.
+      // var swiper = new Swipe(document.getElementById('#my-element'));
+      // swiper.onLeft(function() { alert('You swiped left.') });
+      // swiper.run();
       if( screen.width <= 480 ) {     
         this.isMobile = true;
         ////console.log("mobile");
@@ -110,10 +128,12 @@ export class FeedComponent implements OnInit {
           .subscribe(o =>
             {
               ////console.log(o)
+              this.allCustomers = o;
               if(o.find(x => x.uid === localStorage.getItem("uid")))
               {
                 this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
                 this.loggedIn = true
+                this.getFeedItemsAndFilter();
               }
               if(this.currentCustomer.wishlistedMovies)
               {
@@ -219,18 +239,93 @@ export class FeedComponent implements OnInit {
         ////console.log(this.homePageList.listsToIncludeInHomePage)
         this.buildeditorChoiceMovieListForDisplay()
         this.buildRecentlySuggestedMovieList()
-        if(navigator.geolocation)
-          this.locationAccess = true;
-        else
-          this.locationAccess = false;
-        if(this.locationAccess)
-        {
-          this.buildMovieSuggestionBasedOnLocation()
-        }      
+        // if(navigator.geolocation)
+        //   this.locationAccess = true;
+        // else
+        //   this.locationAccess = false;
+        // if(this.locationAccess)
+        // {
+        //   this.buildMovieSuggestionBasedOnLocation()
+        // }      
       });
-      //this.buildeditorChoiceMovieListForDisplay()
+
+      this.customerService.getAllOtt().snapshotChanges().pipe(
+        map(changes =>
+          changes.map(c =>
+            ({ key: c.payload.key, ...c.payload.val() })
+          )
+        )
+      ).subscribe(o => {
+        var allOtt : UpcomingOtt[] = o;
+        // console.log(allOtt)
+        // console.log("ott here")
+        this.allOttObjs = _.orderBy(allOtt, (x: UpcomingOtt) => {
+          return moment(new Date(this.buildProperDate(x.releaseDate)))
+        }, ['desc']);
+        // console.log(moment(this.buildProperDate(allOtt[0].releaseDate)).format('MMMM'))
+        // console.log(moment(this.buildProperDate(allOtt[0].releaseDate)).format('DD'))
+        // console.log(moment(this.buildProperDate(allOtt[0].releaseDate)).format('YYYY'))
+        this.allOttObjs.forEach(a => {
+          a.releaseDate = moment(this.buildProperDate(a.releaseDate)).format('DD')+ " "+moment(this.buildProperDate(a.releaseDate)).format('MMMM')
+        })
+
+        // console.log(this.allOttObjs);
+      })
   
     }
+
+
+    getCurrentCustomerFollowingUserIds() :string[]
+    {
+      var arr = [];
+      if(!this.currentCustomer.following || this.currentCustomer.following == undefined || this.currentCustomer.following.length == 0)
+      {
+        this.currentCustomer.following = [];
+      }
+      this.currentCustomer.following.forEach(element => {
+        arr.push(element.followerUserId);
+      });
+      return arr;
+    }
+
+    FeedItems : FeedItem[] = [];
+
+    getFeedItemsAndFilter()
+    {
+      this.customerService.getAllFeedItems().snapshotChanges().pipe(
+        map(changes =>
+          changes.map(c =>
+            ({ key: c.payload.key, ...c.payload.val() })
+          )
+        )
+      ).subscribe(o => {
+        var allFeedItems : FeedItem[] = o;
+        var followingUserIds : string[] = this.getCurrentCustomerFollowingUserIds();
+        this.FeedItems.length = 0;
+        allFeedItems.forEach(element => {
+          if(element.customerUid == 'ADMIN')
+          {
+            this.FeedItems.push(element);
+          }
+          if(followingUserIds.includes(element.customerUid))
+          {
+            //console.log(this.allCustomers.find(x => x.uid = element.customerUid))
+            if(element.type == 'WATCHED' && this.allCustomers.find(x => x.uid == element.customerUid).showWatchedListToFollowers)
+            {
+              this.FeedItems.push(element)
+            }
+            if(element.type == 'WISHLIST' && this.allCustomers.find(x => x.uid == element.customerUid).showWishlistToFollowers)
+            {
+              this.FeedItems.push(element)
+            }
+          }          
+        });
+        this.FeedItems.reverse();
+      })
+    }
+
+    longfeed : boolean = false;
+    longOtt : boolean = false;
 
     generateRandomMovie()
     {
@@ -313,94 +408,94 @@ export class FeedComponent implements OnInit {
       ////console.log(this.personalisedMoviesDisplay)
     }
   
-    showPosition(position) {
-      ////console.log(position)
-      this.latitude = position.coords["latitude"]
-      this.longitude = position.coords["longitude"];
-      ////console.log(this.latitude+","+this.longitude)
-    }
+    // showPosition(position) {
+    //   ////console.log(position)
+    //   this.latitude = position.coords["latitude"]
+    //   this.longitude = position.coords["longitude"];
+    //   ////console.log(this.latitude+","+this.longitude)
+    // }
   
-    buildMovieSuggestionBasedOnLocation()
-    {
-      var telugu : boolean = false;
-      var tamil : boolean = false;
-      var malayalam : boolean = false;
-      var kannada : boolean = false;
-      var english : boolean = false; 
+    // buildMovieSuggestionBasedOnLocation()
+    // {
+    //   var telugu : boolean = false;
+    //   var tamil : boolean = false;
+    //   var malayalam : boolean = false;
+    //   var kannada : boolean = false;
+    //   var english : boolean = false; 
   
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(this.showPosition.bind(this));
-        this.locationAccess = true;
-        ////console.log(this.latitude+","+this.longitude)
-      } else { 
-        this.locationAccess = false;
-        alert("Location access is needed to suggest movies based on location, Its not mandatory to give location access to us.")
-      }
-      this.http.get(this.APIforState+"latitude="+this.latitude+"&longitude="+this.longitude+"&localityLanguage=en").toPromise()
-            .then(a => {
-              ////console.log(a)
-              if(a["principalSubdivision"] == "Karnataka")
-              {
-                telugu = true;
-                kannada = true;
-              }
-              else if(a["principalSubdivision"] == "Tamil Nadu")
-              {
-                tamil = true;
-              }
-              else if(a["principalSubdivision"] == "Andhra Pradesh" || a["principalSubdivision"] == "Telangana")
-              {
-                telugu = true;
-              }
-              else if(a["principalSubdivision"] == "Kerala")
-              {
-                malayalam = true;
-              }
-              else
-              {
-                english = true;
-              }
+    //   if (navigator.geolocation) {
+    //     navigator.geolocation.getCurrentPosition(this.showPosition.bind(this));
+    //     this.locationAccess = true;
+    //     ////console.log(this.latitude+","+this.longitude)
+    //   } else { 
+    //     this.locationAccess = false;
+    //     alert("Location access is needed to suggest movies based on location, Its not mandatory to give location access to us.")
+    //   }
+    //   this.http.get(this.APIforState+"latitude="+this.latitude+"&longitude="+this.longitude+"&localityLanguage=en").toPromise()
+    //         .then(a => {
+    //           ////console.log(a)
+    //           if(a["principalSubdivision"] == "Karnataka")
+    //           {
+    //             telugu = true;
+    //             kannada = true;
+    //           }
+    //           else if(a["principalSubdivision"] == "Tamil Nadu")
+    //           {
+    //             tamil = true;
+    //           }
+    //           else if(a["principalSubdivision"] == "Andhra Pradesh" || a["principalSubdivision"] == "Telangana")
+    //           {
+    //             telugu = true;
+    //           }
+    //           else if(a["principalSubdivision"] == "Kerala")
+    //           {
+    //             malayalam = true;
+    //           }
+    //           else
+    //           {
+    //             english = true;
+    //           }
   
-              var allmovies2 = [];
-              this.allMovies.forEach(element => {
-                if(telugu)
-                {
-                  this.locationPreferreLanguage = "Telugu"
-                  if(element.language.telugu == true)
-                    allmovies2.push(element)
-                }
-                else if(tamil)
-                {
-                  this.locationPreferreLanguage = "Tamil"
-                  if(element.language.tamil == true)
-                    allmovies2.push(element)
-                }
-                else if(malayalam)
-                {
-                  this.locationPreferreLanguage = "Malayalam"
-                  if(element.language.malayalam == true)
-                    allmovies2.push(element)
-                }
-                else if(english)
-                {
-                  this.locationPreferreLanguage = "English"
-                  if(element.language.english == true)
-                    allmovies2.push(element)
-                }
-                if(kannada)
-                {
-                  this.locationPreferreLanguage = "Telugu, Kannada not supported in this version"
-                }              
-              });
+    //           var allmovies2 = [];
+    //           this.allMovies.forEach(element => {
+    //             if(telugu)
+    //             {
+    //               this.locationPreferreLanguage = "Telugu"
+    //               if(element.language.telugu == true)
+    //                 allmovies2.push(element)
+    //             }
+    //             else if(tamil)
+    //             {
+    //               this.locationPreferreLanguage = "Tamil"
+    //               if(element.language.tamil == true)
+    //                 allmovies2.push(element)
+    //             }
+    //             else if(malayalam)
+    //             {
+    //               this.locationPreferreLanguage = "Malayalam"
+    //               if(element.language.malayalam == true)
+    //                 allmovies2.push(element)
+    //             }
+    //             else if(english)
+    //             {
+    //               this.locationPreferreLanguage = "English"
+    //               if(element.language.english == true)
+    //                 allmovies2.push(element)
+    //             }
+    //             if(kannada)
+    //             {
+    //               this.locationPreferreLanguage = "Telugu, Kannada not supported in this version"
+    //             }              
+    //           });
   
-              this.locationBasedMovies = this.movieDisplayService.prepareDisplayMovieList(allmovies2,true,false,false,false)
-              ////console.log(this.locationBasedMovies)
+    //           this.locationBasedMovies = this.movieDisplayService.prepareDisplayMovieList(allmovies2,true,false,false,false)
+    //           ////console.log(this.locationBasedMovies)
   
-            })
-            .catch(() => {
-                //console.log("location access denied user can't get location based content")
-            });
-    }
+    //         })
+    //         .catch(() => {
+    //             //console.log("location access denied user can't get location based content")
+    //         });
+    // }
   
     buildRecentlySuggestedMovieList()
     {
@@ -430,6 +525,8 @@ export class FeedComponent implements OnInit {
     buildProperDate(str : string) :string
     {
       var dateArray = str.split("/");
+      // console.log(str)
+      // console.log(dateArray)
       return dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2];
     }
   
@@ -503,6 +600,14 @@ export class FeedComponent implements OnInit {
     }
     ////console.log(this.currentCustomer)
     this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+    var feeditm : FeedItem = new FeedItem();
+    feeditm.content = this.currentCustomer.name + " added "+this.allMovies.find(x=>x.key == key).title + " to their wishlist . Click to view the movie."
+    feeditm.customerName = this.currentCustomer.name;
+    feeditm.customerUid = this.currentCustomer.uid;
+    feeditm.photoUrl = this.currentCustomer.customerPhotoUrl;
+    feeditm.url = '/movie/'+this.allMovies.find(x=>x.key == key).key;
+    feeditm.type = 'WISHLIST';
+    this.customerService.addFeedItem(feeditm);
   }
 
   removeFromWishlist(key)
@@ -538,6 +643,14 @@ export class FeedComponent implements OnInit {
     }
 
     this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    var feeditm : FeedItem = new FeedItem();
+    feeditm.content = this.currentCustomer.name + " watched "+this.allMovies.find(x=>x.key == key).title + " . Click to view the movie."
+    feeditm.customerName = this.currentCustomer.name;
+    feeditm.customerUid = this.currentCustomer.uid;
+    feeditm.photoUrl = this.currentCustomer.customerPhotoUrl;
+    feeditm.url = '/movie/'+this.allMovies.find(x=>x.key == key).key;
+    feeditm.type = 'WATCHED';
+    this.customerService.addFeedItem(feeditm);
   }
 
   removeFromWatched(key)

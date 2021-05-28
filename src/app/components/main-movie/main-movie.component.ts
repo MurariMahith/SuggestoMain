@@ -14,6 +14,10 @@ import { CustomerService } from 'src/app/services/customerService';
 import { Customer } from 'src/app/models/Customer';
 import { RatedMovies } from 'src/app/models/Customer Related/RatedMovies';
 import { HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
+import { FollowObject } from 'src/app/models/FollowObject';
+import { SharedMovie } from 'src/app/models/SharedMovie';
+import { HitsService } from 'src/app/services/hits.service';
 
 @Component({
   selector: 'app-main-movie',
@@ -44,12 +48,19 @@ export class MainMovieComponent implements OnInit {
 
   isMobile : boolean = false;
 
+  shareWindowBool : boolean = false;
+  allFriends : FollowObject[] = [];
+  allFriendsOriginal : FollowObject[] = [];
+
   constructor(private movieService : MovieServiceService, 
     private activatedRoute: ActivatedRoute,
     private router : Router,
+    private listService : MovieListService,
     private displaymovieservice : DisplayMovieService,
     private customerService : CustomerService,
     private http : HttpClient,
+    private messageService : HitsService,
+    private location: Location,
     private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
@@ -101,6 +112,31 @@ export class MainMovieComponent implements OnInit {
                 this.eligibleForWishList = true;
                 //console.log(this.eligibleForWishList);
               }
+              //checking for all kinds of follow attributes present or not and if not making them empty arrays
+              if(!this.currentCustomer.followRequestSent || this.currentCustomer.followRequestSent == undefined)
+              {
+                this.currentCustomer.followRequestSent = [];
+              }
+              if(!this.currentCustomer.following || this.currentCustomer.following == undefined)
+              {
+                this.currentCustomer.following = [];
+              }
+              if(!this.currentCustomer.followers || this.currentCustomer.followers == undefined)
+              {
+                this.currentCustomer.followers = [];
+              }
+              if(!this.currentCustomer.followRequestReceived || this.currentCustomer.followRequestReceived == undefined)
+              {
+                this.currentCustomer.followRequestReceived = [];
+              }
+              var friends :FollowObject[] = this.currentCustomer.followers.concat(this.currentCustomer.following);
+              // this.allFriends.filter((v,i,a)=>a.findIndex(t=>(t.followerUserId === v.followerUserId))===i)
+              this.allFriends = Array.from(new Set(friends.map(a => a.followerUserId)))
+                .map(id => {
+                  return friends.find(a => a.followerUserId === id)
+                })
+              this.allFriendsOriginal = this.allFriends;
+              console.log(this.allFriends);
             }
             else
             {
@@ -172,6 +208,7 @@ export class MainMovieComponent implements OnInit {
           // console.log(this.actualMovieEmbedTrailer);
           this.safeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.actualMovieEmbedTrailer)
           this.actualMovie = this.displaymovieservice.prepareDisplayMovieList(this.foundMovies)[0];
+          this.getListsInWhichThisMovieIsThere()
           this.findSimilarMovies()
           //console.log(this.actualMovie)
           if(!this.loggedIn)
@@ -195,6 +232,71 @@ export class MainMovieComponent implements OnInit {
           
       }
     })
+  }
+
+  sendObj : SharedMovie = new SharedMovie();
+
+  sendMovie(friend : FollowObject,mve : DisplayMovie)
+  {
+    for( var i = 0; i < this.allFriends.length; i++)
+    {     
+      if (this.allFriends[i].followerUserId == friend.followerUserId) 
+      {   
+        this.allFriends.splice(i, 1); 
+      }
+    }
+    // console.log(this.allFriends)
+    // console.log(friend.followerUserId);
+    this.sendObj.movieName = this.actualMovie.title;
+    this.sendObj.movieKey = this.actualMovie.key;
+    this.sendObj.movieImageUrl = this.actualMovie.smallImageUrl;
+    this.sendObj.language = this.actualMovie.language;
+    this.sendObj.genre = this.actualMovie.genre;
+    this.sendObj.platform = this.actualMovie.availableIn;
+    this.sendObj.receiverUid = friend.followerUserId;
+    this.sendObj.senderName = this.currentCustomer.name;
+    this.sendObj.senderPhotoUrl = this.currentCustomer.customerPhotoUrl;
+    this.sendObj.senderUid = this.currentCustomer.uid;
+    this.messageService.createMessage(this.sendObj);
+    //console.log(this.sendObj);
+  }
+
+  //when shared window is closed, reset friends list
+  closedShareWindow()
+  {
+    console.log("close")
+    this.allFriends.length = 0;
+    var friends :FollowObject[] = this.currentCustomer.followers.concat(this.currentCustomer.following);
+    // this.allFriends.filter((v,i,a)=>a.findIndex(t=>(t.followerUserId === v.followerUserId))===i)
+    this.allFriends = Array.from(new Set(friends.map(a => a.followerUserId)))
+      .map(id => {
+        return friends.find(a => a.followerUserId === id)
+      })
+    this.sendObj = new SharedMovie();
+    this.shareWindowBool = false
+    //this.allFriends = this.allFriendsOriginal;
+  }
+
+  featuredLists : MovieList[] = [];
+
+  getListsInWhichThisMovieIsThere()
+  {
+    this.listService.getAllMovieLists().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ key: c.payload.key, ...c.payload.val() })
+        )
+      )
+    ).subscribe(o => 
+      {
+        this.featuredLists.length = 0;
+        o.forEach(element => {
+          if(element.moviesInThisList.includes(this.activatedRoute.snapshot.params.key))
+          {
+            this.featuredLists.push(element);
+          }
+        });
+      })
   }
 
   ngOnDestroy()
@@ -422,6 +524,11 @@ export class MainMovieComponent implements OnInit {
     })
   }
 
+  goBack() 
+  {
+    this.location.back();
+  }
+
   getRecommendedMoviesFromTMDB(id)
   {
     if(id !== '' && id !== null)
@@ -436,17 +543,47 @@ export class MainMovieComponent implements OnInit {
         }
         for(let i=0;i<res['results'].length;i++)
         {
-          this.recommendedMovieTitles.push({ "title" : res['results'][i]['title'], "id" : res['results'][i]['id']})
           if(this.recommendedMovieTitles.length>=10)
           {
-            //console.log(this.recommendedMovieTitles);
+            console.log(this.recommendedMovieTitles);
             break;
           }
+          this.http.get(this.imagesUrl+res['results'][i]['id']+this.imagesUrlPart2).toPromise().then(o => 
+            {
+              if(o["posters"].length >1)
+              {
+                this.recommendedMovieTitles.push(
+                  { 
+                    "title" : res['results'][i]['title'], 
+                    "id" : res['results'][i]['id'],
+                    "imageUrl" : this.imagesPath+o["posters"][0]["file_path"]
+                  }
+                  )
+              }
+              else
+              {
+                this.recommendedMovieTitles.push(
+                  { 
+                    "title" : res['results'][i]['title'], 
+                    "id" : res['results'][i]['id'],
+                    "imageUrl" : './../../../assets/images/noimage.png'
+                  }
+                  )
+              }
+              
+            })
+          
+          
         }
         //console.log(this.recommendedMovieTitles);
       })
     }
   }
+
+  imagesUrl : string = 'https://api.themoviedb.org/3/movie/';
+  imagesUrlPart2 : string = '/images?api_key=ae139cfa4ee9bda14d6e3d7bea092f66';
+
+  imagesPath : string = 'https://image.tmdb.org/t/p/w500'
 
   goToRecommendedMovieImdb(id,title)
   {
@@ -460,17 +597,18 @@ export class MainMovieComponent implements OnInit {
     }
     else
     {
-      this.http.get(this.findMovieUrl+id+this.findMovieUrlPart2).toPromise()
-      .then(res => {
-        //console.log("imdb forward")
-        //console.log(res);
-        var go = confirm(title+" is not available on our Database, redirecting you to external site.You want to go?")
-        if(go)
-        {
-          window.location.href = link+res['imdb_id'];
-        }
+      this.router.navigateByUrl('/extmovie/'+id);
+      // this.http.get(this.findMovieUrl+id+this.findMovieUrlPart2).toPromise()
+      // .then(res => {
+      //   //console.log("imdb forward")
+      //   //console.log(res);
+      //   var go = confirm(title+" is not available on our Database, redirecting you to external site.You want to go?")
+      //   if(go)
+      //   {
+      //     window.location.href = link+res['imdb_id'];
+      //   }
         
-      })
+      // })
     }  
   }
 
@@ -480,7 +618,8 @@ export class MainMovieComponent implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: 'Suggesto : Best app to find hand picked Movies and movie suggestions daily.',
-        url: window.location.toString(),
+        // url: window.location.toString(),
+        text: 'Hey checkout this '+this.actualMovie.title+' movie. Its awesome and worth watching.     '+window.location.toString(),
       }).then(() => {
         console.log('Thanks for sharing!');
       })

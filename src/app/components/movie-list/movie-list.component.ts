@@ -53,6 +53,12 @@ export class MovieListComponent implements OnInit {
     else{
       //console.log("laptop")
     }
+    if(localStorage.getItem("lists") !== null )
+    {
+      this.MovieListsForView = JSON.parse(localStorage.getItem("lists"));
+      this.loading = false;
+    }
+    
     if(this.activatedRoute.snapshot.params.key)
     {
       this.customerLists = true;
@@ -67,6 +73,7 @@ export class MovieListComponent implements OnInit {
     ).subscribe(o => {
       console.log(o)
       this.allMovies = o;
+      
       this.xyz();      
     })    
 
@@ -85,7 +92,7 @@ export class MovieListComponent implements OnInit {
       this.allMovieLists = o;
       var adminList = [];
       var customerList = [];
-      console.log(this.activatedRoute.snapshot.params.key)
+      //console.log(this.activatedRoute.snapshot.params.key)
       var customerUID = this.activatedRoute.snapshot.params.key;
       if(customerUID)
       {
@@ -114,6 +121,7 @@ export class MovieListComponent implements OnInit {
         }
         console.log("hai")
         console.log(adminList);
+        this.MovieListsForView.length = 0;
         this.BuildMovieListForDisplay(adminList);
       }
 
@@ -121,6 +129,7 @@ export class MovieListComponent implements OnInit {
       this.MovieListsForView.sort((a, b) => {
         return b.rating - a.rating;
       });
+      localStorage.setItem("lists",JSON.stringify(this.MovieListsForView));
       this.loading = false;
     })
   }

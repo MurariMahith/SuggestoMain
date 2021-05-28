@@ -18,7 +18,8 @@ export class TamilComponent implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: 'Suggesto : Best app to find hand picked Movies and Suggestion on daily basis.',
-        url: window.location.toString(),
+        text: 'Hey checkout this amazing app that suggests some great movies daily and has many features in it.   '+"https://play.google.com/store/apps/details?id=xyz.appmaker.jibpca",
+        // url: window.location.toString(),
       }).then(() => {
         console.log('Thanks for sharing!');
       })

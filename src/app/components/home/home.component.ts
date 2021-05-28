@@ -33,6 +33,9 @@ import { Language } from 'src/app/models/Language';
 import { MoviePlatForm } from 'src/app/models/MoviePlatform';
 import { Hits } from 'src/app/models/Hits';
 import { AuthService } from 'src/app/services/authService';
+import { FeedItem } from 'src/app/models/FeedItem';
+import { SharedMovie } from 'src/app/models/SharedMovie';
+import { FollowObject } from 'src/app/models/FollowObject';
 
 @Component({
   selector: 'app-home',
@@ -60,6 +63,7 @@ export class HomeComponent implements OnInit {
   todayBooleanMovie : boolean = true;
   //loading boolean is for animations to view until our app fetches movies from db
   loading : boolean = true;
+  loading2 : boolean = true;
   //lists for home page
   homePageList : HomePageLists = new HomePageLists();
 
@@ -140,6 +144,9 @@ export class HomeComponent implements OnInit {
 
   NotYetWatchedBool : boolean = false;
 
+  topCustomer : Customer;
+  allCustomers : Customer[] = [];
+
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
@@ -148,6 +155,7 @@ export class HomeComponent implements OnInit {
     private homelistsservice : HomePageListsService,
     private activatedRote : ActivatedRoute,
     private http : HttpClient,
+    private messageService : HitsService,
     private customerService : CustomerService,
     private hitsService : HitsService,
     private swPush : SwPush,
@@ -183,49 +191,11 @@ export class HomeComponent implements OnInit {
     this.display='none';
   }
 
-  ngOnInit() 
-  {
-    if( screen.width <= 480 ) {     
-      this.isMobile = true;
-      //this.pushSubscription()
-      ////console.log("mobile");
-    }
-    else{
-      ////console.log("laptop")
-    }
-    this.randomTip();
+  allWatchedMoviesByCustomer :string[] = [];
 
-    //loggingout user if loading is true for more than 30 seconds
-    setTimeout(()=> {
-      if(this.loading)
-      {
-        //alert("Either your network connection is slow or something wrong on our side, Please check your internet connection. If you feel something wrong on our side please log a complaint.")
-        //this.authService.logOut();
-        //localStorage.removeItem("load30");
-        // //console.log(localStorage.getItem("load30"))
-        // //console.log(Number(localStorage.getItem("load30")) == 2)
-        // //console.log(Number(localStorage.getItem("load30")) <2)
-
-        // if(Number(localStorage.getItem("load30")) == 2)
-        // {
-        //   alert("Either your network connection is slow or something wrong on our side, we are logging you out please log in again.")
-        //   this.authService.logOut();
-        // }
-        // else if(Number(localStorage.getItem("load30")) <2)
-        // {
-        //   var add = Number(localStorage.setItem("load30","1"))+1
-        //   localStorage.setItem("load30",add.toString())
-        //   //location.reload();
-        // }
-        // else
-        // {
-        //   //console.log("start")
-        //   localStorage.setItem("load30","1");
-          
-        // }
-      }
-    },40000)
-    
+  
+  ngOnDestroy()
+  { 
 
     this.hitsService.getHits()
     .snapshotChanges().pipe(
@@ -244,6 +214,103 @@ export class HomeComponent implements OnInit {
         localStorage.setItem("visited","true");
       }
     });
+
+    this.quickViewedMovies.forEach(element => {
+      //console.log(element.visitedCount)
+      if(element.visitedCount || element.visitedCount === undefined)
+      {
+        element.visitedCount = element.visitedCount+1;
+        try
+        {
+          this.movieService.updateMovie(element.key,element);
+        }
+        catch
+        {
+
+        }
+        
+        //console.log(element)
+      }
+      else
+      {
+        element.visitedCount = 1;
+        try
+        {
+          this.movieService.updateMovie(element.key,element);
+        }
+        catch
+        {
+
+        }
+      }
+    });
+  }
+
+
+
+  ngOnInit() 
+  {
+    console.log("oninit" + new Date())
+    this.BuildTrendingMoviesFromTMDB();
+    if( screen.width <= 480 ) {     
+      this.isMobile = true;
+      this.loading = false;
+      //console.log(this.loading2)
+      //this.pushSubscription()
+      ////console.log("mobile");
+    }
+    else{
+      ////console.log("laptop")
+    }
+    //get today movie from localstorage until it loads from db.
+    console.log(localStorage.getItem("editorchoiceList") == null)
+    if(localStorage.getItem("todayMovie") === null || localStorage.getItem("recently") === null || localStorage.getItem("editorchoiceList") === null)
+    {
+      //console.log("inside");
+      this.loading = true;
+    }
+    this.todayMovieD = JSON.parse(localStorage.getItem("todayMovie"))
+    this.sortedArray = JSON.parse(localStorage.getItem("recently"));
+    this.editorsChoice = JSON.parse(localStorage.getItem("editorchoiceList"));
+    //console.log(this.todayMovieD);
+
+
+    this.randomTip();
+
+    //loggingout user if loading is true for more than 30 seconds
+    // setTimeout(()=> {
+    //   if(this.loading)
+    //   {
+    //     //alert("Either your network connection is slow or something wrong on our side, Please check your internet connection. If you feel something wrong on our side please log a complaint.")
+    //     //this.authService.logOut();
+    //     //localStorage.removeItem("load30");
+    //     // //console.log(localStorage.getItem("load30"))
+    //     // //console.log(Number(localStorage.getItem("load30")) == 2)
+    //     // //console.log(Number(localStorage.getItem("load30")) <2)
+
+    //     // if(Number(localStorage.getItem("load30")) == 2)
+    //     // {
+    //     //   alert("Either your network connection is slow or something wrong on our side, we are logging you out please log in again.")
+    //     //   this.authService.logOut();
+    //     // }
+    //     // else if(Number(localStorage.getItem("load30")) <2)
+    //     // {
+    //     //   var add = Number(localStorage.setItem("load30","1"))+1
+    //     //   localStorage.setItem("load30",add.toString())
+    //     //   //location.reload();
+    //     // }
+    //     // else
+    //     // {
+    //     //   //console.log("start")
+    //     //   localStorage.setItem("load30","1");
+          
+    //     // }
+    //   }
+    // },40000)
+    
+
+    
+    {
     // var hit = new Hits();
     // hit.visitedNumber = 1;
     // this.hitsService.create(hit);
@@ -293,30 +360,83 @@ export class HomeComponent implements OnInit {
     //   },15000)
     // }
     
-    localStorage.setItem("date",moment().format("DD/MM/YYYY"))
-    if(localStorage.getItem("notify") && localStorage.getItem("notify") == "true")
-    {
-      this.notificationEnabled = true;
-    }
+    // localStorage.setItem("date",moment().format("DD/MM/YYYY"))
+    // if(localStorage.getItem("notify") && localStorage.getItem("notify") == "true")
+    // {
+    //   this.notificationEnabled = true;
+    // }
     //this.notificationEnabled = this.swPush.isEnabled;
     //console.log(this.notificationEnabled)
     // this.swPush.messages.subscribe(o => {
     //   window.location.href = o['notification']['data']['url'];
     // })
-    this.swPush.notificationClicks.subscribe((res) => {
-      window.location.href = res['notification']['data']['url'];
-    })
+    // this.swPush.notificationClicks.subscribe((res) => {
+    //   window.location.href = res['notification']['data']['url'];
+    // })
+    }
+    console.log("oninit" + new Date())
     if(localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
     {
       this.customerService.getLoggedInCustomer()
         .subscribe(o =>
           {
+            console.log("oninit" + new Date())
             ////console.log(o)
+            this.allCustomers = o;
+            this.allCustomers.forEach(c => 
+              {
+                if(!c.wishlistedMovies)
+                  c.wishlistedMovies = [];
+                if(!c.ratedMovies)
+                  c.ratedMovies = [];
+                if(!c.watchedMovies)
+                  c.watchedMovies = [];
+                if(!c.following)
+                  c.following = [];
+                if(!c.followers)
+                  c.followers = [];
+              })
+            
+            this.topCustomer = this.allCustomers.sort((a,b) => (b.wishlistedMovies.length + b.ratedMovies.length + b.watchedMovies.length) - (a.wishlistedMovies.length + a.ratedMovies.length + a.watchedMovies.length))[0];
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
               //console.log(this.currentCustomer);
+
               this.loggedIn = true
+              this.loading = false;
+              //this.loading2 = false;
+              console.log("customer found" + this.loading2)
+
+
+              //checking for all kinds of follow attributes present or not and if not making them empty arrays
+              if(!this.currentCustomer.followRequestSent || this.currentCustomer.followRequestSent == undefined)
+              {
+                this.currentCustomer.followRequestSent = [];
+              }
+              if(!this.currentCustomer.following || this.currentCustomer.following == undefined)
+              {
+                this.currentCustomer.following = [];
+              }
+              if(!this.currentCustomer.followers || this.currentCustomer.followers == undefined)
+              {
+                this.currentCustomer.followers = [];
+              }
+              if(!this.currentCustomer.followRequestReceived || this.currentCustomer.followRequestReceived == undefined)
+              {
+                this.currentCustomer.followRequestReceived = [];
+              }
+              var friends :FollowObject[] = this.currentCustomer.followers.concat(this.currentCustomer.following);
+              // this.allFriends.filter((v,i,a)=>a.findIndex(t=>(t.followerUserId === v.followerUserId))===i)
+              this.allFriends = Array.from(new Set(friends.map(a => a.followerUserId)))
+                .map(id => {
+                  return friends.find(a => a.followerUserId === id)
+                })
+              this.allFriendsOriginal = this.allFriends;
+              console.log(this.allFriends);
+
+
+
             }
             else
             {
@@ -359,6 +479,29 @@ export class HomeComponent implements OnInit {
             ////console.log(this.loggedIn)
           })
     }
+    else
+    {
+      this.customerService.getLoggedInCustomer()
+      .subscribe(o =>
+        {
+          this.allCustomers =o;
+          this.allCustomers.forEach(c => 
+            {
+              if(!c.wishlistedMovies)
+                c.wishlistedMovies = [];
+              if(!c.ratedMovies)
+                c.ratedMovies = [];
+              if(!c.watchedMovies)
+                c.watchedMovies = [];
+              if(!c.following)
+                c.following = [];
+              if(!c.followers)
+                c.followers = [];
+            })
+          this.topCustomer = this.allCustomers.sort((a,b) => (b.wishlistedMovies.length + b.ratedMovies.length + b.watchedMovies.length) - (a.wishlistedMovies.length + a.ratedMovies.length + a.watchedMovies.length))[0];
+        })
+    }
+    //this.loading2 = false;
     // else
     // {
     //   this.loading = false
@@ -377,6 +520,9 @@ export class HomeComponent implements OnInit {
       )
     ).subscribe(o => {
       this.allMovies = o; 
+      this.loading = false;
+      this.loading2 = false;
+     
       if(this.loggedIn)
       {
         setTimeout(()=>{
@@ -454,6 +600,9 @@ export class HomeComponent implements OnInit {
       if(arr[0])
       {
         this.todayMovieD = this.movieDisplayService.prepareDisplayMovieList(arr)[0]      
+        localStorage.setItem("todayMovie",JSON.stringify(this.todayMovieD))
+
+        //here add this todaymovieD obj to storage check from storage and render data until it loads.
       }
 
       
@@ -500,7 +649,7 @@ export class HomeComponent implements OnInit {
 
   buildRecommendedMoviesFromTMDB()
   {
-    if(this.currentCustomer.watchedMovies)
+    if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.length>0)
     {
       var shuffledWatchedMovies = this.shuffleArr(this.currentCustomer.watchedMovies);
       this.spotLightMovie = this.allMovies.find(x => x.key === shuffledWatchedMovies[0])
@@ -535,11 +684,12 @@ export class HomeComponent implements OnInit {
 
   getRecommendedMoviesFromTMDB(id)
   {
+    var imagesPath : string = 'https://image.tmdb.org/t/p/w500'
     if(id !== '' && id !== null)
     {
       this.http.get(this.recommendedMoviesUrl+id+this.recommendedMoviesUrlPart2).toPromise()
       .then(res => {
-        //console.log(res);
+        console.log(res);
         if(res['results'].length<=2)
         {
           this.recommendationsBool = false
@@ -547,7 +697,12 @@ export class HomeComponent implements OnInit {
         }
         for(let i=0;i<res['results'].length;i++)
         {
-          this.recommendedMovieTitles.push({ "title" : res['results'][i]['title'], "id" : res['results'][i]['id']})
+          this.recommendedMovieTitles.push({ 
+            "title" : res['results'][i]['title'], 
+            "id" : res['results'][i]['id'],
+            "imageUrl" : imagesPath+res['results'][i]["poster_path"]
+          })
+          //murari
           if(this.recommendedMovieTitles.length>=10)
           {
             ////console.log(this.recommendedMovieTitles);
@@ -569,17 +724,18 @@ export class HomeComponent implements OnInit {
     }
     else
     {
-      this.http.get(this.findMovieUrl+id+this.findMovieUrlPart2).toPromise()
-      .then(res => {
-        //console.log("imdb forward")
-        //console.log(res);
-        var go = confirm(title+" is not available on our Database, redirecting you to external site.You want to go?")
-        if(go)
-        {
-          window.location.href = link+res['imdb_id'];
-        }
+      this.router.navigateByUrl('/extmovie/'+id);
+      // this.http.get(this.findMovieUrl+id+this.findMovieUrlPart2).toPromise()
+      // .then(res => {
+      //   //console.log("imdb forward")
+      //   //console.log(res);
+      //   var go = confirm(title+" is not available on our Database, redirecting you to external site.You want to go?")
+      //   if(go)
+      //   {
+      //     window.location.href = link+res['imdb_id'];
+      //   }
         
-      })
+      // })
     }  
   }
 
@@ -600,6 +756,31 @@ export class HomeComponent implements OnInit {
     return array;
     }
     
+  }
+
+  trendingMovies : any[] = [];
+
+  BuildTrendingMoviesFromTMDB()
+  {
+    var url = 'https://api.themoviedb.org/3/trending/movie/week?api_key=ae139cfa4ee9bda14d6e3d7bea092f66';
+    var imagesPath : string = 'https://image.tmdb.org/t/p/w500'
+    this.http.get(url).toPromise()
+    .then(res => {
+      console.log(res)
+      for(let i=0;i<res['results'].length;i++)
+      {
+        //console.log(res['results'][i])
+        this.trendingMovies.push({
+          'title' : res['results'][i]['title'],
+          'releasedYear' : res['results'][i]['release_date'],
+          'imageUrl' : imagesPath+res['results'][i]['poster_path'],
+          'language' : res['results'][i]['original_language'],
+          'id' : res['results'][i]['id']       
+        })
+      }
+      console.log(this.trendingMovies)
+      
+    })
   }
 
   buildNotYetWatchedMovies()
@@ -639,11 +820,13 @@ export class HomeComponent implements OnInit {
 
   buildPersonalisedContentForLoggedInCustomer()
   {
+    this.loading = false;
     var i=0;
     var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,false,true,false,false);
     var personalisedMovies = []
     console.log(this.currentCustomer.preferredGenre)
     //console.log()
+    var watched = this.currentCustomer.watchedMovies;
     allDisplayMovies.forEach(o => {
 
       var genresForMovie = o.genre.trim().split(' ')
@@ -659,10 +842,12 @@ export class HomeComponent implements OnInit {
 
     });
     console.log(personalisedMovies);
+
     var uniqueArray :DisplayMovie[] = personalisedMovies.filter(function(item, pos) {
       return personalisedMovies.indexOf(item) == pos;
     })
     this.personalisedMoviesDisplay = uniqueArray;
+
     var LanguageBasedPersonalisedMovies = [];
     uniqueArray.forEach(o => {
       this.currentCustomer.preferredLanguages.forEach(element => {
@@ -677,6 +862,32 @@ export class HomeComponent implements OnInit {
     // //console.log(this.personalisedMoviesDisplay)
     this.personalisedMoviesDisplay = LanguageBasedPersonalisedMovies
     //murari
+
+    console.log("here")
+
+    //this.personalisedMoviesDisplay.filter(x => watched.includes(x.key))
+    console.log(this.personalisedMoviesDisplay);
+    
+    if(this.personalisedMoviesDisplay.length<10)
+    {
+      var randomNum;
+
+      for(randomNum = 20;randomNum< allDisplayMovies.length;randomNum = randomNum+3)
+      {
+        //loadconsole.log(allDisplayMovies[randomNum])
+        // this.currentCustomer.preferredLanguages.forEach(element => {
+        //   if(element.search(allDisplayMovies[randomNum].language) != -1)
+        //   {
+        //     this.personalisedMoviesDisplay.push(allDisplayMovies[randomNum])
+        //   }
+        // });
+        //if(this.currentCustomer.preferredLanguages.includes(allDisplayMovies[randomNum].language))
+        this.personalisedMoviesDisplay.push(allDisplayMovies[randomNum])
+          
+        if(this.personalisedMoviesDisplay.length>20)
+          break;
+      }
+    }
 
     //get any random movie for corousel
     var shuffledpersonalisedmovies = [];
@@ -817,6 +1028,7 @@ export class HomeComponent implements OnInit {
   buildRecentlySuggestedMovieList()
   {
     var allmovies2 = [];
+    //this.sortedArray.length = 0;
     this.allMovies.forEach(element => {
       var newDate = this.buildProperDate(element.suggestedDate);       
         if(moment().startOf('day').isAfter(moment(new Date(newDate))))
@@ -832,12 +1044,9 @@ export class HomeComponent implements OnInit {
       ////console.log(moment(new Date(this.buildProperDate(o.suggestedDate))))
       return moment(new Date(this.buildProperDate(o.suggestedDate)))
     }, ['desc']);
-    //console.log(this.sortedArray);
-    
-    // this.sortedArray.forEach(element => {
-    //   //console.log(element.suggestedDate);
-    // });
-    
+
+    //store this array in storage and load this until data loads 
+    localStorage.setItem("recently",JSON.stringify(this.sortedArray));
   }
 
   buildProperDate(str : string) :string
@@ -863,6 +1072,7 @@ export class HomeComponent implements OnInit {
   buildeditorChoiceMovieListForDisplay()
   {
     this.editorsChoice = this.listDisplayService.BuildMovieListForDisplay(this.homePageList.listsToIncludeInHomePage,this.allMovies);
+    localStorage.setItem("editorchoiceList",JSON.stringify(this.editorsChoice));
   }
 
   GoToGenre(str:string)
@@ -882,7 +1092,14 @@ export class HomeComponent implements OnInit {
 
   GoToMovieHref(key)
   {
-    window.location.href = '/movie/'+key
+    if(this.loading2)
+    {
+      alert("please wait while data is loading its one time process")
+    }
+    else
+    {
+      window.location.href = '/movie/'+key
+    }
   }
 
   launchModal(key)
@@ -909,13 +1126,24 @@ export class HomeComponent implements OnInit {
       }
       ////console.log(this.currentCustomer)
       this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+      var feeditm : FeedItem = new FeedItem();
+      feeditm.content = this.currentCustomer.name + " added "+this.allMovies.find(x=>x.key == key).title + " to their wishlist . Click to view the movie."
+      feeditm.customerName = this.currentCustomer.name;
+      feeditm.customerUid = this.currentCustomer.uid;
+      feeditm.photoUrl = this.currentCustomer.customerPhotoUrl;
+      feeditm.url = '/movie/'+this.allMovies.find(x=>x.key == key).key;
+      feeditm.type = 'WISHLIST';
+      this.customerService.addFeedItem(feeditm);
     }
     else
     {
+      this.loginModalBool = true;
       alert("Sorry!, You should Login to use Wishlisted feature.")
     }
     
   }
+
+  loginModalBool : boolean = false;
 
   removeFromWishlist(key)
   {
@@ -970,6 +1198,14 @@ export class HomeComponent implements OnInit {
     // }
 
     this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    var feeditm : FeedItem = new FeedItem();
+    feeditm.content = this.currentCustomer.name + " watched "+this.allMovies.find(x=>x.key == key).title + " . Click to view the movie."
+    feeditm.customerName = this.currentCustomer.name;
+    feeditm.customerUid = this.currentCustomer.uid;
+    feeditm.photoUrl = this.currentCustomer.customerPhotoUrl;
+    feeditm.url = '/movie/'+this.allMovies.find(x=>x.key == key).key;
+    feeditm.type = 'WATCHED';
+    this.customerService.addFeedItem(feeditm);
   }
 
   removeFromWatched(key)
@@ -1034,6 +1270,7 @@ export class HomeComponent implements OnInit {
 
   startQuickView(key)
   {
+    console.log("quick view started")
     this.quickViewMovie = this.allMovies.find(x => x.key === key);
     var tariler = "https://www.youtube.com/embed/"+this.quickViewMovie.ytTrailerLink.slice(32,)
           //add below line to above str to have autoplay feature
@@ -1062,40 +1299,6 @@ export class HomeComponent implements OnInit {
 
   quickViewedMovies : FMovie[] = [];
 
-  ngOnDestroy()
-  {
-
-    this.quickViewedMovies.forEach(element => {
-      //console.log(element.visitedCount)
-      if(element.visitedCount || element.visitedCount === undefined)
-      {
-        element.visitedCount = element.visitedCount+1;
-        try
-        {
-          this.movieService.updateMovie(element.key,element);
-        }
-        catch
-        {
-
-        }
-        
-        //console.log(element)
-      }
-      else
-      {
-        element.visitedCount = 1;
-        try
-        {
-          this.movieService.updateMovie(element.key,element);
-        }
-        catch
-        {
-
-        }
-        //console.log(element)
-      }
-    });
-  }
 
   GoToMovieExternalSiteQuickView()
   {
@@ -1131,10 +1334,8 @@ export class HomeComponent implements OnInit {
     "Go To <a href='/profile' style='color: #007BFF;'>Profile</a> page and you can create custom movie lists and share them to your friends.",
     "Edit your personalisation <a href='/personalisation' style='color: #007BFF;'>here</a> to see personalised content unique for you.",
     "Search for your desired movie <a href='/all' style='color: #007BFF;'>here</a>, you can search with movie name, cast, key words,release year,genre etc. You can also use our filters.",
-    "Check out <a href='/feed' style='color: #007BFF;'>feed</a> section for a random movie generator.",
-    "Go To <a href='/people' style='color: #007BFF;'>People</a> page you can see wishlists of users (only who accepted to share their wishlists).",
-    "Please check out MovieBuff Board our kind of leaderboard in <a href='/people' style='color: #007BFF;'>People</a> section inside Suggesto.",
-    "If you disable 'Share your wishlist to people and include in MovieBuff Board' in <a href='/profile' style='color: #007BFF;'>Profile</a> section, your wishlist will not be shared and your name will be hidden in Movie Buff Board.",
+    "Check out <a href='/news-feed' style='color: #007BFF;'>feed</a> section for a random movie generator.",  
+    "Please check out MovieBuff Board our kind of leaderboard in <a href='/board' style='color: #007BFF;'>MovieBuff Board</a> section inside Suggesto.",
     "You can check out 'Wishlisted Movies','Watched Movies' and 'Rated Movies' in <a href='/profile' style='color: #007BFF;'>Profile</a> section.",
     "Login to use full potential of Suggesto. You are only using 60% of features as a logged out user.",
     "You can know more about Suggesto in <a href='/aboutus' style='color: #007BFF;'>About Suggesto</a> section.",
@@ -1147,6 +1348,75 @@ export class HomeComponent implements OnInit {
   {
     var content = this.shuffleArr(this.tips)[1];
     this.tip = this.sanitizer.bypassSecurityTrustHtml(content)
+  }
+
+  tipVisible : boolean = true;
+
+  allFriends : FollowObject[] = [];
+  allFriendsOriginal : FollowObject[] = [];
+
+  shareWindowBool : boolean = false;
+  movieToBeShared : DisplayMovie = new DisplayMovie();
+
+  //sharing movie with friends.
+  sendObj : SharedMovie = new SharedMovie();
+
+  startSharedWindow(mve)
+  {
+    this.shareWindowBool = true;
+    this.movieToBeShared = mve;
+    //console.log(mve)
+  }
+
+  sendMovie(friend : FollowObject,mve : DisplayMovie)
+  {
+    mve = this.movieToBeShared;
+    for( var i = 0; i < this.allFriends.length; i++)
+    {     
+      if (this.allFriends[i].followerUserId == friend.followerUserId) 
+      {   
+        this.allFriends.splice(i, 1); 
+      }
+    }
+    console.log(this.allFriends)
+    console.log(friend.followerUserId);
+    this.sendObj.movieName = mve.title;
+    this.sendObj.movieKey = mve.key;
+    this.sendObj.movieImageUrl = mve.smallImageUrl;
+    this.sendObj.language = mve.language;
+    this.sendObj.genre = mve.genre;
+    this.sendObj.platform = mve.availableIn;
+    this.sendObj.receiverUid = friend.followerUserId;
+    this.sendObj.senderName = this.currentCustomer.name;
+    this.sendObj.senderPhotoUrl = this.currentCustomer.customerPhotoUrl;
+    this.sendObj.senderUid = this.currentCustomer.uid;
+    this.messageService.createMessage(this.sendObj);
+    console.log(this.sendObj);
+  }
+
+  //when shared window is closed, reset friends list
+  closedShareWindow()
+  {
+    if(this.loggedIn)
+    {
+      console.log("close")
+      this.allFriends.length = 0;
+      var friends :FollowObject[] = this.currentCustomer.followers.concat(this.currentCustomer.following);
+      // this.allFriends.filter((v,i,a)=>a.findIndex(t=>(t.followerUserId === v.followerUserId))===i)
+      this.allFriends = Array.from(new Set(friends.map(a => a.followerUserId)))
+        .map(id => {
+          return friends.find(a => a.followerUserId === id)
+        })
+      this.sendObj = new SharedMovie();
+      this.shareWindowBool = false
+      this.movieToBeShared = new DisplayMovie();
+      //this.allFriends = this.allFriendsOriginal;
+    }
+    else
+    {
+      this.shareWindowBool = false
+    }
+
   }
 
 }

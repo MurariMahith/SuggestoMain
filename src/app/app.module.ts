@@ -49,7 +49,14 @@ import { ComplaintComponent } from './components/complaint/complaint.component';
 
 import { CommaPipe } from './services/CommaPipe';
 import { UnderScorePipe } from './services/UnderScorePipe';
-import { PersonalisedMoviesComponent } from './components/personalised-movies/personalised-movies.component'
+import { PersonalisedMoviesComponent } from './components/personalised-movies/personalised-movies.component';
+import { VisitProfileComponent } from './components/visit-profile/visit-profile.component';
+import { PersonalisedMoviesOfCustomerComponent } from './components/personalised-movies-of-customer/personalised-movies-of-customer.component';
+import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
+import { MovieBuffBoardComponent } from './components/movie-buff-board/movie-buff-board.component';
+import { FollowingProfileComponent } from './components/following-profile/following-profile.component';
+import { TmdbMovieComponent } from './components/tmdb-movie/tmdb-movie.component';
+import { Profile2Component } from './components/profile2/profile2.component'
 
 @NgModule({
   declarations: [
@@ -83,7 +90,14 @@ import { PersonalisedMoviesComponent } from './components/personalised-movies/pe
     ComplaintComponent,
     CommaPipe,
     UnderScorePipe,
-    PersonalisedMoviesComponent
+    PersonalisedMoviesComponent,
+    VisitProfileComponent,
+    PersonalisedMoviesOfCustomerComponent,
+    WelcomePageComponent,
+    MovieBuffBoardComponent,
+    FollowingProfileComponent,
+    TmdbMovieComponent,
+    Profile2Component
   ],
   imports: [
     BrowserModule,

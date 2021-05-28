@@ -9,7 +9,7 @@ import { DisplayMovieService } from 'src/app/services/display-movie.service';
 import { DisplayListService } from 'src/app/services/display-list.service';
 import { DisplayMovieList } from 'src/app/models/DisplayMovieList';
 import { Router,ActivatedRoute } from '@angular/router';
-import { $ } from 'protractor';
+// import { $ } from 'protractor';
 import { HomePageLists } from 'src/app/models/HomePageLists';
 import { HomePageListsService } from 'src/app/services/home-page-lists.service';
 import _ from 'lodash'
@@ -21,6 +21,10 @@ import { Customer } from 'src/app/models/Customer';
 import { RatedMovies } from 'src/app/models/Customer Related/RatedMovies';
 import { concat } from 'rxjs';
 import { AuthService } from 'src/app/services/authService';
+import { FollowObject } from 'src/app/models/FollowObject';
+import { FeedItem } from 'src/app/models/FeedItem';
+
+declare var $:any;
 
 @Component({
   selector: 'app-malayalam',
@@ -32,6 +36,8 @@ export class MalayalamComponent implements OnInit {
   currentCustomer : Customer;
 
   allCustomers : Customer[] = [];
+
+  allCustomersWhoArePublic : Customer[] = [];
 
   allMovies : FMovie[] = [];
 
@@ -66,7 +72,46 @@ export class MalayalamComponent implements OnInit {
   wishbool : boolean = true;
   watchedbool : boolean = false;
 
+  followersBool : boolean = false;
+  followingBool : boolean = false;
+  requestBool : boolean = false;
+  findPeopleBool : boolean = true;
+
+  notifyRequest : boolean = false;
+
+
+  listsNav : boolean = false;
+  moviesNav : boolean = true;
+  peopleNav : boolean = false;
+  settingsNav : boolean = false;
+
+  followingSelect()
+  {
+    this.followingBool = !this.followingBool;
+  }
+  followersSelect()
+  {
+    this.followersBool = !this.followersBool;
+  }
+  requestSelect()
+  {
+    this.requestBool = !this.requestBool;
+  }
+  requestNotificationBool()
+  {
+    document.getElementById("requests-id").scrollIntoView({ behavior: "smooth",block: "center"})
+    this.notifyRequest = false;
+    this.requestBool = true;
+  }
+
+  findPeopleSelect()
+  {
+    this.findPeopleBool = !this.findPeopleBool;
+  }
+
   loading : boolean = true;
+
+  allFollowinguids : string[] = [];
 
   timeOutError;
 
@@ -89,6 +134,8 @@ export class MalayalamComponent implements OnInit {
   
     ngOnInit() {
 
+      $('[data-toggle="popover"]').popover();
+
       if( screen.width <= 480 ) {     
         this.isMobile = true;
         //console.log("mobile");
@@ -102,12 +149,80 @@ export class MalayalamComponent implements OnInit {
           .subscribe(o =>
             {
               this.allCustomers = o;
-              //console.log(o)
+              this.allCustomersWhoArePublic.length =0;
+              this.allCustomers.forEach(element => {
+                if(element.customerPhotoUrl && element.customerPhotoUrl.length<=0)
+                {
+                  element.customerPhotoUrl = "../../../assets/images/defaultuser.png"
+                }
+                if(element.shareWishlistedMovies && element.name && element.name.length>0)
+                {
+                  this.allCustomersWhoArePublic.push(element)
+                }
+              });
+              this.allCustomersWhoArePublicDisplay = this.allCustomersWhoArePublic
+              //remove current customer from all customers.
+
+              
+
+              console.log(o)
               if(o.find(x => x.uid === localStorage.getItem("uid")))
               {
                 this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
+                setTimeout(()=>{
+                  if(this.currentCustomer.followRequestReceived.length >0)
+                  {
+                    this.notifyRequest = true;
+                  }                  
+                },5000)
+                if(!this.currentCustomer.followRequestSent || this.currentCustomer.followRequestSent == undefined)
+                {
+                  this.currentCustomer.followRequestSent = [];
+                }
+                if(!this.currentCustomer.following || this.currentCustomer.following == undefined)
+                {
+                  this.currentCustomer.following = [];
+                }
+                if(!this.currentCustomer.followers || this.currentCustomer.followers == undefined)
+                {
+                  this.currentCustomer.followers = [];
+                }
+                if(!this.currentCustomer.followRequestReceived || this.currentCustomer.followRequestReceived == undefined)
+                {
+                  this.currentCustomer.followRequestReceived = [];
+                }
+
+                
+                if(!this.currentCustomer.wishlistedMovies || this.currentCustomer.wishlistedMovies == undefined)
+                {
+                  this.currentCustomer.wishlistedMovies = [];
+                }
+                if(!this.currentCustomer.watchedMovies || this.currentCustomer.watchedMovies == undefined)
+                {
+                  this.currentCustomer.watchedMovies = [];
+                }
+                if(!this.currentCustomer.ratedMovies || this.currentCustomer.ratedMovies == undefined)
+                {
+                  this.currentCustomer.ratedMovies = [];
+                }
+                
+                
+
+
+
+                this.currentCustomer.following.forEach(element => {
+                  this.allFollowinguids.push(element.followerUserId)
+                });
+                console.log(this.allFollowinguids)
                 this.loggedIn = true
                 console.log(this.currentCustomer)
+                for( var i = 0; i < this.allCustomersWhoArePublic.length; i++)
+                {     
+                  if (this.allCustomersWhoArePublic[i].uid == this.currentCustomer.uid) 
+                  {   
+                    this.allCustomersWhoArePublic.splice(i, 1); 
+                  }
+                }
                 this.getMovieLists();
                 //below line may not be needed
                 this.getCategorisedMoviesForThisCustomer();
@@ -202,6 +317,10 @@ export class MalayalamComponent implements OnInit {
             this.diamond = true;
           }
           this.share = this.currentCustomer.shareWishlistedMovies ? this.currentCustomer.shareWishlistedMovies : false;
+          if(!this.currentCustomer || this.currentCustomer == undefined)
+          {
+            window.location.reload();
+          }
           this.loading = false;
           console.log(this.wishlistedMoviesDisplay)
           console.log(this.ratedMoviesDisplay)
@@ -233,6 +352,7 @@ export class MalayalamComponent implements OnInit {
       {
         this.allLists = o;
         console.log(this.allLists)
+        this.listsByCurrentCustomer.length = 0;
         this.allLists.forEach(x => {
           if(x.createdBy && x.createdBy === this.currentCustomer.uid)
           {
@@ -245,6 +365,9 @@ export class MalayalamComponent implements OnInit {
 
   getCategorisedMoviesForThisCustomer()
   {
+    this.wishlistedMovies.length = 0;
+    this.watchedMovies.length = 0;
+    this.ratedMovies.length = 0;
     this.allMovies.forEach(element => {
       if(this.currentCustomer.wishlistedMovies && this.currentCustomer.wishlistedMovies.includes(element.key))
       {
@@ -273,6 +396,203 @@ export class MalayalamComponent implements OnInit {
     this.watchedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.watchedMovies);
   }
 
+  sendFollowRequest(key)
+  {
+    var receiverCustomer = this.allCustomers.find(x => x.uid === key);
+    console.log(receiverCustomer);
+
+    if(receiverCustomer)
+    {
+      var request : FollowObject = new FollowObject();
+      request.followerName = this.currentCustomer.name;
+      request.followerUserId = this.currentCustomer.uid;
+      request.followerphotoUrl = this.currentCustomer.customerPhotoUrl;
+      if(receiverCustomer.followRequestReceived)
+      {
+        receiverCustomer.followRequestReceived.push(request)
+      }
+      else
+      {
+        var requestobj : FollowObject[] = [];
+        requestobj.push(request)
+        receiverCustomer.followRequestReceived = requestobj;
+      }
+      
+      this.customerService.updateCustomer(receiverCustomer['key'],receiverCustomer)
+      
+      if(this.currentCustomer.followRequestSent)
+      {
+        this.currentCustomer.followRequestSent.push(receiverCustomer.uid);
+      }
+      else
+      {
+        var strarr :string[] = [];
+        strarr.push(receiverCustomer.uid);
+        this.currentCustomer.followRequestSent = strarr
+      }
+      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+      console.log(receiverCustomer)
+      console.log(this.currentCustomer)
+    } 
+  }
+  //delete other customer uid from followrequestsent array of current customer
+  //delete follow object with current customer uid from followrequestreceived array of other customer
+  deleteFollowRequest(key)
+  {
+    var requestedCustomer = this.allCustomers.find(x => x.uid == key)
+    if(requestedCustomer)
+    {
+      if(this.currentCustomer.followRequestSent.includes(key))
+      {
+        for( var i = 0; i < this.currentCustomer.followRequestSent.length; i++)
+        {     
+          if (this.currentCustomer.followRequestSent[i] == key) 
+          {   
+            this.currentCustomer.followRequestSent.splice(i, 1); 
+          }
+        }
+      }
+
+      for( var i = 0; i < requestedCustomer.followRequestReceived.length; i++)
+      {     
+        if (requestedCustomer.followRequestReceived[i].followerUserId == this.currentCustomer.uid) 
+        {   
+          requestedCustomer.followRequestReceived.splice(i, 1); 
+        }
+      }
+
+      console.log(this.currentCustomer)
+      console.log(requestedCustomer)
+      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+      this.customerService.updateCustomer(requestedCustomer['key'],requestedCustomer)
+    }
+  }
+
+  //delete current customer uid from followrequestsentarray of other customer
+  //delete followobject from followrequestsreceived array from current customer
+  //push that follow object to followers of current customer and following of other customer
+  acceptFollower(key)
+  {
+
+    var otherCustomer = this.allCustomers.find(x => x.uid == key)
+    console.log(otherCustomer.uid);
+    console.log(key);
+    if(otherCustomer)
+    {
+      if(!otherCustomer.followRequestSent || otherCustomer.followRequestSent == undefined)
+      {
+        otherCustomer.followRequestSent = [];
+      }
+      if(!otherCustomer.following || otherCustomer.following == undefined)
+      {
+        otherCustomer.following = [];
+      }
+      if(!otherCustomer.followers || otherCustomer.followers == undefined)
+      {
+        otherCustomer.followers = [];
+      }
+      if(!otherCustomer.followRequestReceived || otherCustomer.followRequestReceived == undefined)
+      {
+        otherCustomer.followRequestReceived = [];
+      }
+      //otherCustomer.followRequestSent
+      for( var i = 0; i < otherCustomer.followRequestSent.length; i++)
+      {     
+        if (otherCustomer.followRequestSent[i] == this.currentCustomer.uid) 
+        {   
+          otherCustomer.followRequestSent.splice(i, 1); 
+        }
+      }
+
+      for( var i = 0; i < this.currentCustomer.followRequestReceived.length; i++)
+      {     
+        if (this.currentCustomer.followRequestReceived[i].followerUserId == key) 
+        {   
+          this.currentCustomer.followRequestReceived.splice(i, 1); 
+        }
+      }
+
+      var followerObj = new FollowObject();
+      followerObj.followerName = otherCustomer.name;
+      followerObj.followerUserId = otherCustomer.uid;
+      followerObj.followerphotoUrl = otherCustomer.customerPhotoUrl;
+
+      this.currentCustomer.followers.push(followerObj);
+
+      var followingObj = new FollowObject()
+      followingObj.followerName = this.currentCustomer.name;
+      followingObj.followerUserId = this.currentCustomer.uid;
+      followingObj.followerphotoUrl = this.currentCustomer.customerPhotoUrl;
+
+      otherCustomer.following.push(followingObj);
+
+      console.log(this.currentCustomer)
+      console.log(otherCustomer);
+
+      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+      this.customerService.updateCustomer(otherCustomer['key'],otherCustomer)
+
+    }
+
+  }
+
+  //remove follower obj of currentcustomer following array
+  //remover following obj from other customer's followers
+  UnfollowCustomer(key)
+  {
+    var customerToUnfollow = this.allCustomers.find(x => x.uid == key)
+    if(customerToUnfollow.followers)
+    {
+      for( var i = 0; i < customerToUnfollow.followers.length; i++)
+      {     
+        if (customerToUnfollow.followers[i].followerUserId == this.currentCustomer.uid) 
+        {   
+          customerToUnfollow.followers.splice(i, 1); 
+        }
+      }     
+      
+      for( var i = 0; i < this.currentCustomer.following.length; i++)
+      {     
+        if (this.currentCustomer.following[i].followerUserId == customerToUnfollow.uid) 
+        {   
+          this.currentCustomer.following.splice(i, 1); 
+        }
+      } 
+
+      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+      this.customerService.updateCustomer(customerToUnfollow['key'],customerToUnfollow)
+
+      for( var i = 0; i < this.allFollowinguids.length; i++)
+      {     
+        if (this.allFollowinguids[i] == customerToUnfollow.uid) 
+        {   
+          this.allFollowinguids.splice(i, 1); 
+        }
+      } 
+      
+      
+      //update other customer
+      //delete follow object from following in current customer
+      //update current customer
+    }
+
+  }
+
+  searchString : string = '';
+  allCustomersWhoArePublicDisplay : Customer[] = [];
+
+  searching(event)
+  {
+    event = event.trim().toLocaleLowerCase();
+    console.log(event);
+    this.allCustomersWhoArePublic.forEach(element => {
+      element.name = element.name.toLocaleLowerCase();
+    });
+    this.allCustomersWhoArePublicDisplay = this.allCustomersWhoArePublic.filter(x => x.name.search(event) != -1)
+    console.log(this.allCustomersWhoArePublicDisplay);
+
+  }
+
 
   ngOnDestroy()
   {
@@ -296,6 +616,16 @@ export class MalayalamComponent implements OnInit {
     console.log(this.share);
     this.currentCustomer.shareWishlistedMovies = this.share;
     console.log(this.currentCustomer)
+    this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+  }
+
+  UpdateCustomerWhenSharingEvent2(pubUser : boolean = false, wishUser : boolean = false, watchUser : boolean = false)
+  {
+    this.currentCustomer.shareWishlistedMovies = pubUser;
+    this.currentCustomer.showWishlistToFollowers = wishUser;
+    this.currentCustomer.showWatchedListToFollowers = watchUser;
+    this.share = pubUser;
+    console.log(this.currentCustomer);
     this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
   }
 
@@ -334,13 +664,28 @@ export class MalayalamComponent implements OnInit {
     this.authService.logOut();
   }
 
+  //this method is for testing purpose
+  updateAllCustomers()
+  {
+    //this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+    this.allCustomers.forEach(element => {
+      if(element.shareWishlistedMovies)
+      {
+        element.showWishlistToFollowers = true;
+        element.showWatchedListToFollowers = true;
+        this.customerService.updateCustomer(element["key"],element)
+      }      
+    });
+  }
+
   copyToClipboard()
   {
 
     if (navigator.share) {
       navigator.share({
         title: 'Suggesto : Best app to find hand picked Movies and Suggestion on daily basis.',
-        url: window.location.toString(),
+        // url: window.location.toString(),
+        text: 'I invite you to use suggesto and know some good content movies and see them. Please follow this link to download the app.    '+ "https://play.google.com/store/apps/details?id=xyz.appmaker.jibpca"
       }).then(() => {
         console.log('Thanks for sharing!');
       })
@@ -348,7 +693,7 @@ export class MalayalamComponent implements OnInit {
     } else 
     {
       document.addEventListener('copy', (e: ClipboardEvent) => {
-        e.clipboardData.setData('text/plain', ('I invite you to use suggesto and know some good content movies and see them. Please follow this link to download the app.'+ "https://play.google.com/store/apps/details?id=xyz.appmaker.jibpca"));
+        e.clipboardData.setData('text/plain', ('I invite you to use suggesto and know some good content movies and see them. Please follow this link to download the app.   '+ "https://play.google.com/store/apps/details?id=xyz.appmaker.jibpca"));
         e.preventDefault();
         document.removeEventListener('copy', null);
       });
@@ -399,6 +744,14 @@ export class MalayalamComponent implements OnInit {
       }
       ////console.log(this.currentCustomer)
       this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+      var feeditm : FeedItem = new FeedItem();
+      feeditm.content = this.currentCustomer.name + " added "+this.allMovies.find(x=>x.key == key).title+ " to their wish list. Click to view the movie."
+      feeditm.customerName = this.currentCustomer.name;
+      feeditm.customerUid = this.currentCustomer.uid;
+      feeditm.photoUrl = this.currentCustomer.customerPhotoUrl;
+      feeditm.url = '/movie/'+this.allMovies.find(x=>x.key == key).key;
+      feeditm.type = 'WISHLIST';
+      this.customerService.addFeedItem(feeditm);
     }
     else
     {
@@ -447,6 +800,15 @@ export class MalayalamComponent implements OnInit {
     {
     }
     this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    var feeditm : FeedItem = new FeedItem();
+    feeditm.content = this.currentCustomer.name + " watched "+this.allMovies.find(x=>x.key == key).title + " . Click to view the movie."
+    feeditm.customerName = this.currentCustomer.name;
+    feeditm.customerUid = this.currentCustomer.uid;
+    feeditm.photoUrl = this.currentCustomer.customerPhotoUrl;
+    feeditm.url = '/movie/'+this.allMovies.find(x=>x.key == key).key;
+    feeditm.type = 'WATCHED';
+    this.customerService.addFeedItem(feeditm);
+
   }
 
   removeFromWatched(key)

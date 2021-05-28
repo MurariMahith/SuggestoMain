@@ -1,11 +1,11 @@
-<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,0)">
+<div *ngIf="loading" style="position: absolute;top: 60px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,0)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
   <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
 </div>
 <div class="dark-mode" style="background-color: rgb(22,22,22);color: white;">
 <div *ngIf="!loading" style="margin-bottom: 50px;">
 <div class="container">
-<h5 class="text-center">Profile</h5>
+<h5 class="text-center">{{currentCustomer.name | titlecase}}</h5>
 </div>
 <div *ngIf="isMobile" class="container">
     <div class="profile">
@@ -19,72 +19,54 @@
                 </div>
                 <span style="overflow-wrap: break-word;-ms-word-break: break-all;word-wrap: break-word;word-break: break-all;">
                 <p><b>Name : </b><span *ngIf="currentCustomer.name">{{currentCustomer.name}} </span>
-                    <span><i *ngIf="bronze" style="color: brown;" class="bi bi-star-fill"></i></span>
+                    <!-- <span><i *ngIf="bronze" style="color: brown;" class="bi bi-star-fill"></i></span>
                     <span><i *ngIf="silver" style="color: silver;" class="bi bi-star-fill"></i></span>
                     <span><i *ngIf="gold" style="color: gold;" class="bi bi-star-fill"></i></span>
                     <span><img *ngIf="platinum" src="../../../assets/star-status/platinum.jpg" width="20" height="20"></span>
-                    <span><img *ngIf="diamond" src="../../../assets/star-status/diamond.png" width="20" height="20"></span>
+                    <span><img *ngIf="diamond" src="../../../assets/star-status/diamond.png" width="20" height="20"></span> -->
                     <span *ngIf="!currentCustomer.name" class="text-muted">name not provided</span></p>
                 <!-- <p><b>Email : </b>{{currentCustomer.email}}</p> -->
                 <p><b>Preferred Languages : </b>{{languages}}</p>
                 <p><b>Preferred Genres : </b>{{genres}}</p>
+                <p style="color: aqua;" *ngIf="!currentCustomer.showWishlistToFollowers"><b> {{currentCustomer.name | titlecase}} hasn't shared his wishlist to his followers</b></p>
+                <p style="color: aqua;" *ngIf="!currentCustomer.showWatchedListToFollowers"><b> {{currentCustomer.name | titlecase}} hasn't shared his watched movies to his followers</b></p>
                 </span>
-                <p><b>Share your wishlist to people and include in MovieBuff Board :  </b>             
-                <label class="switch">
-                  <input type="checkbox" (change)="UpdateCustomerWhenSharingEvent()" [(ngModel)]="share" name="Adventure">
-                  <span class="slider round"></span>
-                </label></p>
-                <p><b>Movie Lists created By you : </b><button type="button" class="btn btn-primary btn-sm" (click)="GoToMyList()"><i class="bi bi-hand-index">  here</i></button>
-                    <br><small>You can delete lists creted by you by clicking here button above.</small>
-                   </p>
                 <ul class="profile-header-tab nav nav-tabs nav-tabs-v2">
-                    <li class="nav-item">
+                    <li class="nav-item" *ngIf="currentCustomer.showWishlistToFollowers">
                         <a class="nav-link" (click)="wishSelect()">
                             <div class="nav-field">Wishlisted Movies</div>
                             <div class="nav-value">{{wcount}}</div>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item" *ngIf="currentCustomer.showWatchedListToFollowers">
                         <a class="nav-link" (click)="rateSelect()">
                             <div class="nav-field">Rated Movies</div>
                             <div class="nav-value">{{rcount}}</div>
                         </a>
-                    </li>
-                    <li class="nav-item">
+                    </li> -->
+                    <li class="nav-item" *ngIf="currentCustomer.showWatchedListToFollowers">
                         <a class="nav-link" (click)="watchedSelect()">
                             <div class="nav-field">Watched Movies</div>
                             <div class="nav-value">{{watchedcount}}</div>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                       <a class="nav-link">
                           <div class="nav-field"><button type="button" (click)="logout()" class="btn btn-sm btn-danger">Log Out</button></div>
                       </a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
   
         <div class="profile-container">
-            <div class="profile-sidebar">
-                <div class="desktop-sticky-top">
-                    <h4>John Smith</h4>
-                    <div class="font-weight-600 mb-3 text-muted mt-n2">@johnsmith</div>
-                    <p>
-                        Principal UXUI Design &amp; Brand Architecture for Studio. Creator of SeanTheme. Bringing the world closer together. Studied Computer Science and Psychology at Harvard University.
-                    </p>
-                    <div class="mb-1"><i class="fa fa-map-marker-alt fa-fw text-muted"></i> New York, NY</div>
-                    <div class="mb-3"><i class="fa fa-link fa-fw text-muted"></i> seantheme.com/studio</div>
-                    <hr class="mt-4 mb-4" />
-                </div>
-            </div>
   
             <div class="profile-content">
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="tab-content p-0">
                             <div class="tab-pane fade active show" id="profile-followers">
-                                <div class="list-group" *ngIf="ratebool">
+                                <!-- <div class="list-group" *ngIf="ratebool">
                                     <h6>Rated Movies</h6>
                                     <div *ngFor="let m of ratedMoviesDisplay" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
                                         <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
@@ -94,11 +76,11 @@
                                         </div>
                                         <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
                                     </div>                                  
-                                </div>
+                                </div> -->
                             </div>
                             <div class="tab-pane fade active show" id="profile-followers">
                               <div class="list-group" *ngIf="wishbool">
-                                  <h6>WishListed Movies</h6>
+                                  <h6>WishListed Movies of {{currentCustomer.name | titlecase}}</h6>
                                   <div *ngFor="let m of wishlistedMoviesDisplay" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
                                       <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
                                       <div class="flex-fill pl-3 pr-3">
@@ -111,7 +93,7 @@
                             </div>
                             <div class="tab-pane fade active show" id="profile-followers">
                                 <div class="list-group" *ngIf="watchedbool">
-                                    <h6>Watched Movies</h6>
+                                    <h6>Watched Movies by {{currentCustomer.name | titlecase}}</h6>
                                     <div *ngFor="let m of watchedMoviesDisplay" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
                                         <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
                                         <div class="flex-fill pl-3 pr-3">
@@ -149,7 +131,7 @@
 </div>
 
 <!--for laptop-->
-<div *ngIf="!isMobile" class="container">
+<div *ngIf="!isMobile && alwaysfalse" class="container">
     <div class="profile">
         <div class="profile-header">
             <div class="profile-header-cover"></div>

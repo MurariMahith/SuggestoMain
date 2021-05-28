@@ -1,8 +1,10 @@
-<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color:rgb(22,22,22)">
+
+<div *ngIf="loading" style="position: absolute;top: 60px;left: 0;width: 100%;height: 100%;z-index: 2;
+background-color: rgb(0, 0, 0)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
-  <img src="../../../../assets/loading animation/1475.gif" style="opacity: 1;"></div>
+  <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
 </div>
-<div class="dark-mode" style="background-color: rgb(22,22,22);color: white;height: 100vh;">
+<div class="dark-mode" style="background-color: rgb(22,22,22);color: white;padding-bottom: 70px;">
 <div class="container" *ngIf="!loading">
 <div style="margin-left: 20px;">
     <i class="bi bi-arrow-left-square" style="font-size: x-large;" (click)="goBack()"></i>
@@ -14,33 +16,62 @@
     <button type="button" class="btn btn-sm btn-outline-light" data-toggle="modal" data-target="#ratingModalList">
         Rate this List <i class="bi bi-star"></i>
     </button></p>
-<div class="profile-content" style="margin-bottom: 60px;">
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="tab-content p-0">
-                <div class="tab-pane fade active show" id="profile-followers">
-                    <div class="list-group">
-                        <div *ngFor="let m of ListForDisplay.moviesInList" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
-                            <img src="{{m.smallImageUrl}}" alt="" width="50px" height="70px" class="rounded-sm ml-n2" />
-                            <div class="flex-fill pl-3 pr-3">
-                                <div><a (click)="goto(m.key)" class="text-light font-weight-600">{{m.title | titlecase}}</a></div>
-                                <div class="text-muted fs-13px">Released Year : {{m.releaseYear}}</div>
-                                <div class="text-muted fs-13px" style="font-size: small;">Genre : {{ (m.genre.length>20)? (m.genre | slice:0:20)+'..':(m.genre) }}</div>
-                            </div>
-                            <a (click)="goto(m.key)" class="btn btn-outline-primary">Visit</a>
-                        </div>                                  
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>  
+    <p *ngIf="loggedIn && listByCurrentCustomer" (click)="deleteList(ListForDisplay.key)" class="text-center"><button type="button" class="btn btn-sm btn-outline-danger">
+      Delete this List
+  </button></p>
+    <div class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;" *ngFor="let m of ListForDisplay.moviesInList" >
+      <div class="content"  [ngStyle]="{'background-image': 'url(' + m.smallImageUrl + ')'}" style="border-top-left-radius: 10px;border-top-right-radius: 10px;height: 130px;">
+          <div style="background-color: rgba(0, 0, 0, 0.616);height: 130px;border-top-left-radius: 10px;border-top-right-radius: 10px;">
+              <div>
+                  <div class="d-flex bd-highlight mb-3" style="margin-right: 2%;">
+                      <div class="p-2 bd-highlight" (click)="goto(m.key)"><img src="{{m.smallImageUrl}}" width="70px" height="110"></div>
+                      <div class="p-2 bd-highlight" (click)="goto(m.key)">
+                          <h5>{{ (m.title.length>25)? (m.title | slice:0:25)+'..':(m.title) | titlecase }}</h5>
+                          <p style="font-size: small;">{{m.releaseYear}} . {{ (m.genre.length>35)? (m.genre | slice:0:35)+'..':(m.genre) }}<br> <span *ngIf="m.runTime !== ''">Runtime : {{m.runTime}} Minutes</span></p>
+                      </div>
+                      <div class="ml-auto p-2 bd-highlight"  style="z-index: 200;">
+                          <a (click)="GoToMovieExternalSite(m.key)">
+                              <img *ngIf="m.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 10px;height: 50px;">
+                              <img *ngIf="m.ott.Prime_Video" src="../../../assets/ott-icons/prime.png" style="border-radius: 10px;height: 50px;">
+                              <img *ngIf="m.ott.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" style="border-radius: 10px;height: 50px;">
+                              <img *ngIf="m.ott.Aha" src="../../../assets/ott-icons/aha.jpeg" style="border-radius: 10px;height: 50px;">
+                              <img *ngIf="m.ott.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" style="border-radius: 10px;height: 50px;">
+                              <img *ngIf="m.ott.JioCinema" src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 10px;height: 50px;">
+                              <img *ngIf="m.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 10px;height: 50px;">
+                              <img *ngIf="m.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 10px;height: 50px;">
+                              <img *ngIf="m.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 10px;height: 50px;">
+                          </a>
+                      </div>
+                  </div>
+              </div>
+  
+          </div>
+      </div>
+      <div class="footer" style="display: flex;justify-content: center;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;height: 40px;background-color: rgba(90, 89, 89, 0.76);">
+        {{ (m.title.length>50)? (m.title | slice:0:50)+'..':(m.title) | titlecase }}
+        <!-- <div class="d-flex bd-highlight mb-3" style="font-size: small;">
+              <div class="p-2 bd-highlight" *ngIf="currentCustomer.wishlistedMovies.includes(m.key)" (click)="removeFromWishlist(m.key)">
+                  <i class="bi bi-heart-fill" style="color: red;"></i>  Remove from wishlist
+              </div>
+              <div class="p-2 bd-highlight" *ngIf="!currentCustomer.wishlistedMovies.includes(m.key)" (click)="addMovieToWishlist(m.key)">
+                  <i class="bi bi-heart" style="color: red;"></i>  Wishlist
+              </div>
+              <div class="p-2 bd-highlight"  *ngIf="currentCustomer.watchedMovies.includes(m.key)"  (click)="removeFromWatched(m.key)">
+                  <i class="bi bi-bookmark-dash-fill" style="color: gold;"></i>  Remove from watched
+              </div>
+              <div class="p-2 bd-highlight"  *ngIf="!currentCustomer.watchedMovies.includes(m.key)" (click)="addToWatchedMovies(m.key)">
+                  <i class="bi bi-bookmark-plus-fill"></i>  Watched?
+              </div>
+          </div> -->
+      </div>
+    </div>
+
     <div style="margin: 2%;display: flex;justify-content: center;flex-wrap:wrap;">
         <p *ngIf="!showCopiedClipboard">Share this list to your friends? 
             <button type="button" (click)="copyToClipboard()" class="btn btn-sm btn-outline-primary" style="border-radius: 100px;"><i class="bi bi-share-fill"></i></button>
         </p>
         <p *ngIf="showCopiedClipboard" style="color:blue;font-size: small;">Link copied to clipboard, you can now share this list to your friends!</p>
     </div> 
-</div>
 </div>
 
 <!--rating modal for list-->

@@ -1,4 +1,5 @@
 import { RatedMovies } from "./Customer Related/RatedMovies";
+import { FollowObject } from "./FollowObject";
 
 export class Customer
 {
@@ -15,7 +16,19 @@ export class Customer
     preferredLanguages : string[] = [];
     seePersonalisedContent : boolean = false;
     personalisedContentStartTime : string = '';
+
+    
     shareWishlistedMovies : boolean = false;
+
+    showWishlistToFollowers : boolean = false;
+    showWatchedListToFollowers : boolean = false;
+
+    followers : FollowObject[] = [];
+    following : FollowObject[] = [];
+    followRequestReceived : FollowObject[] = [];
+    followRequestSent : string[] = [];
+
+    
 
     constructor()
     {

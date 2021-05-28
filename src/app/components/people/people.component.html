@@ -4,13 +4,13 @@
 </div> -->
 <div class="dark-mode" style="background-color: rgb(22,22,22);color: white;">
 <div style="margin-bottom: 60px;">
-<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,00)">
+<div *ngIf="loading" style="position: absolute;top: 60px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,00)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
   <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
 </div>
 <div *ngIf="!loading">
     <div class="container">
-        <h5 class="text-center">People</h5>
+        <h5 class="text-center">MovieBuff Board</h5>
         </div>
         <div *ngIf="isMobile" class="container" style="margin-bottom: 70px;">
             <div class="profile">
@@ -24,18 +24,20 @@
                         <p>Name : <span>{{currentCustomer.name | titlecase}}</span></p>
                         <!-- <p>Email : {{currentCustomer.email}}</p> -->
                         <p>Your Wishlisted Movies : {{myWCount}}</p>
-                        <p>Share your wishlist to people and include in MovieBuff Board :               
+                        <p *ngIf="currentCustomer.watchedMovies">Your Watched Movies : {{currentCustomer.watchedMovies.length}}</p>
+                        <p *ngIf="currentCustomer.ratedMovies">Your Rated Movies : {{currentCustomer.ratedMovies.length}}</p>
+                        <p>Make your profile public :               
                         <label class="switch">
                           <input type="checkbox" (change)="UpdateCustomerWhenSharingEvent()" [(ngModel)]="share" name="Adventure">
                           <span class="slider round"></span>
-                        </label></p><br>
+                        </label></p>
+                        <p style="font-size: small;">Note: If you enable above checkbox your profile will be visible in find people. other users can't see you content until you allow their follow request.</p>
                         <ul class="profile-header-tab nav nav-tabs nav-tabs-v2">
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link">
                                     <div class="nav-field" style="font-size: medium;" (click)="wishSelect()">Wishlists</div>
-                                    <!-- <div class="nav-value" style="font-size: small;">Note : Other people can see your wishlist only if you enable 'share wishlist' above.</div> -->
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
                                 <a class="nav-link">
                                     <div class="nav-field" style="font-size: medium;" (click)="leaderSelect()">MovieBuff Board</div>
@@ -67,7 +69,7 @@
                                     <div class="tab-pane fade active show" id="profile-followers">
                                         <div class="list-group" *ngIf="wishbool">
                                             <h6>People Who shared their Wishlisted Movies</h6>
-                                            <div class="nav-value" style="font-size: small;">Note : Other people can see your wishlist only if you enable 'share your wishlist to people' above.</div>
+                                            <!-- <div class="nav-value" style="font-size: small;">Note : Other people can see your wishlist only if you enable 'share your wishlist to people' above.</div> -->
                                             <div *ngFor="let m of allCustomers" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
                                                 <img src="{{m.customerPhotoUrl}}" alt="{{m.name}}" width="50px" class="rounded-sm ml-n2" />
                                                 <div class="flex-fill pl-3 pr-3">
@@ -82,13 +84,18 @@
                                     </div>
                                     <div class="tab-pane fade active show" id="profile-followers">
                                         <div class="list-group" *ngIf="leaderbool">
-                                            <h6>MovieBuff Board</h6>
-                                            <div class="nav-value" style="font-size: small;">Note : We don't show other users what movies you have watched.</div>
-                                            <div *ngFor="let m of allCustomersScoreSorted" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
-                                                <img src="{{m.customerPhotoUrl}}" alt="{{m.name}}" width="50px" class="rounded-sm ml-n2" />
+
+                                            <div class="nav-value" style="font-size: small;">Note : We don't show your name and photo if you don't make your profile public.</div>
+                                            <div *ngFor="let m of allCustomersScoreSorted,let indexOfUser=index" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
+                                                <img *ngIf="m.shareWishlistedMovies" src="{{m.customerPhotoUrl}}" alt="{{m.name}}" width="50px" class="rounded-sm ml-n2" />
+                                                <img *ngIf="!m.shareWishlistedMovies" src="../../../assets/images/defaultuser.png" alt="name" width="50px" class="rounded-sm ml-n2" />
                                                 <div class="flex-fill pl-3 pr-3">
-                                                    <div><a class="text-light font-weight-600">{{m.name | titlecase}}</a></div>
-                                                    <div *ngIf="m.watchedMovies" class=" fs-13px" style="font-size: small;">Watched Movies : {{m.watchedMovies.length}}</div>
+                                                    <div><a class="text-light font-weight-600">
+                                                        {{ (!m.shareWishlistedMovies)? ('Name Hidden'):(m.name) | titlecase }}
+                                                        <br>
+                                                        {{(checkInBetween(0,indexOfUser,4)) ? 'Binge King' : (checkInBetween(5,indexOfUser,9)) ? 'Movie Buff' : (checkInBetween(10,indexOfUser,25)) ? 'Movie Lover' : ''}}
+                                                    </a></div>
+                                                    <!-- <div *ngIf="m.watchedMovies" class=" fs-13px" style="font-size: small;">Watched Movies : {{m.watchedMovies.length}}</div> -->
                                                     <!-- <div *ngIf="!m.watchedMovies" class=" fs-13px" style="font-size: small;">Watched Movies : 0</div> -->
                                                     <!-- <div class=" fs-13px" style="font-size: x-small;">{{m.email}}</div> -->
                                                 </div>                                                
@@ -155,8 +162,8 @@
                             <div class="col-xl-12">
                                 <div class="tab-content p-0">
                                     <div class="tab-pane fade active show" id="profile-followers">
-                                        <div class="list-group">
-                                            <h6>People Who shared their Wishlisted Movies</h6>
+                                        <div class="list-group" *ngIf="wishbool">
+                                            <h6>MOvieBuff Board</h6>
                                             <div *ngFor="let m of allCustomers" class="list-group-item d-flex align-items-center">
                                                 <img src="{{m.customerPhotoUrl}}" alt="{{m.name}}" width="50px" class="rounded-sm ml-n2" />
                                                 <div class="flex-fill pl-3 pr-3">
@@ -166,6 +173,24 @@
                                                     <!-- <div class=" fs-13px" style="font-size: x-small;">{{m.email}}</div> -->
                                                 </div>
                                                 <a (click)="goto(m.key)" *ngIf="m.wishlistedMovies" class="btn btn-outline-primary">Go</a>
+                                            </div>                                  
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade active show" id="profile-followers">
+                                        <div class="list-group" *ngIf="leaderbool">
+
+                                            <div class="nav-value" style="font-size: small;">Note : We don't show your name and photo if you don't make your profile public.</div>
+                                            <div *ngFor="let m of allCustomersScoreSorted" style="background-color: rgb(22,22,22);color: white;" class="list-group-item d-flex align-items-center">
+                                                <img *ngIf="m.shareWishlistedMovies" src="{{m.customerPhotoUrl}}" alt="{{m.name}}" width="50px" class="rounded-sm ml-n2" />
+                                                <img *ngIf="!m.shareWishlistedMovies" src="../../../assets/images/defaultuser.png" alt="name" width="50px" class="rounded-sm ml-n2" />
+                                                <div class="flex-fill pl-3 pr-3">
+                                                    <div><a class="text-light font-weight-600">
+                                                        {{ (!m.shareWishlistedMovies)? ('Name Hidden'):(m.name) }}
+                                                    </a></div>
+                                                    <!-- <div *ngIf="m.watchedMovies" class=" fs-13px" style="font-size: small;">Watched Movies : {{m.watchedMovies.length}}</div> -->
+                                                    <!-- <div *ngIf="!m.watchedMovies" class=" fs-13px" style="font-size: small;">Watched Movies : 0</div> -->
+                                                    <!-- <div class=" fs-13px" style="font-size: x-small;">{{m.email}}</div> -->
+                                                </div>                                                
                                             </div>                                  
                                         </div>
                                     </div>

@@ -5,6 +5,9 @@ import { MovieList } from 'src/app/models/MovieList';
 import { MovieListService } from 'src/app/services/movie-list.service';
 import { MovieServiceService } from 'src/app/services/movie-service.service';
 import { map } from 'rxjs/operators';
+import { CustomerService } from 'src/app/services/customerService';
+import { Customer } from 'src/app/models/Customer';
+import { FeedItem } from 'src/app/models/FeedItem';
 
 @Component({
   selector: 'app-create-custom-list',
@@ -26,7 +29,7 @@ export class CreateCustomListComponent implements OnInit {
 
   series : boolean = false;
 
-  constructor(private movieService : MovieServiceService,private listService : MovieListService,private router : Router) { }
+  constructor(private movieService : MovieServiceService,private listService : MovieListService,private router : Router,private customerService : CustomerService) { }
 
   ngOnInit(): void {
 
@@ -44,7 +47,22 @@ export class CreateCustomListComponent implements OnInit {
         this.allTitles2[element.title.trim().toLowerCase()] = element.key
       });
     })
+    if(localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
+      {
+        this.customerService.getLoggedInCustomer()
+          .subscribe(o =>
+            {
+              this.allCustomers = o;
+              if(o.find(x => x.uid === localStorage.getItem("uid")))
+              {
+                this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))                           
+              }
+            })
+      }
   }
+
+  allCustomers : Customer[] = [];
+  currentCustomer : Customer;
 
   searching(event)
   {
@@ -127,6 +145,14 @@ export class CreateCustomListComponent implements OnInit {
       this.newMovieList.isThisSeries = this.series;
       console.log(this.newMovieList)
       this.listService.createMovieList(this.newMovieList);
+      var feeditm : FeedItem = new FeedItem();
+      feeditm.content = this.currentCustomer.name + " created a new list"+ this.newMovieList.listName+ ". Click to view the list."
+      feeditm.customerName = this.currentCustomer.name;
+      feeditm.customerUid = this.currentCustomer.uid;
+      feeditm.photoUrl = this.currentCustomer.customerPhotoUrl;
+      feeditm.url = "/movielist";
+      feeditm.type = 'LIST';
+      this.customerService.addFeedItem(feeditm);
       this.router.navigateByUrl('/profile')
     } 
   }

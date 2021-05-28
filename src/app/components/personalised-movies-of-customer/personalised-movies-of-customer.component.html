@@ -1,0 +1,80 @@
+<div *ngIf="loading" style="position: absolute;top: 60px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,0)">
+    <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
+    <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
+</div>
+
+
+<div *ngIf="!loading && personalisedMoviesDisplay != 0" style="background-color: rgb(0,0,0);color: white">
+    <div style="display: flex;justify-content: center;padding-top: 5%;">
+        <h4>Personalised Movies</h4>
+    </div><br>
+    <div style="display: flex;justify-content: center;">
+        <button type="button" class="btn btn-outline-primary btn-sm " (click)="router.navigateByUrl('/personalisation')">Edit Personalisation</button>
+    </div>
+    
+    
+    <div class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;" *ngFor="let m of personalisedMoviesDisplay" >
+        <div class="content"  [ngStyle]="{'background-image': 'url(' + m.smallImageUrl + ')'}" style="border-top-left-radius: 10px;border-top-right-radius: 10px;height: 130px;">
+            <div style="background-color: rgba(0, 0, 0, 0.616);height: 130px;border-top-left-radius: 10px;border-top-right-radius: 10px;">
+                <div>
+                    <div class="d-flex bd-highlight mb-3" style="margin-right: 2%;">
+                        <div class="p-2 bd-highlight" (click)="this.router.navigateByUrl('/movie/'+m.key)"><img src="{{m.smallImageUrl}}" width="70px" height="110"></div>
+                        <div class="p-2 bd-highlight" (click)="this.router.navigateByUrl('/movie/'+m.key)">
+                            <h5>{{ (m.title.length>25)? (m.title | slice:0:25)+'..':(m.title) | titlecase }}</h5>
+                            <p style="font-size: small;">{{m.releaseYear}} 
+                                <br>
+                                {{ (m.genre.length>35)? (m.genre | slice:0:35)+'..':(m.genre) }}
+                                <br>
+                                Run Time : {{m.runTime}} Minutes
+                            </p>
+                        </div>
+                        <div class="ml-auto p-2 bd-highlight"  style="z-index: 200;">
+                            <a>
+                                <img *ngIf="m.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Prime_Video" src="../../../assets/ott-icons/prime.png" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Aha" src="../../../assets/ott-icons/aha.jpeg" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.JioCinema" src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 10px;height: 50px;">
+                                <img *ngIf="m.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 10px;height: 50px;">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+        <div class="footer" style="display: flex;justify-content: center;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;height: 40px;background-color: rgba(90, 89, 89, 0.76);align-items: center;">
+            <!-- <div class="d-flex bd-highlight mb-3" style="font-size: small;">
+                <div class="p-2 bd-highlight" *ngIf="currentCustomer.wishlistedMovies.includes(m.key)" (click)="removeFromWishlist(m.key)">
+                    <i class="bi bi-heart-fill" style="color: red;"></i>  Remove from wishlist
+                </div>
+                <div class="p-2 bd-highlight" *ngIf="!currentCustomer.wishlistedMovies.includes(m.key)" (click)="addMovieToWishlist(m.key)">
+                    <i class="bi bi-heart" style="color: red;"></i>  Wishlist
+                </div>
+                <div class="p-2 bd-highlight"  *ngIf="currentCustomer.watchedMovies.includes(m.key)"  (click)="removeFromWatched(m.key)">
+                    <i class="bi bi-bookmark-dash-fill" style="color: gold;"></i>  Remove from watched
+                </div>
+                <div class="p-2 bd-highlight"  *ngIf="!currentCustomer.watchedMovies.includes(m.key)" (click)="addToWatchedMovies(m.key)">
+                    <i class="bi bi-bookmark-plus-fill"></i>  Watched?
+                </div>
+            </div> -->
+            <h5>{{m.title | titlecase}}</h5>
+        </div>
+    </div>
+</div>
+<div *ngIf="!loading && personalisedMoviesDisplay == 0" style="background-color: rgb(0,0,0);color: white;height: 100vh;">
+    <div style="display: flex;justify-content: center;padding-top: 2opx;">
+        <h4>Personalised Movies</h4>
+    </div>
+    <br>
+    <div style="display: flex;justify-content: center;margin: 10%;">
+        <h6>You haven't saved your preferences so there are no personalised movies for you. click below to get personalised movies just for you.</h6>
+    </div>
+    <div style="display: flex;justify-content: center;margin: 10%;">
+        <button type="button" (click)="this.router.navigateByUrl('/personalisation')" class="btn btn-primary btn-lg btn-block">Get Personalised Movies</button>
+    </div>
+
+</div>

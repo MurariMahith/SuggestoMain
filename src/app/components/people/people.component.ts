@@ -47,8 +47,8 @@ export class PeopleComponent implements OnInit {
 
   share : boolean = true;
 
-  leaderbool : boolean = false;
-  wishbool : boolean = true;
+  leaderbool : boolean = true;
+  wishbool : boolean = false;
 
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
@@ -60,6 +60,17 @@ export class PeopleComponent implements OnInit {
     private http : HttpClient,
     private authService : AuthService,
     private customerService : CustomerService) { }
+
+
+  checkInBetween(num1,subject,num2)
+  {
+    if(num1<=subject && subject<=num2)
+    {
+      return true;
+    }
+    else
+      return false;    
+  }
 
   ngOnInit(): void {
 
@@ -122,14 +133,14 @@ export class PeopleComponent implements OnInit {
 
 
               //remove current customer from customer list
-              for( var i = 0; i < this.allCustomers.length; i++)
-              {     
-                if (this.allCustomers[i].uid == this.currentCustomer.uid) 
-                {   
-                  this.allCustomers.splice(i, 1); 
-                  break;
-                }
-              }
+              // for( var i = 0; i < this.allCustomers.length; i++)
+              // {     
+              //   if (this.allCustomers[i].uid == this.currentCustomer.uid) 
+              //   {   
+              //     this.allCustomers.splice(i, 1); 
+              //     break;
+              //   }
+              // }
 
               if(this.currentCustomer.customerPhotoUrl === null || this.currentCustomer.customerPhotoUrl === '' || this.currentCustomer.customerPhotoUrl === '../../../assets/images/defaultuser.png')
               {
@@ -146,17 +157,36 @@ export class PeopleComponent implements OnInit {
 
             var customersWhoEnabledSharing = this.allCustomersWithoutCurrentCustomer;
             customersWhoEnabledSharing.forEach(element => {
-              if(!element.shareWishlistedMovies)
+
+
+              //edit below when something goes wrong in 
+
+              if(!element.shareWishlistedMovies && element.uid != this.currentCustomer.uid)
               {
                 element.name = "Name Hidden";
                 element.customerPhotoUrl = "../../../assets/images/defaultuser.png"
               }
+              if(!element.watchedMovies || element.watchedMovies == undefined)
+              {
+                element.watchedMovies = []
+              }
+              if(!element.wishlistedMovies || element.wishlistedMovies == undefined)
+              {
+                element.wishlistedMovies = []
+              }
+              if(!element.ratedMovies || element.ratedMovies == undefined)
+              {
+                element.ratedMovies = [];
+              }
             });
 
             this.allCustomersScoreSorted = customersWhoEnabledSharing.sort((a,b) => {
-                return b.watchedMovies.length - a.watchedMovies.length;             
+                return (b.watchedMovies.length + b.wishlistedMovies.length + b.ratedMovies.length) - (a.watchedMovies.length + a.wishlistedMovies.length + a.ratedMovies.length);             
             })
-            console.log(this.allCustomers);
+            // this.allCustomersScoreSorted.forEach(element => {
+            //   console.log(element.name + element.watchedMovies.length + element.wishlistedMovies.length + element.ratedMovies.length)
+            // });
+            // console.log(this.allCustomers);
           })
     }
   }

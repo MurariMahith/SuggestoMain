@@ -1,19 +1,20 @@
-<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,0)">
+<div *ngIf="loading" style="position: absolute;top: 60px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,0)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
   <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
 </div>
-<div class="dark-mode" style="background-color: rgb(22,22,22);color: white;">
-<div class="jumbotron" style="padding-top: 2%;background-color: rgb(22,22,22)"> 
+<div class="dark-mode" style="background-color: rgb(0,0,0);color: white;">
+<div class="jumbotron" style="padding-top: 2%;background-color: rgb(0,0,0)"> 
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div style="display: flex;">
-      <a class="navbar-brand"><input class="form-control mr-sm-2" type="text" placeholder="Search For Movies" name="searchStr" [(ngModel)]="searchString" #searchStr="ngModel" (ngModelChange)="searching($event)" width="100%">
+      <a class="navbar-brand">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search For Movies" name="searchStr" [(ngModel)]="searchString" #searchStr="ngModel" (ngModelChange)="searching($event)" width="100%">
         <!-- <span *ngIf="filterSelected" class="badge badge-dark">filters applied</span> -->
         <!-- <small id="emailHelp" style="font-size:x-small;" class="form-text text-muted">Click toggle button on right to use filters</small> -->
       </a>
       <!-- <a class="navbar-brand" data-toggle="collapse" data-target="#navbarSupportedContent2">Search <span *ngIf="filterSelected" class="badge badge-dark">filters applied</span></a> -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent2" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="bi bi-caret-down-square-fill" style="color: rgb(0, 0, 0);"></i>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent2" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="border: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M13 6h-13v-4h13v4zm0 4h-13v4h13v-4zm0 8h-13v4h13v-4zm3-8l4 5.075 4-5.075h-8z"/></svg>
       </button></div> 
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent2">
@@ -67,7 +68,7 @@
           </li>
         </ul>
         <!-- <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search For Movies" name="searchStr" [(ngModel)]="searchString" #searchStr="ngModel" (ngModelChange)="searching($event)">
+          <img src="../../../assets/images/logo2.2.PNG" style="width: 100%;">
         </form> -->
       </div>
     </nav>
@@ -84,7 +85,7 @@
           <div class="header-icon-container">          
           </div>
         </div></a><!--movie-header-->
-        <div class="movie-content">
+        <div class="movie-content" style="background-color: black;">
           <div class="movie-content-header">
             <a href="#">
               <h3 class="movie-title">{{movie.title}}</h3>
@@ -95,29 +96,33 @@
           <div class="movie-info" style="font-size:small;">
             <div>
               <label>Language : </label>
-              <span><b> {{movie.language}}</b></span>
+              <span><b>  {{ (movie.language.length>20)? (movie.language | slice:0:20)+'..':(movie.language) }}</b></span>
             </div>
             <div>
               <label>Genre : </label>
-              <span><b> {{movie.genre}}</b></span>
+              <span><b> {{ (movie.genre.length>20)? (movie.genre | slice:0:20)+'..':(movie.genre) }}</b></span>
             </div>
             <div>
               <label>Year of Release : </label>
               <span><b> {{movie.releaseYear}}</b></span>
             </div>
+            <div>
+              <label>Run Time : </label>
+              <span><b> {{movie.runTime}} Minutes</b></span>
+            </div>
           </div>
             <div>
-              <div class="imax-logo" data-toggle="modal" data-target="#exampleModalCenter"><a href="{{movie.trailerUrl}}">Watch Trailer</a></div>
+              <!-- <div class="imax-logo" data-toggle="modal" data-target="#exampleModalCenter"><a href="{{movie.trailerUrl}}">Watch Trailer</a></div> -->
             </div>          
         </div>
       </div> 
     </div> 
-    <div *ngIf="noMoviesSearch">
-      <div class="card " style="margin: 2%;">
-        <div class="card-header" style="color: red;">
+    <div *ngIf="noMoviesSearch" style="display: flex;justify-content: center;">
+      <div class="card " style="margin: 2%;background-color: black;color: white;">
+        <div class="card-header" style="color: red;" style="margin: 2%;background-color: black;color: white;">
           No Movies Present based on your Search and Filter criteria, check for the filters above or check the search key word you entered.
         </div>
-        <div class="card-body">
+        <div class="card-body" style="background-color: black;color: white;">
           <h5 class="card-title">Didn't Find an expected Movie?</h5>
           <p class="card-text">If you like to add your movie suggestion so that it helps us to suggest movies better, please type Movie name and Language below.</p>
           <form novalidate #addForm="ngForm" (ngSubmit)="onSubmit()">
@@ -165,53 +170,16 @@
                 <option [value]="5">Mind blowing</option>
               </select>      
             </div>
-            <!-- <form class="rating">
-              <label>
-                <input type="radio" name="stars" value="1" id="1" />
-                <span class="icon">★</span>
-              </label>
-              <label>
-                <input type="radio" name="stars" value="2" id="2"/>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-              </label>
-              <label>
-                <input type="radio" name="stars" value="3" id="3"/>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>   
-              </label>
-              <label>
-                <input type="radio" name="stars" value="4" id="4"/>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-              </label>
-              <label>
-                <input type="radio" name="stars" value="5" id="5"/>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-              </label>
-            </form><br> -->
             <button type="submit" [disabled]='!addForm.valid' class="btn btn-primary btn-block">Submit</button>
           </form>
-          <!-- <form-field appearance="fill"> -->
-
-<!-- </form-field> -->
         </div>
-        <!-- <div class="card-footer text-muted">
-          2 days ago
-        </div> -->
-      </div>    
+      </div> 
+      <!-- <h6> Sorry!  there is no movie based on your searched string, try again by switching on advanced search Or if you feel that movie is worth to add to our 'Suggesto' add movie in <a routerLink="/suggest">suggest movie to us </a>section </h6> -->
     </div> 
   </div>
 
   <!----mobile screen-->
-  <div style="display: flex;flex-wrap: wrap;justify-content: center;" *ngIf="isMobile && !loading">
+  <div style="display: flex;flex-wrap: wrap;justify-content: center;" *ngIf="isMobile">
     <span *ngFor="let movie of DisplayMovieList">
       <div class="item">
         <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;" alt="{{movie.title}}"></a>
@@ -220,10 +188,10 @@
     </span> 
     <div *ngIf="noMoviesSearch">
       <div class="card " style="margin: 2%;">
-        <div class="card-header" style="color: red;">
+        <div class="card-header" style="background-color: black;color: red;">
           No Movies Present based on your Search and Filter criteria, check for the filters above or check the search key word you entered.
         </div>
-        <div class="card-body">
+        <div class="card-body"  style="background-color: black;color: white;">
           <h5 class="card-title">Didn't Find an expected Movie?</h5>
           <p class="card-text">If you like to add your movie suggestion so that it helps us to suggest movies better, please type Movie name and Language below.</p>
           <form novalidate #addForm="ngForm" (ngSubmit)="onSubmit()">
@@ -271,47 +239,9 @@
                 <option [value]="5">Mind blowing</option>
               </select>      
             </div>
-            <!-- <form class="rating">
-              <label>
-                <input type="radio" name="stars" value="1" id="1" />
-                <span class="icon">★</span>
-              </label>
-              <label>
-                <input type="radio" name="stars" value="2" id="2"/>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-              </label>
-              <label>
-                <input type="radio" name="stars" value="3" id="3"/>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>   
-              </label>
-              <label>
-                <input type="radio" name="stars" value="4" id="4"/>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-              </label>
-              <label>
-                <input type="radio" name="stars" value="5" id="5"/>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-              </label>
-            </form><br> -->
             <button type="submit" [disabled]='!addForm.valid' class="btn btn-primary btn-block">Submit</button>
           </form>
-          <!-- <form-field appearance="fill"> -->
-
-<!-- </form-field> -->
         </div>
-        <!-- <div class="card-footer text-muted">
-          2 days ago
-        </div> -->
       </div>    
     </div>   
   </div>

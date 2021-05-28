@@ -64,6 +64,12 @@ export class AllMoviesComponent implements OnInit {
     else{
       console.log("laptop")
     }
+    if(localStorage.getItem("search") !== null)
+    {
+      this.DisplayMovieList = JSON.parse(localStorage.getItem("search"))
+      this.loading = false;
+    }
+    
 
     this.genreFromParam = this.activatedRote.snapshot.queryParamMap.get('genre')
     this.langFromParam = this.activatedRote.snapshot.queryParamMap.get('lang')
@@ -79,6 +85,7 @@ export class AllMoviesComponent implements OnInit {
     ).subscribe(o => {
       //console.log(o);
       this.allMovies = o;
+      this.DisplayMovieList.length = 0;
       
       this.DisplayMovieList = this.prepareDisplayMovieList(this.allMovies)
       this.DisplayMovieListOriginal = this.prepareDisplayMovieList(this.allMovies)
@@ -162,11 +169,13 @@ export class AllMoviesComponent implements OnInit {
     this.DisplayMovieList.sort((a, b) => {
       return b.rating - a.rating;
     });
+    localStorage.setItem("search", JSON.stringify(this.DisplayMovieList.slice(0,20)))
 
     var uniqueGenres = new Set(this.allGenres)
     this.allGenres = Array.from(uniqueGenres);
     var uniqueYears = new Set(this.allMovieYears)
     this.allMovieYears = Array.from(uniqueYears)
+    this.allMovieYears.sort((a,b) => Number(b) - Number(a))
     var uniqueLanguages = new Set(this.allLanguages);
     this.allLanguages = Array.from(uniqueLanguages);
     return DisplayMovieArray;

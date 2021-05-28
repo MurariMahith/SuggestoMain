@@ -9,20 +9,26 @@ import { ComplaintComponent } from './components/complaint/complaint.component';
 import { CreateCustomListComponent } from './components/create-custom-list/create-custom-list.component';
 import { DownloadOurAppComponent } from './components/download-our-app/download-our-app.component';
 import { FeedComponent } from './components/feed/feed.component';
+import { FollowingProfileComponent } from './components/following-profile/following-profile.component';
 import { HomeComponent } from './components/home/home.component';
 import { InformationComponent } from './components/information/information.component';
 import { KannadaComponent } from './components/kannada/kannada.component';
 import { MainListComponent } from './components/main-list/main-list.component';
 import { MainMovieComponent } from './components/main-movie/main-movie.component';
 import { MalayalamComponent } from './components/malayalam/malayalam.component';
+import { MovieBuffBoardComponent } from './components/movie-buff-board/movie-buff-board.component';
 import { MovieListComponent } from './components/movie-list/movie-list.component';
 import { PeopleComponent } from './components/people/people.component';
 import { PersonalComponent } from './components/personal/personal.component';
 import { PersonalisationComponent } from './components/personalisation/personalisation.component';
+import { PersonalisedMoviesOfCustomerComponent } from './components/personalised-movies-of-customer/personalised-movies-of-customer.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { Profile2Component } from './components/profile2/profile2.component';
 import { SuggestMovieComponent } from './components/suggest-movie/suggest-movie.component';
 import { TamilComponent } from './components/tamil/tamil.component';
 import { TeluguComponent } from './components/telugu/telugu.component';
+import { TmdbMovieComponent } from './components/tmdb-movie/tmdb-movie.component';
+import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { WishListComponent } from './components/wish-list/wish-list.component';
 
 import { 
@@ -31,10 +37,12 @@ import {
 
 const routes: Routes = [
   { path: 'home',  component: HomeComponent },
-  { path: 'telugu',  component: TeluguComponent },
+  { path: 'movie2/:key',  component: TeluguComponent },
+  { path: 'movie2',  component: TeluguComponent },
   { path: 'tamil',  component: TamilComponent },
   { path: 'kannada',  component: KannadaComponent },
-  { path: 'profile',  component: MalayalamComponent,canActivate: [AuthGuard] },
+  { path: 'people',  component: MalayalamComponent,canActivate: [AuthGuard] },
+  { path: 'profile',  component: Profile2Component,canActivate: [AuthGuard] },
   { path: 'all',  component: AllMoviesComponent },
   { path: 'movie/:key',  component: MainMovieComponent },
   { path: 'list/:key',  component: MainListComponent },
@@ -49,18 +57,25 @@ const routes: Routes = [
   { path: 'complaint',  component: ComplaintComponent },
   { path: 'resetPassword',  component: ResetPasswordComponent,canActivate: [AuthGuard] },
   { path: 'personalisation',  component: PersonalisationComponent,canActivate: [AuthGuard] },
-  { path: 'profile2',  component: ProfileComponent,canActivate: [AuthGuard] },
-  { path: 'people',  component: PeopleComponent,canActivate: [AuthGuard] },
+  { path: 'personalisedForYou',  component: PersonalisedMoviesOfCustomerComponent,canActivate: [AuthGuard] },
+  { path: 'following2/:key',  component: ProfileComponent,canActivate: [AuthGuard] },
+  { path: 'following/:key',  component: FollowingProfileComponent,canActivate: [AuthGuard] },
+  { path: 'following',  component: ProfileComponent,canActivate: [AuthGuard] },
+  // { path: 'people',  component: PeopleComponent,canActivate: [AuthGuard] },
   { path: 'wlist/:key',  component: WishListComponent,canActivate: [AuthGuard] },
   { path: 'suggest',  component: SuggestMovieComponent,canActivate: [AuthGuard] },
   { path: 'createList',  component: CreateCustomListComponent,canActivate: [AuthGuard] },
   { path: 'news-feed',  component: FeedComponent },
+  { path: 'welcome',  component: WelcomePageComponent },
+  { path: 'board',  component: MovieBuffBoardComponent },
+  { path: 'extmovie/:key',  component: TmdbMovieComponent },
+  { path: 'profile2', redirectTo: '/board', pathMatch: 'full' },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: '404', component: HomeComponent}
   //{path: '**', redirectTo: '/home'}
 ];
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{scrollPositionRestoration: 'top'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

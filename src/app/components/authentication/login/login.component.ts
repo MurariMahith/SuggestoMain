@@ -182,6 +182,7 @@ export class LoginComponent implements OnInit {
     this.customer.preferredGenre = [];
     this.customer.preferredLanguages = [];
     this.customer.wishlistedMovies = [];
+    
     console.log(this.user)
     this.checkCustomer()
   }
@@ -196,6 +197,9 @@ export class LoginComponent implements OnInit {
           console.log(o)
           if(!(o.find(x => x.uid == this.customer.uid)))
           {
+            this.customer.shareWishlistedMovies = true;
+            this.customer.showWatchedListToFollowers = true;
+            this.customer.showWishlistToFollowers = true;
             this.customerService.createCustomer(this.customer);
             //window.location.href = "/personalisation"
             this.dbCust = true;
@@ -208,7 +212,7 @@ export class LoginComponent implements OnInit {
           }
           if(this.dbCust)
           {
-            window.location.href = "/personalisation"
+            window.location.href = "/welcome"
           }
 
           

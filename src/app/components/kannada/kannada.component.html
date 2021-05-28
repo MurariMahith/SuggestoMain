@@ -1,17 +1,58 @@
-<!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"> -->
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Man Of Steel</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="embed-responsive embed-responsive-16by9">
-          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/T6DJcgm3wNY?rel=0" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
+<div style="width: 100%;background-color: rgba(50, 32, 118, 1);color: white;padding: 2%;padding-bottom: 40px;">
+  <div style="display: flex;justify-content: flex-end;" (click)="logout()">
+      Log Out        
   </div>
-<!-- </div> -->
+  <div class="prof-flex" style="display: flex;justify-content: center;">
+      <img *ngIf="currentCustomer.customerPhotoUrl" src="{{currentCustomer.customerPhotoUrl}}" alt="{{currentCustomer.name}}" width="100px" height="100px" style="border-radius: 100px;border: 4px solid white;" />
+      <img *ngIf="!currentCustomer.customerPhotoUrl" src="../../../assets/images/logo.jpg" width="100px" height="100px" alt=""  style="border-radius: 100px;border: 4px solid white;"  />
+  </div>
+  <div class="prof-flex" style="display: flex;justify-content: center;">
+      <h4>{{currentCustomer.name | titlecase}}</h4>
+  </div>
+  <div class="prof-flex" style="display: flex;justify-content: center;">
+      <p>Preferred Languages : {{languages}}</p>
+  </div>
+  <div class="prof-flex" style="display: flex;justify-content: center;" *ngIf="!elongatedgenre">
+      Preferred Genres : {{ (genres.length>20)? (genres | slice:0:20)+'....':(genres) }}
+  </div>
+  <div class="prof-flex" style="display: flex;justify-content: center;" *ngIf="!elongatedgenre">
+      <span *ngIf="genres.length>20" style="font-weight: normal;" (click)="showAllGenres()">see all genres.</span>
+  </div>
+  <div class="prof-flex" style="display: flex;justify-content: center;" *ngIf="elongatedgenre">
+      <p>Preferred Genres : {{genres}}</p>
+  </div>
+  <div class="prof-flex" style="display: flex;justify-content: center;" *ngIf="elongatedgenre">
+      <span (click)="showAllGenres()" style="font-weight: normal;">see less genres.</span>
+  </div>
+  <div style="display: flex;justify-content: center;">
+  <table style="text-align: center;margin-top: 4%;">
+      <tr>
+          <td  style="padding-right: 20px;">
+              <!-- {{wcount + rcount + watchedcount}} -->
+              {{currentCustomer.followRequestReceived.length}}
+          </td>
+          <td  style="padding-right: 20px;">
+              {{currentCustomer.following.length}}
+          </td>
+          <td>
+              {{currentCustomer.followers.length}}
+          </td>
+      </tr>
+      <tr style="font-size: small;">
+          <td  style="padding-right: 20px;">
+              Requests
+          </td>
+          <td  style="padding-right: 20px;">
+              Following
+          </td>
+          <td>
+              Followers
+          </td>
+      </tr>
+  </table>
+  </div>
+  <div class="prof-flex" style="display: flex;justify-content: center;margin-top: 8%;">        
+      <button type="button" class="btn btn-primary" style="border-radius: 20px;margin-right: 10px;" (click)="copyToClipboard()">Invite Friends</button>
+      <button type="button" class="btn btn-primary" style="border-radius: 20px;" (click)="this.router.navigateByUrl('/board')">MovieBuff board</button>
+  </div>
+</div>

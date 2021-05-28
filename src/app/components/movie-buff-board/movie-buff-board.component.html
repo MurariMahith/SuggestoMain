@@ -1,0 +1,77 @@
+<div *ngIf="loading" style="position: absolute;top: 60px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,0)">
+    <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
+    <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
+</div>
+
+<div style="min-height: 100vh;background-color: black;color: white;width: 100%;">
+
+    <div style="display: flex;justify-content: center;">
+        <img src="../../../assets/images/dark_suggesto2.PNG" style="width: 400px;height: 200px;max-width: 100%;">
+    </div>
+    
+
+
+    <!-- <img src="../../../assets/images/dark_suggesto.PNG" style="width: 100%;"> -->
+    <div style="display: flex;justify-content: center;padding: 4%;align-items: center;height: 50vh;height: auto;">
+        <!-- <img src="../../../assets/images/logo2.png" width="70" height="70" style="margin: 4%;"> -->
+        <h3>Movie Buff Board</h3>
+    </div>
+
+    <div style="display: flex;justify-content: center;">
+        <div class="d-flex bd-highlight" style="justify-content: center;width: fit-content;margin: 5%;border: 2px solid rgb(94, 94, 94);border-radius: 100px;padding: none;">
+            <div class="bd-highlight" (click)="all=false;friends=true">
+                <div style="border-radius: 10px;width: 100%;margin: none;" [ngStyle]="{'background-color': (all) ? 'black' : 'rgb(68,68,68'}">
+                    <span style="padding-left: 30px;padding-right: 30px;"> vs. Friends</span>
+                </div>
+            </div>
+            <div  class="bd-highlight" (click)="all=true;friends=false">
+                <div style="border-radius: 10px;margin: none;" [ngStyle]="{'background-color': (friends) ? 'black' : 'rgb(68,68,68'}">
+                    <span style="padding-left: 30px;padding-right: 30px;">All Public Users</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="width: 100%;">
+        <div class="d-flex bd-highlight">
+            <div class="p-2 bd-highlight"></div>
+            <div class="p-2 flex-grow-1 bd-highlight"></div>
+            <div class="p-2 bd-highlight" style="font-size: small;"><u>#Score</u></div>
+        </div> 
+        <div *ngIf="all">
+            <div class="d-flex bd-highlight" style="padding: 2%;" *ngFor="let c of allCustomers,let indexOfUser=index">
+                <div class="p-2 bd-highlight">#{{indexOfUser+1}}</div>
+                <div class="p-2 flex-grow-1 bd-highlight" *ngIf="!c.shareWishlistedMovies">
+                    <img src="../../../assets/images/defaultuser.png" width="30" height="30" style="border-radius: 100px;">
+                    Private User</div>
+                <div class="p-2 flex-grow-1 bd-highlight" (click)="GoToFollowing(c.uid)" *ngIf="c.shareWishlistedMovies">
+                    <img src="{{c.customerPhotoUrl}}" width="30" height="30" style="border-radius: 100px;">
+                    {{c.name | titlecase}} 
+                    <span  *ngIf="loggedIn && c.uid == currentCustomer.uid" class="badge badge-primary">
+                        Me
+                      </span>
+                    </div>
+                <div class="p-2 bd-highlight">{{c.wishlistedMovies.length + c.ratedMovies.length + c.watchedMovies.length}}</div>            
+            </div>
+        </div>
+        <div *ngIf="friends && loggedIn">
+            <div class="d-flex bd-highlight" style="padding: 2%;" *ngFor="let c of allFriends,let indexOfUser=index">
+                <div class="p-2 bd-highlight">#{{indexOfUser+1}}</div>
+                <!-- <div class="p-2 flex-grow-1 bd-highlight" (click)="GoToFollowing(c.uid)" *ngIf="!c.shareWishlistedMovies && allFollowing.includes(c.uid)">Private User</div> -->
+                <div class="p-2 flex-grow-1 bd-highlight" (click)="GoToFollowing(c.uid)">
+                    <img src="{{c.customerPhotoUrl}}" width="30" height="30" style="border-radius: 100px;">
+                    {{c.name | titlecase}}                    
+                    <span  *ngIf="loggedIn && c.uid == currentCustomer.uid" class="badge badge-primary">
+                        Me
+                    </span>
+                </div>
+                <div class="p-2 bd-highlight">{{c.wishlistedMovies.length + c.ratedMovies.length + c.watchedMovies.length}}</div>            
+            </div>
+        </div>
+        <div *ngIf="friends && !loggedIn" style="margin: 5%;">
+            <h6 (click)="this.router.navigateByUrl('/login')" class="text-center"> Login to compare scores with firends and family.</h6>
+        </div>
+          
+    </div>
+
+</div>

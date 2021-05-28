@@ -3,6 +3,8 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Customer } from './../models/Customer'
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { FeedItem } from '../models/FeedItem';
+import { UpcomingOtt } from '../models/UpcomingOtt';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +13,50 @@ export class CustomerService {
 
   private dbPath = '/customers';
 
+  private feedItemdbpath = '/feeditems';
+
+  private upcomingOttPath = '/upcomingOtt'
+
   customerRef: AngularFireList<Customer> = null;
 
-  constructor(private db: AngularFireDatabase) 
+  feedItemRef : AngularFireList<FeedItem> = null;
+
+  ottRef : AngularFireList<UpcomingOtt> = null;
+
+  constructor(private db: AngularFireDatabase, private feeddb : AngularFireDatabase) 
   { 
     this.customerRef = db.list(this.dbPath);
+    this.feedItemRef = feeddb.list(this.feedItemdbpath);
+    this.ottRef = db.list(this.upcomingOttPath);
   }
 
   getAllCustomers(): AngularFireList<any> {
     return this.customerRef;
+  }
+
+  getAllOtt() : AngularFireList<any>
+  {
+    return this.ottRef;
+  }
+
+  createOtt(obj : UpcomingOtt):void 
+  {
+    this.ottRef.push(obj);
+  }
+
+  deletOtt(key: string): Promise<void> {
+    return this.ottRef.remove(key);
+  }
+
+  getAllFeedItems(): AngularFireList<any>
+  {
+    return this.feedItemRef;
+  }
+
+  addFeedItem(item :FeedItem): void
+  {
+    console.log(item);
+    this.feedItemRef.push(item);
   }
 
   createCustomer(customer: Customer): void {
@@ -32,8 +69,8 @@ export class CustomerService {
     {
         delete value["key"];
     }
-    console.log(value);
-    console.log(key);
+    // console.log(value);
+    // console.log(key);
     if(value.wishlistedMovies)
     {
       value.wishlistedMovies = this.removeDuplicates(value.wishlistedMovies);
@@ -43,7 +80,7 @@ export class CustomerService {
       value.watchedMovies = this.removeDuplicates(value.watchedMovies);
     }
     //console.log(this.removeDuplicateWishlistedMovies(value.wishlistedMovies));    
-    console.log(value)
+    //console.log(value)
     for( var k in value)
     {
         if(value[k]=== undefined)
@@ -51,6 +88,8 @@ export class CustomerService {
           delete value[k];
         }
     }
+    // console.log(key)
+    // console.log(value);
     return this.customerRef.update(key, value);
   }
 

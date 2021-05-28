@@ -55,31 +55,69 @@
 
 <div class="container" *ngIf="isMobile" style="margin-bottom: 50px;">
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
-<div *ngIf="loading" style="position: absolute;top: 70px;left: 0;width: 100%;height: 100%;z-index: 2;
+<div *ngIf="loading" style="position: absolute;top: 60px;left: 0;width: 100%;height: 100%;z-index: 2;
 background-color: rgb(0, 0, 0)">
   <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
   <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
 </div>
 
 <span *ngIf="!loading">
-
   <div class="top">
     <header>   
       <!-- Background image -->
-      <div
-        class="p-5 text-center bg-image"
-        style="
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: center;
-        background-size:cover;"
-        [ngStyle]="{'background-image': 'url(' + actualMovie.smallImageUrl + ')'}"
-      >
-        <div class="mask" style="background-color: rgba(0, 0, 0, 0.8);padding: 2%;word-wrap: break-word;white-space: initial;width: 100%;">
+      <div class="text-center bg-image" style="background-repeat: no-repeat;background-attachment: fixed;background-position: center;background-size:cover;" [ngStyle]="{'background-image': 'url(' + actualMovie.smallImageUrl + ')'}">
+        <div class="mask" style="backdrop-filter: blur(4px) brightness(0.5);padding: 2%;word-wrap: break-word;white-space: initial;width: 100%;">
+          <div style="width: 100%;">
+            <div style="margin-left: 20px;display: flex;justify-content: flex-start;">
+              <i class="bi bi-arrow-left-square" style="font-size: x-large;color: white;" (click)="goBack()"></i>
+            </div>
+            <div class="text-white">
+              <!-- <img src="{{actualMovie.bigImageUrl}}" width="100%"> -->
+              <h3 class="mb-3" id="title-scroll"><b>{{actualMovie.title | titlecase}}</b></h3>
+              <div id="trailer-mobile" class="embed-responsive embed-responsive-16by9" style="border-radius: 10px;">
+                <iframe class="embed-responsive-item" [src]="safeSrc" allowfullscreen></iframe>
+              </div>
+              <br>
+              <span style="overflow-wrap: break-word;-ms-word-break: break-all;word-wrap: break-word;word-break: break-all;">
+                <h6 ><label class="top-label">Language : </label> {{actualMovie.language | commapipe}}</h6>
+                <h6 ><label class="top-label">Released In : </label> {{actualMovie.releaseYear}}</h6>
+                <h6 ><label class="top-label">Runtime : </label> {{actualMovie.runTime}} Minutes</h6>
+                <h6 ><label class="top-label">Genre : </label> {{actualMovie.genre | commapipe}}</h6>
+                </span>
+                <div class="btns" style="display: flex;justify-content: center;padding: 2%;width: 100%;">
+                  <!-- <span>
+                    <a class="btn btn-outline-info " style="margin: 2%;border-radius: 10px;background-color: rgb(22,22,22);border: 0.5px solid rgb(156, 156, 156);;" role="button" (click)="MoreAboutMovie()"><i class="fa fa-info-circle" aria-hidden="true"></i><br>About</a>
+                  </span> -->
+                  <span *ngIf="currentCustomer">
+                    <a class="btn btn-outline-info " style="margin: 2%;border-radius: 10px;background-color: rgb(22,22,22);border: 0.5px solid rgb(156, 156, 156);;" role="button" (click)="shareWindowBool = true">
+                      <i class="bi bi-share"></i>
+                       Send to friends</a>
+                  </span>
+                  <span *ngIf="eligibleForWishList && loggedIn ">
+                    <a class="btn btn-outline-primary " style="margin: 2%;border-radius: 10px;background-color: rgb(22,22,22);border: 0.5px solid rgb(156, 156, 156);;" role="button" (click)='wishListMovie(actualMovie.key)'> <i class="fa fa-heart" style="color: red;" aria-hidden="true"></i><br> Wishlist</a>
+                  </span >
+                  <span *ngIf="!eligibleForWishList && loggedIn">
+                    <a class="btn btn-danger " style="margin: 2%;border-radius: 10px;" role="button" (click)='removeFromWishlist(actualMovie.key)'> <i class="bi bi-heart" aria-hidden="true"></i><br> Remove</a>
+                  </span> 
+
+                  <span *ngIf="eligibleForWatched && loggedIn">
+                    <a class="btn btn-outline-success " style="margin: 2%;border-radius: 10px;background-color: rgb(22,22,22);border: 0.5px solid rgb(156, 156, 156);;"  role="button" (click)="addToWatchedMovies(actualMovie.key)"> <i class="bi bi-tv-fill"></i><br> Watched</a>
+                  </span >
+                  <span *ngIf="!eligibleForWatched && loggedIn">
+                    <a class="btn btn-success " style="margin: 2%;border-radius: 10px;" role="button" (click)='removeFromWatched(actualMovie.key)'><i class="bi bi-tv" aria-hidden="true"></i><br> Remove</a>
+                  </span> 
+                  
+
+                </div>
+            </div>
+          </div>
+        </div>
+        <div style="backdrop-filter: blur(4px) brightness(0.5);">
+        <div class="mask" style="background-color: rgba(0, 0, 0, 1);border-top-left-radius: 30px;border-top-right-radius: 30px;padding: 2%;word-wrap: break-word;white-space: initial;margin-left: 10px;margin-right: 10px;">
           <div class="d-flex justify-content-center align-items-center h-100">
             <div class="text-white">
               <!-- <img src="{{actualMovie.bigImageUrl}}" width="100%"> -->
-              <h3 class="mb-3" id="title-scroll">{{actualMovie.title | titlecase}}</h3>
+              <!-- <h3 class="mb-3" id="title-scroll">{{actualMovie.title | titlecase}}</h3>
               <div id="trailer-mobile" class="embed-responsive embed-responsive-16by9" style="border-radius: 10px;">
                 <iframe class="embed-responsive-item" [src]="safeSrc" allowfullscreen></iframe>
               </div>
@@ -100,32 +138,27 @@ background-color: rgb(0, 0, 0)">
                   <img *ngIf="movieHere.availableIn.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" width="50" height="50">
                   <img *ngIf="movieHere.availableIn.Zee5" src="../../../assets/ott-icons/zee5.png" width="50" height="50">
                   <img *ngIf="movieHere.availableIn.Youtube" src="../../../assets/ott-icons/youtube.jpg" width="50" height="50"></a>
-                </div><br>
-                <a class="btn btn-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieExternalSite()">Watch Movie <i class="fa fa-play-circle-o"></i></a>
-                <a class="btn btn-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)='trailer()'>Watch Trailer <i class="fa fa-play-circle-o"></i></a>
-                <br>
-                <h6 class="mb-3"><label class="top-label">Genre : </label> {{actualMovie.genre | commapipe}}</h6>
-                <h6 class="mb-3"><label class="top-label">Cast : </label> {{actualMovie.cast | titlecase}}</h6>
-              </span>
+                </div><br> -->
 
-              <a class="btn btn-info  buttons-top btn-block" style="width: 95%;" role="button" (click)="MoreAboutMovie()">More About Movie <i class="fa fa-info-circle" aria-hidden="true"></i></a>
-              <span *ngIf="eligibleForWishList && loggedIn ">
-                <a class="btn btn-success  buttons-top btn-block" style="width: 95%;" role="button" (click)='wishListMovie(actualMovie.key)'>Add to Wishlist <i class="fa fa-heart" aria-hidden="true"></i></a>
-              </span >
-              <span *ngIf="!eligibleForWishList && loggedIn">
-                <a class="btn btn-success buttons-top btn-block" style="width: 95%;" role="button" (click)='removeFromWishlist(actualMovie.key)'>Wishlisted <i class="bi bi-heart-fill" style="color: red;" aria-hidden="true"></i> Remove?</a>
+                <span style="overflow-wrap: break-word;-ms-word-break: break-all;word-wrap: break-word;word-break: break-all;">
+                  <h6 class="mb-3"><label class="top-label">Where to watch</label></h6>
+                  <div class="icons">
+                    <a (click)="GoToMovieExternalSite()">
+                    <img *ngIf="movieHere.availableIn.Netflix" src="../../../assets/ott-icons/netflix.jpg" width="50" height="50">
+                    <img *ngIf="movieHere.availableIn.Prime_Video" src="../../../assets/ott-icons/prime.png" width="50" height="50">
+                    <img *ngIf="movieHere.availableIn.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" width="50" height="50">
+                    <img *ngIf="movieHere.availableIn.Aha" src="../../../assets/ott-icons/aha.jpeg" width="50" height="50">
+                    <img *ngIf="movieHere.availableIn.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" width="50" height="50">
+                    <img *ngIf="movieHere.availableIn.JioCinema" src="../../../assets/ott-icons/jiocinema.png" width="50" height="50">
+                    <img *ngIf="movieHere.availableIn.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" width="50" height="50">
+                    <img *ngIf="movieHere.availableIn.Zee5" src="../../../assets/ott-icons/zee5.png" width="50" height="50">
+                    <img *ngIf="movieHere.availableIn.Youtube" src="../../../assets/ott-icons/youtube.jpg" width="50" height="50"></a>
+                  </div><br>
+                <div style="display: flex;justify-content: center;">
+                  <a class="btn btn-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieExternalSite()">Watch Movie <i class="fa fa-play-circle-o"></i></a>
+                  <a class="btn btn-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)='trailer()'>Watch Trailer <i class="fa fa-play-circle-o"></i></a>
+                </div>
               </span> 
-
-              <span *ngIf="eligibleForWatched && loggedIn">
-                <a class="btn btn-success buttons-top btn-block" style="width: 95%;" role="button" (click)="addToWatchedMovies(actualMovie.key)">Add to Watched Movies <i class="bi bi-tv"></i></a>
-              </span >
-              <span *ngIf="!eligibleForWatched && loggedIn">
-                <a class="btn btn-success  buttons-top btn-block" style="width: 95%;" role="button" (click)='removeFromWatched(actualMovie.key)'>Added to watched <i class="bi bi-tv-fill" aria-hidden="true"></i> Remove?</a>
-              </span> 
-
-              <a class="btn btn-success  buttons-top btn-block" style="width: 95%;" role="button" *ngIf="!loggedIn" (click)='router.navigateByUrl("/login")'>Login to wishlist and Watched Movies <i class="fa fa-heart" aria-hidden="true"></i></a>
-
-              <small  id="emailHelp" class="form-text "><h6>Description about Movie : <br></h6>{{actualMovie.description}}</small>
               <div class="rating" style="margin: 5%;">
                 <div class="form-group" *ngIf="eligibleForRating">
                   <h5 class="mb-3"><label class="top-label">Rate {{actualMovie.title}}</label></h5> 
@@ -145,54 +178,121 @@ background-color: rgb(0, 0, 0)">
                   <h6> You already rated <b>{{rating}}</b> for <b>{{actualMovie.title}}</b>. Thank you !</h6>
                   <small *ngIf="loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (Editing rating for movies will be supported in next version)</small>
                   <small *ngIf="!loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (you need to log in to edit rating, click <a routerLink="/login">here to log in</a>)</small>
-                </div><br>
-                <button class="btn btn-sm btn-success btn-block" style="margin: 2%;" (click)="copyToClipboard()">Suggest this movie to your friends</button><br>
-                <h6 *ngIf="recommendedMovieTitles.length !== 0">Similar Movies</h6>
-                <div class="recommendedMovieTitles" >                  
+                </div><br>                                
+              </div>
+              <a class="btn btn-success  buttons-top btn-block" style="width: 95%;" role="button" *ngIf="!loggedIn" (click)='router.navigateByUrl("/login")'>Login to wishlist and Watched Movies <i class="fa fa-heart" aria-hidden="true"></i></a>
+              <table style="width: 100%;">
+                <tr>
+                  <td style="width: 20%;text-align: left"><b>Description: </b></td>
+                  <td style="text-align: left;padding: 4px;">{{actualMovie.description | commapipe}}</td>
+                </tr>
+                <tr>
+                  <td style="width: 20%;text-align: left;"><b>Genre: </b></td>
+                  <td style="text-align: left;">{{actualMovie.genre | commapipe}}</td>                  
+                </tr>
+                <tr>
+                  <td style="width: 20%;text-align: left;"><b>Cast: </b></td>
+                  <td style="text-align: left;">{{actualMovie.cast | titlecase}}</td>                  
+                </tr>
+                <tr>
+                  <td style="width: 20%;text-align: left;"><b>Language: </b></td>
+                  <td style="text-align: left;padding: 4px;">{{actualMovie.language | commapipe}}</td>
+                </tr>
+                <tr>
+                  <td style="width: 20%;text-align: left;"><b>Run Time: </b></td>
+                  <td style="text-align: left;padding: 4px;">{{actualMovie.runTime}} Minutes</td>
+                </tr>
+                <tr>
+                  <td style="width: 20%;text-align: left;"><b>Released year: </b></td>
+                  <td style="text-align: left;padding: 4px;">{{actualMovie.releaseYear | commapipe}} </td>
+                </tr>
+              </table>  <br>           
+
+              
+
+              <!-- <small  id="emailHelp" class="form-text "><h6>Description about Movie : <br></h6>{{actualMovie.description}}</small> -->
+              
+              <button class="btn btn-lg btn-outline-primary btn-block" (click)="copyToClipboard()"><i class="bi bi-share-fill"></i>  Suggest this movie to your friends outside Suggesto</button><br>
+              <h6 *ngIf="featuredLists.length !== 0">Featured on</h6>
+              <div>
+                <span *ngFor="let list of featuredLists">
+                    <div style="width: 100%;">
+                      <div class="list-item item3-1" (click)="this.router.navigateByUrl('/list/'+list.key)">
+                        <div class="long-word"><b>{{list.listName}}</b></div>
+                      </div>
+                    </div>                    
+                </span>
+              </div><br>
+              <h6 *ngIf="recommendedMovieTitles.length !== 0">Similar Movies</h6>
+              <div style="display: flex;justify-content: center;flex-wrap: wrap;">
+                <span *ngFor="let movie of recommendedMovieTitles">
+                  <div class="item-reco" style="margin: 2%;margin-right: 0;">
+                    <div style="display: flex;justify-content: center;">
+                      <img (click)="goToRecommendedMovieImdb(movie.id,movie.title)" src="{{movie.imageUrl}}" width="100" height="150" style="margin: 5px;border-radius: 10px;">
+                    </div>
+                    <div style="display: flex;justify-content: center;">
+                      {{movie.title}}
+                    </div>
+                  </div>
+                </span>
+              </div>
+              <br>
+              
+                <!-- <div class="recommendedMovieTitles" >                  
                   <span *ngFor="let movie of recommendedMovieTitles">
                     <div class="item-reco" style="margin: 2%;margin-right: 0;">
-                        <button (click)="goToRecommendedMovieImdb(movie.id,movie.title)" class="btn btn-sm btn-primary btn-block" style="margin: 2%;">{{movie.title}}</button>
+                      <div style="display: flex;justify-content: center;">
+                        <img src="{{movie.imageUrl}}" width="100" height="150" style="margin: 2%;border: 1px solid red;border-radius: 10px;">
+                      </div>
+                      
                     </div>
                   </span>
-                </div>
-              </div>
+                </div> -->
             </div>
           </div>
+        </div>
         </div>
       </div>
       <!-- Background image -->
     </header>
   </div>
-
-
-    <!-- <div class="rating" style="margin: 5%;">
-      <div class="form-group" *ngIf="eligibleForRating">
-        <label for="exampleInputPassword2">Already saw this movie, please give us your rating to this movie</label>     
-        <small id="emailHelp" class="form-text text-muted">It will help us to suggest better movies. You can only rate one time per movie. (editing rating for movies will be supported in next version) </small> <br>
-        <div style="display: flex;">
-        <select class="form-select browser-default custom-select" id="ratingdropdown" aria-label="Default select example" name="rtingd" [(ngModel)]="rating">
-          <option [value]=0>Rate {{actualMovie.title}} movie here</option>
-          <option [value]="1">Below Average</option>
-          <option [value]="2">Average</option>
-          <option [value]="3">Good</option>
-          <option [value]="4">Extrordinary</option>
-          <option [value]="5">Mind blowing</option>
-        </select>   
-        <button type="button" style="margin-left: 1%;width: 100px;" class="btn btn-outline-primary btn-sm" (click)="rateMovie(actualMovie.key)">Submit</button>   </div>
-      </div>
-      <div *ngIf="!eligibleForRating">
-        <h4> You already rated <b>{{rating}}</b> for <b>{{actualMovie.title}}</b>. Thank you !</h4>        
-        <small *ngIf="loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (Editing rating for movies will be supported in next version)</small>
-        <small *ngIf="!loggedIn" id="emailHelp" class="form-text "> You can only rate one time per movie. (you need to log in to edit rating, click <a routerLink="/login">here to log in</a>)</small>
-      </div>
-    </div> -->
-
-    <!-- <div class="movie-links" style="display: flex;justify-content: center">
-      <button type="button" style="margin: 1%;" class="btn btn-outline-primary btn-lg btn-block" (click)="GoToMovieExternalSite()">Watch Movie <i class="fa fa-play-circle-o"></i></button>      
-      <button type="button" style="margin: 1%;" class="btn btn-outline-primary btn-lg btn-block" (click)="MoreAboutMovie()">More About Movie <i class="fa fa-info-circle" aria-hidden="true"></i></button>      
-      <button type="button" style="margin: 1%;" class="btn btn-outline-primary btn-lg btn-block" (click)="trailer()">Watch Trailer <i class="fa fa-play-circle-o"></i></button>      
-      <button type="button" style="margin: 1%;" class="btn btn-outline-primary btn-lg btn-block" (click)="wishlist()">Wishlist <i class="fa fa-heart" aria-hidden="true"></i></button>      
-    </div> -->
-
 </span>
+</div>
+
+<div *ngIf="shareWindowBool" style="position: fixed;color: white;bottom: 0;left:0;width: 96%;margin-bottom: 50px;margin-left: 2%;padding-top: 5%;background-color: rgb(51, 51, 51);border-top-right-radius: 40px;border-top-left-radius: 40px;" [ngStyle]="{'height': (allFriends.length == 0) ? '40vh' : 'auto'}">
+  <div class="d-flex bd-highlight">
+    <div class="p-2 w-100 bd-highlight "><h6 style="margin-left: 5%;">Share {{actualMovie.title}} with your friends.</h6></div>
+    <div class="p-2 flex-shrink-1 bd-highlight"  style="z-index: 5;" (click)="closedShareWindow()">
+      <h3><i style="color: white;" class="bi bi-x-circle-fill"></i></h3>
+    </div>
+    <div class="p-2 flex-shrink-1 bd-highlight"  style="z-index: 5;" (click)="closedShareWindow()">
+      <!-- <h3><i style="color: white;" class="bi bi-x-circle-fill"></i></h3> -->
+    </div>
+  </div>
+  <div class="d-flex bd-highlight">
+    <div class="p-2 bd-highlight">
+      <img src="{{actualMovie.smallImageUrl}}" width="50" height="70">
+    </div>
+    <div class="p-2 flex-grow-1 bd-highlight align-self-center">
+      <input type="text" name="searchStr" [(ngModel)]="sendObj.senderMessage" #searchStr="ngModel" style="background-color: rgb(51, 51, 51);color: white;border: 2px solid white;width: 95%;margin: 2%;padding: 4%;border-top: none;border-left: none;border-right: none;" placeholder="Your Message Here">
+    </div>
+  </div>
+  <div id="abc" *ngIf="allFriends.length != 0" style="margin-bottom: 20px;overflow: auto;height: 40vh;">
+    <div  class="d-flex bd-highlight" *ngFor="let f of allFriends" style="margin: 2%;color: white;">
+      <div class="p-2  bd-highlight">
+        <img src={{f.followerphotoUrl}} width="25" height="25" style="border-radius: 100px;">
+      </div>
+      <div class="p-2 flex-grow-1 bd-highlight align-self-center">
+        <h6>{{f.followerName | titlecase}}</h6>
+      </div>
+      <div class="p-2 bd-highlight align-self-center">
+        <button type="button" (click)="sendMovie(f,actualMovie)" class="btn btn-sm btn-primary">Send</button>
+      </div>
+    </div>
+  </div>
+  <span *ngIf="allFriends.length == 0">
+    <div *ngIf="allFriends.length == 0" style="display: flex;justify-content: center;margin: 5%;">
+      <h6>You might have shared this movie to all your friends OR You haven't made any friends, click <a style="color: lawngreen;" routerLink='/people'>here</a> to send follow requests to friends and share movies with them.</h6>
+    </div>
+  </span>
 </div>

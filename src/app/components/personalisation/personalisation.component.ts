@@ -30,9 +30,19 @@ export class PersonalisationComponent implements OnInit {
 
   loading : boolean = false;
 
+  isMobile : boolean = true;
+
   constructor(private customerService : CustomerService) { }
 
   ngOnInit(): void {
+
+    if( screen.width <= 480 ) {     
+      this.isMobile = true;
+      //console.log("mobile");
+    }
+    else{
+      this.isMobile = false;
+    }
 
     this.allGenres = Object.keys(this.genreObj)
     this.allLanguages = Object.keys(this.langObj)
@@ -57,17 +67,23 @@ export class PersonalisationComponent implements OnInit {
   {
     console.log(this.genreSelected)
     console.log(this.languagesSelected)
-    if(this.genreSelected.length == 0 || this.languagesSelected.length == 0)
+    if(this.genreSelected.length == 0 || this.languagesSelected.length == 0 || this.genreSelected.length<3)
     {
-      alert("You must atleast select one language or genre for your personalised content. ")
+      alert("You must atleast select one language and three genres for your personalised content. ")
       this.genreBack();
       return;
     }
     this.genreBack();
+    if(this.genreSelected.length <= 3)
+    {
+      console.log("less")
+    }
     this.currentCustomer.preferredGenre = this.genreSelected;
     this.currentCustomer.preferredLanguages = this.languagesSelected;
     this.currentCustomer.shareWishlistedMovies = this.shareWishList;
     this.loading = true;
+    this.currentCustomer.showWishlistToFollowers = true;
+    this.currentCustomer.showWatchedListToFollowers = true;
     
     this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer).then(o => window.location.href="/")
   }

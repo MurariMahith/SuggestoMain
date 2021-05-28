@@ -1,43 +1,44 @@
 <div *ngIf="isMobile">
   <div id="footer">
     <div style="display: flex;justify-content: center;flex-wrap: wrap;">
-      <div style="width: 16.6%;" class="abc">
+      <div style="width: 20%;" class="abc">
       <h4 routerLink="/home" routerLinkActive="active">
         <i class="bi bi-house" ></i>
         <p style="font-size: xx-small;">home</p>
       </h4>
       </div>
-      <div style="width: 16.6%;" class="abc">
+      <div style="width: 20%;" class="abc">
         <h4  routerLink="/all" routerLinkActive="active">
           <i class="bi bi-search"></i>
           <p style="font-size: xx-small;">Search</p>
         </h4>
       </div>
-      <div style="width: 16.6%;" class="abc">
+      <div style="width: 20%;" class="abc">
         <h4 routerLink="/news-feed" routerLinkActive="active">
           <i class="bi bi-heart"></i>
           <p style="font-size: xx-small;">Feed</p>
         </h4>
       </div>
-      <div style="width: 16.6%;" class="abc">
+      <div style="width: 20%;" class="abc">
         <h4 routerLink="/movielist" routerLinkActive="active">
           <i class="bi bi-collection-play"></i>
           <p style="font-size: xx-small;">Lists</p>
         </h4>
       </div>      
-      <div style="width: 16.6%;" class="abc">
+      <!-- <div style="width: 20%;" class="abc">
         <h4 routerLink="/people" routerLinkActive="active">
           <i class="bi bi-people"></i>
           <p style="font-size: xx-small;">People</p>
         </h4>
-      </div>
-      <div style="width: 16.6%;" class="abc">
+      </div> -->
+      <div style="width: 20%;" class="abc">
         <h4  routerLink="/login" routerLinkActive="active" *ngIf="!loggedIn" >
           <i class="bi bi-person"></i>
           <p *ngIf="!loggedIn" style="font-size: xx-small;">Login</p>
         </h4>
         <h4 routerLink="/profile" routerLinkActive="active" *ngIf="loggedIn">
-          <i  class="bi bi-person"></i>
+          <i *ngIf="loggedIn && !currentCustomer"   class="bi bi-person"></i>
+          <img *ngIf="loggedIn && currentCustomer" src="{{currentCustomer.customerPhotoUrl}}" width="24" style="border-radius: 100px;">
           <p *ngIf="loggedIn" style="font-size: xx-small;">Profile</p>
         </h4>
       </div>
@@ -90,24 +91,35 @@
 </div>
 <div *ngIf="!isMobile">
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(31,37,51);">
-    <a class="navbar-brand" routerLink="/admin" style="color: white;">Weekend Movies</a>
+    <a class="navbar-brand" routerLink="/admin" style="color: white;">Suggesto</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContentfooter" aria-controls="navbarSupportedContentfooter" aria-expanded="false" aria-label="Toggle navigation" style="color: white;">
         <span class="navbar-toggler-icon" id="footerid"></span>
     </button>
   
     <div class="collapse navbar-collapse" id="navbarSupportedContentfooter">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" >
-          <a class="nav-link btnm" routerLink="/" style="color: white;">Home</a>
+      <li class="nav-item"  data-toggle="collapse" data-target="#navbarSupportedContentfooter">
+          <a class="nav-link btnm" routerLink="/" style="color: white;">
+            Home</a>
       </li>
-      <li class="nav-item" >
-        <a class="nav-link btnm" routerLink="/all" style="color: white;">All Movies</a>
+      <li class="nav-item"  data-toggle="collapse" data-target="#navbarSupportedContentfooter">
+        <a class="nav-link btnm" routerLink="/all" style="color: white;">Search</a>
       </li>
-      <li class="nav-item" >
-        <a class="nav-link btnm" routerLink="/movielist" style="color: white;">Movie's Lists</a>
+      <li class="nav-item"  data-toggle="collapse" data-target="#navbarSupportedContentfooter">
+        <a class="nav-link btnm" routerLink="/movielist" style="color: white;">Lists</a>
+      </li>
+      <li class="nav-item" data-toggle="collapse" data-target="#navbarSupportedContentfooter">
+        <a *ngIf="loggedIn" class="nav-link btnm" routerLink="/profile" style="color: white;">Profile</a>
+        <a *ngIf="!loggedIn" (click)="logout()" class="nav-link btnm" style="color: white;">Log out!</a>
+      </li>
+      <li class="nav-item" data-toggle="collapse" data-target="#navbarSupportedContentfooter">
+        <a class="nav-link btnm" routerLink="/board" style="color: white;" >MovieBuff Board</a>
+      </li>
+      <li class="nav-item"  data-toggle="collapse" data-target="#navbarSupportedContentfooter">
+        <a class="nav-link btnm" routerLink="/news-feed" style="color: white;">Feed</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
+    <form class="form-inline my-2 my-lg-0"  data-toggle="collapse" data-target="#navbarSupportedContentfooter">
         <a class="nav-link" routerLink="/aboutus" style="color: white;">About Us 
           <span class="badge badge-dark">New</span>
       </a>

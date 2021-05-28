@@ -49,6 +49,10 @@ export class MainListComponent implements OnInit {
 
   loading : boolean = true;
 
+  loggedIn : boolean = false;
+
+  listByCurrentCustomer : boolean = false;
+
 
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
@@ -64,6 +68,11 @@ export class MainListComponent implements OnInit {
     private location: Location) { }
 
   ngOnInit(): void {
+
+    if(localStorage.getItem('loggedIn') == 'true' && localStorage.getItem("uid") !== null)
+    {
+      this.loggedIn = true;
+    }
 
     if( screen.width <= 480 ) {     
       this.isMobile = true;
@@ -105,6 +114,7 @@ export class MainListComponent implements OnInit {
       this.allMovieLists = o;
       var tempList : MovieList[] = [];
       var listKey = this.activatedRoute.snapshot.params.key;
+      
       // console.log(this.allMovieLists)
       // console.log(listKey)
       for(let i=0;i<this.allMovieLists.length;i++)
@@ -122,6 +132,11 @@ export class MainListComponent implements OnInit {
       }
       this.customerUID = tempList[0].createdBy;
       this.ListForDisplay = this.listDisplayService.BuildMovieListForDisplay(tempList,this.allMovies)[0]
+      if(this.ListForDisplay.createdBy == localStorage.getItem("uid"))
+      {
+        console.log("his list")
+        this.listByCurrentCustomer = true;
+      }
       //this.ListForDisplay.moviesInList.sort((a,b) => b.rating - a.rating)
       this.loading = false;
 
@@ -164,7 +179,8 @@ export class MainListComponent implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: 'Suggesto : '+this.ListForDisplay.listName,
-        url: window.location.toString(),
+        text: 'Hey checkout this '+this.ListForDisplay.listName+' It has some great movies in it.    '+window.location.toString(),
+        // url: window.location.toString(),
       }).then(() => {
         console.log('Thanks for sharing!');
       })
@@ -207,7 +223,13 @@ export class MainListComponent implements OnInit {
 
   deleteList(key)
   {
-    //
+    console.log(key);
+    var conf = confirm("Do you really want to delete this list?")
+    if(conf)
+    {
+      this.listService.deleteMovieList(key);
+      //location.reload()
+    }
   }
 
 }

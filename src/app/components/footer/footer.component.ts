@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Customer } from 'src/app/models/Customer';
 import { AuthService } from 'src/app/services/authService';
+import { CustomerService } from 'src/app/services/customerService';
 
 @Component({
   selector: 'app-footer',
@@ -10,8 +12,9 @@ export class FooterComponent implements OnInit {
 
   isMobile : boolean = false;
   loggedIn: boolean = false;
+  currentCustomer : Customer
 
-  constructor(private authService : AuthService) { }
+  constructor(private authService : AuthService,private customerService : CustomerService) { }
 
   ngOnInit() {
 
@@ -28,6 +31,19 @@ export class FooterComponent implements OnInit {
       if(localStorage.getItem("loggedIn") === "true")
       {
         this.loggedIn = true;
+        this.customerService.getLoggedInCustomer()
+        .subscribe(o =>
+          {
+            ////console.log(o)
+            //this.allCustomers = o;
+            if(o.find(x => x.uid === localStorage.getItem("uid")))
+            {
+              this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
+              this.loggedIn = true
+            }
+            //console.log(this.currentCustomer.customerPhotoUrl)
+            ////console.log(this.loggedIn)
+          })
       }
     }
 
