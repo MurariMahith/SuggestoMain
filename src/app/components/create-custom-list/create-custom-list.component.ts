@@ -118,7 +118,7 @@ export class CreateCustomListComponent implements OnInit {
 
   removeThisMovieFromList(object)
   {
-    console.log(object);
+    //console.log(object);
     this.allMovies.push(object);
     for( var i = 0; i < this.selectedMovies.length; i++)
     {     
@@ -127,7 +127,7 @@ export class CreateCustomListComponent implements OnInit {
         this.selectedMovies.splice(i, 1); 
       }
     }
-    console.log(this.allMovies) 
+    //console.log(this.allMovies) 
   }
 
   onSubmit()
@@ -143,7 +143,7 @@ export class CreateCustomListComponent implements OnInit {
       });
       this.newMovieList.createdBy = localStorage.getItem("uid");
       this.newMovieList.isThisSeries = this.series;
-      console.log(this.newMovieList)
+      //console.log(this.newMovieList)
       this.listService.createMovieList(this.newMovieList);
       var feeditm : FeedItem = new FeedItem();
       feeditm.content = this.currentCustomer.name + " created a new list"+ this.newMovieList.listName+ ". Click to view the list."

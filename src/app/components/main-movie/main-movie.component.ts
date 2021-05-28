@@ -136,7 +136,7 @@ export class MainMovieComponent implements OnInit {
                   return friends.find(a => a.followerUserId === id)
                 })
               this.allFriendsOriginal = this.allFriends;
-              console.log(this.allFriends);
+              //console.log(this.allFriends);
             }
             else
             {
@@ -264,7 +264,7 @@ export class MainMovieComponent implements OnInit {
   //when shared window is closed, reset friends list
   closedShareWindow()
   {
-    console.log("close")
+    //console.log("close")
     this.allFriends.length = 0;
     var friends :FollowObject[] = this.currentCustomer.followers.concat(this.currentCustomer.following);
     // this.allFriends.filter((v,i,a)=>a.findIndex(t=>(t.followerUserId === v.followerUserId))===i)
@@ -545,7 +545,7 @@ export class MainMovieComponent implements OnInit {
         {
           if(this.recommendedMovieTitles.length>=10)
           {
-            console.log(this.recommendedMovieTitles);
+            //console.log(this.recommendedMovieTitles);
             break;
           }
           this.http.get(this.imagesUrl+res['results'][i]['id']+this.imagesUrlPart2).toPromise().then(o => 

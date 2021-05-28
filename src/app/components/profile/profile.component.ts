@@ -94,10 +94,10 @@ export class ProfileComponent implements OnInit {
 
       if( screen.width <= 480 ) {     
         this.isMobile = true;
-        //console.log("mobile");
+        ////console.log("mobile");
       }
       else{
-        //console.log("laptop")
+        ////console.log("laptop")
       }
       if(localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
       {
@@ -105,7 +105,7 @@ export class ProfileComponent implements OnInit {
           .subscribe(o =>
             {
               this.allCustomers = o;
-              //console.log(o)
+              ////console.log(o)
               if(o.find(x => x.uid === localStorage.getItem("uid")))
               {
                 var followingKey = this.activatedRoute.snapshot.params.key;
@@ -127,7 +127,7 @@ export class ProfileComponent implements OnInit {
                 }
 
                 this.loggedIn = true
-                console.log(this.currentCustomer)
+                //console.log(this.currentCustomer)
               }
               if(this.currentCustomer.preferredGenre)
               {
@@ -181,8 +181,8 @@ export class ProfileComponent implements OnInit {
           this.wishlistedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.wishlistedMovies)
           this.ratedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.ratedMovies)
           this.watchedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.watchedMovies);
-          // console.log(this.wishlistedMoviesDisplay)
-          // console.log(this.ratedMoviesDisplay)
+          // //console.log(this.wishlistedMoviesDisplay)
+          // //console.log(this.ratedMoviesDisplay)
           this.ratedMoviesDisplay.forEach(x => {
             this.currentCustomer.ratedMovies.forEach(y => {
               
@@ -218,12 +218,12 @@ export class ProfileComponent implements OnInit {
           }
           this.share = this.currentCustomer.shareWishlistedMovies ? this.currentCustomer.shareWishlistedMovies : false;
           this.loading = false;
-          console.log(this.wishlistedMoviesDisplay)
-          console.log(this.ratedMoviesDisplay)
+          //console.log(this.wishlistedMoviesDisplay)
+          //console.log(this.ratedMoviesDisplay)
         })
   
-        console.log(this.wishlistedMoviesDisplay)
-        console.log(this.ratedMoviesDisplay)
+        //console.log(this.wishlistedMoviesDisplay)
+        //console.log(this.ratedMoviesDisplay)
 
       this.timeOutError =setTimeout(()=>{
         if(this.loading)
@@ -248,16 +248,16 @@ export class ProfileComponent implements OnInit {
 
   GoToMyList()
   {
-    console.log(localStorage.getItem["uid"])
-    console.log(this.currentCustomer.uid);
+    //console.log(localStorage.getItem["uid"])
+    //console.log(this.currentCustomer.uid);
     this.router.navigateByUrl('movielist/'+this.currentCustomer.uid)
   }
 
   UpdateCustomerWhenSharingEvent()
   {
-    console.log(this.share);
+    //console.log(this.share);
     this.currentCustomer.shareWishlistedMovies = this.share;
-    console.log(this.currentCustomer)
+    //console.log(this.currentCustomer)
     this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
   }
 

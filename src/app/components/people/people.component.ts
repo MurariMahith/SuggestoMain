@@ -76,10 +76,10 @@ export class PeopleComponent implements OnInit {
 
     if( screen.width <= 480 ) {     
       this.isMobile = true;
-      //console.log("mobile");
+      ////console.log("mobile");
     }
     else{
-      //console.log("laptop")
+      ////console.log("laptop")
     }
     if(localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
     {
@@ -102,14 +102,14 @@ export class PeopleComponent implements OnInit {
 
             
 
-            //console.log(o)
+            ////console.log(o)
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
               this.loggedIn = true
               this.loading = false;
               this.share = this.currentCustomer.shareWishlistedMovies;
-              console.log(this.allCustomers)
+              //console.log(this.allCustomers)
               this.allCustomers.forEach(element => {
 
 
@@ -152,7 +152,7 @@ export class PeopleComponent implements OnInit {
               }              
               this.allCustomersWithoutCurrentCustomer = this.allCustomers
               this.allCustomers = this.allCustomers.filter(x => x.shareWishlistedMovies)
-              console.log(this.allCustomers);
+              //console.log(this.allCustomers);
             }
 
             var customersWhoEnabledSharing = this.allCustomersWithoutCurrentCustomer;
@@ -184,9 +184,9 @@ export class PeopleComponent implements OnInit {
                 return (b.watchedMovies.length + b.wishlistedMovies.length + b.ratedMovies.length) - (a.watchedMovies.length + a.wishlistedMovies.length + a.ratedMovies.length);             
             })
             // this.allCustomersScoreSorted.forEach(element => {
-            //   console.log(element.name + element.watchedMovies.length + element.wishlistedMovies.length + element.ratedMovies.length)
+            //   //console.log(element.name + element.watchedMovies.length + element.wishlistedMovies.length + element.ratedMovies.length)
             // });
-            // console.log(this.allCustomers);
+            // //console.log(this.allCustomers);
           })
     }
   }
@@ -199,9 +199,9 @@ export class PeopleComponent implements OnInit {
 
   UpdateCustomerWhenSharingEvent()
   {
-    console.log(this.share);
+    //console.log(this.share);
     this.currentCustomer.shareWishlistedMovies = this.share;
-    console.log(this.currentCustomer)
+    //console.log(this.currentCustomer)
     this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
   }
 

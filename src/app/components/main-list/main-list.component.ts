@@ -94,7 +94,7 @@ export class MainListComponent implements OnInit {
         )
       )
     ).subscribe(o => {
-      console.log(o)
+      //console.log(o)
       this.allMovies = o;
       this.xyz();      
     }) 
@@ -110,7 +110,7 @@ export class MainListComponent implements OnInit {
         )
       )
     ).subscribe(o => {
-      console.log(o)
+      //console.log(o)
       this.allMovieLists = o;
       var tempList : MovieList[] = [];
       var listKey = this.activatedRoute.snapshot.params.key;
@@ -125,7 +125,7 @@ export class MainListComponent implements OnInit {
           break;         
         }
       }
-      console.log(tempList)
+      //console.log(tempList)
       if(tempList.length==0)
       {
         this.router.navigateByUrl('/movielist')
@@ -134,7 +134,7 @@ export class MainListComponent implements OnInit {
       this.ListForDisplay = this.listDisplayService.BuildMovieListForDisplay(tempList,this.allMovies)[0]
       if(this.ListForDisplay.createdBy == localStorage.getItem("uid"))
       {
-        console.log("his list")
+        //console.log("his list")
         this.listByCurrentCustomer = true;
       }
       //this.ListForDisplay.moviesInList.sort((a,b) => b.rating - a.rating)
@@ -182,7 +182,7 @@ export class MainListComponent implements OnInit {
         text: 'Hey checkout this '+this.ListForDisplay.listName+' It has some great movies in it.    '+window.location.toString(),
         // url: window.location.toString(),
       }).then(() => {
-        console.log('Thanks for sharing!');
+        //console.log('Thanks for sharing!');
       })
       .catch(console.error);
     } else 
@@ -204,10 +204,10 @@ export class MainListComponent implements OnInit {
 
   rateList(key)
   {
-    console.log(key);
+    //console.log(key);
     var list = this.allMovieLists.find(x => x['key'] == key);
     delete list['key'];
-    console.log(list)
+    //console.log(list)
     if(list.rating)
     {
       list.rating = Number(list.rating)+this.rating;
@@ -216,14 +216,14 @@ export class MainListComponent implements OnInit {
     {
       list.rating = this.rating
     }
-    console.log(list);
+    //console.log(list);
     this.listService.updateMovieList(key,list);  
     localStorage.setItem(key,"rated");  
   }
 
   deleteList(key)
   {
-    console.log(key);
+    //console.log(key);
     var conf = confirm("Do you really want to delete this list?")
     if(conf)
     {

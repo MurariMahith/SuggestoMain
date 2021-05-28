@@ -485,6 +485,20 @@
             </div>
         </div>
     </div>
+    <div class="lists" style="margin: 2%;display: flex;">
+        <div class="d-flex bd-highlight list-item" style="width: 100%;font-size: medium;">
+            <div class="p-2 w-100 bd-highlight">
+                <i style="color: greenyellow;" class="bi bi-tools"></i>  Change Your Display Name<br>
+                <div style="display: flex;flex-wrap: wrap;">
+                    <input type="text" style="background-color: rgb(68,68,68);color: white;width: 70%;border: none;border-radius: none;border-bottom: 1px solid white;" class="form-control" name="name" [(ngModel)]="this.currentCustomer.name" #name="ngModel" placeholder="Edit Your Name" >
+                    <button (click)="UpdateCustomerForChangedName()" type="button" class="btn btn-sm btn-primary" style="margin-right: 5px;">Change</button>
+                </div>
+            </div>
+            <div class="p-2 flex-shrink-1 bd-highlight">
+                <!-- <i class="bi bi-chevron-right"></i> -->
+            </div>
+        </div>
+    </div>
     <div class="lists" style="margin: 2%;font-size: medium;">
         <div class="d-flex bd-highlight mb-3 list-item" (click)="this.router.navigateByUrl('/board')">
             <div class="mr-auto p-2 bd-highlight">

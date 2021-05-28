@@ -21,7 +21,7 @@ export class TamilComponent implements OnInit {
         text: 'Hey checkout this amazing app that suggests some great movies daily and has many features in it.   '+"https://play.google.com/store/apps/details?id=xyz.appmaker.jibpca",
         // url: window.location.toString(),
       }).then(() => {
-        console.log('Thanks for sharing!');
+        //console.log('Thanks for sharing!');
       })
       .catch(console.error);
     } else 

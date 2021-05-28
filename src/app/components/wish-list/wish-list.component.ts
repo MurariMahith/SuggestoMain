@@ -64,23 +64,23 @@ export class WishListComponent implements OnInit {
 
     if( screen.width <= 480 ) {     
       this.isMobile = true;
-      //console.log("mobile");
+      ////console.log("mobile");
     }
     else{
-      //console.log("laptop")
+      ////console.log("laptop")
     }
       this.customerService.getLoggedInCustomer()
         .subscribe(o =>
           {
-            console.log(o)
+            //console.log(o)
             this.allCustomers = o;
             var custKey = this.activatedRoute.snapshot.params.key;
-            console.log(custKey)
+            //console.log(custKey)
             if(o.find(x => x['key'] === custKey))
             {
               this.customerNeeded = o.find(x => x['key'] === custKey)
               this.loggedIn = true
-              console.log(this.customerNeeded)
+              //console.log(this.customerNeeded)
               if(!this.customerNeeded.name || this.customerNeeded.name === '')
                 this.customerNeeded.name = "Not Provided";
 
@@ -89,13 +89,13 @@ export class WishListComponent implements OnInit {
               let uniqueChars = chars.filter((c, index) => {
                   return chars.indexOf(c) === index;
               });
-              console.log(uniqueChars)
+              //console.log(uniqueChars)
 
               var fakeMovieList = new MovieList();
               fakeMovieList.listName = 'WishList of '+this.customerNeeded.name;
               fakeMovieList.moviesInThisList = uniqueChars;
               this.movieListArr.push(fakeMovieList);
-              console.log(fakeMovieList)
+              //console.log(fakeMovieList)
 
 
               this.movieService.getAllMovies().snapshotChanges().pipe(
@@ -112,7 +112,7 @@ export class WishListComponent implements OnInit {
                     return b.rating - a.rating;
                   })
                   this.loading = false
-                  console.log(this.ListForDisplay)
+                  //console.log(this.ListForDisplay)
                 })
 
 
@@ -133,7 +133,7 @@ export class WishListComponent implements OnInit {
         title: 'Suggesto : '+this.ListForDisplay.listName,
         url: window.location.toString(),
       }).then(() => {
-        console.log('Thanks for sharing!');
+        //console.log('Thanks for sharing!');
       })
       .catch(console.error);
     } else 

@@ -36,12 +36,12 @@ export class PersonalComponent implements OnInit {
       this.customerService.getLoggedInCustomer()
         .subscribe(o =>
           {
-            // console.log(o)
+            // //console.log(o)
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
             }
-            console.log(this.currentCustomer) 
+            //console.log(this.currentCustomer) 
           })
     }
 
@@ -68,8 +68,8 @@ export class PersonalComponent implements OnInit {
         });
         this.wishlistedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.wishlistedMovies)
         this.ratedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.ratedMovies)
-        // console.log(this.wishlistedMoviesDisplay)
-        // console.log(this.ratedMoviesDisplay)
+        // //console.log(this.wishlistedMoviesDisplay)
+        // //console.log(this.ratedMoviesDisplay)
         this.ratedMoviesDisplay.forEach(x => {
           this.currentCustomer.ratedMovies.forEach(y => {
 
@@ -87,8 +87,8 @@ export class PersonalComponent implements OnInit {
 
   removeWishlist(key)
   {
-    console.log(key);
-    console.log(this.currentCustomer.wishlistedMovies)
+    //console.log(key);
+    //console.log(this.currentCustomer.wishlistedMovies)
     if(this.currentCustomer.wishlistedMovies.includes(key))
     {
       for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
@@ -107,7 +107,7 @@ export class PersonalComponent implements OnInit {
         }
       }
 
-    console.log(this.currentCustomer.wishlistedMovies)
+    //console.log(this.currentCustomer.wishlistedMovies)
     this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer).then(()=>console.log("success"))
 
   }

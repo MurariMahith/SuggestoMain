@@ -19,8 +19,8 @@ export class AuthService {
   }
   logIn(email:string,password:string)
   {
-      console.log(email);
-    console.log(firebase.auth().currentUser);
+      //console.log(email);
+    //console.log(firebase.auth().currentUser);
     return this.afAuth.auth.signInWithEmailAndPassword(email,password)   
   }
   logOut()

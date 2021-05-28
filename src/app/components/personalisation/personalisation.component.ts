@@ -38,7 +38,7 @@ export class PersonalisationComponent implements OnInit {
 
     if( screen.width <= 480 ) {     
       this.isMobile = true;
-      //console.log("mobile");
+      ////console.log("mobile");
     }
     else{
       this.isMobile = false;
@@ -52,12 +52,12 @@ export class PersonalisationComponent implements OnInit {
       this.customerService.getLoggedInCustomer()
         .subscribe(o =>
           {
-            console.log(o)
+            //console.log(o)
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
             }
-            console.log(this.currentCustomer)
+            //console.log(this.currentCustomer)
           })
     }
 
@@ -65,8 +65,8 @@ export class PersonalisationComponent implements OnInit {
 
   submitPreferences()
   {
-    console.log(this.genreSelected)
-    console.log(this.languagesSelected)
+    //console.log(this.genreSelected)
+    //console.log(this.languagesSelected)
     if(this.genreSelected.length == 0 || this.languagesSelected.length == 0 || this.genreSelected.length<3)
     {
       alert("You must atleast select one language and three genres for your personalised content. ")
@@ -76,7 +76,7 @@ export class PersonalisationComponent implements OnInit {
     this.genreBack();
     if(this.genreSelected.length <= 3)
     {
-      console.log("less")
+      //console.log("less")
     }
     this.currentCustomer.preferredGenre = this.genreSelected;
     this.currentCustomer.preferredLanguages = this.languagesSelected;
@@ -91,7 +91,7 @@ export class PersonalisationComponent implements OnInit {
   selectGenre(g :string)
   {
     //this.genreSelected.push(g)
-    console.log(g)
+    //console.log(g)
     var element = document.querySelector("#"+g)  
     if(element.classList.contains("btn-outline-primary")) 
     {
@@ -111,13 +111,13 @@ export class PersonalisationComponent implements OnInit {
         }
       }
     } 
-    console.log(this.genreSelected) 
+    //console.log(this.genreSelected) 
     
   }
 
   selectLang(g : string)
   {
-    console.log(g)
+    //console.log(g)
     var element = document.querySelector("#"+g)  
     if(element.classList.contains("btn-outline-primary")) 
     {
@@ -137,7 +137,7 @@ export class PersonalisationComponent implements OnInit {
         }
       }
     } 
-    console.log(this.languagesSelected) 
+    //console.log(this.languagesSelected) 
   }
 
   genreDone()

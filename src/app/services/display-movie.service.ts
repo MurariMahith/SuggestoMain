@@ -14,7 +14,7 @@ export class DisplayMovieService {
   prepareDisplayMovieList(allMoviesFromDb : FMovie[],sort = true,random = false,sortYearDesc = false,sortYearAsc = false,sortVisitedCountDesc = false) : DisplayMovie[]
   {
     var MovieListForDisplay : DisplayMovie[] = [];
-    //console.log(allMoviesFromDb)
+    ////console.log(allMoviesFromDb)
     allMoviesFromDb.forEach(o => {
       var obj = new DisplayMovie()
       obj.title = o.title;
@@ -85,7 +85,7 @@ export class DisplayMovieService {
     });
     }
 
-    //console.log(random)
+    ////console.log(random)
     
     //randomising display array items
     if(random)

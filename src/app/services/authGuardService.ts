@@ -14,7 +14,7 @@ export class AuthGuardService implements CanActivate {
     else
     {
         this.router.navigateByUrl('/login')
-        console.log(localStorage.getItem("loggedIn"))
+        //console.log(localStorage.getItem("loggedIn"))
         alert("You should be logged In to see these content, please login with any of your social media accounts.")
         return false;
     }

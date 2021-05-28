@@ -138,10 +138,10 @@ export class MalayalamComponent implements OnInit {
 
       if( screen.width <= 480 ) {     
         this.isMobile = true;
-        //console.log("mobile");
+        ////console.log("mobile");
       }
       else{
-        //console.log("laptop")
+        ////console.log("laptop")
       }
       if(localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
       {
@@ -165,7 +165,7 @@ export class MalayalamComponent implements OnInit {
 
               
 
-              console.log(o)
+              //console.log(o)
               if(o.find(x => x.uid === localStorage.getItem("uid")))
               {
                 this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
@@ -213,9 +213,9 @@ export class MalayalamComponent implements OnInit {
                 this.currentCustomer.following.forEach(element => {
                   this.allFollowinguids.push(element.followerUserId)
                 });
-                console.log(this.allFollowinguids)
+                //console.log(this.allFollowinguids)
                 this.loggedIn = true
-                console.log(this.currentCustomer)
+                //console.log(this.currentCustomer)
                 for( var i = 0; i < this.allCustomersWhoArePublic.length; i++)
                 {     
                   if (this.allCustomersWhoArePublic[i].uid == this.currentCustomer.uid) 
@@ -281,8 +281,8 @@ export class MalayalamComponent implements OnInit {
           // this.wishlistedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.wishlistedMovies)
           // this.ratedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.ratedMovies)
           // this.watchedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.watchedMovies);
-          // console.log(this.wishlistedMoviesDisplay)
-          // console.log(this.ratedMoviesDisplay)
+          // //console.log(this.wishlistedMoviesDisplay)
+          // //console.log(this.ratedMoviesDisplay)
           this.ratedMoviesDisplay.forEach(x => {
             this.currentCustomer.ratedMovies.forEach(y => {
               
@@ -322,12 +322,12 @@ export class MalayalamComponent implements OnInit {
             window.location.reload();
           }
           this.loading = false;
-          console.log(this.wishlistedMoviesDisplay)
-          console.log(this.ratedMoviesDisplay)
+          //console.log(this.wishlistedMoviesDisplay)
+          //console.log(this.ratedMoviesDisplay)
         })
   
-        console.log(this.wishlistedMoviesDisplay)
-        console.log(this.ratedMoviesDisplay)
+        //console.log(this.wishlistedMoviesDisplay)
+        //console.log(this.ratedMoviesDisplay)
 
       this.timeOutError =setTimeout(()=>{
         if(this.loading)
@@ -351,7 +351,7 @@ export class MalayalamComponent implements OnInit {
     ).subscribe(o => 
       {
         this.allLists = o;
-        console.log(this.allLists)
+        //console.log(this.allLists)
         this.listsByCurrentCustomer.length = 0;
         this.allLists.forEach(x => {
           if(x.createdBy && x.createdBy === this.currentCustomer.uid)
@@ -399,7 +399,7 @@ export class MalayalamComponent implements OnInit {
   sendFollowRequest(key)
   {
     var receiverCustomer = this.allCustomers.find(x => x.uid === key);
-    console.log(receiverCustomer);
+    //console.log(receiverCustomer);
 
     if(receiverCustomer)
     {
@@ -431,8 +431,8 @@ export class MalayalamComponent implements OnInit {
         this.currentCustomer.followRequestSent = strarr
       }
       this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-      console.log(receiverCustomer)
-      console.log(this.currentCustomer)
+      //console.log(receiverCustomer)
+      //console.log(this.currentCustomer)
     } 
   }
   //delete other customer uid from followrequestsent array of current customer
@@ -461,8 +461,8 @@ export class MalayalamComponent implements OnInit {
         }
       }
 
-      console.log(this.currentCustomer)
-      console.log(requestedCustomer)
+      //console.log(this.currentCustomer)
+      //console.log(requestedCustomer)
       this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
       this.customerService.updateCustomer(requestedCustomer['key'],requestedCustomer)
     }
@@ -475,8 +475,8 @@ export class MalayalamComponent implements OnInit {
   {
 
     var otherCustomer = this.allCustomers.find(x => x.uid == key)
-    console.log(otherCustomer.uid);
-    console.log(key);
+    //console.log(otherCustomer.uid);
+    //console.log(key);
     if(otherCustomer)
     {
       if(!otherCustomer.followRequestSent || otherCustomer.followRequestSent == undefined)
@@ -526,8 +526,8 @@ export class MalayalamComponent implements OnInit {
 
       otherCustomer.following.push(followingObj);
 
-      console.log(this.currentCustomer)
-      console.log(otherCustomer);
+      //console.log(this.currentCustomer)
+      //console.log(otherCustomer);
 
       this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
       this.customerService.updateCustomer(otherCustomer['key'],otherCustomer)
@@ -584,12 +584,12 @@ export class MalayalamComponent implements OnInit {
   searching(event)
   {
     event = event.trim().toLocaleLowerCase();
-    console.log(event);
+    //console.log(event);
     this.allCustomersWhoArePublic.forEach(element => {
       element.name = element.name.toLocaleLowerCase();
     });
     this.allCustomersWhoArePublicDisplay = this.allCustomersWhoArePublic.filter(x => x.name.search(event) != -1)
-    console.log(this.allCustomersWhoArePublicDisplay);
+    //console.log(this.allCustomersWhoArePublicDisplay);
 
   }
 
@@ -606,16 +606,16 @@ export class MalayalamComponent implements OnInit {
 
   GoToMyList()
   {
-    console.log(localStorage.getItem["uid"])
-    console.log(this.currentCustomer.uid);
+    //console.log(localStorage.getItem["uid"])
+    //console.log(this.currentCustomer.uid);
     this.router.navigateByUrl('movielist/'+this.currentCustomer.uid)
   }
 
   UpdateCustomerWhenSharingEvent()
   {
-    console.log(this.share);
+    //console.log(this.share);
     this.currentCustomer.shareWishlistedMovies = this.share;
-    console.log(this.currentCustomer)
+    //console.log(this.currentCustomer)
     this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
   }
 
@@ -625,7 +625,7 @@ export class MalayalamComponent implements OnInit {
     this.currentCustomer.showWishlistToFollowers = wishUser;
     this.currentCustomer.showWatchedListToFollowers = watchUser;
     this.share = pubUser;
-    console.log(this.currentCustomer);
+    //console.log(this.currentCustomer);
     this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
   }
 
@@ -687,7 +687,7 @@ export class MalayalamComponent implements OnInit {
         // url: window.location.toString(),
         text: 'I invite you to use suggesto and know some good content movies and see them. Please follow this link to download the app.    '+ "https://play.google.com/store/apps/details?id=xyz.appmaker.jibpca"
       }).then(() => {
-        console.log('Thanks for sharing!');
+        //console.log('Thanks for sharing!');
       })
       .catch(console.error);
     } else 
@@ -713,7 +713,7 @@ export class MalayalamComponent implements OnInit {
     var link = this.allMovies.find(x => x.key === key).ottLink
     var mov = this.allMovies.find(x => x.key === key)
     var movD = this.movieDisplayService.prepareDisplayMovieSingle(mov);
-    console.log(mov)
+    //console.log(mov)
     if(mov && link && link.length>2)
     {
       window.location.href = link;
@@ -729,20 +729,20 @@ export class MalayalamComponent implements OnInit {
   {
     if(this.loggedIn)
     {
-      //console.log(key)
+      ////console.log(key)
       var wishlisted = []
       this.wishlistedMovies.push(key)
       wishlisted.push(key)
       if(!this.currentCustomer.wishlistedMovies)
       {
-        //console.log("new");
+        ////console.log("new");
         this.currentCustomer.wishlistedMovies = wishlisted;
       }
       else
       {
         this.currentCustomer.wishlistedMovies.push(key);
       }
-      ////console.log(this.currentCustomer)
+      //////console.log(this.currentCustomer)
       this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
       var feeditm : FeedItem = new FeedItem();
       feeditm.content = this.currentCustomer.name + " added "+this.allMovies.find(x=>x.key == key).title+ " to their wish list. Click to view the movie."
@@ -762,7 +762,7 @@ export class MalayalamComponent implements OnInit {
 
   removeFromWishlist(key)
   {
-    //console.log(this.currentCustomer.wishlistedMovies)
+    ////console.log(this.currentCustomer.wishlistedMovies)
     if(this.currentCustomer.wishlistedMovies.includes(key))
     {
       for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
@@ -772,7 +772,7 @@ export class MalayalamComponent implements OnInit {
           this.currentCustomer.wishlistedMovies.splice(i, 1); 
         }
       }
-      //console.log(this.currentCustomer.wishlistedMovies)
+      ////console.log(this.currentCustomer.wishlistedMovies)
       this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
     }
   }
@@ -822,7 +822,7 @@ export class MalayalamComponent implements OnInit {
           this.currentCustomer.watchedMovies.splice(i, 1); 
         }
       }
-      console.log("removed")
+      //console.log("removed")
       this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
     }
 

@@ -134,7 +134,7 @@ export class HeaderComponent implements OnInit {
         // url: window.location.toString(),
         text: 'Hey, checkout this amzing app to find good movies with promising content and ott links for those movies. Suggesto its great. Please follow this link to download the app.    '+ "https://play.google.com/store/apps/details?id=xyz.appmaker.jibpca"
       }).then(() => {
-        console.log('Thanks for sharing!');
+        //console.log('Thanks for sharing!');
       })
       .catch(console.error);
     } else 

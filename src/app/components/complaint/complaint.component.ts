@@ -23,7 +23,7 @@ export class ComplaintComponent implements OnInit {
 
   submitComplaint()
   {
-    console.log(this.name + ","+this.complaint)
+    //console.log(this.name + ","+this.complaint)
     var comp = new Complaint();
     comp.name = this.name;
     comp.complaint = this.complaint;

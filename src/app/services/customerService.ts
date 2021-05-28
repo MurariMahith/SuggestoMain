@@ -55,7 +55,7 @@ export class CustomerService {
 
   addFeedItem(item :FeedItem): void
   {
-    console.log(item);
+    //console.log(item);
     this.feedItemRef.push(item);
   }
 
@@ -69,8 +69,8 @@ export class CustomerService {
     {
         delete value["key"];
     }
-    // console.log(value);
-    // console.log(key);
+    // //console.log(value);
+    // //console.log(key);
     if(value.wishlistedMovies)
     {
       value.wishlistedMovies = this.removeDuplicates(value.wishlistedMovies);
@@ -79,8 +79,8 @@ export class CustomerService {
     {
       value.watchedMovies = this.removeDuplicates(value.watchedMovies);
     }
-    //console.log(this.removeDuplicateWishlistedMovies(value.wishlistedMovies));    
-    //console.log(value)
+    ////console.log(this.removeDuplicateWishlistedMovies(value.wishlistedMovies));    
+    ////console.log(value)
     for( var k in value)
     {
         if(value[k]=== undefined)
@@ -88,8 +88,8 @@ export class CustomerService {
           delete value[k];
         }
     }
-    // console.log(key)
-    // console.log(value);
+    // //console.log(key)
+    // //console.log(value);
     return this.customerRef.update(key, value);
   }
 

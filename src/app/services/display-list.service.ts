@@ -48,11 +48,11 @@ export class DisplayListService {
             
             
             o.moviesInThisList.forEach(element => {
-                //console.log(allMoviesFromDb.find(a => a.key===element))        
+                ////console.log(allMoviesFromDb.find(a => a.key===element))        
                 movieListForDisplay.push(allMoviesFromDb.find(a => a.key===element));
             });
-            //console.log(movieListForDisplay);
-            //console.log(obj.isThisSeries);
+            ////console.log(movieListForDisplay);
+            ////console.log(obj.isThisSeries);
             if(obj.isThisSeries)
             {
                 obj.moviesInList = this.displaymovieservice.prepareDisplayMovieList(movieListForDisplay,false,false,false,true,false); 
@@ -61,7 +61,7 @@ export class DisplayListService {
             {
                 obj.moviesInList = this.displaymovieservice.prepareDisplayMovieList(movieListForDisplay); 
             }
-            //console.log(obj.moviesInList);
+            ////console.log(obj.moviesInList);
             
             MovieListsForView.push(obj);            
         });

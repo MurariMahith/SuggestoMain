@@ -59,10 +59,10 @@ export class AllMoviesComponent implements OnInit {
 
     if( screen.width <= 480 ) {     
       this.isMobile = true;
-      console.log("mobile");
+      //console.log("mobile");
     }
     else{
-      console.log("laptop")
+      //console.log("laptop")
     }
     if(localStorage.getItem("search") !== null)
     {
@@ -109,7 +109,7 @@ export class AllMoviesComponent implements OnInit {
     {
       this.ottToIncludeInSort.push(this.ottFromParam.trim().toLocaleLowerCase())
       this.sortAccordingToGenreAndYear();
-      console.log(this.ottToIncludeInSort);
+      //console.log(this.ottToIncludeInSort);
     }
 
     if(this.langFromParam && this.allGenres.includes(this.langFromParam))
@@ -334,16 +334,16 @@ export class AllMoviesComponent implements OnInit {
   sortAccordingToGenreAndYear()
   {
     this.filterSelected = true
-    console.log("years")
-    console.log(this.yearsToIncludeInSort);
-    console.log("genres")
-    console.log(this.genresToIncludeInSort);
-    console.log("languages")
-    console.log(this.languagesToIncludeInSort);
+    //////console.log("years")
+    //console.log(this.yearsToIncludeInSort);
+    //console.log("genres")
+    //console.log(this.genresToIncludeInSort);
+    //console.log("languages")
+    //console.log(this.languagesToIncludeInSort);
     
     if(this.yearsToIncludeInSort.length === 0 && this.genresToIncludeInSort.length === 0 && this.ottToIncludeInSort.length === 0) 
     {
-      console.log("0 & 0")
+      //console.log("0 & 0")
       // document.getElementById("navbarDropdownG").classList.remove("active")
       // document.getElementById("navbarDropdownY").classList.remove("active")
       this.DisplayMovieList = this.DisplayMovieListOriginal;
@@ -359,7 +359,7 @@ export class AllMoviesComponent implements OnInit {
       else
       {
         //document.getElementById("navbarDropdownG").classList.add("active")
-        console.log(this.DisplayMovieListOriginal.length);
+        //console.log(this.DisplayMovieListOriginal.length);
         if(this.DisplayMovieListOriginal.length ===0)
         {
           this.DisplayMovieListOriginal = this.prepareDisplayMovieList(this.allMovies);
@@ -367,10 +367,10 @@ export class AllMoviesComponent implements OnInit {
         this.DisplayMovieListOriginal.forEach(o => {
           var genresForMovie = o.genre.trim().toLocaleLowerCase().split(',')
           var ottForMovie = o.availableIn.trim().toLocaleLowerCase().split(',')
-          //console.log(ottForMovie);
+          ////console.log(ottForMovie);
           //murari
           ottForMovie.forEach(element => {
-            console.log(this.ottToIncludeInSort)
+            //console.log(this.ottToIncludeInSort)
             if(this.ottToIncludeInSort.includes(element))
             {
               this.DisplayMovieList.push(o);
@@ -403,8 +403,8 @@ export class AllMoviesComponent implements OnInit {
       }
       //years done
       //this.sortAccordingToLanguage()
-      console.log("qwertyuiopoiuytrewqwertyuiopoiuytrertyuiooiuyt")
-      console.log(this.DisplayMovieList);
+      //console.log("qwertyuiopoiuytrewqwertyuiopoiuytrertyuiooiuyt")
+      //console.log(this.DisplayMovieList);
     }  
     this.sortAccordingToLanguage() 
   }
@@ -417,7 +417,7 @@ export class AllMoviesComponent implements OnInit {
 
       const fakeVar2 : DisplayMovie[] = this.DisplayMovieList;
 
-      console.log(this.DisplayMovieList.length)
+      //console.log(this.DisplayMovieList.length)
 
       for(let i=0;i<this.DisplayMovieList.length;i++)
       {
@@ -426,14 +426,14 @@ export class AllMoviesComponent implements OnInit {
         languagesForMovie.forEach(element => {
           if(this.languagesToIncludeInSort.includes(element))
           {
-            console.log(element+this.DisplayMovieList[i].title)
+            //console.log(element+this.DisplayMovieList[i].title)
             newDisplayArray.push(this.DisplayMovieList[i])
           } 
         });
       }
 
-      console.log(this.DisplayMovieList)
-      console.log(newDisplayArray)
+      //console.log(this.DisplayMovieList)
+      //console.log(newDisplayArray)
       this.DisplayMovieList = newDisplayArray
     }
     else

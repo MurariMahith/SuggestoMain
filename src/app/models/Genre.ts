@@ -10,6 +10,9 @@ export class Genre
     Crime : boolean = false;
     Suspense : boolean = false;
     Alien_and_Space : boolean =false;
+    Inspiring : boolean = false;
+    Survival : boolean = false;
+    Pandemic : boolean = false;
     Monsters : boolean = false;
     Money : boolean = false;
     Horror : boolean = false;
@@ -29,4 +32,7 @@ export class Genre
     Korean : boolean = false;
     Adult_Comedy : boolean = false;
     Adult : boolean = false;
+    Trending : boolean = false;
+    Upcoming : boolean = false;
+
 }

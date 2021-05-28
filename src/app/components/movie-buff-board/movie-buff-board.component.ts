@@ -102,13 +102,13 @@ export class MovieBuffBoardComponent implements OnInit {
                 }
               })
             })
-          // console.log(friendsIds)
+          // //console.log(friendsIds)
           this.allFriends.push(this.currentCustomer)
-          console.log(this.allFollowing)
+          //console.log(this.allFollowing)
           this.allFriends.sort((a,b) => {
             return (b.watchedMovies.length + b.ratedMovies.length + b.wishlistedMovies.length) - (a.watchedMovies.length + a.ratedMovies.length + a.wishlistedMovies.length)
           })
-          console.log(this.allFriends)
+          //console.log(this.allFriends)
 
           //unique array
           this.allFriends.filter((v,i,a)=>a.findIndex(t=>(t.uid === v.uid))===i)

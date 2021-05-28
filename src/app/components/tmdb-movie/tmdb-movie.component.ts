@@ -27,7 +27,7 @@ export class TmdbMovieComponent implements OnInit {
     this.http.get(this.movieDetailsUrl+movieKey+this.movieDetailsUrlPart2).toPromise()
     .then(res =>
       {
-        console.log(res);
+        //console.log(res);
         this.actualMovie.title = res['title'];
         this.actualMovie.language = res['original_language']
         this.actualMovie.ottLink = res['homepage'];
@@ -40,7 +40,7 @@ export class TmdbMovieComponent implements OnInit {
         {
           this.actualMovie.genre += " "+res['genres'][i]['name']
         }
-        console.log(this.actualMovie.description)
+        //console.log(this.actualMovie.description)
       }
     )
 

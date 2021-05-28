@@ -4,7 +4,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class CommaPipe implements PipeTransform {
    transform(val : string) : string {
-      console.log(val);
+      //console.log(val);
        val = val.trim();
        if(val[val.length-1] === ",")
        {

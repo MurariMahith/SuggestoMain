@@ -374,13 +374,13 @@ export class HomeComponent implements OnInit {
     //   window.location.href = res['notification']['data']['url'];
     // })
     }
-    console.log("oninit" + new Date())
+    //console.log("oninit" + new Date())
     if(localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
     {
       this.customerService.getLoggedInCustomer()
         .subscribe(o =>
           {
-            console.log("oninit" + new Date())
+            //console.log("oninit" + new Date())
             ////console.log(o)
             this.allCustomers = o;
             this.allCustomers.forEach(c => 
@@ -406,7 +406,7 @@ export class HomeComponent implements OnInit {
               this.loggedIn = true
               this.loading = false;
               //this.loading2 = false;
-              console.log("customer found" + this.loading2)
+              //console.log("customer found" + this.loading2)
 
 
               //checking for all kinds of follow attributes present or not and if not making them empty arrays
@@ -433,7 +433,7 @@ export class HomeComponent implements OnInit {
                   return friends.find(a => a.followerUserId === id)
                 })
               this.allFriendsOriginal = this.allFriends;
-              console.log(this.allFriends);
+              //console.log(this.allFriends);
 
 
 
@@ -689,7 +689,7 @@ export class HomeComponent implements OnInit {
     {
       this.http.get(this.recommendedMoviesUrl+id+this.recommendedMoviesUrlPart2).toPromise()
       .then(res => {
-        console.log(res);
+        //console.log(res);
         if(res['results'].length<=2)
         {
           this.recommendationsBool = false
@@ -766,7 +766,7 @@ export class HomeComponent implements OnInit {
     var imagesPath : string = 'https://image.tmdb.org/t/p/w500'
     this.http.get(url).toPromise()
     .then(res => {
-      console.log(res)
+      //console.log(res)
       for(let i=0;i<res['results'].length;i++)
       {
         //console.log(res['results'][i])
@@ -778,7 +778,7 @@ export class HomeComponent implements OnInit {
           'id' : res['results'][i]['id']       
         })
       }
-      console.log(this.trendingMovies)
+      //console.log(this.trendingMovies)
       
     })
   }
@@ -824,7 +824,7 @@ export class HomeComponent implements OnInit {
     var i=0;
     var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,false,true,false,false);
     var personalisedMovies = []
-    console.log(this.currentCustomer.preferredGenre)
+    //console.log(this.currentCustomer.preferredGenre)
     //console.log()
     var watched = this.currentCustomer.watchedMovies;
     allDisplayMovies.forEach(o => {
@@ -841,7 +841,7 @@ export class HomeComponent implements OnInit {
       });
 
     });
-    console.log(personalisedMovies);
+    //console.log(personalisedMovies);
 
     var uniqueArray :DisplayMovie[] = personalisedMovies.filter(function(item, pos) {
       return personalisedMovies.indexOf(item) == pos;
@@ -863,10 +863,10 @@ export class HomeComponent implements OnInit {
     this.personalisedMoviesDisplay = LanguageBasedPersonalisedMovies
     //murari
 
-    console.log("here")
+    //console.log("here")
 
     //this.personalisedMoviesDisplay.filter(x => watched.includes(x.key))
-    console.log(this.personalisedMoviesDisplay);
+    //console.log(this.personalisedMoviesDisplay);
     
     if(this.personalisedMoviesDisplay.length<10)
     {
@@ -896,9 +896,9 @@ export class HomeComponent implements OnInit {
 
     }
     shuffledpersonalisedmovies = this.shuffleArr(this.personalisedMoviesDisplay)
-    console.log(this.personalisedMoviesDisplay)
+    //console.log(this.personalisedMoviesDisplay)
     this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[0];
-    console.log(this.corouselPersonalisedMovieD)
+    //console.log(this.corouselPersonalisedMovieD)
     if(this.todayMovieD && this.corouselWishlistedMovieD && this.todayMovieD.key === this.corouselPersonalisedMovieD.key)
     {
       this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[1];

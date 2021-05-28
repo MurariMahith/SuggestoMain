@@ -29,7 +29,7 @@ export class SuggestMovieComponent implements OnInit {
   {
     
     this.userMovie.suggestedBy = this.customerUID;
-    console.log(this.userMovie);
+    //console.log(this.userMovie);
     this.userMovieService.createUserSuggestedMovie(this.userMovie)
     alert("Thank you for your suggestion, This will help us to suggest better movies.") 
     window.location.href="/all";

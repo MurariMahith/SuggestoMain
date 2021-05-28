@@ -110,7 +110,7 @@ export class FollowingProfileComponent implements OnInit {
               this.currentCustomer.following.forEach(element => {                
                 followingByCurrentCustomer.push(element.followerUserId);
               });
-              console.log(followingByCurrentCustomer)
+              //console.log(followingByCurrentCustomer)
               if(followingByCurrentCustomer.includes(this.customerToDisplay.uid))
               {
                 this.SHOWPROFILE = true;
@@ -120,7 +120,7 @@ export class FollowingProfileComponent implements OnInit {
                 alert("Either this profile is private profile or Something went wrong on our side. Please log a complaint in complaint section. Fix will be released as soon as possible. Thank you")
                 this.location.back();
               }
-              console.log(this.SHOWPROFILE)
+              ////console.log(this.SHOWPROFILE)
               this.getMovieLists();
               this.getMovies();            
               if(this.customerToDisplay.showWishlistToFollowers)
@@ -133,8 +133,8 @@ export class FollowingProfileComponent implements OnInit {
               }
             }
 
-            console.log(this.currentCustomer.name)
-            console.log(this.customerToDisplay.name)
+            //console.log(this.currentCustomer.name)
+            //console.log(this.customerToDisplay.name)
           })
     }
 
@@ -166,7 +166,7 @@ export class FollowingProfileComponent implements OnInit {
     ).subscribe(o => 
       {
         this.allLists = o;
-        console.log(this.allLists)
+        //console.log(this.allLists)
         this.listsByThisCustomer.length = 0;
         this.allLists.forEach(x => {
           if(x.createdBy && x.createdBy === this.customerToDisplay.uid)
@@ -205,13 +205,13 @@ export class FollowingProfileComponent implements OnInit {
   {
     this.wishlistedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.wishlistedMovies)
     this.watchedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.watchedMovies);
-    console.log(this.wishlistedMovies);
+    //console.log(this.wishlistedMovies);
   }
 
   sendFollowRequest(key)
   {
     var receiverCustomer = this.customerToDisplay
-    console.log(receiverCustomer);
+    //console.log(receiverCustomer);
 
     if(receiverCustomer)
     {
@@ -243,8 +243,8 @@ export class FollowingProfileComponent implements OnInit {
         this.currentCustomer.followRequestSent = strarr
       }
       this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-      console.log(receiverCustomer)
-      console.log(this.currentCustomer)
+      ////console.log(receiverCustomer)
+      //console.log(this.currentCustomer)
     } 
   }
 
@@ -270,8 +270,8 @@ export class FollowingProfileComponent implements OnInit {
         }
       } 
 
-      console.log(customerToUnfollow)
-      console.log(this.currentCustomer)
+      //console.log(customerToUnfollow)
+      //console.log(this.currentCustomer)
 
       
 
@@ -321,8 +321,8 @@ export class FollowingProfileComponent implements OnInit {
         }
       }
 
-      console.log(this.currentCustomer)
-      console.log(requestedCustomer)
+      //console.log(this.currentCustomer)
+      //console.log(requestedCustomer)
       this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
       this.customerService.updateCustomer(requestedCustomer['key'],requestedCustomer)
     }

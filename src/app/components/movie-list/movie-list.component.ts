@@ -48,10 +48,10 @@ export class MovieListComponent implements OnInit {
 
     if( screen.width <= 480 ) {     
       this.isMobile = true;
-      //console.log("mobile");
+      ////console.log("mobile");
     }
     else{
-      //console.log("laptop")
+      ////console.log("laptop")
     }
     if(localStorage.getItem("lists") !== null )
     {
@@ -71,7 +71,7 @@ export class MovieListComponent implements OnInit {
         )
       )
     ).subscribe(o => {
-      console.log(o)
+      //console.log(o)
       this.allMovies = o;
       
       this.xyz();      
@@ -88,11 +88,11 @@ export class MovieListComponent implements OnInit {
         )
       )
     ).subscribe(o => {
-      console.log(o)
+      //console.log(o)
       this.allMovieLists = o;
       var adminList = [];
       var customerList = [];
-      //console.log(this.activatedRoute.snapshot.params.key)
+      ////console.log(this.activatedRoute.snapshot.params.key)
       var customerUID = this.activatedRoute.snapshot.params.key;
       if(customerUID)
       {
@@ -103,7 +103,7 @@ export class MovieListComponent implements OnInit {
             customerList.push(this.allMovieLists[i])
           }
         }
-        console.log(customerList);
+        //console.log(customerList);
         this.BuildMovieListForDisplay(customerList);
       }
       else
@@ -119,13 +119,13 @@ export class MovieListComponent implements OnInit {
             adminList.push(this.allMovieLists[i])
           }
         }
-        console.log("hai")
-        console.log(adminList);
+        //console.log("hai")
+        //console.log(adminList);
         this.MovieListsForView.length = 0;
         this.BuildMovieListForDisplay(adminList);
       }
 
-      console.log(this.MovieListsForView)
+      //console.log(this.MovieListsForView)
       this.MovieListsForView.sort((a, b) => {
         return b.rating - a.rating;
       });
@@ -152,10 +152,10 @@ export class MovieListComponent implements OnInit {
       }
       else{obj.createdBy = 'ADMIN'}
       o.moviesInThisList.forEach(element => {
-        //console.log(this.allMovies.find(a => a.key===element))        
+        ////console.log(this.allMovies.find(a => a.key===element))        
         movieListForDisplay.push(this.allMovies.find(a => a.key===element));
       });
-      //console.log(movieListForDisplay);
+      ////console.log(movieListForDisplay);
       obj.moviesInList = this.prepareDisplayMovieList(movieListForDisplay); 
       this.MovieListsForView.push(obj);  
     });
@@ -164,7 +164,7 @@ export class MovieListComponent implements OnInit {
   prepareDisplayMovieList(arr : FMovie[]) : DisplayMovie[]
   {
     var MovieListForDisplay2 : DisplayMovie[] = [];
-    //console.log(arr)
+    ////console.log(arr)
     arr.forEach(o => {
       var obj = new DisplayMovie()
 
@@ -212,7 +212,7 @@ export class MovieListComponent implements OnInit {
   {
     var elmnt = document.getElementById("scrollToThis");
     elmnt.scrollIntoView({ behavior: 'smooth'});
-    console.log(str);
+    //console.log(str);
     var arr = [];
     arr.push(this.MovieListsForView.find( o => o.key === str))
     this.selectedList = arr[0]
@@ -239,7 +239,7 @@ export class MovieListComponent implements OnInit {
 
   deleteList(key)
   {
-    console.log(key)
+    //console.log(key)
     var conf = confirm("Do you really want to delete this list?")
     if(conf)
     {
@@ -247,6 +247,11 @@ export class MovieListComponent implements OnInit {
       location.reload()
     }
    
+  }
+
+  easterEgg()
+  {
+    alert('You found an easter egg keep using suggesto to find more. SUGGESTO : Developed by Murari Mahith, Rohith Reddy.')
   }
 
 }

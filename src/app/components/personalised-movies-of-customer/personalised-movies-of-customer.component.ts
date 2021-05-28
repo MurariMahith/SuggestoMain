@@ -77,7 +77,7 @@ export class PersonalisedMoviesOfCustomerComponent implements OnInit {
       this.customerService.getLoggedInCustomer()
         .subscribe(o =>
           {
-            ////console.log(o)
+            //////console.log(o)
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))              
@@ -86,8 +86,8 @@ export class PersonalisedMoviesOfCustomerComponent implements OnInit {
             }
             else
             {
-              //console.log("undefined")
-              //console.log("undefined above")
+              ////console.log("undefined")
+              ////console.log("undefined above")
               localStorage.removeItem("uid");
               localStorage.removeItem("loggedIn")
               this.authService.logOut();
@@ -95,11 +95,11 @@ export class PersonalisedMoviesOfCustomerComponent implements OnInit {
               location.reload();
 
             }
-            //console.log(this.currentCustomer);
+            ////console.log(this.currentCustomer);
             if(this.currentCustomer === undefined)
             {
-              //console.log("undefined")
-              //console.log("undefined above")
+              ////console.log("undefined")
+              ////console.log("undefined above")
               localStorage.removeItem("uid");
               localStorage.removeItem("loggedIn")
               this.authService.logOut();
@@ -139,8 +139,8 @@ export class PersonalisedMoviesOfCustomerComponent implements OnInit {
     var i=0;
     var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,false,true,false,false);
     var personalisedMovies = []
-    console.log(this.currentCustomer.preferredGenre)
-    //console.log()
+    //console.log(this.currentCustomer.preferredGenre)
+    ////console.log()
     allDisplayMovies.forEach(o => {
 
       var genresForMovie = o.genre.trim().split(' ')
@@ -155,7 +155,7 @@ export class PersonalisedMoviesOfCustomerComponent implements OnInit {
       });
 
     });
-    console.log(personalisedMovies);
+    //console.log(personalisedMovies);
     var uniqueArray :DisplayMovie[] = personalisedMovies.filter(function(item, pos) {
       return personalisedMovies.indexOf(item) == pos;
     })
@@ -163,30 +163,30 @@ export class PersonalisedMoviesOfCustomerComponent implements OnInit {
     var LanguageBasedPersonalisedMovies = [];
     uniqueArray.forEach(o => {
       this.currentCustomer.preferredLanguages.forEach(element => {
-        ////console.log(o.language.includes(element))
+        //////console.log(o.language.includes(element))
         if(o.language.includes(element))
         {
           LanguageBasedPersonalisedMovies.push(o)
         }
       });
     });
-    // //console.log(LanguageBasedPersonalisedMovies)
-    // //console.log(this.personalisedMoviesDisplay)
+    // ////console.log(LanguageBasedPersonalisedMovies)
+    // ////console.log(this.personalisedMoviesDisplay)
     this.personalisedMoviesDisplay = LanguageBasedPersonalisedMovies
     //murari
 
     //get any random movie for corousel
     var shuffledpersonalisedmovies = [];
-    console.log(LanguageBasedPersonalisedMovies);
+    //console.log(LanguageBasedPersonalisedMovies);
     //this.personalisedMoviesDisplay
     // if(this.personalisedMoviesDisplay.length>0)
     // {
 
     // }
     // shuffledpersonalisedmovies = this.shuffleArr(this.personalisedMoviesDisplay)
-    // console.log(this.personalisedMoviesDisplay)
+    // //console.log(this.personalisedMoviesDisplay)
     // this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[0];
-    // console.log(this.corouselPersonalisedMovieD)
+    // //console.log(this.corouselPersonalisedMovieD)
     // if(this.todayMovieD && this.corouselWishlistedMovieD && this.todayMovieD.key === this.corouselPersonalisedMovieD.key)
     // {
     //   this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[1];
