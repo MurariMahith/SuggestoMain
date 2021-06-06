@@ -12,18 +12,18 @@
   <div class="footer" style="display: flex;justify-content: center;border-top-left-radius: 10px;border-top-right-radius: 10px;height: auto;background-color: rgba(90, 89, 89, 0.76);">
     <h6 class="text-center" style="margin-top: 2%;">Upcoming OTT relases</h6>
   </div>
-  <div class="section-navbar" style="display: flex;;margin: 2%;justify-content: center;flex-wrap: wrap;margin: 5%;border: 2px solid rgb(94, 94, 94);border-radius: 100px;padding: none;">
+  <div class="section-navbar" style="display: flex;;margin: 2%;justify-content: center;flex-wrap: wrap;margin: 5%;border: 2px solid rgb(94, 94, 94);border-radius: 100px;padding: none;font-size: small;">
     <div style="border-radius: 10px;display: flex;justify-content: center;padding-left: 5%;padding-right: 5%;width: 25%;" (click)="tel=true;tam=false;mal=false;eng=false" [ngStyle]="{'background-color': (tel) ? 'rgb(0,123,255)' : 'black' }">
-        Tel
+        Telugu
     </div>
     <div style="border-radius: 10px;display: flex;justify-content: center;padding-left: 5%;padding-right: 5%;width: 25%;" (click)="tel=false;tam=true;mal=false;eng=false" [ngStyle]="{'background-color': (tam) ? 'rgb(0,123,255)' : 'black'}">
-        Tam
+        Tamil
     </div>
     <div style="border-radius: 10px;display: flex;justify-content: center;padding-left: 5%;padding-right: 5%;width: 25%;" (click)="tel=false;tam=false;mal=true;eng=false" [ngStyle]="{'background-color': (mal) ? 'rgb(0,123,255)' : 'black'}">
-        Mal
+        Malayalam
     </div>
     <div style="border-radius: 10px;display: flex;justify-content: center;padding-left: 5%;padding-right: 5%;width: 25%;" (click)="tel=false;tam=false;mal=false;eng=true" [ngStyle]="{'background-color': (eng) ? 'rgb(0,123,255)' : 'black'}">
-      Eng
+      English
   </div>
   </div>
   <div class="content"  style="border-top-left-radius: 10px;border-top-right-radius: 10px;overflow-y: auto;max-height: 500px;" [ngStyle]="{'height': (longOtt) ? 'auto' : '170px'}">
@@ -37,13 +37,13 @@
             <div class="bd-highlight" style="width: 40%;">
                 <p style="font-size: small;"><b>{{f.movieName | titlecase}}</b></p>
             </div>
-            <div class="bd-highlight" style="width: 20%;">
+            <div class="bd-highlight" style="width: 30%;">
               <p style="font-size: small;">{{f.platform | titlecase}}</p>
             </div>
-            <div class="bd-highlight" style="width: 20%;">
+            <!-- <div class="bd-highlight" style="width: 20%;">
               <p style="font-size: small;">{{f.language | titlecase}}</p>
-            </div>
-            <div class="bd-highlight" style="width: 20%;">
+            </div> -->
+            <div class="bd-highlight" style="width: 30%;">
               <p style="font-size: small;">{{f.releaseDate | titlecase}}</p>
             </div>
         </div>
@@ -58,15 +58,12 @@
 
 
 <!--feed items-->
-<div *ngIf="isMobile && FeedItems.length!=0" class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;">
+<!-- <div *ngIf="isMobile && FeedItems.length!=0" class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;">
   <div class="footer" style="display: flex;justify-content: center;border-top-left-radius: 10px;border-top-right-radius: 10px;height: 40px;background-color: rgba(90, 89, 89, 0.76);">
     <h6 class="text-center" style="margin-top: 2%;">Feed</h6>
   </div>
   <div class="content"  style="border-top-left-radius: 10px;border-top-right-radius: 10px;overflow-y: auto;max-height: 500px;" [ngStyle]="{'height': (longfeed) ? 'auto' : '170px'}">
       <div style="height: 60px;border-top-left-radius: 10px;border-top-right-radius: 10px;" *ngFor="let f of FeedItems">
-          <!-- <div>
-            <img class="d-block w-100" src="{{f.photoUrl}}" alt="{{this.topRatedMovieD.title}}"  [ngStyle]="{'height': (isMobile) ? '150px' : 'auto'}">
-          </div> -->
           <div class="d-flex bd-highlight mb-3" style="margin-right: 2%;">
             <div class="p-2 bd-highlight" (click)="this.router.navigateByUrl('/following/'+f.customerUid)">
               <img src="{{f.photoUrl}}" width="50px" height="50px">
@@ -84,7 +81,7 @@
     <p *ngIf="!longfeed" class="text-center">See more feed   <i class="bi bi-chevron-down"></i></p> 
     <p *ngIf="longfeed" class="text-center">See less feed    <i class="bi bi-chevron-up"></i></p> 
   </div>
-</div>
+</div> -->
 
 
 
@@ -107,6 +104,27 @@
   </div>
   <div class="footer" style="display: flex;justify-content: center;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;height: auto;background-color: rgba(90, 89, 89, 0.76);">
     <p class="text-center">{{this.topRatedMovieD.title}} ({{topRatedMovieD.releaseYear}})</p> 
+  </div>
+</div>
+
+<!--top rated movie mobile-->
+<div *ngIf="isMobile" class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;">
+
+  <div class="content"  style="border-top-left-radius: 10px;border-top-right-radius: 10px;height: auto;max-height: 150px;overflow-y: auto;">
+      <div (click)="gotoInstagramPartner('https://www.instagram.com/movieeflix/')" class="lists" style="margin: 2%;font-size: medium;">
+        <div class="d-flex bd-highlight">
+          <div class="p-2 flex-fill bd-highlight">
+            <img src="../../../assets/partners/movieflix.jpeg" width="75" height="75">
+          </div>
+          <div class="p-2 flex-fill bd-highlight align-self-center"><h5>MovieeFlix</h5></div>
+          <div class="p-2 flex-fill bd-highlight align-self-center">
+            <i class="bi bi-chevron-right"></i>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="footer" style="display: flex;justify-content: center;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;height: auto;background-color: rgba(90, 89, 89, 0.76);">
+    <p class="text-center">Our Partners</p> 
   </div>
 </div>
 

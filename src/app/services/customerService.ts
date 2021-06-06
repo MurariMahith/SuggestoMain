@@ -34,6 +34,10 @@ export class CustomerService {
     return this.customerRef;
   }
 
+  deleteCustomer(key: string): Promise<void> {
+    return this.customerRef.remove(key);
+  }
+
   getAllOtt() : AngularFireList<any>
   {
     return this.ottRef;
@@ -65,6 +69,7 @@ export class CustomerService {
 
   updateCustomer(key: string, value: Customer): Promise<void> 
   {
+    console.log(key)
     if(value.hasOwnProperty('key'))
     {
         delete value["key"];
@@ -88,8 +93,8 @@ export class CustomerService {
           delete value[k];
         }
     }
-    // //console.log(key)
-    // //console.log(value);
+    //console.log(key)
+    //console.log(value);
     return this.customerRef.update(key, value);
   }
 

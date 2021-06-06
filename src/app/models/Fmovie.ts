@@ -22,4 +22,8 @@ export class FMovie
     torrentOnlineLink : string = '';
     runTime : string = '';
     visitedCount : number = 0;
+    isThisSeries : boolean = false;
+    numberOfSeasons : number = 0;
+    numberOfEpisodes : number = 0;
+    seriesStatus : string = '';
 }

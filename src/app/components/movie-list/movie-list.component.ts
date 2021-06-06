@@ -251,7 +251,7 @@ export class MovieListComponent implements OnInit {
 
   easterEgg()
   {
-    alert('You found an easter egg keep using suggesto to find more. SUGGESTO : Developed by Murari Mahith, Rohith Reddy.')
+    alert('You found an easter egg keep using suggesto to find more. SUGGESTO : Developed by Murari Mahith.')
   }
 
 }

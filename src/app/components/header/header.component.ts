@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/authService';
 import { Location } from '@angular/common';
 import { CustomerService } from 'src/app/services/customerService';
+import { DailyHits } from 'src/app/models/Hits';
+import * as moment from 'moment';
+import { HitsService } from 'src/app/services/hits.service';
+import { combineAll, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +20,7 @@ export class HeaderComponent implements OnInit {
   
   internetStatusOnline : boolean = false;
 
-  constructor(private authService : AuthService,private location: Location,private customerService : CustomerService) {
+  constructor(private authService : AuthService,private location: Location,private hitsService : HitsService,private customerService : CustomerService) {
 
     this.DomPageLoadDone = false;
     this.internetStatusOnline = true;
@@ -97,6 +101,35 @@ export class HeaderComponent implements OnInit {
           })
       }
     }
+
+    // var dailyHitUpdatedNow :  boolean = false;
+    // this.hitsService.getAllDailyHits()
+    // .snapshotChanges().pipe(
+    //   map(changes => 
+    //       changes.map(c =>
+    //           ({key: c.payload.key, ...c.payload.val() })
+    //           )
+    //       )
+    //   )
+    // .subscribe(o => {
+    //   var dailyHits : DailyHits[] = o;
+    //   if(dailyHits.find(x => x.date == moment().format('DD/MM/YYYY')) && !dailyHitUpdatedNow)
+    //   {
+    //     var hitToday = dailyHits.find(x => x.date == moment().format('DD/MM/YYYY'));
+    //     hitToday.visitedCount = hitToday.visitedCount+1;
+    //     dailyHitUpdatedNow = true;
+    //     this.hitsService.updateDailyHits(hitToday['key'],hitToday).then(() => dailyHitUpdatedNow = true)
+    //   }
+    //   else if(!dailyHitUpdatedNow)
+    //   {
+    //     var hitToday = new DailyHits();
+    //     hitToday.date = moment().format('DD/MM/YYYY')
+    //     hitToday.visitedCount = hitToday.visitedCount+1;
+    //     this.hitsService.createDailyHits(hitToday);
+    //     dailyHitUpdatedNow = true;
+    //   }
+    //   //console.log(dailyHits);
+    // });
   }
 
   logout()

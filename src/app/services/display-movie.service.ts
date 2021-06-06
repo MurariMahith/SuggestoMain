@@ -31,6 +31,10 @@ export class DisplayMovieService {
       obj.torrentOnlineLink = o.torrentOnlineLink;
       obj.runTime = o.runTime;
       obj.visitedCount = o.visitedCount;
+      obj.isThisSeries = o.isThisSeries;
+      obj.numberOfEpisodes = o.numberOfEpisodes;
+      obj.numberOfSeasons = o.numberOfSeasons;
+      obj.seriesStatus = o.seriesStatus;
 
       for(const p in o.availableIn)
       {

@@ -103,7 +103,10 @@ export class Profile2Component implements OnInit {
   }
   requestNotificationBool()
   {
-    document.getElementById("requests-id").scrollIntoView({ behavior: "smooth",block: "center"})
+    this.peopleNav = true;
+    this.moviesNav = false;
+    this.settingsNav = false;
+    //document.getElementById("requests-id").scrollIntoView({ behavior: "smooth",block: "center"})
     this.notifyRequest = false;
     this.requestBool = true;
   }
@@ -943,6 +946,124 @@ export class Profile2Component implements OnInit {
       this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
     }
 
+  }
+
+  deleteAccount()
+  {
+    var del = confirm("Are you sure you want to delete your Account from Suggesto? If you do, next time you login a new account will be created for you and all your movies will be lost.")
+    if(del)
+    {
+      var verifyDel = prompt("Please type 'Delete' here.")
+      if(verifyDel === 'Delete')
+      {
+        alert("Thank you for using Suggesto. Your account deletion initiated. we will delete your account please be patient. You will be redirected to home page once your account deletion is done.")
+        this.performAccountDeletion();
+      }
+      else
+      {
+        alert("please type given string as it is.")
+      }
+    }
+  }
+
+  //delete followers following follow requests and sent follow requests from all customers
+  //delete all lists created by this customer
+  //delete this customer from customer database.
+  //log him out
+  performAccountDeletion()
+  {
+    var myuid = this.currentCustomer.uid;
+    var customersToBeUpdated : Customer[]= [];
+    var listsToBeDeleted : MovieList[] = [];
+    this.currentCustomer.followers.length = 0;
+    this.currentCustomer.following.length = 0;
+    this.currentCustomer.followRequestSent.length = 0;
+    this.currentCustomer.followRequestReceived.length = 0;
+    this.allCustomers.forEach(element => {    
+
+      if(!element.followRequestSent || element.followRequestSent == undefined)
+      {
+        element.followRequestSent = [];
+      }
+      if(!element.following || element.following == undefined)
+      {
+        element.following = [];
+      }
+      if(!element.followers || element.followers == undefined)
+      {
+        element.followers = [];
+      }
+      if(!element.followRequestReceived || element.followRequestReceived == undefined)
+      {
+        element.followRequestReceived = [];
+      }
+
+      //deleting followers
+
+      for(var i=0;i<element.followers.length;i++)
+      {
+        if(element.followers[i].followerUserId === myuid)
+        {
+          customersToBeUpdated.push(element)
+          element.followers.splice(i, 1);
+        }
+      }
+
+      //deleting following
+      for(var i=0;i<element.following.length;i++)
+      {
+        if(element.following[i].followerUserId === myuid)
+        {
+          customersToBeUpdated.push(element)
+          element.following.splice(i, 1);
+        }
+      }
+
+      //deleting follow request
+      for(var i=0;i<element.followRequestReceived.length;i++)
+      {
+        if(element.followRequestReceived[i].followerUserId === myuid)
+        {
+          customersToBeUpdated.push(element)
+          element.followRequestReceived.splice(i, 1);
+        }
+      }
+
+      //deleting follow requests sent
+      for(var i=0;i<element.followRequestSent.length;i++)
+      {
+        if(element.followRequestSent[i] === myuid)
+        {
+          customersToBeUpdated.push(element)
+          element.followRequestSent.splice(i, 1);
+        }
+      }
+      
+    });
+
+
+    for(var i=0;i<this.allLists.length;i++)
+    {
+      if(this.allLists[i].createdBy === myuid)
+      {
+        // console.log(this.allLists[i])
+        // this.allLists.splice(i, 1);
+        listsToBeDeleted.push(this.allLists[i])
+      }
+    }
+
+    console.log(this.allLists);
+    customersToBeUpdated.forEach(element => {
+      //console.log(element);
+      this.customerService.updateCustomer(element['key'],element)
+    });
+    listsToBeDeleted.forEach(e => {
+      this.listService.deleteMovieList(e['key']);
+    })
+    console.log(this.currentCustomer)
+    this.customerService.deleteCustomer(this.currentCustomer['key']);
+    console.log("account deleted")
+    this.authService.logOut();
   }
 
 }

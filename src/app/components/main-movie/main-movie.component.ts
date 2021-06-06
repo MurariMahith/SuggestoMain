@@ -210,7 +210,7 @@ export class MainMovieComponent implements OnInit {
           this.actualMovie = this.displaymovieservice.prepareDisplayMovieList(this.foundMovies)[0];
           this.getListsInWhichThisMovieIsThere()
           this.findSimilarMovies()
-          //console.log(this.actualMovie)
+          console.log(this.actualMovie)
           if(!this.loggedIn)
           {
             //console.log(movieKey)
@@ -338,7 +338,7 @@ export class MainMovieComponent implements OnInit {
         localStorage.setItem("ottalert","true");
         window.location.href = this.actualMovie.ottLink;
       }
-      
+      localStorage.setItem("navigatedMovie",this.actualMovie.key);
     }
     
   }

@@ -81,7 +81,10 @@ background-color: rgb(0, 0, 0)">
               <span style="overflow-wrap: break-word;-ms-word-break: break-all;word-wrap: break-word;word-break: break-all;">
                 <h6 ><label class="top-label">Language : </label> {{actualMovie.language | commapipe}}</h6>
                 <h6 ><label class="top-label">Released In : </label> {{actualMovie.releaseYear}}</h6>
-                <h6 ><label class="top-label">Runtime : </label> {{actualMovie.runTime}} Minutes</h6>
+                <h6 *ngIf="!actualMovie.isThisSeries" ><label class="top-label">Runtime : </label> {{actualMovie.runTime}} Minutes</h6>
+                <h6 *ngIf="actualMovie.isThisSeries" ><label class="top-label">Number of seasons : </label> {{actualMovie.numberOfSeasons}}</h6>
+                <h6 *ngIf="actualMovie.isThisSeries" ><label class="top-label">Total Number of Episodes : </label> {{actualMovie.numberOfEpisodes}}</h6>
+                <h6 *ngIf="actualMovie.isThisSeries" ><label class="top-label">Series Status : </label> {{actualMovie.seriesStatus}}</h6>
                 <h6 ><label class="top-label">Genre : </label> {{actualMovie.genre | commapipe}}</h6>
                 </span>
                 <div class="btns" style="display: flex;justify-content: center;padding: 2%;width: 100%;">
@@ -198,7 +201,7 @@ background-color: rgb(0, 0, 0)">
                   <td style="width: 20%;text-align: left;"><b>Language: </b></td>
                   <td style="text-align: left;padding: 4px;">{{actualMovie.language | commapipe}}</td>
                 </tr>
-                <tr>
+                <tr *ngIf="actualMovie.isThisSeries">
                   <td style="width: 20%;text-align: left;"><b>Run Time: </b></td>
                   <td style="text-align: left;padding: 4px;">{{actualMovie.runTime}} Minutes</td>
                 </tr>
@@ -257,6 +260,10 @@ background-color: rgb(0, 0, 0)">
     </header>
   </div>
 </span>
+</div>
+
+<div *ngIf="actualMovie.isThisSeries" style="position: absolute;display: flex;justify-content: center;width: 100%;top: 60px;">
+  <h4 style="color: white;">This is series</h4>
 </div>
 
 <div *ngIf="shareWindowBool" style="position: fixed;color: white;bottom: 0;left:0;width: 96%;margin-bottom: 50px;margin-left: 2%;padding-top: 5%;background-color: rgb(51, 51, 51);border-top-right-radius: 40px;border-top-left-radius: 40px;" [ngStyle]="{'height': (allFriends.length == 0) ? '40vh' : 'auto'}">

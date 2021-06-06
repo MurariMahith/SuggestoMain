@@ -134,6 +134,10 @@
   <p class="nav-link btnm" (click)="logout()" routerLinkActive="active-link" (click)="closeSideBar()" *ngIf="loggedIn"><i class="bi bi-person-dash-fill"></i> Log Out!</p> 
   <!-- <p class="closebtn2" (click)="closeSideBar()"><i style="color: white;" class="bi bi-x-circle-fill"></i></p> -->
 </div>
+
+<div *ngIf="!DomPageLoadDone" id="fixed-load" style="position: fixed;display: flex;justify-content: center;top: 50vh;left: 0;z-index: 1000;width: 100%;">
+  <img src="../../../assets/loading animation/loading_transparent2.gif" width="100" height="100">
+</div>
 <!-- 
 <div *ngIf="!DomPageLoadDone" style="display: flex;justify-content: center;width: 100%;position: fixed;bottom: 70px;">
   <img src="../../../assets/loading animation/loading_transparent2.gif" width="100" height="100">

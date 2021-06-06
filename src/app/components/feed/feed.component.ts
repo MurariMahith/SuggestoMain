@@ -583,6 +583,15 @@ export class FeedComponent implements OnInit {
       //document.querySelector(".exampleModalCenter").on()
     }
 
+    gotoInstagramPartner(url)
+    {
+      var con = confirm("You will be redirected to Instagram page of our partner. You want to go?")
+      if(con)
+      {
+        window.location.href = url
+      }
+    }
+
     addMovieToWishlist(key)
   {
     //console.log(key)

@@ -31,7 +31,7 @@ import { NotificationSaveEndPointService } from 'src/app/services/notification-s
 import { ArrayHelperService } from 'src/app/services/array-helper.service';
 import { Language } from 'src/app/models/Language';
 import { MoviePlatForm } from 'src/app/models/MoviePlatform';
-import { Hits } from 'src/app/models/Hits';
+import { DailyHits, Hits } from 'src/app/models/Hits';
 import { AuthService } from 'src/app/services/authService';
 import { FeedItem } from 'src/app/models/FeedItem';
 import { SharedMovie } from 'src/app/models/SharedMovie';
@@ -45,6 +45,7 @@ import { FollowObject } from 'src/app/models/FollowObject';
 export class HomeComponent implements OnInit {
 
   allMovies : Array<FMovie> = [];
+  allMoviesWithOtt : Array<FMovie> = [];
   allMovieLists : Array<MovieList> = [];
   editorsChoice : DisplayMovieList[] = [];
 
@@ -131,7 +132,11 @@ export class HomeComponent implements OnInit {
     suggestedDate:"06/04/2021",
     title:"Avengers : Endgame",
     ytTrailerLink:"https://www.youtube.com/watch?v=TcMBFSGVi1c",
-    visitedCount :0
+    visitedCount :0,
+    isThisSeries : false,
+    numberOfEpisodes : 0,
+    numberOfSeasons : 0,
+    seriesStatus : 'Not a Series'
   };
   quickViewSafeSrc : SafeResourceUrl;
 
@@ -146,6 +151,8 @@ export class HomeComponent implements OnInit {
 
   topCustomer : Customer;
   allCustomers : Customer[] = [];
+
+  randomMovieD : DisplayMovie;
 
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
@@ -213,7 +220,11 @@ export class HomeComponent implements OnInit {
         this.hitsService.updateCustomer(hits['key'],hits);
         localStorage.setItem("visited","true");
       }
+      var date = moment().format('DD/MM/YYYY')
     });
+
+
+
 
     this.quickViewedMovies.forEach(element => {
       //console.log(element.visitedCount)
@@ -246,6 +257,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  navigatedMovieStatus : boolean = false;
 
 
   ngOnInit() 
@@ -520,6 +532,17 @@ export class HomeComponent implements OnInit {
       )
     ).subscribe(o => {
       this.allMovies = o; 
+      this.allMoviesWithOtt = this.allMovies.filter(x => (x.ottLink != '' && x.ottLink != undefined && !(x.ottLink.length<3)))
+      console.log(this.allMoviesWithOtt.length);
+      this.generateRandomMovie();
+      console.log(this.randomMovieD);
+      // console.log(this.allMovies.find(a => a.key === localStorage.getItem("navigatedMovie")))
+      // console.log(this.MovieToBeRated)
+      if(localStorage.getItem("navigatedMovie") && this.allMovies.find(a => a.key === localStorage.getItem("navigatedMovie")))
+      {
+        this.MovieToBeRated = this.allMovies.find(a => a.key === localStorage.getItem("navigatedMovie"))
+        this.navigatedMovieStatus = true;
+      }
       this.loading = false;
       this.loading2 = false;
      
@@ -632,6 +655,42 @@ export class HomeComponent implements OnInit {
     });
     //this.buildeditorChoiceMovieListForDisplay()
 
+    var dailyHitUpdatedNow :  boolean = false;
+    this.hitsService.getAllDailyHits()
+    .snapshotChanges().pipe(
+      map(changes => 
+          changes.map(c =>
+              ({key: c.payload.key, ...c.payload.val() })
+              )
+          )
+      )
+    .subscribe(o => {
+      var dailyHits : DailyHits[] = o;
+      if(dailyHits.find(x => x.date == moment().format('DD/MM/YYYY')) && !dailyHitUpdatedNow)
+      {
+        var hitToday = dailyHits.find(x => x.date == moment().format('DD/MM/YYYY'));
+        hitToday.visitedCount = hitToday.visitedCount+1;
+        dailyHitUpdatedNow = true;
+        this.hitsService.updateDailyHits(hitToday['key'],hitToday).then(() => dailyHitUpdatedNow = true)
+      }
+      else if(!dailyHitUpdatedNow)
+      {
+        var hitToday = new DailyHits();
+        hitToday.date = moment().format('DD/MM/YYYY')
+        hitToday.visitedCount = hitToday.visitedCount+1;
+        this.hitsService.createDailyHits(hitToday);
+        dailyHitUpdatedNow = true;
+      }
+      //console.log(dailyHits);
+    });
+
+  }
+
+  generateRandomMovie()
+  {
+    var shuffleD = this.shuffleArr(this.allMoviesWithOtt);
+    this.randomMovieD = shuffleD[2];
+    //console.log(this.randomMovieD);
   }
 
   searchMovieUrl : string = 'https://api.themoviedb.org/3/search/movie?api_key=ae139cfa4ee9bda14d6e3d7bea092f66&language=en-US&page=1&include_adult=false&query='
@@ -1240,6 +1299,17 @@ export class HomeComponent implements OnInit {
 
   rateMovie(key)
   {
+    if(this.rating<1)
+    {
+      alert("You should give rating before submitting.");
+      return;
+    }
+    console.log(key);
+    if(this.MovieToBeRated.key === localStorage.getItem("navigatedMovie"))
+    {
+      localStorage.removeItem("navigatedMovie");
+      this.navigatedMovieStatus = false;
+    }
     this.MovieToBeRated.rating = Number(this.MovieToBeRated.rating) + Number(this.rating);
     var movieKey = this.MovieToBeRated.key
     delete this.MovieToBeRated.key
@@ -1257,8 +1327,8 @@ export class HomeComponent implements OnInit {
     {
       this.currentCustomer.ratedMovies.push(ratedMovieLocal)
     }
-    ////console.log(this.currentCustomer)
     this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+
   }
 
   gotolist(key)
@@ -1308,6 +1378,7 @@ export class HomeComponent implements OnInit {
     }
     else
     {
+      localStorage.setItem("navigatedMovie",this.quickViewMovie.key);
       window.location.href = this.quickViewMovie["ottLink"];
     }
     
@@ -1320,6 +1391,7 @@ export class HomeComponent implements OnInit {
     var movD = this.movieDisplayService.prepareDisplayMovieSingle(mov);
     if(mov)
     {
+      localStorage.setItem("navigatedMovie",key);
       window.location.href = link;
     }
     else

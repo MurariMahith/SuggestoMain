@@ -503,9 +503,22 @@ export class AllMoviesComponent implements OnInit {
 
   onSubmit()
   {
-    this.userMovieService.createUserSuggestedMovie(this.userMovie)
-    alert("Thank you for your suggestion, This will help us to suggest better movies.") 
-    window.location.href="/all";
+    var duplicateMovie : boolean = false;
+    this.allMovies.forEach(element => {
+      if(element.title.toLocaleLowerCase() == this.userMovie.title.toLocaleLowerCase())
+      {
+        alert("The movie '"+element.title+ "' is already present in Our DB. please check spelling while you search. Thank you!")
+        duplicateMovie = true;
+        return;
+      }
+    });
+    if(!duplicateMovie)
+    {
+      this.userMovieService.createUserSuggestedMovie(this.userMovie)
+      alert("Thank you for your suggestion, Our admins will review the movie and add it so it helps us and other movie enthisiastics like you..") 
+      window.location.href="/all";
+    }
+
   }
 
 }

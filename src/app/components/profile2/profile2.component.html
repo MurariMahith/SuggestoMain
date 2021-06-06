@@ -171,6 +171,8 @@
         </div>
     </div>
 </div></b>
+
+<a role="button" href="https://t.me/joinchat/aIZt7ebzoLc4MWM1" style="width: 90%;margin-left: 5%;" class="btn btn-sm btn-outline-primary btn-lg btn-block"><i class="bi bi-telegram"></i>&nbsp;Join MovieeFlix Telegram channel for downloading HD Movies</a>
 </span>
 
 <span *ngIf="peopleNav">
@@ -500,7 +502,7 @@
         </div>
     </div>
     <div class="lists" style="margin: 2%;font-size: medium;">
-        <div class="d-flex bd-highlight mb-3 list-item" (click)="this.router.navigateByUrl('/board')">
+        <div class="d-flex bd-highlight mb-3 list-item">
             <div class="mr-auto p-2 bd-highlight">
                  <b>Preferred Languages</b> : {{languages}}
             </div>
@@ -511,9 +513,20 @@
         </div>
     </div>
     <div class="lists" style="margin: 2%;font-size: medium;">
-        <div class="d-flex bd-highlight mb-3 list-item" (click)="this.router.navigateByUrl('/board')">
+        <div class="d-flex bd-highlight mb-3 list-item">
             <div class="mr-auto p-2 bd-highlight">
                 <b>Preferred Genres</b> : {{genres}}
+            </div>
+            <div class="p-2 bd-highlight"></div>
+            <div class="p-2 bd-highlight">
+                <!-- <i class="bi bi-chevron-right"></i> -->
+            </div>
+        </div>
+    </div>
+    <div class="lists" style="margin: 2%;font-size: medium;">
+        <div class="d-flex bd-highlight mb-3 list-item"  (click)="deleteAccount()" style="background-color: red;">
+            <div class="mr-auto p-2 bd-highlight">
+                <b>Delete My Account</b>
             </div>
             <div class="p-2 bd-highlight"></div>
             <div class="p-2 bd-highlight">
@@ -722,6 +735,5 @@
     <!-- <h3><i style="color: white;" class="bi bi-envelope"></i></h3> -->
     <span class="badge badge-primary">
         <h6>{{newMsgCount}} New <i style="color: white;" class="bi bi-envelope"></i></h6>
-      </span>
-
+    </span>
 </div>

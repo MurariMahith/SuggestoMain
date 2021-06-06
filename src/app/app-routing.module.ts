@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AboutUsComponent } from './components/about-us/about-us.component';
+import { AccountDeleteInstructionsComponent } from './components/account-delete-instructions/account-delete-instructions.component';
 import { AllMoviesComponent } from './components/all-movies/all-movies.component';
 import { LoginComponent } from './components/authentication/login/login.component';
 import { ResetPasswordComponent } from './components/authentication/reset-password/reset-password.component';
@@ -69,6 +70,7 @@ const routes: Routes = [
   { path: 'welcome',  component: WelcomePageComponent },
   { path: 'board',  component: MovieBuffBoardComponent },
   { path: 'extmovie/:key',  component: TmdbMovieComponent },
+  { path: 'deleteAccountInstructions',  component: AccountDeleteInstructionsComponent },
   { path: 'profile2', redirectTo: '/board', pathMatch: 'full' },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: '404', component: HomeComponent}

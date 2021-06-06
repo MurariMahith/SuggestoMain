@@ -56,7 +56,8 @@ import { WelcomePageComponent } from './components/welcome-page/welcome-page.com
 import { MovieBuffBoardComponent } from './components/movie-buff-board/movie-buff-board.component';
 import { FollowingProfileComponent } from './components/following-profile/following-profile.component';
 import { TmdbMovieComponent } from './components/tmdb-movie/tmdb-movie.component';
-import { Profile2Component } from './components/profile2/profile2.component'
+import { Profile2Component } from './components/profile2/profile2.component';
+import { AccountDeleteInstructionsComponent } from './components/account-delete-instructions/account-delete-instructions.component'
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import { Profile2Component } from './components/profile2/profile2.component'
     MovieBuffBoardComponent,
     FollowingProfileComponent,
     TmdbMovieComponent,
-    Profile2Component
+    Profile2Component,
+    AccountDeleteInstructionsComponent
   ],
   imports: [
     BrowserModule,
