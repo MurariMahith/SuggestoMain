@@ -1,4 +1,8 @@
 <!--better improvements-->
+<!-- <span class="imdbRatingPlugin" data-user="ur79426835" data-title="tt7888964" data-style="p1"><a href="https://www.imdb.com/title/tt7888964/?ref_=plg_rt_1"><img src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_46x22.png" alt=" Nobody
+  (2021) on IMDb" />
+  </a>
+</span> -->
 
 <!-- <img src="{{actualMovie.smallImageUrl}}" width="100%"> -->
 <p id="scrollhere" style="display: none;"></p>
@@ -61,16 +65,17 @@ background-color: rgb(0, 0, 0)">
   <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
 </div>
 
-<span *ngIf="!loading">
+<span  *ngIf="!loading">
   <div class="top">
     <header>   
       <!-- Background image -->
       <div class="text-center bg-image" style="background-repeat: no-repeat;background-attachment: fixed;background-position: center;background-size:cover;" [ngStyle]="{'background-image': 'url(' + actualMovie.smallImageUrl + ')'}">
         <div class="mask" style="backdrop-filter: blur(4px) brightness(0.5);padding: 2%;word-wrap: break-word;white-space: initial;width: 100%;">
           <div style="width: 100%;">
-            <div style="margin-left: 20px;display: flex;justify-content: flex-start;">
+            <div style="margin-left: 20px;display: flex;justify-content: flex-start;z-index: 10;">
               <i class="bi bi-arrow-left-square" style="font-size: x-large;color: white;" (click)="goBack()"></i>
             </div>
+            
             <div class="text-white">
               <!-- <img src="{{actualMovie.bigImageUrl}}" width="100%"> -->
               <h3 class="mb-3" id="title-scroll"><b>{{actualMovie.title | titlecase}}</b></h3>
@@ -78,7 +83,22 @@ background-color: rgb(0, 0, 0)">
                 <iframe class="embed-responsive-item" [src]="safeSrc" allowfullscreen></iframe>
               </div>
               <br>
+
               <span style="overflow-wrap: break-word;-ms-word-break: break-all;word-wrap: break-word;word-break: break-all;">
+                <h6 *ngIf="actualMovie.isThisSeries" >          
+                  <span class="badge badge-primary">
+                    This is Series
+                  </span>
+                </h6>
+                <!-- <div style="display: flex;justify-content: center;">
+                  <span style="margin: 5px 0px;padding: 2px 2px 1px;">
+                    <img src="./../../../assets/images/imdb.png" alt=" Nobody(2021) on IMDb" width="68.54" height="31.4" />
+                  </span>              
+                  <div class="imdbRatingPlugin" id="test" data-user="ur79426835" data-title="tt1375666" data-style="p1">
+                  </div>
+                </div> -->
+                <!-- <div id="user" data-id="1234567890" data-user="johndoe" data-date-of-birth>John Doe</div> -->
+                <!-- <h6 ><label class="top-label">IMDb Rating : </label> {{actualMovie.language | commapipe}}</h6> -->
                 <h6 ><label class="top-label">Language : </label> {{actualMovie.language | commapipe}}</h6>
                 <h6 ><label class="top-label">Released In : </label> {{actualMovie.releaseYear}}</h6>
                 <h6 *ngIf="!actualMovie.isThisSeries" ><label class="top-label">Runtime : </label> {{actualMovie.runTime}} Minutes</h6>
@@ -115,7 +135,7 @@ background-color: rgb(0, 0, 0)">
             </div>
           </div>
         </div>
-        <div style="backdrop-filter: blur(4px) brightness(0.5);">
+        <div *ngIf="!loading" style="backdrop-filter: blur(4px) brightness(0.5);">
         <div class="mask" style="background-color: rgba(0, 0, 0, 1);border-top-left-radius: 30px;border-top-right-radius: 30px;padding: 2%;word-wrap: break-word;white-space: initial;margin-left: 10px;margin-right: 10px;">
           <div class="d-flex justify-content-center align-items-center h-100">
             <div class="text-white">
@@ -155,7 +175,10 @@ background-color: rgb(0, 0, 0)">
                     <img *ngIf="movieHere.availableIn.JioCinema" src="../../../assets/ott-icons/jiocinema.png" width="50" height="50">
                     <img *ngIf="movieHere.availableIn.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" width="50" height="50">
                     <img *ngIf="movieHere.availableIn.Zee5" src="../../../assets/ott-icons/zee5.png" width="50" height="50">
-                    <img *ngIf="movieHere.availableIn.Youtube" src="../../../assets/ott-icons/youtube.jpg" width="50" height="50"></a>
+                    <img *ngIf="movieHere.availableIn.Youtube" src="../../../assets/ott-icons/youtube.jpg" width="50" height="50">
+                    <img *ngIf="movieHere.availableIn.Mx_Player" src="../../../assets/ott-icons/mxplayer.png" width="50" height="50">
+                    <img *ngIf="movieHere.availableIn.Voot" src="../../../assets/ott-icons/voot.png" width="50" height="50">
+                  </a>
                   </div><br>
                 <div style="display: flex;justify-content: center;">
                   <a class="btn btn-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieExternalSite()">Watch Movie <i class="fa fa-play-circle-o"></i></a>
@@ -184,11 +207,13 @@ background-color: rgb(0, 0, 0)">
                 </div><br>                                
               </div>
               <a class="btn btn-success  buttons-top btn-block" style="width: 95%;" role="button" *ngIf="!loggedIn" (click)='router.navigateByUrl("/login")'>Login to wishlist and Watched Movies <i class="fa fa-heart" aria-hidden="true"></i></a>
+              <b>Synopsis</b>
+              <p>{{actualMovie.description}}</p>
               <table style="width: 100%;">
-                <tr>
+                <!-- <tr>
                   <td style="width: 20%;text-align: left"><b>Description: </b></td>
                   <td style="text-align: left;padding: 4px;">{{actualMovie.description | commapipe}}</td>
-                </tr>
+                </tr> -->
                 <tr>
                   <td style="width: 20%;text-align: left;"><b>Genre: </b></td>
                   <td style="text-align: left;">{{actualMovie.genre | commapipe}}</td>                  
@@ -262,9 +287,11 @@ background-color: rgb(0, 0, 0)">
 </span>
 </div>
 
-<div *ngIf="actualMovie.isThisSeries" style="position: absolute;display: flex;justify-content: center;width: 100%;top: 60px;">
+<!-- <div *ngIf="actualMovie.isThisSeries" style="position: absolute;display: flex;justify-content: center;width: 100%;top: 60px;right: 0;">
   <h4 style="color: white;">This is series</h4>
-</div>
+</div> -->
+
+
 
 <div *ngIf="shareWindowBool" style="position: fixed;color: white;bottom: 0;left:0;width: 96%;margin-bottom: 50px;margin-left: 2%;padding-top: 5%;background-color: rgb(51, 51, 51);border-top-right-radius: 40px;border-top-left-radius: 40px;" [ngStyle]="{'height': (allFriends.length == 0) ? '40vh' : 'auto'}">
   <div class="d-flex bd-highlight">

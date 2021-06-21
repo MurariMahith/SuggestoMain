@@ -34,5 +34,7 @@ export class Genre
     Adult : boolean = false;
     Trending : boolean = false;
     Upcoming : boolean = false;
+    Violence : boolean = false;
+    Racing : boolean = false;
 
 }

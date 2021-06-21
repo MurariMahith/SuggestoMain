@@ -107,16 +107,18 @@
   </div>
 </div>
 
-<!--top rated movie mobile-->
-<div *ngIf="isMobile" class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;">
+<!--partner-->
+<div *ngIf="isMobile && verifiedCustomers.length != 0" class="movie-list-item effect7" style="margin: 2%;margin-bottom: 4%;">
 
-  <div class="content"  style="border-top-left-radius: 10px;border-top-right-radius: 10px;height: auto;max-height: 150px;overflow-y: auto;">
-      <div (click)="gotoInstagramPartner('https://www.instagram.com/movieeflix/')" class="lists" style="margin: 2%;font-size: medium;">
+  <div class="content" *ngFor="let c of verifiedCustomers"  style="border-top-left-radius: 10px;border-top-right-radius: 10px;height: auto;max-height: 150px;overflow-y: auto;">
+      <div (click)="this.router.navigateByUrl('/following/'+c.uid)" class="lists" style="margin: 2%;font-size: medium;">
         <div class="d-flex bd-highlight">
           <div class="p-2 flex-fill bd-highlight">
-            <img src="../../../assets/partners/movieflix.jpeg" width="75" height="75">
+            <img src="{{c.customerPhotoUrl}}" width="25" height="25" style="border-radius: 100px;">
           </div>
-          <div class="p-2 flex-fill bd-highlight align-self-center"><h5>MovieeFlix</h5></div>
+          <div class="p-2 flex-fill bd-highlight align-self-center">{{c.name | titlecase}}
+            <img src="../../../assets/images/verified account.svg" width="20">
+          </div>
           <div class="p-2 flex-fill bd-highlight align-self-center">
             <i class="bi bi-chevron-right"></i>
           </div>
@@ -124,7 +126,7 @@
     </div>
   </div>
   <div class="footer" style="display: flex;justify-content: center;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;height: auto;background-color: rgba(90, 89, 89, 0.76);">
-    <p class="text-center">Our Partners</p> 
+    <p class="text-center">Verified Partners</p> 
   </div>
 </div>
 
@@ -555,7 +557,8 @@
       <!--location ends here-->
 
 
-      <app-tamil></app-tamil>
+      <app-tamil></app-tamil><br>
+      <app-social-media></app-social-media>
 
 
 

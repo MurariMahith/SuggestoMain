@@ -551,7 +551,7 @@
             <div id="trailer-mobile" class="embed-responsive embed-responsive-16by9" style="border-radius: 10px;">
               <iframe class="embed-responsive-item" [src]="safeSrc" allowfullscreen></iframe>
             </div>
-            <label for="exampleInputPassword2">Already saw this movie, please give us your rating to this movie</label>     
+            <label for="exampleInputPassword2">Already saw this movie/series, please give us your rating to this movie/series</label>     
             <small id="emailHelp" class="form-text text-muted">It will help us to suggest better movies based on the rating you give. You can only rate one time per movie. (editing rating for movies will be supported in next version) </small> <br>
             <div style="display: flex;">
             <select class="form-select browser-default custom-select" id="ratingdropdown" aria-label="Default select example" name="rtingd" [(ngModel)]="rating">
@@ -594,15 +594,18 @@
         <!-- <h6 class="mb-3"><label class="top-label">Available In : </label></h6> -->
         <div style="display: flex;justify-content: center;flex-wrap: wrap;">
           <a (click)="GoToMovieExternalSiteQuickView()">
-          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Netflix" src="../../../assets/ott-icons/netflix.jpg" width="50" height="50">
-          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Prime_Video" src="../../../assets/ott-icons/prime.png" width="50" height="50">
-          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" width="50" height="50">
-          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Aha" src="../../../assets/ott-icons/aha.jpeg" width="50" height="50">
-          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" width="50" height="50">
-          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.JioCinema" src="../../../assets/ott-icons/jiocinema.png" width="50" height="50">
-          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" width="50" height="50">
-          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Zee5" src="../../../assets/ott-icons/zee5.png" width="50" height="50">
-          <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Youtube" src="../../../assets/ott-icons/youtube.jpg" width="50" height="50"></a>
+            <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Netflix" src="../../../assets/ott-icons/netflix.jpg" width="50" height="50">
+            <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Prime_Video" src="../../../assets/ott-icons/prime.png" width="50" height="50">
+            <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Hotstar" src="../../../assets/ott-icons/hotstar.jpg" width="50" height="50">
+            <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Aha" src="../../../assets/ott-icons/aha.jpeg" width="50" height="50">
+            <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Sun_Next" src="../../../assets/ott-icons/sunnext.jpg" width="50" height="50">
+            <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.JioCinema" src="../../../assets/ott-icons/jiocinema.png" width="50" height="50">
+            <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" width="50" height="50">
+            <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Zee5" src="../../../assets/ott-icons/zee5.png" width="50" height="50">
+            <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Youtube" src="../../../assets/ott-icons/youtube.jpg" width="50" height="50">
+            <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Mx_Player" src="../../../assets/ott-icons/mxplayer.png" width="50" height="50">
+            <img style=" margin: 5px;border-radius: 10px;" *ngIf="quickViewMovie.availableIn.Voot" src="../../../assets/ott-icons/voot.png" width="50" height="50">
+          </a>
         </div><br>
         <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieExternalSiteQuickView()"> Watch Movie <i class="fa fa-play-circle-o"></i></a>
         <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieHref(quickViewMovie.key)"> Detail view about Movie <i class="fa fa-info-circle"></i></a>
@@ -637,6 +640,7 @@
           <div *ngIf="!watchedMovies.includes(movie.key)" class="item" [ngStyle]="{'height': (loggedIn) ? '320px' : '320px'}" >
           <!-- <div class="item" *ngIf=(!loggedIn) style="height: 250px;"> -->
             <a (click)="GoToMovie(movie.key)">
+              <div (click)="GoToMovie(movie.key)" *ngIf="movie.isThisSeries" class="ribbon ribbon-top-left"><span>series</span></div>
               <img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;">
               <a style="position:absolute;bottom: 120px;right: 10px;z-index: 10;" (click)="GoToMovieExternalSite(movie.key)">
                 <img *ngIf="movie.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 5px;height: 32px;">
@@ -648,6 +652,8 @@
                 <img *ngIf="movie.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 5px;height: 32px;">
                 <img *ngIf="movie.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 5px;height: 32px;">
                 <img *ngIf="movie.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 5px;height: 32px;">
+                <img *ngIf="movie.ott.Mx_Player" src="../../../assets/ott-icons/mxplayer.png" style="border-radius: 5px;height: 32px;">
+                <img *ngIf="movie.ott.Voot" src="../../../assets/ott-icons/voot.png" style="border-radius: 5px;height: 32px;">
               </a>
             </a>
             <h6 style="text-align: center;">{{movie.title}}</h6> 
@@ -657,7 +663,7 @@
              <span style="margin: 2%">
               <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
                 <a (click)="startSharedWindow(movie)">
-                  <img style="width: 32px;margin-right: 5%;" src="../../../assets/images/send.png">
+                  <img style="width: 32px;margin-right: 5%;border-radius: 100px;" src="../../../assets/images/send.png">
                 </a>
              </span>
             </div>
@@ -750,6 +756,16 @@
                       <div class="long-word" *ngIf="g == 'JioCinema'">
                         <img src="../../../assets/ott-icons/jiocinema.png" style="border-radius: 10px;width: 50px;height: 50px;"> 
                       </div>
+                      <div class="long-word" *ngIf="g == 'Mx_Player'">
+                        <img src="../../../assets/ott-icons/mxplayer.png" style="border-radius: 10px;width: 50px;height: 50px;"> 
+                      </div>
+                      <div class="long-word" *ngIf="g == 'Voot'">
+                        <img src="../../../assets/ott-icons/voot.png" style="border-radius: 12px;width: 50px;height: 50px;"> 
+                      </div>
+                      <div class="long-word" *ngIf="g == 'Other'">
+                        <img src="../../../assets/ott-icons/other.png" style="border-radius: 12px;width: 50px;height: 50px;"> 
+                      </div>
+
                   </div>
               </div>
           </div>
@@ -769,15 +785,19 @@
     </div>
     <!--find now OTT end here-->
 
-    <br>
+    <!-- <br> -->
 
     <div *ngIf="navigatedMovieStatus && loggedIn" style="margin: 5%;">
+      <div style="display: flex;justify-content: flex-end;width: 100%;" (click)="cancelRecentOttVisitRating()">
+        <i style="color: white;" class="bi bi-x-circle-fill"></i>
+      </div>
       <div class="form-group">            
         <img src="{{MovieToBeRated.imageUrl}}" style="max-width: 100%;max-height: 100%;display: block;border-radius: 5px;">
+        
         <!-- <div id="trailer-mobile" class="embed-responsive embed-responsive-16by9" style="border-radius: 10px;">
           <iframe class="embed-responsive-item" [src]="safeSrc" allowfullscreen></iframe>
         </div> -->
-        <label for="exampleInputPassword2">Already saw this movie, please give us your rating to this movie</label>     
+        <label for="exampleInputPassword2">Already saw this movie/series, please give us your rating to this movie/series</label>     
         <!-- <small id="emailHelp" class="form-text text-muted">It will help us to suggest better movies based on the rating you give. You can only rate one time per movie. (editing rating for movies will be supported in next version) </small> <br> -->
         <div style="display: flex;">
         <select class="form-select browser-default custom-select" id="ratingdropdown" aria-label="Default select example" name="rtingd" [(ngModel)]="rating">
@@ -798,7 +818,10 @@
     <div *ngIf="randomMovieD" class="random-Movie" style="display: flex;justify-content: center;align-items: center;">
         <div class="item" [ngStyle]="{'height': (loggedIn) ? '300px' : '260px'}">
             
-            <a (click)="GoToMovie(randomMovieD.key)"><img src="{{randomMovieD.cardImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;"></a>
+            <a (click)="GoToMovie(randomMovieD.key)">
+              <img src="{{randomMovieD.cardImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;">
+              <div (click)="GoToMovie(randomMovieD.key)" *ngIf="randomMovieD.isThisSeries" class="ribbon ribbon-top-left"><span>series</span></div>
+            </a>
             <h6 style="text-align: center;">{{randomMovieD.title}}</h6> 
             <div style="display: flex;justify-content: center;" *ngIf="loggedIn">
               <span *ngIf="!wishlistedMovies.includes(randomMovieD.key)" style="margin: 2%;width: 100%;">
@@ -891,6 +914,7 @@
         <span *ngFor="let movie of personalisedMoviesDisplay">
           <div  *ngIf="!watchedMovies.includes(movie.key)" class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
             <a (click)="GoToMovie(movie.key)">
+              <div (click)="GoToMovie(movie.key)" *ngIf="movie.isThisSeries" class="ribbon ribbon-top-left"><span>series</span></div>
               <img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;">
               <a style="position:absolute;bottom: 110px;right: 10px;z-index: 10;" (click)="GoToMovieExternalSite(movie.key)">
                 <img *ngIf="movie.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 5px;height: 32px;">
@@ -902,6 +926,9 @@
                 <img *ngIf="movie.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 5px;height: 32px;">
                 <img *ngIf="movie.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 5px;height: 32px;">
                 <img *ngIf="movie.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 5px;height: 32px;">
+                <img *ngIf="movie.ott.Mx_Player" src="../../../assets/ott-icons/mxplayer.png" style="border-radius: 5px;height: 32px;">
+                <img *ngIf="movie.ott.Voot" src="../../../assets/ott-icons/voot.png" style="border-radius: 5px;height: 32px;">
+
               </a>
             </a>
             <h6 style="text-align: center;">{{movie.title}}</h6>
@@ -978,6 +1005,7 @@
           <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
           <!-- <div class="item" *ngIf=(!loggedIn) style="height: 250px;"> -->
             <a (click)="GoToMovie(movie.key)">
+              <div (click)="GoToMovie(movie.key)" *ngIf="movie.isThisSeries" class="ribbon ribbon-top-left"><span>series</span></div>
               <img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;">
               <a style="position:absolute;bottom: 110px;right: 10px;z-index: 10;" (click)="GoToMovieExternalSite(movie.key)">
                 <img *ngIf="movie.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 5px;height: 32px;">
@@ -989,6 +1017,8 @@
                 <img *ngIf="movie.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 5px;height: 32px;">
                 <img *ngIf="movie.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 5px;height: 32px;">
                 <img *ngIf="movie.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 5px;height: 32px;">
+                <img *ngIf="movie.ott.Mx_Player" src="../../../assets/ott-icons/mxplayer.png" style="border-radius: 5px;height: 32px;">
+                <img *ngIf="movie.ott.Voot" src="../../../assets/ott-icons/voot.png" style="border-radius: 5px;height: 32px;">
               </a>
             </a>
             <h6 style="text-align: center;">{{movie.title}}</h6> 
@@ -1072,11 +1102,11 @@
 
     <br>
 
+    <!--decide whether we want preferred language movies or not.-->
     <!--location based lists-->
-    <div *ngIf="!loading">
+    <!-- <div *ngIf="!loading">
       <div *ngIf="!(locationBasedMovies.length == 0)" class="d-flex" style="margin-left: 5%;margin-right: 5%;">
         <div class="p-2"><h5 class="display-8">Preferred Language Movies
-           <!-- <span class="badge badge-dark"> beta</span> -->
           </h5>
         </div>
         <div class="ml-auto p-2">
@@ -1094,6 +1124,7 @@
           <span *ngFor="let movie of locationBasedMovies">
             <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
               <a (click)="GoToMovie(movie.key)">
+                <div (click)="GoToMovie(movie.key)" *ngIf="movie.isThisSeries" class="ribbon ribbon-top-left"><span>series</span></div>
                 <img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;">
                 <a style="position:absolute;bottom: 110px;right: 10px;z-index: 10;" (click)="GoToMovieExternalSite(movie.key)">
                   <img *ngIf="movie.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 5px;height: 32px;">
@@ -1105,14 +1136,14 @@
                   <img *ngIf="movie.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 5px;height: 32px;">
                   <img *ngIf="movie.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 5px;height: 32px;">
                   <img *ngIf="movie.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.Mx_Player" src="../../../assets/ott-icons/mxplayer.png" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.Voot" src="../../../assets/ott-icons/voot.png" style="border-radius: 5px;height: 32px;">
                 </a>
               </a>
               <h6 style="text-align: center;">{{movie.title}}</h6> 
-              <!-- <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-light btn-sm btn-block" style="margin: 2%;width: 96%;">Quick view</button> -->
               <div style="display: flex;justify-content: center;">
                 <button (click)="startQuickView(movie.key)" data-toggle="modal" data-target="#quickviewmodal" class="btn btn-outline-light btn-sm btn-block" style="margin: 2%;width: 96%;border: none;">Quick view</button>
                 <span style="margin: 2%">
-                <!-- <button type="button" class="btn btn-sm btn-block btn-outline-dark"> -->
                   <a (click)="startSharedWindow(movie)">
                     <img style="width: 32px;margin-right: 5%;" src="../../../assets/images/send.png">
                   </a>
@@ -1156,10 +1187,8 @@
           </span>    
         </div>
       </div>
-    </div>
+    </div> -->
     <!--location ends here-->
-
-    <br>
     
     <div *ngFor="let list of editorsChoice">
       
@@ -1180,6 +1209,7 @@
           <span *ngFor="let movie of list.moviesInList">
             <div class="item" [ngStyle]="{'height': (loggedIn) ? '310px' : '310px'}">
               <a (click)="GoToMovie(movie.key)">
+                <div (click)="GoToMovie(movie.key)" *ngIf="movie.isThisSeries" class="ribbon ribbon-top-left"><span>series</span></div>
                 <img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;">
                 <a style="position:absolute;bottom: 110px;right: 10px;z-index: 10;" (click)="GoToMovieExternalSite(movie.key)">
                   <img *ngIf="movie.ott.Netflix" src="../../../assets/ott-icons/netflix.jpg" style="border-radius: 5px;height: 32px;">
@@ -1191,6 +1221,8 @@
                   <img *ngIf="movie.ott.Sony_Liv" src="../../../assets/ott-icons/sonyliv.png" style="border-radius: 5px;height: 32px;">
                   <img *ngIf="movie.ott.Zee5" src="../../../assets/ott-icons/zee5.png" style="border-radius: 5px;height: 32px;">
                   <img *ngIf="movie.ott.Youtube" src="../../../assets/ott-icons/youtube.jpg" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.Mx_Player" src="../../../assets/ott-icons/mxplayer.png" style="border-radius: 5px;height: 32px;">
+                  <img *ngIf="movie.ott.Voot" src="../../../assets/ott-icons/voot.png" style="border-radius: 5px;height: 32px;">
                 </a>
               </a>
               <h6 style="text-align: center;">{{movie.title}}</h6> 
@@ -1244,7 +1276,13 @@
       <br>
     </div>
 
-    <app-tamil></app-tamil>
+    <app-tamil></app-tamil><br>
+    <app-social-media></app-social-media><br>
+    <p class="text-center" style="margin-bottom: 10px;font-size: small;">Recommended Movies and Trending Movies powered by 
+      <a style="color: cornflowerblue;font-weight: bold;" href="https://www.themoviedb.org/">
+        themoviedb.org
+      </a>
+    </p><br>
   
   </span>
 <!--------------------------------------------------------MOBILE END HERE-------------------------------------------------------------->
@@ -1629,7 +1667,7 @@
   </div>
   <span *ngIf="allFriends.length == 0">
     <div *ngIf="allFriends.length == 0 && loggedIn" style="display: flex;justify-content: center;margin: 5%;">
-      <h6>You might have shared this movie to all your friends OR You haven't made any friends, click <a style="color: lawngreen;" routerLink='/people'>here</a> to send follow requests to friends and share movies with them.</h6>
+      <h6>You might have shared this movie/series to all your friends OR You haven't made any friends, click <a style="color: lawngreen;" routerLink='/people'>here</a> to send follow requests to friends and share movies with them.</h6>
     </div>
     <div *ngIf="!loggedIn" style="display: flex;justify-content: center;margin: 5%;">
       <h6>You need to Login to share movies with friends. click <a style="color: lawngreen;" routerLink='/login'>here</a> to login and share movies ith friends who are using suggesto..</h6>

@@ -23,6 +23,7 @@ import { concat } from 'rxjs';
 import { AuthService } from 'src/app/services/authService';
 import { FollowObject } from 'src/app/models/FollowObject';
 import { FeedItem } from 'src/app/models/FeedItem';
+import { PeopleServiceService } from 'src/app/sharedServices/people-service.service';
 
 declare var $:any;
 
@@ -124,6 +125,7 @@ export class MalayalamComponent implements OnInit {
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
     private listDisplayService : DisplayListService,
+    private peopleService : PeopleServiceService,
     private router : Router,
     private homelistsservice : HomePageListsService,
     private activatedRote : ActivatedRoute,
@@ -398,74 +400,76 @@ export class MalayalamComponent implements OnInit {
 
   sendFollowRequest(key)
   {
-    var receiverCustomer = this.allCustomers.find(x => x.uid === key);
-    //console.log(receiverCustomer);
+    this.peopleService.sendFollowRequest(key,this.allCustomers,this.currentCustomer);
+    // var receiverCustomer = this.allCustomers.find(x => x.uid === key);
+    // //console.log(receiverCustomer);
 
-    if(receiverCustomer)
-    {
-      var request : FollowObject = new FollowObject();
-      request.followerName = this.currentCustomer.name;
-      request.followerUserId = this.currentCustomer.uid;
-      request.followerphotoUrl = this.currentCustomer.customerPhotoUrl;
-      if(receiverCustomer.followRequestReceived)
-      {
-        receiverCustomer.followRequestReceived.push(request)
-      }
-      else
-      {
-        var requestobj : FollowObject[] = [];
-        requestobj.push(request)
-        receiverCustomer.followRequestReceived = requestobj;
-      }
+    // if(receiverCustomer)
+    // {
+    //   var request : FollowObject = new FollowObject();
+    //   request.followerName = this.currentCustomer.name;
+    //   request.followerUserId = this.currentCustomer.uid;
+    //   request.followerphotoUrl = this.currentCustomer.customerPhotoUrl;
+    //   if(receiverCustomer.followRequestReceived)
+    //   {
+    //     receiverCustomer.followRequestReceived.push(request)
+    //   }
+    //   else
+    //   {
+    //     var requestobj : FollowObject[] = [];
+    //     requestobj.push(request)
+    //     receiverCustomer.followRequestReceived = requestobj;
+    //   }
       
-      this.customerService.updateCustomer(receiverCustomer['key'],receiverCustomer)
+    //   this.customerService.updateCustomer(receiverCustomer['key'],receiverCustomer)
       
-      if(this.currentCustomer.followRequestSent)
-      {
-        this.currentCustomer.followRequestSent.push(receiverCustomer.uid);
-      }
-      else
-      {
-        var strarr :string[] = [];
-        strarr.push(receiverCustomer.uid);
-        this.currentCustomer.followRequestSent = strarr
-      }
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-      //console.log(receiverCustomer)
-      //console.log(this.currentCustomer)
-    } 
+    //   if(this.currentCustomer.followRequestSent)
+    //   {
+    //     this.currentCustomer.followRequestSent.push(receiverCustomer.uid);
+    //   }
+    //   else
+    //   {
+    //     var strarr :string[] = [];
+    //     strarr.push(receiverCustomer.uid);
+    //     this.currentCustomer.followRequestSent = strarr
+    //   }
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    //   //console.log(receiverCustomer)
+    //   //console.log(this.currentCustomer)
+    // } 
   }
   //delete other customer uid from followrequestsent array of current customer
   //delete follow object with current customer uid from followrequestreceived array of other customer
   deleteFollowRequest(key)
   {
-    var requestedCustomer = this.allCustomers.find(x => x.uid == key)
-    if(requestedCustomer)
-    {
-      if(this.currentCustomer.followRequestSent.includes(key))
-      {
-        for( var i = 0; i < this.currentCustomer.followRequestSent.length; i++)
-        {     
-          if (this.currentCustomer.followRequestSent[i] == key) 
-          {   
-            this.currentCustomer.followRequestSent.splice(i, 1); 
-          }
-        }
-      }
+    this.peopleService.unsendFollowRequest(key,this.allCustomers,this.currentCustomer);
+    // var requestedCustomer = this.allCustomers.find(x => x.uid == key)
+    // if(requestedCustomer)
+    // {
+    //   if(this.currentCustomer.followRequestSent.includes(key))
+    //   {
+    //     for( var i = 0; i < this.currentCustomer.followRequestSent.length; i++)
+    //     {     
+    //       if (this.currentCustomer.followRequestSent[i] == key) 
+    //       {   
+    //         this.currentCustomer.followRequestSent.splice(i, 1); 
+    //       }
+    //     }
+    //   }
 
-      for( var i = 0; i < requestedCustomer.followRequestReceived.length; i++)
-      {     
-        if (requestedCustomer.followRequestReceived[i].followerUserId == this.currentCustomer.uid) 
-        {   
-          requestedCustomer.followRequestReceived.splice(i, 1); 
-        }
-      }
+    //   for( var i = 0; i < requestedCustomer.followRequestReceived.length; i++)
+    //   {     
+    //     if (requestedCustomer.followRequestReceived[i].followerUserId == this.currentCustomer.uid) 
+    //     {   
+    //       requestedCustomer.followRequestReceived.splice(i, 1); 
+    //     }
+    //   }
 
-      //console.log(this.currentCustomer)
-      //console.log(requestedCustomer)
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-      this.customerService.updateCustomer(requestedCustomer['key'],requestedCustomer)
-    }
+    //   //console.log(this.currentCustomer)
+    //   //console.log(requestedCustomer)
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    //   this.customerService.updateCustomer(requestedCustomer['key'],requestedCustomer)
+    // }
   }
 
   //delete current customer uid from followrequestsentarray of other customer
@@ -473,66 +477,66 @@ export class MalayalamComponent implements OnInit {
   //push that follow object to followers of current customer and following of other customer
   acceptFollower(key)
   {
+    this.peopleService.acceptFollowRequest(key,this.allCustomers,this.currentCustomer)
+    // var otherCustomer = this.allCustomers.find(x => x.uid == key)
+    // //console.log(otherCustomer.uid);
+    // //console.log(key);
+    // if(otherCustomer)
+    // {
+    //   if(!otherCustomer.followRequestSent || otherCustomer.followRequestSent == undefined)
+    //   {
+    //     otherCustomer.followRequestSent = [];
+    //   }
+    //   if(!otherCustomer.following || otherCustomer.following == undefined)
+    //   {
+    //     otherCustomer.following = [];
+    //   }
+    //   if(!otherCustomer.followers || otherCustomer.followers == undefined)
+    //   {
+    //     otherCustomer.followers = [];
+    //   }
+    //   if(!otherCustomer.followRequestReceived || otherCustomer.followRequestReceived == undefined)
+    //   {
+    //     otherCustomer.followRequestReceived = [];
+    //   }
+    //   //otherCustomer.followRequestSent
+    //   for( var i = 0; i < otherCustomer.followRequestSent.length; i++)
+    //   {     
+    //     if (otherCustomer.followRequestSent[i] == this.currentCustomer.uid) 
+    //     {   
+    //       otherCustomer.followRequestSent.splice(i, 1); 
+    //     }
+    //   }
 
-    var otherCustomer = this.allCustomers.find(x => x.uid == key)
-    //console.log(otherCustomer.uid);
-    //console.log(key);
-    if(otherCustomer)
-    {
-      if(!otherCustomer.followRequestSent || otherCustomer.followRequestSent == undefined)
-      {
-        otherCustomer.followRequestSent = [];
-      }
-      if(!otherCustomer.following || otherCustomer.following == undefined)
-      {
-        otherCustomer.following = [];
-      }
-      if(!otherCustomer.followers || otherCustomer.followers == undefined)
-      {
-        otherCustomer.followers = [];
-      }
-      if(!otherCustomer.followRequestReceived || otherCustomer.followRequestReceived == undefined)
-      {
-        otherCustomer.followRequestReceived = [];
-      }
-      //otherCustomer.followRequestSent
-      for( var i = 0; i < otherCustomer.followRequestSent.length; i++)
-      {     
-        if (otherCustomer.followRequestSent[i] == this.currentCustomer.uid) 
-        {   
-          otherCustomer.followRequestSent.splice(i, 1); 
-        }
-      }
+    //   for( var i = 0; i < this.currentCustomer.followRequestReceived.length; i++)
+    //   {     
+    //     if (this.currentCustomer.followRequestReceived[i].followerUserId == key) 
+    //     {   
+    //       this.currentCustomer.followRequestReceived.splice(i, 1); 
+    //     }
+    //   }
 
-      for( var i = 0; i < this.currentCustomer.followRequestReceived.length; i++)
-      {     
-        if (this.currentCustomer.followRequestReceived[i].followerUserId == key) 
-        {   
-          this.currentCustomer.followRequestReceived.splice(i, 1); 
-        }
-      }
+    //   var followerObj = new FollowObject();
+    //   followerObj.followerName = otherCustomer.name;
+    //   followerObj.followerUserId = otherCustomer.uid;
+    //   followerObj.followerphotoUrl = otherCustomer.customerPhotoUrl;
 
-      var followerObj = new FollowObject();
-      followerObj.followerName = otherCustomer.name;
-      followerObj.followerUserId = otherCustomer.uid;
-      followerObj.followerphotoUrl = otherCustomer.customerPhotoUrl;
+    //   this.currentCustomer.followers.push(followerObj);
 
-      this.currentCustomer.followers.push(followerObj);
+    //   var followingObj = new FollowObject()
+    //   followingObj.followerName = this.currentCustomer.name;
+    //   followingObj.followerUserId = this.currentCustomer.uid;
+    //   followingObj.followerphotoUrl = this.currentCustomer.customerPhotoUrl;
 
-      var followingObj = new FollowObject()
-      followingObj.followerName = this.currentCustomer.name;
-      followingObj.followerUserId = this.currentCustomer.uid;
-      followingObj.followerphotoUrl = this.currentCustomer.customerPhotoUrl;
+    //   otherCustomer.following.push(followingObj);
 
-      otherCustomer.following.push(followingObj);
+    //   //console.log(this.currentCustomer)
+    //   //console.log(otherCustomer);
 
-      //console.log(this.currentCustomer)
-      //console.log(otherCustomer);
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    //   this.customerService.updateCustomer(otherCustomer['key'],otherCustomer)
 
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-      this.customerService.updateCustomer(otherCustomer['key'],otherCustomer)
-
-    }
+    // }
 
   }
 
@@ -543,24 +547,25 @@ export class MalayalamComponent implements OnInit {
     var customerToUnfollow = this.allCustomers.find(x => x.uid == key)
     if(customerToUnfollow.followers)
     {
-      for( var i = 0; i < customerToUnfollow.followers.length; i++)
-      {     
-        if (customerToUnfollow.followers[i].followerUserId == this.currentCustomer.uid) 
-        {   
-          customerToUnfollow.followers.splice(i, 1); 
-        }
-      }     
+      this.peopleService.unfollow(key,this.allCustomers,this.currentCustomer)
+      // for( var i = 0; i < customerToUnfollow.followers.length; i++)
+      // {     
+      //   if (customerToUnfollow.followers[i].followerUserId == this.currentCustomer.uid) 
+      //   {   
+      //     customerToUnfollow.followers.splice(i, 1); 
+      //   }
+      // }     
       
-      for( var i = 0; i < this.currentCustomer.following.length; i++)
-      {     
-        if (this.currentCustomer.following[i].followerUserId == customerToUnfollow.uid) 
-        {   
-          this.currentCustomer.following.splice(i, 1); 
-        }
-      } 
+      // for( var i = 0; i < this.currentCustomer.following.length; i++)
+      // {     
+      //   if (this.currentCustomer.following[i].followerUserId == customerToUnfollow.uid) 
+      //   {   
+      //     this.currentCustomer.following.splice(i, 1); 
+      //   }
+      // } 
 
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-      this.customerService.updateCustomer(customerToUnfollow['key'],customerToUnfollow)
+      // this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+      // this.customerService.updateCustomer(customerToUnfollow['key'],customerToUnfollow)
 
       for( var i = 0; i < this.allFollowinguids.length; i++)
       {     

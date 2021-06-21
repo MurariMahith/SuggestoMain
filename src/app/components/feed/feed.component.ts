@@ -21,6 +21,9 @@ import { Customer } from 'src/app/models/Customer';
 import { RatedMovies } from 'src/app/models/Customer Related/RatedMovies';
 import { FeedItem } from 'src/app/models/FeedItem';
 import { UpcomingOtt } from 'src/app/models/UpcomingOtt';
+import { WishlistService } from 'src/app/sharedServices/wishlist.service';
+import { WatchedService } from 'src/app/sharedServices/watched.service';
+import { RatingService } from 'src/app/sharedServices/rating.service';
 
 @Component({
   selector: 'app-feed',
@@ -64,17 +67,10 @@ export class FeedComponent implements OnInit {
   
   isMobile : boolean = false;
 
-  APIforState = 'https://api.bigdatacloud.net/data/reverse-geocode-client?'
-
-
-  latitude : string = '';
-  longitude : string = '';
-  locationAccess : boolean = false;
-  locationPreferreLanguage : string = "";
-
-  locationBasedMovies : DisplayMovie[] = [];
+  //APIforState = 'https://api.bigdatacloud.net/data/reverse-geocode-client?'
 
   allCustomers : Customer[] = [];
+  verifiedCustomers : Customer[] = [];
   currentCustomer : Customer;
 
   wishlistedMovies : string[] = [];
@@ -104,6 +100,9 @@ export class FeedComponent implements OnInit {
     private movieDisplayService : DisplayMovieService,
     private listDisplayService : DisplayListService,
     private router : Router,
+    private wishlistService : WishlistService,
+    private watchedService : WatchedService,
+    private ratingService : RatingService,
     private homelistsservice : HomePageListsService,
     private activatedRote : ActivatedRoute,
     private http : HttpClient,
@@ -129,6 +128,11 @@ export class FeedComponent implements OnInit {
             {
               ////console.log(o)
               this.allCustomers = o;
+              this.verifiedCustomers.length = 0;
+              this.allCustomers.forEach(element => {
+                if(element.verifiedAccount)
+                  this.verifiedCustomers.push(element);
+              });
               if(o.find(x => x.uid === localStorage.getItem("uid")))
               {
                 this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
@@ -238,15 +242,7 @@ export class FeedComponent implements OnInit {
         this.homePageList = o[0];
         ////console.log(this.homePageList.listsToIncludeInHomePage)
         this.buildeditorChoiceMovieListForDisplay()
-        this.buildRecentlySuggestedMovieList()
-        // if(navigator.geolocation)
-        //   this.locationAccess = true;
-        // else
-        //   this.locationAccess = false;
-        // if(this.locationAccess)
-        // {
-        //   this.buildMovieSuggestionBasedOnLocation()
-        // }      
+        this.buildRecentlySuggestedMovieList()    
       });
 
       this.customerService.getAllOtt().snapshotChanges().pipe(
@@ -262,9 +258,7 @@ export class FeedComponent implements OnInit {
         this.allOttObjs = _.orderBy(allOtt, (x: UpcomingOtt) => {
           return moment(new Date(this.buildProperDate(x.releaseDate)))
         }, ['desc']);
-        // console.log(moment(this.buildProperDate(allOtt[0].releaseDate)).format('MMMM'))
-        // console.log(moment(this.buildProperDate(allOtt[0].releaseDate)).format('DD'))
-        // console.log(moment(this.buildProperDate(allOtt[0].releaseDate)).format('YYYY'))
+
         this.allOttObjs.forEach(a => {
           a.releaseDate = moment(this.buildProperDate(a.releaseDate)).format('DD')+ " "+moment(this.buildProperDate(a.releaseDate)).format('MMMM')
         })
@@ -345,21 +339,15 @@ export class FeedComponent implements OnInit {
   
     buildPersonalisedContentForLoggedInCustomer()
     {
-      ////console.log("inside")
-      ////console.log(this.currentCustomer)
-      ////console.log(this.allMovies)
       var i=0;
       var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,false,true,false,false);
       var personalisedMovies = []
       allDisplayMovies.forEach(o => {
   
         var genresForMovie = o.genre.trim().split(' ')
-        ////console.log(genresForMovie)
         
         genresForMovie.forEach(element => {
   
-          ////console.log(this.currentCustomer.preferredGenre.includes(element))
-          ////console.log(element)
           
           if(this.currentCustomer.preferredGenre && this.currentCustomer.preferredGenre.includes(element))
           {
@@ -370,8 +358,6 @@ export class FeedComponent implements OnInit {
         });
   
       });
-      ////console.log(i)
-      ////console.log(personalisedMovies)
       var uniqueArray :DisplayMovie[] = personalisedMovies.filter(function(item, pos) {
         return personalisedMovies.indexOf(item) == pos;
       })
@@ -387,8 +373,6 @@ export class FeedComponent implements OnInit {
           }
         });
       });
-      // //console.log(LanguageBasedPersonalisedMovies)
-      // //console.log(this.personalisedMoviesDisplay)
       this.personalisedMoviesDisplay = LanguageBasedPersonalisedMovies
       //murari
   
@@ -407,95 +391,6 @@ export class FeedComponent implements OnInit {
       // this.personalisedMoviesDisplay = uniqueArray2;
       ////console.log(this.personalisedMoviesDisplay)
     }
-  
-    // showPosition(position) {
-    //   ////console.log(position)
-    //   this.latitude = position.coords["latitude"]
-    //   this.longitude = position.coords["longitude"];
-    //   ////console.log(this.latitude+","+this.longitude)
-    // }
-  
-    // buildMovieSuggestionBasedOnLocation()
-    // {
-    //   var telugu : boolean = false;
-    //   var tamil : boolean = false;
-    //   var malayalam : boolean = false;
-    //   var kannada : boolean = false;
-    //   var english : boolean = false; 
-  
-    //   if (navigator.geolocation) {
-    //     navigator.geolocation.getCurrentPosition(this.showPosition.bind(this));
-    //     this.locationAccess = true;
-    //     ////console.log(this.latitude+","+this.longitude)
-    //   } else { 
-    //     this.locationAccess = false;
-    //     alert("Location access is needed to suggest movies based on location, Its not mandatory to give location access to us.")
-    //   }
-    //   this.http.get(this.APIforState+"latitude="+this.latitude+"&longitude="+this.longitude+"&localityLanguage=en").toPromise()
-    //         .then(a => {
-    //           ////console.log(a)
-    //           if(a["principalSubdivision"] == "Karnataka")
-    //           {
-    //             telugu = true;
-    //             kannada = true;
-    //           }
-    //           else if(a["principalSubdivision"] == "Tamil Nadu")
-    //           {
-    //             tamil = true;
-    //           }
-    //           else if(a["principalSubdivision"] == "Andhra Pradesh" || a["principalSubdivision"] == "Telangana")
-    //           {
-    //             telugu = true;
-    //           }
-    //           else if(a["principalSubdivision"] == "Kerala")
-    //           {
-    //             malayalam = true;
-    //           }
-    //           else
-    //           {
-    //             english = true;
-    //           }
-  
-    //           var allmovies2 = [];
-    //           this.allMovies.forEach(element => {
-    //             if(telugu)
-    //             {
-    //               this.locationPreferreLanguage = "Telugu"
-    //               if(element.language.telugu == true)
-    //                 allmovies2.push(element)
-    //             }
-    //             else if(tamil)
-    //             {
-    //               this.locationPreferreLanguage = "Tamil"
-    //               if(element.language.tamil == true)
-    //                 allmovies2.push(element)
-    //             }
-    //             else if(malayalam)
-    //             {
-    //               this.locationPreferreLanguage = "Malayalam"
-    //               if(element.language.malayalam == true)
-    //                 allmovies2.push(element)
-    //             }
-    //             else if(english)
-    //             {
-    //               this.locationPreferreLanguage = "English"
-    //               if(element.language.english == true)
-    //                 allmovies2.push(element)
-    //             }
-    //             if(kannada)
-    //             {
-    //               this.locationPreferreLanguage = "Telugu, Kannada not supported in this version"
-    //             }              
-    //           });
-  
-    //           this.locationBasedMovies = this.movieDisplayService.prepareDisplayMovieList(allmovies2,true,false,false,false)
-    //           ////console.log(this.locationBasedMovies)
-  
-    //         })
-    //         .catch(() => {
-    //             //console.log("location access denied user can't get location based content")
-    //         });
-    // }
   
     buildRecentlySuggestedMovieList()
     {
@@ -595,20 +490,21 @@ export class FeedComponent implements OnInit {
     addMovieToWishlist(key)
   {
     //console.log(key)
-    var wishlisted = []
+    //var wishlisted = []
     this.wishlistedMovies.push(key)
-    wishlisted.push(key)
-    if(!this.currentCustomer.wishlistedMovies)
-    {
-      //console.log("new");
-      this.currentCustomer.wishlistedMovies = wishlisted;
-    }
-    else
-    {
-      this.currentCustomer.wishlistedMovies.push(key);
-    }
-    ////console.log(this.currentCustomer)
-    this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+    this.wishlistService.addToWishlist(key,this.currentCustomer);
+    // wishlisted.push(key)
+    // if(!this.currentCustomer.wishlistedMovies)
+    // {
+    //   //console.log("new");
+    //   this.currentCustomer.wishlistedMovies = wishlisted;
+    // }
+    // else
+    // {
+    //   this.currentCustomer.wishlistedMovies.push(key);
+    // }
+    // ////console.log(this.currentCustomer)
+    // this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
     var feeditm : FeedItem = new FeedItem();
     feeditm.content = this.currentCustomer.name + " added "+this.allMovies.find(x=>x.key == key).title + " to their wishlist . Click to view the movie."
     feeditm.customerName = this.currentCustomer.name;
@@ -621,37 +517,38 @@ export class FeedComponent implements OnInit {
 
   removeFromWishlist(key)
   {
-    //console.log(this.currentCustomer.wishlistedMovies)
-    if(this.currentCustomer.wishlistedMovies.includes(key))
-    {
-      for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
-      {     
-        if (this.currentCustomer.wishlistedMovies[i] == key) 
-        {   
-          this.currentCustomer.wishlistedMovies.splice(i, 1); 
-        }
-      }
-      //console.log(this.currentCustomer.wishlistedMovies)
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
-    }
+    this.wishlistService.removeFromWishlist(key,this.currentCustomer)
+    // //console.log(this.currentCustomer.wishlistedMovies)
+    // if(!this.currentCustomer.wishlistedMovies.includes(key))
+    // {
+    //   // for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
+    //   // {     
+    //   //   if (this.currentCustomer.wishlistedMovies[i] == key) 
+    //   //   {   
+    //   //     this.currentCustomer.wishlistedMovies.splice(i, 1); 
+    //   //   }
+    //   // }
+    //   console.log("not there")
+    // }
   }
 
   addToWatchedMovies(key)
   {
     this.watchedMovies.push(key)
-    if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.length >1)
-    {
-      this.currentCustomer.watchedMovies.push(key);
+    this.watchedService.addToWatched(key,this.currentCustomer)
+    // if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.length >1)
+    // {
+    //   this.currentCustomer.watchedMovies.push(key);
 
-    }
-    else
-    {
-      var arr :string[] = [];
-      arr.push(key);
-      this.currentCustomer.watchedMovies = arr;
-    }
+    // }
+    // else
+    // {
+    //   var arr :string[] = [];
+    //   arr.push(key);
+    //   this.currentCustomer.watchedMovies = arr;
+    // }
 
-    this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    //this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
     var feeditm : FeedItem = new FeedItem();
     feeditm.content = this.currentCustomer.name + " watched "+this.allMovies.find(x=>x.key == key).title + " . Click to view the movie."
     feeditm.customerName = this.currentCustomer.name;
@@ -664,17 +561,18 @@ export class FeedComponent implements OnInit {
 
   removeFromWatched(key)
   {
-    if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(key))
-    {
-      for( var i = 0; i < this.currentCustomer.watchedMovies.length; i++)
-      {     
-        if (this.currentCustomer.watchedMovies[i] == key) 
-        {   
-          this.currentCustomer.watchedMovies.splice(i, 1); 
-        }
-      }
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-    }
+    this.watchedService.removeFromWatched(key,this.currentCustomer)
+    // if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(key))
+    // {
+    //   for( var i = 0; i < this.currentCustomer.watchedMovies.length; i++)
+    //   {     
+    //     if (this.currentCustomer.watchedMovies[i] == key) 
+    //     {   
+    //       this.currentCustomer.watchedMovies.splice(i, 1); 
+    //     }
+    //   }
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    // }
 
   }
 
@@ -686,25 +584,26 @@ export class FeedComponent implements OnInit {
 
   rateMovie(key)
   {
-    this.MovieToBeRated.rating = Number(this.MovieToBeRated.rating) + Number(this.rating);
-    var movieKey = this.MovieToBeRated.key
-    delete this.MovieToBeRated.key
-    this.movieService.updateMovie(movieKey,this.MovieToBeRated)
-    var ratedMovieLocal : RatedMovies = new RatedMovies();
-    var arr = [];
-    ratedMovieLocal.movieId = key;
-    ratedMovieLocal.rating = Number(this.rating)
-    if(!this.currentCustomer.ratedMovies)
-    {
-      arr.push(ratedMovieLocal)
-      this.currentCustomer.ratedMovies = arr
-    }
-    else
-    {
-      this.currentCustomer.ratedMovies.push(ratedMovieLocal)
-    }
-    ////console.log(this.currentCustomer)
-    this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+    this.ratingService.rateMovie(key,this.MovieToBeRated,this.rating,this.currentCustomer,this.loggedIn)
+    // this.MovieToBeRated.rating = Number(this.MovieToBeRated.rating) + Number(this.rating);
+    // var movieKey = this.MovieToBeRated.key
+    // delete this.MovieToBeRated.key
+    // this.movieService.updateMovie(movieKey,this.MovieToBeRated)
+    // var ratedMovieLocal : RatedMovies = new RatedMovies();
+    // var arr = [];
+    // ratedMovieLocal.movieId = key;
+    // ratedMovieLocal.rating = Number(this.rating)
+    // if(!this.currentCustomer.ratedMovies)
+    // {
+    //   arr.push(ratedMovieLocal)
+    //   this.currentCustomer.ratedMovies = arr
+    // }
+    // else
+    // {
+    //   this.currentCustomer.ratedMovies.push(ratedMovieLocal)
+    // }
+    // ////console.log(this.currentCustomer)
+    // this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
   }
   
     // addMovieToWishlist(key)

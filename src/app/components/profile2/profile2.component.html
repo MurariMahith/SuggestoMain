@@ -4,7 +4,7 @@
 
 <div *ngIf="loading" style="position: absolute;top: 60px;left: 0;width: 100%;height: 100%;z-index: 2;background-color: rgb(0,0,0)">
     <div style="display: flex;justify-content: center;align-items: center;height: 90%;">
-    <img src="../../../assets/loading animation/load2-crop.gif" width="200" height="200" style="opacity: 1;"></div>
+    <img src="../../../assets/loading animation/tryfinalgif.gif" width="200" height="200" style="opacity: 1;"></div>
 </div>
 
 <!-- <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button> -->
@@ -18,9 +18,14 @@
     <div class="prof-flex" style="display: flex;justify-content: center;">
         <img *ngIf="currentCustomer.customerPhotoUrl" src="{{currentCustomer.customerPhotoUrl}}" alt="{{currentCustomer.name}}" width="50px" height="50px" style="border-radius: 100px;border: 2px solid white;" />
         <img *ngIf="!currentCustomer.customerPhotoUrl" src="../../../assets/images/logo.jpg" width="50px" height="50px" alt=""  style="border-radius: 100px;border: 2px solid white;"  />
+        <!-- <div style="position: relative;top:40px;bottom: 0;right: 0;">
+            <img src="../../../assets/images/verified account.svg" width="20">
+        </div> -->
     </div>
     <div class="prof-flex" style="display: flex;justify-content: center;">
-        <h4>{{currentCustomer.name | titlecase}}</h4>
+        <h4>{{currentCustomer.name | titlecase}} 
+            <img *ngIf="currentCustomer.verifiedAccount" src="../../../assets/images/verified account.svg" width="20">
+        </h4>
     </div>
     <!-- <div class="d-flex bd-highlight">
         <div class="p-2 bd-highlight">
@@ -73,9 +78,10 @@
         </tr>
     </table>
     </div>
-    <div class="prof-flex" style="display: flex;justify-content: center;margin-top: 8%;">        
+    <div class="prof-flex" style="display: flex;justify-content: center;margin-top: 8%;flex-wrap: wrap;">        
         <button type="button" class="btn btn-primary" style="border-radius: 20px;margin-right: 10px;" (click)="copyToClipboard()">Invite Friends</button>
-        <button type="button" class="btn btn-primary" style="border-radius: 20px;" (click)="this.router.navigateByUrl('/board')">MovieBuff board</button>
+        <button *ngIf="!currentCustomer.verifiedAccount" type="button" class="btn btn-primary" style="border-radius: 20px;" (click)="this.router.navigateByUrl('/board')">MovieBuff board</button>
+        <button *ngIf="currentCustomer.verifiedAccount" type="button" class="btn btn-primary" style="border-radius: 20px;" (click)="GoToSocialAccount()">View My Social Account</button>
     </div>
 </div>
 </b>
@@ -171,8 +177,8 @@
         </div>
     </div>
 </div></b>
-
-<a role="button" href="https://t.me/joinchat/aIZt7ebzoLc4MWM1" style="width: 90%;margin-left: 5%;" class="btn btn-sm btn-outline-primary btn-lg btn-block"><i class="bi bi-telegram"></i>&nbsp;Join MovieeFlix Telegram channel for downloading HD Movies</a>
+<!--partner-->
+<!-- <a role="button" href="https://t.me/joinchat/aIZt7ebzoLc4MWM1" style="width: 90%;margin-left: 5%;" class="btn btn-sm btn-outline-primary btn-lg btn-block"><i class="bi bi-telegram"></i>&nbsp;Join MovieeFlix Telegram channel for downloading HD Movies</a> -->
 </span>
 
 <span *ngIf="peopleNav">
@@ -427,10 +433,21 @@
 <h4 style="margin-left: 5%;margin-top: 2%;">Settings</h4>
 
 <div class="content-item" style="font-size: small;">
-    <div class="lists" style="margin: 2%;display: flex;" (click)="UpdateCustomerWhenSharingEvent2(!share,currentCustomer.showWishlistToFollowers,currentCustomer.showWatchedListToFollowers)">
+    <div class="lists" style="margin: 2%;display: flex;" *ngIf="currentCustomer.verifiedAccount">
         <div class="d-flex bd-highlight list-item" style="width: 100%;">
             <div class="p-2 w-100 bd-highlight">
-                <i style="color: greenyellow;font-size: medium;" class="bi bi-tools"></i>  Public Mode (turn off to use incognito mode)               
+                <i style="color: greenyellow;font-size: medium;" class="bi bi-tools"></i>  
+                Public Mode (Revert verified account status to use incognito mode)           
+            </div>
+            <div class="p-2 flex-shrink-1 bd-highlight">
+                
+            </div>
+        </div>
+    </div>
+    <div class="lists" style="margin: 2%;display: flex;" *ngIf="!currentCustomer.verifiedAccount" (click)="UpdateCustomerWhenSharingEvent2(!share,currentCustomer.showWishlistToFollowers,currentCustomer.showWatchedListToFollowers)">
+        <div class="d-flex bd-highlight list-item" style="width: 100%;">
+            <div class="p-2 w-100 bd-highlight">
+                <i style="color: greenyellow;font-size: medium;" class="bi bi-tools"></i>  Public Mode <span>(turn off to use incognito mode) </span>
             </div>
             <div class="p-2 flex-shrink-1 bd-highlight">
                 <label class="switch">
@@ -463,6 +480,16 @@
                     <input type="checkbox" (change)="UpdateCustomerWhenSharingEvent()" [(ngModel)]="currentCustomer.showWatchedListToFollowers" name="watcheshare">
                     <span class="slider round"></span>
                 </label>
+            </div>
+        </div>
+    </div>
+    <div class="lists" style="margin: 2%;display: flex;" (click)="this.router.navigateByUrl('/privacyPolicy')">
+        <div class="d-flex bd-highlight list-item" style="width: 100%;font-size: medium;">
+            <div class="p-2 w-100 bd-highlight">
+                See Privacy Policy
+            </div>
+            <div class="p-2 flex-shrink-1 bd-highlight">
+                <i class="bi bi-chevron-right"></i>
             </div>
         </div>
     </div>
@@ -523,8 +550,40 @@
             </div>
         </div>
     </div>
+    <div class="lists" style="margin: 2%;display: flex;" *ngIf="!currentCustomer.verifiedAccount && !this.currentCustomer.appliedForVerifiedAccount"  data-toggle="modal" data-target="#verificationModal">
+        <!--verificationModal (click)="applyForVerifiedAccount()"-->
+        <div class="d-flex bd-highlight list-item" style="width: 100%;font-size: medium;">
+            <div class="p-2 w-100 bd-highlight">
+               Apply for Verified Account
+            </div>
+            <div class="p-2 flex-shrink-1 bd-highlight">
+                <i class="bi bi-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+    <div class="lists" style="margin: 2%;display: flex;" *ngIf="currentCustomer.verifiedAccount" (click)="revertVerifiedAccountStatus()">
+        <!--verificationModal (click)="applyForVerifiedAccount()"-->
+        <div class="d-flex bd-highlight list-item" style="width: 100%;font-size: medium;">
+            <div class="p-2 w-100 bd-highlight">
+               Revert verified acoount status
+            </div>
+            <div class="p-2 flex-shrink-1 bd-highlight">
+                <i class="bi bi-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+    <div class="lists" style="margin: 2%;display: flex;" *ngIf="!currentCustomer.verifiedAccount && this.currentCustomer.appliedForVerifiedAccount">
+        <div class="d-flex bd-highlight list-item" style="width: 100%;font-size: medium;">
+            <div class="p-2 w-100 bd-highlight">
+                Verification : In-Progress
+            </div>
+            <div class="p-2 flex-shrink-1 bd-highlight">
+                <i class="bi bi-info-circle-fill"></i>
+            </div>
+        </div>
+    </div>
     <div class="lists" style="margin: 2%;font-size: medium;">
-        <div class="d-flex bd-highlight mb-3 list-item"  (click)="deleteAccount()" style="background-color: red;">
+        <div class="d-flex bd-highlight mb-3 list-item"  (click)="deleteAccount()" style="background-color: rgba(255, 0, 0, 0.575);">
             <div class="mr-auto p-2 bd-highlight">
                 <b>Delete My Account</b>
             </div>
@@ -716,7 +775,8 @@
     </div>
 </div>
 
-<app-tamil></app-tamil>
+<app-tamil></app-tamil><br>
+<app-social-media></app-social-media>
 
 
 </div>
@@ -737,3 +797,37 @@
         <h6>{{newMsgCount}} New <i style="color: white;" class="bi bi-envelope"></i></h6>
     </span>
 </div>
+
+<!--verification account modal-->
+<div class="modal fade" id="verificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content"  style="background-color: black;color: white;border: 1px solid white;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Apply For verified Account</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: white;">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Social Media Account Url</label>
+                  <input name="socialAcc" [(ngModel)]="this.socialAccount" #socialAcc="ngModel" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                  <!-- <small id="emailHelp" class="form-text text-muted">Verified accounts can be showed on news-feed section, so users who are interested in your work can folow on your respective social media platforms also.</small> -->
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Small description about you / your organisation</label>
+                    <textarea name="desc" [(ngModel)]="this.smalldescription" #desc="ngModel" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <!-- <small id="emailHelp" class="form-text text-muted">in 100 words.</small> -->
+                </div>
+                <small class="form-text">If you apply for verified account, you cannot make your account private because verified accounts are shown in different places of our application. If you again want to use incognito mode you can revert back verification status ans ude.</small>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-outline-primary" data-dismiss="modal" (click)="applyForVerifiedAccount()">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--modal ends here-->

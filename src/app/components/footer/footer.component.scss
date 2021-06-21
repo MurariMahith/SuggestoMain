@@ -14,6 +14,13 @@ div.scrollmenu {
   }
 
 
+
+  .names
+  {
+    color: white;
+  }
+
+
   #footer {
 
     width: 100%;
@@ -38,8 +45,13 @@ div.scrollmenu {
 
   .active
   {
-    //border-bottom:2px solid blue;
-    color: blue;
+    // border-bottom:2px solid blue;
+    color: rgb(145, 255, 0) !important;
+  }
+
+  .bi
+  {
+    color: white;
   }
 
   *:focus {

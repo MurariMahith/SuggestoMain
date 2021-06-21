@@ -14,6 +14,7 @@ export class DisplayMovieService {
   prepareDisplayMovieList(allMoviesFromDb : FMovie[],sort = true,random = false,sortYearDesc = false,sortYearAsc = false,sortVisitedCountDesc = false) : DisplayMovie[]
   {
     var MovieListForDisplay : DisplayMovie[] = [];
+    var keys :string[] = [];
     ////console.log(allMoviesFromDb)
     allMoviesFromDb.forEach(o => {
       var obj = new DisplayMovie()
@@ -79,7 +80,13 @@ export class DisplayMovieService {
           obj.availableIn += key +' '
       }
 
-      MovieListForDisplay.push(obj);    
+      //not adding duplicate movies
+      if(!keys.includes(o.key))
+      {
+        keys.push(o.key);
+        MovieListForDisplay.push(obj); 
+      }
+   
     });
     //sorting display items based on rating
     if(sort)

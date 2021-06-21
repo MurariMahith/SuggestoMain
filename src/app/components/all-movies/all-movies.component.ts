@@ -140,6 +140,7 @@ export class AllMoviesComponent implements OnInit {
       obj.cast = o.cast.join(",")
       obj.subTags = o.subTags.join(",")
       obj.suggestedDate = o.suggestedDate;
+      obj.isThisSeries = o.isThisSeries;
 
       for(var key in o.language)
       {

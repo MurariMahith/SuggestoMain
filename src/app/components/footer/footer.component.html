@@ -1,28 +1,28 @@
-<div *ngIf="isMobile">
-  <div id="footer">
+<div *ngIf="isMobile" style="margin-bottom: none;">
+  <div id="footer" style="background-color: black;">
     <div style="display: flex;justify-content: center;flex-wrap: wrap;">
       <div style="width: 20%;" class="abc">
       <h4 routerLink="/home" routerLinkActive="active">
-        <i class="bi bi-house" ></i>
-        <p style="font-size: xx-small;">home</p>
+        <i class="bi bi-house" routerLink="/home" routerLinkActive="active"></i>
+        <p class="names" style="font-size: xx-small;">home</p>
       </h4>
       </div>
       <div style="width: 20%;" class="abc">
         <h4  routerLink="/all" routerLinkActive="active">
-          <i class="bi bi-search"></i>
-          <p style="font-size: xx-small;">Search</p>
+          <i class="bi bi-search"  routerLink="/all" routerLinkActive="active"></i>
+          <p class="names" style="font-size: xx-small;">Search</p>
         </h4>
       </div>
       <div style="width: 20%;" class="abc">
         <h4 routerLink="/news-feed" routerLinkActive="active">
-          <i class="bi bi-heart"></i>
-          <p style="font-size: xx-small;">Feed</p>
+          <i class="bi bi-heart"  routerLink="/news-feed" routerLinkActive="active"></i>
+          <p class="names" style="font-size: xx-small;">Feed</p>
         </h4>
       </div>
       <div style="width: 20%;" class="abc">
         <h4 routerLink="/movielist" routerLinkActive="active">
-          <i class="bi bi-collection-play"></i>
-          <p style="font-size: xx-small;">Lists</p>
+          <i class="bi bi-collection-play"  routerLink="/movielist" routerLinkActive="active"></i>
+          <p class="names" style="font-size: xx-small;">Lists</p>
         </h4>
       </div>      
       <!-- <div style="width: 20%;" class="abc">
@@ -34,12 +34,12 @@
       <div style="width: 20%;" class="abc">
         <h4  routerLink="/login" routerLinkActive="active" *ngIf="!loggedIn" >
           <i class="bi bi-person"></i>
-          <p *ngIf="!loggedIn" style="font-size: xx-small;">Login</p>
+          <p  class="names" *ngIf="!loggedIn" style="font-size: xx-small;">Login</p>
         </h4>
         <h4 routerLink="/profile" routerLinkActive="active" *ngIf="loggedIn">
           <i *ngIf="loggedIn && !currentCustomer"   class="bi bi-person"></i>
           <img *ngIf="loggedIn && currentCustomer" src="{{currentCustomer.customerPhotoUrl}}" width="24" style="border-radius: 100px;">
-          <p *ngIf="loggedIn" style="font-size: xx-small;">Profile</p>
+          <p  class="names" *ngIf="loggedIn" style="font-size: xx-small;">Profile</p>
         </h4>
       </div>
     </div>

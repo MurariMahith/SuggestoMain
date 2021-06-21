@@ -30,7 +30,7 @@ export class AuthService {
             {
                 localStorage.setItem("loggedIn","false");
                 localStorage.removeItem("uid");
-                window.location.href = "/home"
+                window.location.href = "/login"
             })
   }
   getAuthState() :any
@@ -45,6 +45,11 @@ export class AuthService {
   resetAuthState()
   {
       this.loggedIn = false;
+  }
+
+  deleteAccount(uid)
+  {
+    //find a way to delete user from firebase authentication
   }
 
 }

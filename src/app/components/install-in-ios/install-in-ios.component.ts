@@ -1,0 +1,34 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-install-in-ios',
+  templateUrl: './install-in-ios.component.html',
+  styleUrls: ['./install-in-ios.component.css']
+})
+export class InstallInIOSComponent implements OnInit {
+
+  constructor() 
+  {
+    (
+      function(d,s,id)
+      {
+          var js,stags=d.getElementsByTagName(s)[0];
+          if(d.getElementById(id))
+          {
+              return;
+          }
+          js=d.createElement(s);
+          js.id=id;
+          js.src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js";
+          stags.parentNode.insertBefore(js,stags);
+      }
+    )
+    (
+        document,"script","imdb-rating-api"
+    );
+  }
+
+  ngOnInit(): void {
+  }
+
+}

@@ -21,6 +21,7 @@ import { Customer } from 'src/app/models/Customer';
 import { RatedMovies } from 'src/app/models/Customer Related/RatedMovies';
 import { concat } from 'rxjs';
 import { AuthService } from 'src/app/services/authService';
+import { PeopleServiceService } from 'src/app/sharedServices/people-service.service';
 
 @Component({
   selector: 'app-people',
@@ -55,6 +56,7 @@ export class PeopleComponent implements OnInit {
     private movieDisplayService : DisplayMovieService,
     private listDisplayService : DisplayListService,
     private router : Router,
+    private peopleService : PeopleServiceService,
     private homelistsservice : HomePageListsService,
     private activatedRote : ActivatedRoute,
     private http : HttpClient,

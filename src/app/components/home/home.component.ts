@@ -36,6 +36,9 @@ import { AuthService } from 'src/app/services/authService';
 import { FeedItem } from 'src/app/models/FeedItem';
 import { SharedMovie } from 'src/app/models/SharedMovie';
 import { FollowObject } from 'src/app/models/FollowObject';
+import { WishlistService} from 'src/app/sharedServices/wishlist.service';
+import { RatingService } from 'src/app/sharedServices/rating.service';
+import { WatchedService } from 'src/app/sharedServices/watched.service';
 
 @Component({
   selector: 'app-home',
@@ -80,12 +83,8 @@ export class HomeComponent implements OnInit {
   APIforState = 'https://api.bigdatacloud.net/data/reverse-geocode-client?'
 
 
-  latitude : string = '';
-  longitude : string = '';
-  locationAccess : boolean = false;
-  locationPreferreLanguage : string = "";
-
   locationBasedMovies : DisplayMovie[] = [];
+  //change above to preferred language movies
 
   currentCustomer : Customer;
 
@@ -109,7 +108,7 @@ export class HomeComponent implements OnInit {
   safeSrc: SafeResourceUrl;
 
   //quickViewMovie : FMovie = new FMovie();
-  langq : Language = {english: true, kannada: false, malayalam: false, tamil: false, telugu: false};
+  langq : Language = {english: true, kannada: false, malayalam: false, tamil: false, telugu: false, hindi:false};
   genreq : Genre = new Genre()
   availableInq : MoviePlatForm = new MoviePlatForm();
   //{Action:true,Adventure:false,Alien_and_Space:false,Animated:false,Comedy:false,Drama:false,Fantasy:false,Horror:false,Korean:false,Mystery:false,Romance:false,Science_Fiction:false,Super_Hero:true,Thriller:false,Western:false}
@@ -159,6 +158,9 @@ export class HomeComponent implements OnInit {
     private movieDisplayService : DisplayMovieService,
     private listDisplayService : DisplayListService,
     private router : Router,
+    private wishlistService : WishlistService,
+    private watchedService : WatchedService,
+    private ratingService : RatingService,
     private homelistsservice : HomePageListsService,
     private activatedRote : ActivatedRoute,
     private http : HttpClient,
@@ -638,22 +640,12 @@ export class HomeComponent implements OnInit {
         )
       )
     ).subscribe(o => {
-      ////console.log(o)
+      //console.log(o)
       this.homePageList = o[0];
-      ////console.log(this.homePageList.listsToIncludeInHomePage)
       this.buildeditorChoiceMovieListForDisplay()
       this.buildRecentlySuggestedMovieList()
-      //uncomment below code if location based movies doesn't work and remove or condition in below if actual if condition : if(this.locationAccess)
-      // if(navigator.geolocation)
-      //   this.locationAccess = true;
-      // else
-      //   this.locationAccess = false;
-      if(this.locationAccess || !this.locationAccess)
-      {
-        this.buildMovieSuggestionBasedOnLocation()
-      }      
+      this.buildMovieSuggestionBasedOnLanguage()  
     });
-    //this.buildeditorChoiceMovieListForDisplay()
 
     var dailyHitUpdatedNow :  boolean = false;
     this.hitsService.getAllDailyHits()
@@ -994,94 +986,12 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  showPosition(position) {
-    ////console.log(position)
-    this.latitude = position.coords["latitude"]
-    this.longitude = position.coords["longitude"];
-    ////console.log(this.latitude+","+this.longitude)
-  }
-
-  buildMovieSuggestionBasedOnLocation()
+  //decide whether we want preferred language movies or not.
+  buildMovieSuggestionBasedOnLanguage()
   {
-    var telugu : boolean = false;
-    var tamil : boolean = false;
-    var malayalam : boolean = false;
-    var kannada : boolean = false;
-    var english : boolean = false; 
-    //uncomment below code if location based movies doesn't work
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(this.showPosition.bind(this));
-    //   this.locationAccess = true;
-    //   ////console.log(this.latitude+","+this.longitude)
-    // } else { 
-    //   this.locationAccess = false;
-    //   alert("Location access is needed to suggest movies based on location, Its not mandatory to give location access to us.")
-    // }
-    this.locationAccess = true;
-    this.http.get(this.APIforState+"latitude="+this.latitude+"&longitude="+this.longitude+"&localityLanguage=en").toPromise()
-          .then(a => {
-            ////console.log(a)
-            if(a["principalSubdivision"] == "Karnataka")
-            {
-              telugu = true;
-              kannada = true;
-            }
-            else if(a["principalSubdivision"] == "Tamil Nadu")
-            {
-              tamil = true;
-            }
-            else if(a["principalSubdivision"] == "Andhra Pradesh" || a["principalSubdivision"] == "Telangana")
-            {
-              telugu = true;
-            }
-            else if(a["principalSubdivision"] == "Kerala")
-            {
-              malayalam = true;
-            }
-            else
-            {
-              english = true;
-            }
+    // var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,false,true,false,false);
 
-            var allmovies2 = [];
-            this.allMovies.forEach(element => {
-              if(telugu)
-              {
-                this.locationPreferreLanguage = "Telugu"
-                if(element.language.telugu == true)
-                  allmovies2.push(element)
-              }
-              else if(tamil)
-              {
-                this.locationPreferreLanguage = "Tamil"
-                if(element.language.tamil == true)
-                  allmovies2.push(element)
-              }
-              else if(malayalam)
-              {
-                this.locationPreferreLanguage = "Malayalam"
-                if(element.language.malayalam == true)
-                  allmovies2.push(element)
-              }
-              else if(english)
-              {
-                this.locationPreferreLanguage = "English"
-                if(element.language.english == true)
-                  allmovies2.push(element)
-              }
-              if(kannada)
-              {
-                this.locationPreferreLanguage = "Telugu, Kannada not supported in this version"
-              }              
-            });
-
-            this.locationBasedMovies = this.movieDisplayService.prepareDisplayMovieList(allmovies2,true,false,false,false)
-            ////console.log(this.locationBasedMovies)
-
-          })
-          .catch(() => {
-              //console.log("location access denied user can't get location based content")
-          });
+    //this.locationBasedMovies = this.movieDisplayService.prepareDisplayMovieList(allmovies2,true,false,false,false)
   }
 
   buildRecentlySuggestedMovieList()
@@ -1161,11 +1071,6 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  launchModal(key)
-  {
-    //document.querySelector(".exampleModalCenter").on()
-  }
-
   addMovieToWishlist(key)
   {
     if(this.loggedIn)
@@ -1173,18 +1078,20 @@ export class HomeComponent implements OnInit {
       //console.log(key)
       var wishlisted = []
       this.wishlistedMovies.push(key)
-      wishlisted.push(key)
-      if(!this.currentCustomer.wishlistedMovies)
-      {
-        //console.log("new");
-        this.currentCustomer.wishlistedMovies = wishlisted;
-      }
-      else
-      {
-        this.currentCustomer.wishlistedMovies.push(key);
-      }
-      ////console.log(this.currentCustomer)
-      this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+      console.log(this.wishlistedMovies)
+      // wishlisted.push(key)
+      // if(!this.currentCustomer.wishlistedMovies)
+      // {
+      //   //console.log("new");
+      //   this.currentCustomer.wishlistedMovies = wishlisted;
+      // }
+      // else
+      // {
+      //   this.currentCustomer.wishlistedMovies.push(key);
+      // }
+      // ////console.log(this.currentCustomer)
+      // this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+      this.wishlistService.addToWishlist(key,this.currentCustomer);
       var feeditm : FeedItem = new FeedItem();
       feeditm.content = this.currentCustomer.name + " added "+this.allMovies.find(x=>x.key == key).title + " to their wishlist . Click to view the movie."
       feeditm.customerName = this.currentCustomer.name;
@@ -1206,19 +1113,20 @@ export class HomeComponent implements OnInit {
 
   removeFromWishlist(key)
   {
-    //console.log(this.currentCustomer.wishlistedMovies)
-    if(this.currentCustomer.wishlistedMovies.includes(key))
-    {
-      for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
-      {     
-        if (this.currentCustomer.wishlistedMovies[i] == key) 
-        {   
-          this.currentCustomer.wishlistedMovies.splice(i, 1); 
-        }
-      }
-      //console.log(this.currentCustomer.wishlistedMovies)
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
-    }
+    this.wishlistService.removeFromWishlist(key,this.currentCustomer);
+    // //console.log(this.currentCustomer.wishlistedMovies)
+    // if(this.currentCustomer.wishlistedMovies.includes(key))
+    // {
+    //   for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
+    //   {     
+    //     if (this.currentCustomer.wishlistedMovies[i] == key) 
+    //     {   
+    //       this.currentCustomer.wishlistedMovies.splice(i, 1); 
+    //     }
+    //   }
+    //   //console.log(this.currentCustomer.wishlistedMovies)
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
+    // }
   }
 
   addToWatchedMovies(key)
@@ -1229,17 +1137,18 @@ export class HomeComponent implements OnInit {
       return;
     }
     this.watchedMovies.push(key)
-    if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.length >1)
-    {
-      this.currentCustomer.watchedMovies.push(key);
+    this.watchedService.addToWatched(key,this.currentCustomer)
+    // if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.length >1)
+    // {
+    //   this.currentCustomer.watchedMovies.push(key);
 
-    }
-    else
-    {
-      var arr :string[] = [];
-      arr.push(key);
-      this.currentCustomer.watchedMovies = arr;
-    }
+    // }
+    // else
+    // {
+    //   var arr :string[] = [];
+    //   arr.push(key);
+    //   this.currentCustomer.watchedMovies = arr;
+    // }
     if(this.currentCustomer.watchedMovies)
     {
       this.buildNotYetWatchedMovies()
@@ -1256,7 +1165,7 @@ export class HomeComponent implements OnInit {
     //   }
     // }
 
-    this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    //this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
     var feeditm : FeedItem = new FeedItem();
     feeditm.content = this.currentCustomer.name + " watched "+this.allMovies.find(x=>x.key == key).title + " . Click to view the movie."
     feeditm.customerName = this.currentCustomer.name;
@@ -1269,19 +1178,21 @@ export class HomeComponent implements OnInit {
 
   removeFromWatched(key)
   {
-    if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(key))
-    {
-      for( var i = 0; i < this.currentCustomer.watchedMovies.length; i++)
-      {     
-        if (this.currentCustomer.watchedMovies[i] == key) 
-        {   
-          this.currentCustomer.watchedMovies.splice(i, 1); 
-        }
-      }
-        this.buildNotYetWatchedMovies()
+    this.watchedService.removeFromWatched(key,this.currentCustomer);
+    this.buildNotYetWatchedMovies();
+    // if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(key))
+    // {
+    //   for( var i = 0; i < this.currentCustomer.watchedMovies.length; i++)
+    //   {     
+    //     if (this.currentCustomer.watchedMovies[i] == key) 
+    //     {   
+    //       this.currentCustomer.watchedMovies.splice(i, 1); 
+    //     }
+    //   }
+    //     this.buildNotYetWatchedMovies()
       
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-    }
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    // }
 
   }
 
@@ -1310,24 +1221,25 @@ export class HomeComponent implements OnInit {
       localStorage.removeItem("navigatedMovie");
       this.navigatedMovieStatus = false;
     }
-    this.MovieToBeRated.rating = Number(this.MovieToBeRated.rating) + Number(this.rating);
-    var movieKey = this.MovieToBeRated.key
-    delete this.MovieToBeRated.key
-    this.movieService.updateMovie(movieKey,this.MovieToBeRated)
-    var ratedMovieLocal : RatedMovies = new RatedMovies();
-    var arr = [];
-    ratedMovieLocal.movieId = key;
-    ratedMovieLocal.rating = Number(this.rating)
-    if(!this.currentCustomer.ratedMovies)
-    {
-      arr.push(ratedMovieLocal)
-      this.currentCustomer.ratedMovies = arr
-    }
-    else
-    {
-      this.currentCustomer.ratedMovies.push(ratedMovieLocal)
-    }
-    this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+    this.ratingService.rateMovie(key,this.MovieToBeRated,this.rating,this.currentCustomer,this.loggedIn);
+    // this.MovieToBeRated.rating = Number(this.MovieToBeRated.rating) + Number(this.rating);
+    // var movieKey = this.MovieToBeRated.key
+    // delete this.MovieToBeRated.key
+    // this.movieService.updateMovie(movieKey,this.MovieToBeRated)
+    // var ratedMovieLocal : RatedMovies = new RatedMovies();
+    // var arr = [];
+    // ratedMovieLocal.movieId = key;
+    // ratedMovieLocal.rating = Number(this.rating)
+    // if(!this.currentCustomer.ratedMovies)
+    // {
+    //   arr.push(ratedMovieLocal)
+    //   this.currentCustomer.ratedMovies = arr
+    // }
+    // else
+    // {
+    //   this.currentCustomer.ratedMovies.push(ratedMovieLocal)
+    // }
+    // this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
 
   }
 
@@ -1487,6 +1399,16 @@ export class HomeComponent implements OnInit {
     else
     {
       this.shareWindowBool = false
+    }
+
+  }
+
+  cancelRecentOttVisitRating()
+  {
+    if(localStorage.getItem("navigatedMovie") && this.allMovies.find(a => a.key === localStorage.getItem("navigatedMovie")))
+    {
+      localStorage.removeItem("navigatedMovie");
+      this.navigatedMovieStatus = false;
     }
 
   }

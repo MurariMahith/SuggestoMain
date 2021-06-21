@@ -9,4 +9,7 @@ export class MoviePlatForm
     Zee5 : boolean = false;
     Sony_Liv : boolean = false;
     JioCinema : boolean = false;
+    Mx_Player : boolean = false;
+    Voot : boolean = false;
+    Other : boolean = false;
 }

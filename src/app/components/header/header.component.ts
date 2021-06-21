@@ -149,6 +149,7 @@ export class HeaderComponent implements OnInit {
 
   openSideBar() 
   {
+    console.log("clicked")
     document.getElementById("mySidebar").style.width = "250px";
     //document.getElementById("main").style.marginLeft = "250px";
   }

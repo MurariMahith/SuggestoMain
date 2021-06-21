@@ -4,17 +4,17 @@
 </div>
 <div class="dark-mode" style="background-color: rgb(0,0,0);color: white;">
 <div class="jumbotron" style="padding-top: 2%;background-color: rgb(0,0,0)"> 
-  <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div style="background-color: black;">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="border-radius: 10px;">
       <div style="display: flex;">
       <a class="navbar-brand">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search For Movies / Series" name="searchStr" [(ngModel)]="searchString" #searchStr="ngModel" (ngModelChange)="searching($event)" width="100%">
+        <input class="form-control mr-sm-2" type="text" style="background-color: black;color: white;" placeholder="Search For Movies / Series" name="searchStr" [(ngModel)]="searchString" #searchStr="ngModel" (ngModelChange)="searching($event)" width="100%">
         <!-- <span *ngIf="filterSelected" class="badge badge-dark">filters applied</span> -->
         <!-- <small id="emailHelp" style="font-size:x-small;" class="form-text text-muted">Click toggle button on right to use filters</small> -->
       </a>
       <!-- <a class="navbar-brand" data-toggle="collapse" data-target="#navbarSupportedContent2">Search <span *ngIf="filterSelected" class="badge badge-dark">filters applied</span></a> -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent2" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="border: none;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M13 6h-13v-4h13v4zm0 4h-13v4h13v-4zm0 8h-13v4h13v-4zm3-8l4 5.075 4-5.075h-8z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="24" height="24" viewBox="0 0 24 24"><path d="M13 6h-13v-4h13v4zm0 4h-13v4h13v-4zm0 8h-13v4h13v-4zm3-8l4 5.075 4-5.075h-8z"/></svg>
       </button></div> 
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent2">
@@ -179,9 +179,10 @@
   </div>
 
   <!----mobile screen-->
-  <div style="display: flex;flex-wrap: wrap;justify-content: center;" *ngIf="isMobile">
+  <div style="display: flex;flex-wrap: wrap;justify-content: center;gap: 10px;" *ngIf="isMobile">
     <span *ngFor="let movie of DisplayMovieList">
       <div class="item">
+        <div (click)="GoToMovie(movie.key)" *ngIf="movie.isThisSeries" class="ribbon ribbon-top-left"><span>series</span></div>
         <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;" alt="{{movie.title}}"></a>
         <h6 style="text-align: center;">{{movie.title}}</h6>  
       </div>     
@@ -247,6 +248,7 @@
   </div>
 
 
-  <app-tamil></app-tamil>
+  <app-tamil></app-tamil><br>
+  <app-social-media></app-social-media>
 </div>
 </div>

@@ -21,7 +21,16 @@
         <img *ngIf="!customerToDisplay.customerPhotoUrl" src="../../../assets/images/logo.jpg" width="100px" height="100px" alt=""  style="border-radius: 100px;border: 4px solid white;"  />
     </div>
     <div class="prof-flex" style="display: flex;justify-content: center;">
-        <h4>{{customerToDisplay.name | titlecase}}'s Profile</h4>
+        <h4>{{customerToDisplay.name | titlecase}}'s Profile
+            <img *ngIf="customerToDisplay.verifiedAccount" src="../../../assets/images/verified account.svg" width="20">
+        </h4>
+    </div>
+    <div *ngIf="customerToDisplay.smallDescription" class="prof-flex" style="display: flex;justify-content: center;">
+        <p>{{customerToDisplay.smallDescription}}
+        </p>
+    </div>
+    <div class="prof-flex" style="display: flex;justify-content: center;">
+        <button type="button" *ngIf="customerToDisplay.verifiedAccount" (click)="GoToSocialAccount()" class="btn btn-success" style="border-radius: 20px;margin-right: 10px;">View Social Media account</button>
     </div>
     <!-- <div class="prof-flex" style="display: flex;justify-content: center;">
         <p>Preferred Languages : {{languages}}</p>

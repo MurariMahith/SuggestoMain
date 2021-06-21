@@ -48,8 +48,9 @@
                     <img src="{{c.customerPhotoUrl}}" width="30" height="30" style="border-radius: 100px;">
                     {{c.name | titlecase}} 
                     <span  *ngIf="loggedIn && c.uid == currentCustomer.uid" class="badge badge-primary">
-                        Me
-                      </span>
+                        Me 
+                    </span>&nbsp;
+                    <img *ngIf="c.verifiedAccount" src="../../../assets/images/verified account.svg" width="20">
                     </div>
                 <div class="p-2 bd-highlight">{{c.wishlistedMovies.length + c.ratedMovies.length + c.watchedMovies.length}}</div>            
             </div>
@@ -64,6 +65,7 @@
                     <span  *ngIf="loggedIn && c.uid == currentCustomer.uid" class="badge badge-primary">
                         Me
                     </span>
+                    <img *ngIf="c.verifiedAccount" src="../../../assets/images/verified account.svg" width="20">
                 </div>
                 <div class="p-2 bd-highlight">{{c.wishlistedMovies.length + c.ratedMovies.length + c.watchedMovies.length}}</div>            
             </div>

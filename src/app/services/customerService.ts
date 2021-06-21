@@ -93,7 +93,7 @@ export class CustomerService {
           delete value[k];
         }
     }
-    //console.log(key)
+    console.log(key)
     //console.log(value);
     return this.customerRef.update(key, value);
   }

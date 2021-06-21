@@ -24,6 +24,10 @@ import { AuthService } from 'src/app/services/authService';
 import { FollowObject } from 'src/app/models/FollowObject';
 import { FeedItem } from 'src/app/models/FeedItem';
 import { Location } from '@angular/common';
+import { PeopleServiceService } from 'src/app/sharedServices/people-service.service';
+import { WishlistService } from 'src/app/sharedServices/wishlist.service';
+import { WatchedService } from 'src/app/sharedServices/watched.service';
+import { RatingService } from 'src/app/sharedServices/rating.service';
 
 @Component({
   selector: 'app-following-profile',
@@ -57,6 +61,10 @@ export class FollowingProfileComponent implements OnInit {
     private movieDisplayService : DisplayMovieService,
     private listDisplayService : DisplayListService,
     private router : Router,
+    private peopleService : PeopleServiceService,
+    private wishlistService : WishlistService,
+    private watchedService : WatchedService,
+    private ratingService : RatingService,
     private homelistsservice : HomePageListsService,
     private activatedRoute : ActivatedRoute,
     private http : HttpClient,
@@ -139,6 +147,10 @@ export class FollowingProfileComponent implements OnInit {
     }
 
   }
+  GoToSocialAccount()
+  {
+    window.location.href = this.customerToDisplay.socialMediaAccountUrl
+  }
 
   getMovies()
   {
@@ -187,29 +199,32 @@ export class FollowingProfileComponent implements OnInit {
   {
     this.wishlistedMovies.length = 0;
     this.watchedMovies.length = 0;
-    this.allMovies.forEach(element => {
-      if(this.customerToDisplay.wishlistedMovies && this.customerToDisplay.wishlistedMovies.includes(element.key))
-      {
-        this.wishlistedMovies.push(element)
-      }
-      if(this.customerToDisplay.watchedMovies && this.customerToDisplay.watchedMovies.includes(element.key))
-      {
-        this.watchedMovies.push(element)
-      }
+    // this.allMovies.forEach(element => {
+    //   if(this.customerToDisplay.wishlistedMovies && this.customerToDisplay.wishlistedMovies.includes(element.key))
+    //   {
+    //     this.wishlistedMovies.push(element)
+    //   }
+    //   if(this.customerToDisplay.watchedMovies && this.customerToDisplay.watchedMovies.includes(element.key))
+    //   {
+    //     this.watchedMovies.push(element)
+    //   }
       
-    });
+    // });
     this.getCategorisedMoviesForCustomerForDisplay();
   }
 
   getCategorisedMoviesForCustomerForDisplay()
   {
-    this.wishlistedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.wishlistedMovies)
-    this.watchedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.watchedMovies);
+    this.wishlistedMoviesDisplay = this.wishlistService.getAllWishlistedMoviesByCustomer(this.currentCustomer,this.allMovies)
+    this.watchedMoviesDisplay = this.watchedService.getAllWatchedMoviesByCustomer(this.currentCustomer,this.allMovies)
     //console.log(this.wishlistedMovies);
   }
 
+  //use this method to send request dont use service method here
   sendFollowRequest(key)
   {
+    //console.log("sending")
+    //this.peopleService.sendFollowRequest(key,this.allCustomers,this.currentCustomer);
     var receiverCustomer = this.customerToDisplay
     //console.log(receiverCustomer);
 
@@ -248,6 +263,7 @@ export class FollowingProfileComponent implements OnInit {
     } 
   }
 
+  //use this method to unfollow dont use service method here
   UnfollowCustomer(key)
   {
     
@@ -295,10 +311,12 @@ export class FollowingProfileComponent implements OnInit {
 
   }
 
+  //use this method to delete follow request dont use service method here
   //delete other customer uid from followrequestsent array of current customer
   //delete follow object with current customer uid from followrequestreceived array of other customer
   deleteFollowRequest(key)
   {
+    //this.peopleService.unsendFollowRequest(key,this.allCustomers,this.currentCustomer)
     var requestedCustomer = this.customerToDisplay
     if(requestedCustomer)
     {

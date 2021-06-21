@@ -25,6 +25,12 @@ import { FollowObject } from 'src/app/models/FollowObject';
 import { FeedItem } from 'src/app/models/FeedItem';
 import { HitsService } from 'src/app/services/hits.service';
 import { SharedMovie } from 'src/app/models/SharedMovie';
+import { ComplaintService } from 'src/app/services/complaint.service';
+import { Complaint } from 'src/app/models/Complaint';
+import { WishlistService } from 'src/app/sharedServices/wishlist.service';
+import { WatchedService } from 'src/app/sharedServices/watched.service';
+import { RatingService } from 'src/app/sharedServices/rating.service';
+import { PeopleServiceService } from 'src/app/sharedServices/people-service.service';
 
 declare var $:any;
 
@@ -131,12 +137,17 @@ export class Profile2Component implements OnInit {
     private listService : MovieListService,
     private movieDisplayService : DisplayMovieService,
     private listDisplayService : DisplayListService,
+    private wishlistService : WishlistService,
+    private watchedService : WatchedService,
+    private ratingService : RatingService,
+    private peopleService : PeopleServiceService,
     private router : Router,
     private homelistsservice : HomePageListsService,
     private messageService : HitsService,
     private activatedRote : ActivatedRoute,
     private http : HttpClient,
     private authService : AuthService,
+    private compService : ComplaintService,
     private customerService : CustomerService) { }
 
   
@@ -184,6 +195,8 @@ export class Profile2Component implements OnInit {
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
+              this.socialAccount = this.currentCustomer.socialMediaAccountUrl ? this.currentCustomer.socialMediaAccountUrl : '';
+              this.smalldescription = this.currentCustomer.smallDescription ? this.currentCustomer.smallDescription : '';
               this.loading = false;
               //get back here
               //window.localStorage.setItem("currentCustomer",JSON.stringify(this.currentCustomer));
@@ -505,81 +518,87 @@ export class Profile2Component implements OnInit {
 
   getCategorisedMoviesForThisCustomerForDisplay()
   {
-    this.wishlistedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.wishlistedMovies)
-    this.ratedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.ratedMovies)
-    this.watchedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.watchedMovies);
+    // this.wishlistedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.wishlistedMovies)
+    // this.ratedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.ratedMovies)
+    // this.watchedMoviesDisplay = this.movieDisplayService.prepareDisplayMovieList(this.watchedMovies);
+    this.wishlistedMoviesDisplay = this.wishlistService.getAllWishlistedMoviesByCustomer(this.currentCustomer,this.allMovies)
+    this.ratedMoviesDisplay = this.ratingService.getAllRatedMoviesByCustomer(this.currentCustomer,this.allMovies);
+    this.watchedMoviesDisplay = this.watchedService.getAllWatchedMoviesByCustomer(this.currentCustomer,this.allMovies)
   }
 
   sendFollowRequest(key)
   {
-    var receiverCustomer = this.allCustomers.find(x => x.uid === key);
-    //console.log(receiverCustomer);
+    this.peopleService.sendFollowRequest(key,this.allCustomers,this.currentCustomer);
+    //here murari
+    // var receiverCustomer = this.allCustomers.find(x => x.uid === key);
+    // //console.log(receiverCustomer);
 
-    if(receiverCustomer)
-    {
-      var request : FollowObject = new FollowObject();
-      request.followerName = this.currentCustomer.name;
-      request.followerUserId = this.currentCustomer.uid;
-      request.followerphotoUrl = this.currentCustomer.customerPhotoUrl;
-      if(receiverCustomer.followRequestReceived)
-      {
-        receiverCustomer.followRequestReceived.push(request)
-      }
-      else
-      {
-        var requestobj : FollowObject[] = [];
-        requestobj.push(request)
-        receiverCustomer.followRequestReceived = requestobj;
-      }
+    // if(receiverCustomer)
+    // {
+    //   var request : FollowObject = new FollowObject();
+    //   request.followerName = this.currentCustomer.name;
+    //   request.followerUserId = this.currentCustomer.uid;
+    //   request.followerphotoUrl = this.currentCustomer.customerPhotoUrl;
+    //   if(receiverCustomer.followRequestReceived)
+    //   {
+    //     receiverCustomer.followRequestReceived.push(request)
+    //   }
+    //   else
+    //   {
+    //     var requestobj : FollowObject[] = [];
+    //     requestobj.push(request)
+    //     receiverCustomer.followRequestReceived = requestobj;
+    //   }
       
-      this.customerService.updateCustomer(receiverCustomer['key'],receiverCustomer)
+    //   this.customerService.updateCustomer(receiverCustomer['key'],receiverCustomer)
       
-      if(this.currentCustomer.followRequestSent)
-      {
-        this.currentCustomer.followRequestSent.push(receiverCustomer.uid);
-      }
-      else
-      {
-        var strarr :string[] = [];
-        strarr.push(receiverCustomer.uid);
-        this.currentCustomer.followRequestSent = strarr
-      }
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-      //console.log(receiverCustomer)
-      //console.log(this.currentCustomer)
-    } 
+    //   if(this.currentCustomer.followRequestSent)
+    //   {
+    //     this.currentCustomer.followRequestSent.push(receiverCustomer.uid);
+    //   }
+    //   else
+    //   {
+    //     var strarr :string[] = [];
+    //     strarr.push(receiverCustomer.uid);
+    //     this.currentCustomer.followRequestSent = strarr
+    //   }
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    //   //console.log(receiverCustomer)
+    //   //console.log(this.currentCustomer)
+    // } 
   }
   //delete other customer uid from followrequestsent array of current customer
   //delete follow object with current customer uid from followrequestreceived array of other customer
   deleteFollowRequest(key)
   {
-    var requestedCustomer = this.allCustomers.find(x => x.uid == key)
-    if(requestedCustomer)
-    {
-      if(this.currentCustomer.followRequestSent.includes(key))
-      {
-        for( var i = 0; i < this.currentCustomer.followRequestSent.length; i++)
-        {     
-          if (this.currentCustomer.followRequestSent[i] == key) 
-          {   
-            this.currentCustomer.followRequestSent.splice(i, 1); 
-          }
-        }
-      }
+    this.peopleService.unsendFollowRequest(key,this.allCustomers,this.currentCustomer)
+    // var requestedCustomer = this.allCustomers.find(x => x.uid == key)
+    // if(requestedCustomer)
+    // {
+    //   if(this.currentCustomer.followRequestSent.includes(key))
+    //   {
+    //     for( var i = 0; i < this.currentCustomer.followRequestSent.length; i++)
+    //     {     
+    //       if (this.currentCustomer.followRequestSent[i] == key) 
+    //       {   
+    //         this.currentCustomer.followRequestSent.splice(i, 1); 
+    //       }
+    //     }
+    //   }
 
-      for( var i = 0; i < requestedCustomer.followRequestReceived.length; i++)
-      {     
-        if (requestedCustomer.followRequestReceived[i].followerUserId == this.currentCustomer.uid) 
-        {   
-          requestedCustomer.followRequestReceived.splice(i, 1); 
-        }
-      }
+    //   for( var i = 0; i < requestedCustomer.followRequestReceived.length; i++)
+    //   {     
+    //     if (requestedCustomer.followRequestReceived[i].followerUserId == this.currentCustomer.uid) 
+    //     {   
+    //       requestedCustomer.followRequestReceived.splice(i, 1); 
+    //     }
+    //   }
 
-      //console.log(this.currentCustomer)
-      //console.log(requestedCustomer)
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-      this.customerService.updateCustomer(requestedCustomer['key'],requestedCustomer)
-    }
+    //   //console.log(this.currentCustomer)
+    //   //console.log(requestedCustomer)
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    //   this.customerService.updateCustomer(requestedCustomer['key'],requestedCustomer)
+    // }
   }
 
   //delete current customer uid from followrequestsentarray of other customer
@@ -587,66 +606,67 @@ export class Profile2Component implements OnInit {
   //push that follow object to followers of current customer and following of other customer
   acceptFollower(key)
   {
+    this.peopleService.acceptFollowRequest(key,this.allCustomers,this.currentCustomer)
 
-    var otherCustomer = this.allCustomers.find(x => x.uid == key)
-    //console.log(otherCustomer.uid);
-    //console.log(key);
-    if(otherCustomer)
-    {
-      if(!otherCustomer.followRequestSent || otherCustomer.followRequestSent == undefined)
-      {
-        otherCustomer.followRequestSent = [];
-      }
-      if(!otherCustomer.following || otherCustomer.following == undefined)
-      {
-        otherCustomer.following = [];
-      }
-      if(!otherCustomer.followers || otherCustomer.followers == undefined)
-      {
-        otherCustomer.followers = [];
-      }
-      if(!otherCustomer.followRequestReceived || otherCustomer.followRequestReceived == undefined)
-      {
-        otherCustomer.followRequestReceived = [];
-      }
-      //otherCustomer.followRequestSent
-      for( var i = 0; i < otherCustomer.followRequestSent.length; i++)
-      {     
-        if (otherCustomer.followRequestSent[i] == this.currentCustomer.uid) 
-        {   
-          otherCustomer.followRequestSent.splice(i, 1); 
-        }
-      }
+    // var otherCustomer = this.allCustomers.find(x => x.uid == key)
+    // //console.log(otherCustomer.uid);
+    // //console.log(key);
+    // if(otherCustomer)
+    // {
+    //   if(!otherCustomer.followRequestSent || otherCustomer.followRequestSent == undefined)
+    //   {
+    //     otherCustomer.followRequestSent = [];
+    //   }
+    //   if(!otherCustomer.following || otherCustomer.following == undefined)
+    //   {
+    //     otherCustomer.following = [];
+    //   }
+    //   if(!otherCustomer.followers || otherCustomer.followers == undefined)
+    //   {
+    //     otherCustomer.followers = [];
+    //   }
+    //   if(!otherCustomer.followRequestReceived || otherCustomer.followRequestReceived == undefined)
+    //   {
+    //     otherCustomer.followRequestReceived = [];
+    //   }
+    //   //otherCustomer.followRequestSent
+    //   for( var i = 0; i < otherCustomer.followRequestSent.length; i++)
+    //   {     
+    //     if (otherCustomer.followRequestSent[i] == this.currentCustomer.uid) 
+    //     {   
+    //       otherCustomer.followRequestSent.splice(i, 1); 
+    //     }
+    //   }
 
-      for( var i = 0; i < this.currentCustomer.followRequestReceived.length; i++)
-      {     
-        if (this.currentCustomer.followRequestReceived[i].followerUserId == key) 
-        {   
-          this.currentCustomer.followRequestReceived.splice(i, 1); 
-        }
-      }
+    //   for( var i = 0; i < this.currentCustomer.followRequestReceived.length; i++)
+    //   {     
+    //     if (this.currentCustomer.followRequestReceived[i].followerUserId == key) 
+    //     {   
+    //       this.currentCustomer.followRequestReceived.splice(i, 1); 
+    //     }
+    //   }
 
-      var followerObj = new FollowObject();
-      followerObj.followerName = otherCustomer.name;
-      followerObj.followerUserId = otherCustomer.uid;
-      followerObj.followerphotoUrl = otherCustomer.customerPhotoUrl;
+    //   var followerObj = new FollowObject();
+    //   followerObj.followerName = otherCustomer.name;
+    //   followerObj.followerUserId = otherCustomer.uid;
+    //   followerObj.followerphotoUrl = otherCustomer.customerPhotoUrl;
 
-      this.currentCustomer.followers.push(followerObj);
+    //   this.currentCustomer.followers.push(followerObj);
 
-      var followingObj = new FollowObject()
-      followingObj.followerName = this.currentCustomer.name;
-      followingObj.followerUserId = this.currentCustomer.uid;
-      followingObj.followerphotoUrl = this.currentCustomer.customerPhotoUrl;
+    //   var followingObj = new FollowObject()
+    //   followingObj.followerName = this.currentCustomer.name;
+    //   followingObj.followerUserId = this.currentCustomer.uid;
+    //   followingObj.followerphotoUrl = this.currentCustomer.customerPhotoUrl;
 
-      otherCustomer.following.push(followingObj);
+    //   otherCustomer.following.push(followingObj);
 
-      //console.log(this.currentCustomer)
-      //console.log(otherCustomer);
+    //   //console.log(this.currentCustomer)
+    //   //console.log(otherCustomer);
 
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-      this.customerService.updateCustomer(otherCustomer['key'],otherCustomer)
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    //   this.customerService.updateCustomer(otherCustomer['key'],otherCustomer)
 
-    }
+    // }
 
   }
 
@@ -654,27 +674,28 @@ export class Profile2Component implements OnInit {
   //remover following obj from other customer's followers
   UnfollowCustomer(key)
   {
+    this.peopleService.unfollow(key,this.allCustomers,this.currentCustomer)
     var customerToUnfollow = this.allCustomers.find(x => x.uid == key)
     if(customerToUnfollow.followers)
     {
-      for( var i = 0; i < customerToUnfollow.followers.length; i++)
-      {     
-        if (customerToUnfollow.followers[i].followerUserId == this.currentCustomer.uid) 
-        {   
-          customerToUnfollow.followers.splice(i, 1); 
-        }
-      }     
+      // for( var i = 0; i < customerToUnfollow.followers.length; i++)
+      // {     
+      //   if (customerToUnfollow.followers[i].followerUserId == this.currentCustomer.uid) 
+      //   {   
+      //     customerToUnfollow.followers.splice(i, 1); 
+      //   }
+      // }     
       
-      for( var i = 0; i < this.currentCustomer.following.length; i++)
-      {     
-        if (this.currentCustomer.following[i].followerUserId == customerToUnfollow.uid) 
-        {   
-          this.currentCustomer.following.splice(i, 1); 
-        }
-      } 
+      // for( var i = 0; i < this.currentCustomer.following.length; i++)
+      // {     
+      //   if (this.currentCustomer.following[i].followerUserId == customerToUnfollow.uid) 
+      //   {   
+      //     this.currentCustomer.following.splice(i, 1); 
+      //   }
+      // } 
 
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-      this.customerService.updateCustomer(customerToUnfollow['key'],customerToUnfollow)
+      // this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+      // this.customerService.updateCustomer(customerToUnfollow['key'],customerToUnfollow)
 
       for( var i = 0; i < this.allFollowinguids.length; i++)
       {     
@@ -799,7 +820,7 @@ export class Profile2Component implements OnInit {
       navigator.share({
         title: 'Suggesto : Best app to find hand picked Movies and Suggestion on daily basis and lot more.',
         // url: window.location.toString(),
-        text: 'Hey, checkout this amzing app to find good movies with promising content and ott links for those movies. Suggesto its great. Please follow this link to download the app.    '+ "https://play.google.com/store/apps/details?id=xyz.appmaker.jibpca"
+        text: 'Hey, checkout this amzing app to find good movies with promising content and ott links for those movies. Suggesto its great. Please follow this link to download the app.    '+ "https://play.google.com/store/apps/details?id=xyz.appmaker.jibpca" + "Download Suggesto from here.    "+ "https://play.google.com/store/apps/details?id=xyz.appmaker.jibpca"
       }).then(() => {
         //console.log('Thanks for sharing!');
       })
@@ -848,22 +869,23 @@ export class Profile2Component implements OnInit {
   {
     if(this.loggedIn)
     {
+      this.wishlistService.addToWishlist(key,this.currentCustomer);
       ////console.log(key)
-      var wishlisted = []
-      this.wishlistedMovies.push(key)
-      wishlisted.push(key)
+      // var wishlisted = []
+      // this.wishlistedMovies.push(key)
+      // wishlisted.push(key)
       
-      if(!this.currentCustomer.wishlistedMovies)
-      {
-        ////console.log("new");
-        this.currentCustomer.wishlistedMovies = wishlisted;
-      }
-      else
-      {
-        this.currentCustomer.wishlistedMovies.push(key);
-      }
-      //////console.log(this.currentCustomer)
-      this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+      // if(!this.currentCustomer.wishlistedMovies)
+      // {
+      //   ////console.log("new");
+      //   this.currentCustomer.wishlistedMovies = wishlisted;
+      // }
+      // else
+      // {
+      //   this.currentCustomer.wishlistedMovies.push(key);
+      // }
+      // //////console.log(this.currentCustomer)
+      // this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
       var feeditm : FeedItem = new FeedItem();
       feeditm.content = this.currentCustomer.name + " added "+this.allMovies.find(x=>x.key == key).title+ " to their wish list. Click to view the movie."
       feeditm.customerName = this.currentCustomer.name;
@@ -882,19 +904,20 @@ export class Profile2Component implements OnInit {
 
   removeFromWishlist(key)
   {
-    ////console.log(this.currentCustomer.wishlistedMovies)
-    if(this.currentCustomer.wishlistedMovies.includes(key))
-    {
-      for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
-      {     
-        if (this.currentCustomer.wishlistedMovies[i] == key) 
-        {   
-          this.currentCustomer.wishlistedMovies.splice(i, 1); 
-        }
-      }
-      ////console.log(this.currentCustomer.wishlistedMovies)
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
-    }
+    // ////console.log(this.currentCustomer.wishlistedMovies)
+    // if(this.currentCustomer.wishlistedMovies.includes(key))
+    // {
+    //   for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
+    //   {     
+    //     if (this.currentCustomer.wishlistedMovies[i] == key) 
+    //     {   
+    //       this.currentCustomer.wishlistedMovies.splice(i, 1); 
+    //     }
+    //   }
+    //   ////console.log(this.currentCustomer.wishlistedMovies)
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
+    // }
+    this.wishlistService.removeFromWishlist(key,this.currentCustomer)
   }
 
   addToWatchedMovies(key)
@@ -905,21 +928,21 @@ export class Profile2Component implements OnInit {
       return;
     }
     this.watchedMovies.push(key)
-    if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.length >1)
-    {
-      this.currentCustomer.watchedMovies.push(key);
-
-    }
-    else
-    {
-      var arr :string[] = [];
-      arr.push(key);
-      this.currentCustomer.watchedMovies = arr;
-    }
-    if(this.currentCustomer.watchedMovies)
-    {
-    }
-    this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    this.watchedService.addToWatched(key,this.currentCustomer)
+    // if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.length >1)
+    // {
+    //   this.currentCustomer.watchedMovies.push(key);
+    // }
+    // else
+    // {
+    //   var arr :string[] = [];
+    //   arr.push(key);
+    //   this.currentCustomer.watchedMovies = arr;
+    // }
+    // if(this.currentCustomer.watchedMovies)
+    // {
+    // }
+    // this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
     var feeditm : FeedItem = new FeedItem();
     feeditm.content = this.currentCustomer.name + " watched "+this.allMovies.find(x=>x.key == key).title + " . Click to view the movie."
     feeditm.customerName = this.currentCustomer.name;
@@ -933,18 +956,19 @@ export class Profile2Component implements OnInit {
 
   removeFromWatched(key)
   {
-    if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(key))
-    {
-      for( var i = 0; i < this.currentCustomer.watchedMovies.length; i++)
-      {     
-        if (this.currentCustomer.watchedMovies[i] == key) 
-        {   
-          this.currentCustomer.watchedMovies.splice(i, 1); 
-        }
-      }
-      //console.log("removed")
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-    }
+    this.watchedService.removeFromWatched(key,this.currentCustomer)
+    // if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(key))
+    // {
+    //   for( var i = 0; i < this.currentCustomer.watchedMovies.length; i++)
+    //   {     
+    //     if (this.currentCustomer.watchedMovies[i] == key) 
+    //     {   
+    //       this.currentCustomer.watchedMovies.splice(i, 1); 
+    //     }
+    //   }
+    //   //console.log("removed")
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
+    // }
 
   }
 
@@ -1061,9 +1085,52 @@ export class Profile2Component implements OnInit {
       this.listService.deleteMovieList(e['key']);
     })
     console.log(this.currentCustomer)
+    var newComp = new Complaint();
+    newComp.name = 'DELETE ACCOUNT'
+    newComp.complaint = this.currentCustomer.uid;
+    this.compService.create(newComp)
     this.customerService.deleteCustomer(this.currentCustomer['key']);
     console.log("account deleted")
     this.authService.logOut();
+  }
+
+  socialAccount : string = '';
+  smalldescription : string = '';
+
+  applyForVerifiedAccount()
+  {
+    //var instLink =  prompt("Please enter your Social Media Account Link. Ex:Instagram page link etc,.");
+    if(this.socialAccount.length<10 || this.smalldescription.length<10)
+    {
+      alert("You should paste your social media account url. so that our users can be safely redirected to your account when interested.")
+    }
+    else
+    {
+      this.currentCustomer.appliedForVerifiedAccount = true;
+      this.currentCustomer.socialMediaAccountUrl = this.socialAccount;
+      this.currentCustomer.smallDescription = this.smalldescription;
+      this.currentCustomer.shareWishlistedMovies = true;
+      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer).then(()=>{
+        alert("Verified accounts can be showed on news-feed section, so users who are interested in your work can folow on your respective social media platforms also.")
+      });
+    }
+
+
+  }
+  revertVerifiedAccountStatus()
+  {
+    this.currentCustomer.appliedForVerifiedAccount = false;
+    this.currentCustomer.verifiedAccount = false;
+    this.currentCustomer.socialMediaAccountUrl = this.socialAccount;
+    this.currentCustomer.smallDescription = this.smalldescription;
+    // this.currentCustomer.shareWishlistedMovies = true;
+    this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer).then(()=>{
+      alert("Verified account status reverted. Thank you")
+    });
+  }
+  GoToSocialAccount()
+  {
+    window.location.href = this.currentCustomer.socialMediaAccountUrl
   }
 
 }

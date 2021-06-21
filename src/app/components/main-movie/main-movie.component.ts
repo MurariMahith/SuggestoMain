@@ -18,6 +18,9 @@ import { Location } from '@angular/common';
 import { FollowObject } from 'src/app/models/FollowObject';
 import { SharedMovie } from 'src/app/models/SharedMovie';
 import { HitsService } from 'src/app/services/hits.service';
+import { WishlistService } from 'src/app/sharedServices/wishlist.service';
+import { WatchedService } from 'src/app/sharedServices/watched.service';
+import { RatingService } from 'src/app/sharedServices/rating.service';
 
 @Component({
   selector: 'app-main-movie',
@@ -52,16 +55,25 @@ export class MainMovieComponent implements OnInit {
   allFriends : FollowObject[] = [];
   allFriendsOriginal : FollowObject[] = [];
 
+  imdbID : string = 'tt1375666';
+
   constructor(private movieService : MovieServiceService, 
     private activatedRoute: ActivatedRoute,
     private router : Router,
+    private wishlistService : WishlistService,
+    private watchedService : WatchedService,
+    private ratingService : RatingService,
     private listService : MovieListService,
     private displaymovieservice : DisplayMovieService,
     private customerService : CustomerService,
     private http : HttpClient,
     private messageService : HitsService,
     private location: Location,
-    private sanitizer: DomSanitizer) { }
+    private sanitizer: DomSanitizer) {
+
+
+
+     }
 
   ngOnInit() {
     if( screen.width <= 2000 ) {     
@@ -87,7 +99,7 @@ export class MainMovieComponent implements OnInit {
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
             }
-            //console.log(this.currentCustomer) 
+            //console.log("customer updated") 
             if(this.currentCustomer)
             {
               this.loggedIn = true;
@@ -100,17 +112,22 @@ export class MainMovieComponent implements OnInit {
               {
                 this.eligibleForWatched = true;
               }
-              if(this.currentCustomer.wishlistedMovies && this.currentCustomer.wishlistedMovies.includes(movieKey))
+              //console.log(this.currentCustomer.wishlistedMovies != undefined && this.currentCustomer.wishlistedMovies.includes(movieKey))
+              if(this.currentCustomer.wishlistedMovies != undefined && this.currentCustomer.wishlistedMovies.includes(movieKey))
               {
-                //console.log("here eligible is false")
                 this.eligibleForWishList = false
-                //console.log(this.eligibleForWishList);
               }
               else
               {
-                //console.log("eligible is rtrue")
                 this.eligibleForWishList = true;
-                //console.log(this.eligibleForWishList);
+              }
+              if(this.currentCustomer.watchedMovies!=undefined && this.currentCustomer.watchedMovies.includes(movieKey))
+              {
+                this.eligibleForWatched = false
+              }
+              else
+              {
+                this.eligibleForWatched = true;
               }
               //checking for all kinds of follow attributes present or not and if not making them empty arrays
               if(!this.currentCustomer.followRequestSent || this.currentCustomer.followRequestSent == undefined)
@@ -210,7 +227,12 @@ export class MainMovieComponent implements OnInit {
           this.actualMovie = this.displaymovieservice.prepareDisplayMovieList(this.foundMovies)[0];
           this.getListsInWhichThisMovieIsThere()
           this.findSimilarMovies()
-          console.log(this.actualMovie)
+          //console.log(document.getElementsByClassName("imdbRatingPlugin"))
+          this.getIMDbRating(document,"script","imdb-rating-api");
+
+          
+          
+          //console.log(this.actualMovie)
           if(!this.loggedIn)
           {
             //console.log(movieKey)
@@ -324,7 +346,14 @@ export class MainMovieComponent implements OnInit {
   {
     if(!this.actualMovie.ottLink || this.actualMovie.ottLink == "")
     {
-      alert("Sorry External Site link un-available for "+this.actualMovie.title+". We are working on this, we will update External site link soon. You can Find "+this.actualMovie.title+" in "+this.actualMovie.availableIn)
+      if(this.actualMovie.ott.Other)
+      {
+      alert("This movie is not available on main stream OTT platforms, You can check this movie on various third party sites.")
+      }
+      else
+      {
+        alert("Sorry Ott link un-available for "+this.actualMovie.title+". We are working on this, we will update OTT site link soon. You can Find "+this.actualMovie.title+" in "+this.actualMovie.availableIn)
+      }      
     }
     else
     {
@@ -340,6 +369,7 @@ export class MainMovieComponent implements OnInit {
       }
       localStorage.setItem("navigatedMovie",this.actualMovie.key);
     }
+    
     
   }
 
@@ -372,21 +402,27 @@ export class MainMovieComponent implements OnInit {
   {
     var movieKey = this.activatedRoute.snapshot.params.key
     var ratedMovie = this.foundMovies[0];
-    delete ratedMovie.key;
+    // delete ratedMovie.key;
     if(this.rating === 0)
     {
       alert("You must give rating before clicking submit.")
       return;
     }
 
-    ratedMovie.rating = Number(ratedMovie.rating) + Number(this.rating);
-    //console.log(Number("10")+Number("20"))
-    // console.log(ratedMovie);
-    //window.localStorage.setItem(movieKey,""+this.rating);
-    this.movieService.updateMovie(movieKey,ratedMovie)
+
+    // ratedMovie.rating = Number(ratedMovie.rating) + Number(this.rating);
+    // //console.log(Number("10")+Number("20"))
+    // // console.log(ratedMovie);
+    // //window.localStorage.setItem(movieKey,""+this.rating);
+    // this.movieService.updateMovie(movieKey,ratedMovie)
+
     if(!this.loggedIn)
     {
       window.localStorage.setItem(movieKey,""+this.rating);
+    }
+    else
+    {
+      this.ratingService.rateMovie(key,ratedMovie,this.rating,this.currentCustomer,this.loggedIn)
     }
     // .then(()=>alert("rating for "+ratedMovie.title+" is submitted. This will help us to suggest movies better."))
     // .catch(()=>alert("something went wrong, cannot submit rating, please contact admin or try agian later"))
@@ -395,91 +431,98 @@ export class MainMovieComponent implements OnInit {
 
     if(this.loggedIn)
     {
-      var ratedMovieLocal : RatedMovies = new RatedMovies();
-      ;
-      ratedMovieLocal.movieId = key;
-      ratedMovieLocal.rating = Number(this.rating)
-      if(this.currentCustomer.ratedMovies)
-      {
-        this.currentCustomer.ratedMovies.push(ratedMovieLocal)
-      }
-      else
-      {
-        var arr = [];
-        arr.push(ratedMovieLocal)
-        this.currentCustomer.ratedMovies = arr
-      }
-      //console.log(this.currentCustomer)
-      this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+      // var ratedMovieLocal : RatedMovies = new RatedMovies();
+      // ;
+      // ratedMovieLocal.movieId = key;
+      // ratedMovieLocal.rating = Number(this.rating)
+      // if(this.currentCustomer.ratedMovies)
+      // {
+      //   this.currentCustomer.ratedMovies.push(ratedMovieLocal)
+      // }
+      // else
+      // {
+      //   var arr = [];
+      //   arr.push(ratedMovieLocal)
+      //   this.currentCustomer.ratedMovies = arr
+      // }
+      // //console.log(this.currentCustomer)
+      // this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
+      //this.ratingService.rateMovie(key,ratedMovie,this.rating,this.currentCustomer,this.loggedIn)
     }
   }
 
   wishListMovie(key)
   {
-    //console.log(this.currentCustomer)
-    //console.log(key);
-    if(this.currentCustomer.wishlistedMovies && this.currentCustomer.wishlistedMovies.length >0)
-    {
-      this.currentCustomer.wishlistedMovies.push(key);
-    }
-    else
-    {
-      var arr :string[] = [];
-      arr.push(key);
-      this.currentCustomer.wishlistedMovies = arr;
-    }
-    //this.currentCustomer.wishlistedMovies.push(key);
-    this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
-    //console.log(this.currentCustomer);
+    // //console.log(this.currentCustomer)
+    // //console.log(key);
+    // if(this.currentCustomer.wishlistedMovies && this.currentCustomer.wishlistedMovies.length >0)
+    // {
+    //   this.currentCustomer.wishlistedMovies.push(key);
+    // }
+    // else
+    // {
+    //   var arr :string[] = [];
+    //   arr.push(key);
+    //   this.currentCustomer.wishlistedMovies = arr;
+    // }
+    // //this.currentCustomer.wishlistedMovies.push(key);
+    // this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
+    // //console.log(this.currentCustomer);
+
+    this.wishlistService.addToWishlist(key,this.currentCustomer);
   }
 
   removeFromWishlist(key)
   {
-    //console.log(this.currentCustomer.wishlistedMovies)
-    if(this.currentCustomer.wishlistedMovies.includes(key))
-    {
-      for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
-      {     
-        if (this.currentCustomer.wishlistedMovies[i] == key) 
-        {   
-          this.currentCustomer.wishlistedMovies.splice(i, 1); 
-        }
-      }
-      //console.log(this.currentCustomer.wishlistedMovies)
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
-    }
+    //if something goes wrong use normal method instead of services foe wishlits, watched and rated movies.
+    // //console.log(this.currentCustomer.wishlistedMovies)
+    // if(this.currentCustomer.wishlistedMovies.includes(key))
+    // {
+    //   for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
+    //   {     
+    //     if (this.currentCustomer.wishlistedMovies[i] == key) 
+    //     {   
+    //       this.currentCustomer.wishlistedMovies.splice(i, 1); 
+    //     }
+    //   }
+    //   //console.log(this.currentCustomer.wishlistedMovies)
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
+    // }
+    this.wishlistService.removeFromWishlist(key,this.currentCustomer)
   }
 
   addToWatchedMovies(key)
   {
-    if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.length >1)
-    {
-      this.currentCustomer.watchedMovies.push(key);
+    // if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.length >1)
+    // {
+    //   this.currentCustomer.watchedMovies.push(key);
 
-    }
-    else
-    {
-      var arr :string[] = [];
-      arr.push(key);
-      this.currentCustomer.watchedMovies = arr;
-    }
+    // }
+    // else
+    // {
+    //   var arr :string[] = [];
+    //   arr.push(key);
+    //   this.currentCustomer.watchedMovies = arr;
+    // }
 
-    this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer).then(() => this.eligibleForWatched = false)
+    // this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer).then(() => this.eligibleForWatched = false)
+    this.watchedService.addToWatched(key,this.currentCustomer)
   }
 
   removeFromWatched(key)
   {
-    if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(key))
-    {
-      for( var i = 0; i < this.currentCustomer.watchedMovies.length; i++)
-      {     
-        if (this.currentCustomer.watchedMovies[i] == key) 
-        {   
-          this.currentCustomer.watchedMovies.splice(i, 1); 
-        }
-      }
-      this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer).then(() => this.eligibleForWatched = true)
-    }
+    // if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(key))
+    // {
+    //   for( var i = 0; i < this.currentCustomer.watchedMovies.length; i++)
+    //   {     
+    //     if (this.currentCustomer.watchedMovies[i] == key) 
+    //     {   
+    //       this.currentCustomer.watchedMovies.splice(i, 1); 
+    //     }
+    //   }
+    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer).then(() => this.eligibleForWatched = true)
+    // }
+    this.watchedService.removeFromWatched(key,this.currentCustomer)
 
   }
 
@@ -635,5 +678,47 @@ export class MainMovieComponent implements OnInit {
     }
   }
 
+  getIMDbRating(d,s,id)
+  {
+    // console.log(d)
+    // console.log(s)
+    // console.log(id)
+    console.log(this.imdbID)
+    // console.log(document.getElementById("test"))
+    var js,stags=d.getElementsByTagName(s)[0];
+    //console.log(stags)
+    if(d.getElementById(id))
+    {
+        return;
+    }
+    js=d.createElement(s);
+    js.id=id;
+    js.src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js";
+    stags.parentNode.insertBefore(js,stags);
+  }
+
 
 }
+
+// (
+//   function(d,s,id)
+//   {
+//     console.log(d)
+//     console.log(s)
+//     console.log(id)
+//       var js,stags=d.getElementsByTagName(s)[0];
+//       console.log(stags)
+//       if(d.getElementById(id))
+//       {
+//           return;
+//       }
+//       js=d.createElement(s);
+//       js.id=id;
+//       js.src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js";
+//       stags.parentNode.insertBefore(js,stags);
+//       console.log(stags)
+//   }
+// )
+// (
+//   document,"script","imdb-rating-api"
+// );

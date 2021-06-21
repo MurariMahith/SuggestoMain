@@ -7,15 +7,20 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="./assets/icons/icon-96x96.png">
-  <link rel="apple-touch-icon" href="./assets/icons/icon-192x192.png">
+  <link rel="apple-touch-icon" href="./assets/icons/icon-96x96.png">
+  <!--apple touch icon should be 192x192-->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1976d2">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="apple-touch-startup-image" href="./assets/images/logo2.png">
+  <link rel="apple-touch-startup-image" href="./assets/icons/icon-96x96.png">
 
 </head>
 <!-- <body> -->
-<body>
+<body style="background-color: black;">
   <app-root></app-root>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+  <script>
+  new WOW().init();
+  </script>
 </body>
 </html>

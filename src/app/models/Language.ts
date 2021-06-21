@@ -5,4 +5,5 @@ export class Language
     tamil : boolean = false;
     malayalam : boolean = false;
     kannada : boolean = false;
+    hindi : boolean = false;
 }

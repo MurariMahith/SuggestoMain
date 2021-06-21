@@ -28,7 +28,10 @@ export class Customer
     followRequestReceived : FollowObject[] = [];
     followRequestSent : string[] = [];
 
-    
+    appliedForVerifiedAccount : boolean = false;
+    verifiedAccount : boolean = false;
+    socialMediaAccountUrl : string = ''
+    smallDescription : string = '';
 
     constructor()
     {
@@ -46,5 +49,6 @@ export class Customer
         this.seePersonalisedContent = false;
         this.personalisedContentStartTime = '';
         this.shareWishlistedMovies = false;
+        
     }
 }

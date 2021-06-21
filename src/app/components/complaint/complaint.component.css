@@ -1,0 +1,6 @@
+textarea,input,input:focus,textarea:active,input::after
+{
+    border: none;
+    background-color: rgb(90, 90, 90);
+    color: rgb(255, 255, 255);
+}

@@ -57,7 +57,14 @@ import { MovieBuffBoardComponent } from './components/movie-buff-board/movie-buf
 import { FollowingProfileComponent } from './components/following-profile/following-profile.component';
 import { TmdbMovieComponent } from './components/tmdb-movie/tmdb-movie.component';
 import { Profile2Component } from './components/profile2/profile2.component';
-import { AccountDeleteInstructionsComponent } from './components/account-delete-instructions/account-delete-instructions.component'
+import { AccountDeleteInstructionsComponent } from './components/account-delete-instructions/account-delete-instructions.component';
+import { SocialMediaComponent } from './components/social-media/social-media.component';
+import { InstallInIOSComponent } from './components/install-in-ios/install-in-ios.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { MoviecardComponent } from './ui-components/moviecard/moviecard.component';
+import { PlainmoviecardComponent } from './ui-components/plainmoviecard/plainmoviecard.component';
+import { ListmoviecardComponent } from './ui-components/listmoviecard/listmoviecard.component';
+import { ExpandedmoviecardComponent } from './ui-components/expandedmoviecard/expandedmoviecard.component'
 
 @NgModule({
   declarations: [
@@ -99,7 +106,14 @@ import { AccountDeleteInstructionsComponent } from './components/account-delete-
     FollowingProfileComponent,
     TmdbMovieComponent,
     Profile2Component,
-    AccountDeleteInstructionsComponent
+    AccountDeleteInstructionsComponent,
+    SocialMediaComponent,
+    InstallInIOSComponent,
+    PrivacyPolicyComponent,
+    MoviecardComponent,
+    PlainmoviecardComponent,
+    ListmoviecardComponent,
+    ExpandedmoviecardComponent
   ],
   imports: [
     BrowserModule,
