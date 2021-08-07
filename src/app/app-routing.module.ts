@@ -27,6 +27,7 @@ import { PersonalisedMoviesOfCustomerComponent } from './components/personalised
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { Profile2Component } from './components/profile2/profile2.component';
+import { RandomMoviesComponent } from './components/random-movies/random-movies.component';
 import { SuggestMovieComponent } from './components/suggest-movie/suggest-movie.component';
 import { TamilComponent } from './components/tamil/tamil.component';
 import { TeluguComponent } from './components/telugu/telugu.component';
@@ -71,6 +72,7 @@ const routes: Routes = [
   { path: 'createList',  component: CreateCustomListComponent,canActivate: [AuthGuard] },
   { path: 'news-feed',  component: FeedComponent, canActivate: [AuthGuard]  },
   { path: 'welcome',  component: WelcomePageComponent },
+  { path: 'random',  component: RandomMoviesComponent },
   { path: 'test-1-sumatra',  component: VisitProfileComponent },
   { path: 'board',  component: MovieBuffBoardComponent, canActivate: [AuthGuard]  },
   { path: 'extmovie/:key',  component: TmdbMovieComponent },

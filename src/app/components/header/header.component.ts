@@ -139,6 +139,9 @@ export class HeaderComponent implements OnInit {
 
   reload()
   {
+    document.getElementById("refresh-icon").classList.add("animated");
+    document.getElementById("refresh-icon").classList.add("tada");
+    document.getElementById("refresh-icon").classList.add("infinite");
     window.location.reload();
   }
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Customer } from 'src/app/models/Customer';
 import { AuthService } from 'src/app/services/authService';
 import { CustomerService } from 'src/app/services/customerService';
@@ -14,7 +15,7 @@ export class FooterComponent implements OnInit {
   loggedIn: boolean = false;
   currentCustomer : Customer
 
-  constructor(private authService : AuthService,private customerService : CustomerService) { }
+  constructor(private authService : AuthService,private customerService : CustomerService,private router :Router) { }
 
   ngOnInit() {
 
@@ -56,6 +57,22 @@ export class FooterComponent implements OnInit {
       this.authService.logOut();
     }
     
+  }
+
+  goto(str)
+  {
+    this.router.navigateByUrl(str)
+    //this.router.navigateByUrl(str);
+    if(document.getElementById(str))
+    {
+      document.getElementById(str).classList.add("animated")
+      document.getElementById(str).classList.add("tada");
+      //document.getElementById(str).classList.add("tada");
+    }
+    setTimeout(()=>{
+      document.getElementById(str).classList.remove("animated")
+      document.getElementById(str).classList.remove("tada");      
+    },500)
   }
 
 }

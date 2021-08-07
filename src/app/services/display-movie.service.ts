@@ -68,6 +68,8 @@ export class DisplayMovieService {
         obj.language += 'Malayalam '
       if(o.language.kannada)
         obj.language += 'Kannada '
+      if(o.language.hindi)
+        obj.language += 'Hindi '
       for(var key in o.movieGenre)
       {
         if(o.movieGenre[key])

@@ -176,4 +176,54 @@ export class PeopleServiceService {
     }
   }
 
+  getAllFollowersAsCustomerObjects(customer : Customer,allCustomers : Customer[]) : Customer[]
+  {
+    if(customer && customer != undefined && customer != null && allCustomers && allCustomers.length>0)
+    {
+      var followerUIDs=[]
+      var Followers : Customer[] = [];
+  
+      customer.followers.forEach(element => {
+        followerUIDs.push(element.followerUserId)
+      });
+  
+      allCustomers.forEach(element => {
+        if(followerUIDs.includes(element.uid))
+        {
+          Followers.push(element)
+        }
+      });
+      
+      return Followers;
+    }
+    else
+      return [];
+
+  }
+
+  getAllFollowingAsCustomerObjects(customer : Customer,allCustomers : Customer[]) : Customer[]
+  {
+    if(customer && customer != undefined && customer != null && allCustomers && allCustomers.length>0)
+    {
+      var followingUIDs=[]
+      var Following : Customer[] = [];
+  
+      customer.following.forEach(element => {
+        followingUIDs.push(element.followerUserId)
+      });
+  
+      allCustomers.forEach(element => {
+        if(followingUIDs.includes(element.uid))
+        {
+          Following.push(element)
+        }
+      });
+      
+      return Following;
+    }
+    else
+      return [];
+
+  }
+
 }

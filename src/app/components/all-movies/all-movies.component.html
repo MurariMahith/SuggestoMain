@@ -181,7 +181,7 @@
   <!----mobile screen-->
   <div style="display: flex;flex-wrap: wrap;justify-content: center;gap: 10px;" *ngIf="isMobile">
     <span *ngFor="let movie of DisplayMovieList">
-      <div class="item">
+      <div class="item" id="movie-{{movie.key}}" data-wow-duration="0.3s">
         <div (click)="GoToMovie(movie.key)" *ngIf="movie.isThisSeries" class="ribbon ribbon-top-left"><span>series</span></div>
         <a (click)="GoToMovie(movie.key)"><img src="{{movie.smallImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;" alt="{{movie.title}}"></a>
         <h6 style="text-align: center;">{{movie.title}}</h6>  

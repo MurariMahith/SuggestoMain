@@ -69,7 +69,7 @@ export class CustomerService {
 
   updateCustomer(key: string, value: Customer): Promise<void> 
   {
-    console.log(key)
+    //console.log(key)
     if(value.hasOwnProperty('key'))
     {
         delete value["key"];
@@ -93,7 +93,7 @@ export class CustomerService {
           delete value[k];
         }
     }
-    console.log(key)
+    //console.log(key)
     //console.log(value);
     return this.customerRef.update(key, value);
   }

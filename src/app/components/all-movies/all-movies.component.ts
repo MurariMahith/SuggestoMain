@@ -64,9 +64,9 @@ export class AllMoviesComponent implements OnInit {
     else{
       //console.log("laptop")
     }
-    if(localStorage.getItem("search") !== null)
+    if(localStorage.getItem("secure-all-movies") !== null)
     {
-      this.DisplayMovieList = JSON.parse(localStorage.getItem("search"))
+      this.DisplayMovieList = JSON.parse(localStorage.getItem("secure-all-movies"))
       this.loading = false;
     }
     
@@ -188,7 +188,16 @@ export class AllMoviesComponent implements OnInit {
 
   GoToMovie(key)
   {
-    this.router.navigateByUrl('/movie/'+key)
+    if(document.getElementById('movie-'+key))
+    {
+      document.getElementById('movie-'+key).classList.add("animated")
+      document.getElementById('movie-'+key).classList.add("bounceOutUp")
+      
+    }
+    setTimeout(()=>{
+      this.router.navigateByUrl('/movie/'+key)
+    },500)
+    
   }
 
   searching(event)

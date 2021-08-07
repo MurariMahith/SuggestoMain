@@ -40,6 +40,11 @@ import { WishlistService} from 'src/app/sharedServices/wishlist.service';
 import { RatingService } from 'src/app/sharedServices/rating.service';
 import { WatchedService } from 'src/app/sharedServices/watched.service';
 
+//import { Shake } from './../../../../node_modules/cordova-plugin-shake/'
+
+import * as Shake from './../../../../node_modules/shake.js'
+import { PersonalisedService } from 'src/app/sharedServices/personalised.service.js';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -71,7 +76,7 @@ export class HomeComponent implements OnInit {
   //lists for home page
   homePageList : HomePageLists = new HomePageLists();
 
-  sortedArray : DisplayMovie[] = []
+  sortedArray : DisplayMovie[] = [];
 
   allGenres : string[] = [];
   allPlatforms : string[] = [];
@@ -135,7 +140,8 @@ export class HomeComponent implements OnInit {
     isThisSeries : false,
     numberOfEpisodes : 0,
     numberOfSeasons : 0,
-    seriesStatus : 'Not a Series'
+    seriesStatus : 'Not a Series',
+    imdbID : ''
   };
   quickViewSafeSrc : SafeResourceUrl;
 
@@ -152,6 +158,8 @@ export class HomeComponent implements OnInit {
   allCustomers : Customer[] = [];
 
   randomMovieD : DisplayMovie;
+
+  myShakeEvent : Shake;
 
   constructor(private movieService : MovieServiceService,
     private listService : MovieListService,
@@ -172,10 +180,23 @@ export class HomeComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private arrayHelper : ArrayHelperService,
     private authService : AuthService,
+    private personalisedService : PersonalisedService,
     @Inject(AngularFireMessaging) private afMessaging: AngularFireMessaging
     ) {
       this.safeSrc = this.sanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/odM92ap8_c0")
+      this.myShakeEvent = new Shake();
+      this.myShakeEvent.start();
+      window.addEventListener('shake', this.shaked,false)
+      //Shake.
      }
+
+  shaked()
+  {
+    
+    alert("shaked");
+    this.router.navigateByUrl('/random');
+    //this.generateRandomMovie();
+  }
 
   pushSubscription()
   {
@@ -206,6 +227,7 @@ export class HomeComponent implements OnInit {
   ngOnDestroy()
   { 
 
+    window.removeEventListener('shake',this.shaked,false);
     this.hitsService.getHits()
     .snapshotChanges().pipe(
       map(changes => 
@@ -269,23 +291,44 @@ export class HomeComponent implements OnInit {
     if( screen.width <= 480 ) {     
       this.isMobile = true;
       this.loading = false;
-      //console.log(this.loading2)
-      //this.pushSubscription()
-      ////console.log("mobile");
     }
     else{
       ////console.log("laptop")
     }
     //get today movie from localstorage until it loads from db.
     console.log(localStorage.getItem("editorchoiceList") == null)
-    if(localStorage.getItem("todayMovie") === null || localStorage.getItem("recently") === null || localStorage.getItem("editorchoiceList") === null)
+    if(localStorage.getItem("todayMovie") === null || localStorage.getItem("editorchoiceList") === null)
     {
-      //console.log("inside");
       this.loading = true;
     }
     this.todayMovieD = JSON.parse(localStorage.getItem("todayMovie"))
-    this.sortedArray = JSON.parse(localStorage.getItem("recently"));
     this.editorsChoice = JSON.parse(localStorage.getItem("editorchoiceList"));
+
+    if(localStorage.getItem("secure-current-customer") !== null && localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
+    {
+      this.currentCustomer = JSON.parse(localStorage.getItem("secure-current-customer"))
+      console.log("local customer found")
+      console.log(this.currentCustomer)
+
+      if(localStorage.getItem("secure-all-movies") !== null)
+      {
+        this.allMovies = JSON.parse(localStorage.getItem("secure-all-movies"));
+
+        this.allMoviesWithOtt = this.allMovies.filter(x => (x.ottLink != '' && x.ottLink != undefined && !(x.ottLink.length<3)))
+        
+        this.loggedIn = true;
+        //call neccessary functions when data is available
+        this.buildRecentlySuggestedMovieList()
+        this.buildNotYetWatchedMovies()
+        this.buildRecommendedMoviesFromTMDB()
+        this.buildPersonalisedContentForLoggedInCustomer()
+        this.generateRandomMovie()
+
+      }
+
+
+    }
+
     //console.log(this.todayMovieD);
 
 
@@ -415,6 +458,7 @@ export class HomeComponent implements OnInit {
             if(o.find(x => x.uid === localStorage.getItem("uid")))
             {
               this.currentCustomer = o.find(x => x.uid === localStorage.getItem("uid"))
+              localStorage.setItem("secure-current-customer",JSON.stringify(this.currentCustomer))
               //console.log(this.currentCustomer);
 
               this.loggedIn = true
@@ -534,12 +578,13 @@ export class HomeComponent implements OnInit {
       )
     ).subscribe(o => {
       this.allMovies = o; 
+      //saving data for fast loading
+      localStorage.setItem("secure-all-movies", JSON.stringify(this.allMovies))
       this.allMoviesWithOtt = this.allMovies.filter(x => (x.ottLink != '' && x.ottLink != undefined && !(x.ottLink.length<3)))
       console.log(this.allMoviesWithOtt.length);
       this.generateRandomMovie();
       console.log(this.randomMovieD);
-      // console.log(this.allMovies.find(a => a.key === localStorage.getItem("navigatedMovie")))
-      // console.log(this.MovieToBeRated)
+
       if(localStorage.getItem("navigatedMovie") && this.allMovies.find(a => a.key === localStorage.getItem("navigatedMovie")))
       {
         this.MovieToBeRated = this.allMovies.find(a => a.key === localStorage.getItem("navigatedMovie"))
@@ -562,12 +607,11 @@ export class HomeComponent implements OnInit {
       }
       var shuffledwishlistedMoviesOfCustomer = []
       shuffledwishlistedMoviesOfCustomer = this.shuffleArr(this.wishlistedMovies)
-      //this.corouselWishlistedMovie = this.allMovies.find(x => x.key === shuffledwishlistedMoviesOfCustomer[0])
+
       for(let x=0;x<this.allMovies.length;x++)
       {
         if(this.allMovies[x].key == shuffledwishlistedMoviesOfCustomer[0])
         {
-            ////console.log(this.allMovies[x].imageUrl);
             this.corouselWishlistedMovie = this.allMovies[x];
         }
       }
@@ -577,38 +621,17 @@ export class HomeComponent implements OnInit {
       ////console.log(arr)
       if(fakearr2[0])
       {
-        if(localStorage.getItem("today-wish") && localStorage.getItem("date") == moment().format("DD/MM/YYYY") && this.currentCustomer.wishlistedMovies.includes(localStorage.getItem("today-wish")) && false)
+        localStorage.setItem("today-wish",fakearr2[0].key)
+        this.corouselWishlistedMovieD = this.movieDisplayService.prepareDisplayMovieList(fakearr2)[0]; 
+        //console.log(this.corouselWishlistedMovieD)
+        if(this.corouselWishlistedMovieD)
         {
-          ////console.log("inside");
-          var wish = localStorage.getItem("today-wish")
-          var mov = this.allMovies.find(x => x.key === wish);
-          this.corouselWishlistedMovie = this.allMovies.find(x => x.key === wish);
-          var fakearr3 = [];
-          fakearr3.push(mov);
-          ////console.log(fakearr3)
-          this.corouselWishlistedMovieD = this.movieDisplayService.prepareDisplayMovieList(fakearr3)[0]; 
-          if(this.corouselWishlistedMovieD)
-          {
-            this.corouselWishlistedMovieBool = true;
-          }
-        }
-        else
-        {
-          localStorage.setItem("today-wish",fakearr2[0].key)
-          this.corouselWishlistedMovieD = this.movieDisplayService.prepareDisplayMovieList(fakearr2)[0]; 
-          //console.log(this.corouselWishlistedMovieD)
-          if(this.corouselWishlistedMovieD)
-          {
-            this.corouselWishlistedMovieBool = true;
-          }
-        }
-        
+          this.corouselWishlistedMovieBool = true;
+        }        
       }
-      // //console.log(shuffledwishlistedMoviesOfCustomer);
-      // //console.log(this.corouselPersonalisedMovie)
       
       this.loading = false;
-      ////console.log(o);
+
       for(let i=0;i<this.allMovies.length;i++)
       {
         var newDate = this.buildProperDate(this.allMovies[i].suggestedDate);       
@@ -643,8 +666,7 @@ export class HomeComponent implements OnInit {
       //console.log(o)
       this.homePageList = o[0];
       this.buildeditorChoiceMovieListForDisplay()
-      this.buildRecentlySuggestedMovieList()
-      this.buildMovieSuggestionBasedOnLanguage()  
+      this.buildRecentlySuggestedMovieList() 
     });
 
     var dailyHitUpdatedNow :  boolean = false;
@@ -680,8 +702,30 @@ export class HomeComponent implements OnInit {
 
   generateRandomMovie()
   {
+    // Create the event
+    // var event = new CustomEvent("shake");
+
+    // // Dispatch/Trigger/Fire the event
+    // document.dispatchEvent(event);
+
     var shuffleD = this.shuffleArr(this.allMoviesWithOtt);
     this.randomMovieD = shuffleD[2];
+    if(document.getElementById("random-movie"))
+    {
+      //console.log("hello")
+      document.getElementById("random-movie").classList.add("animated");
+      document.getElementById("random-movie").classList.add("tada");
+      document.getElementById("random-movie").classList.add("infinite");
+      var shuffleD = this.shuffleArr(this.allMoviesWithOtt);
+      this.randomMovieD = shuffleD[2];
+      setTimeout(()=>{
+        document.getElementById("random-movie").classList.remove("animated");
+        document.getElementById("random-movie").classList.remove("tada");
+        document.getElementById("random-movie").classList.remove("infinite");
+      },1000)
+      
+    }
+
     //console.log(this.randomMovieD);
   }
 
@@ -829,32 +873,16 @@ export class HomeComponent implements OnInit {
           'id' : res['results'][i]['id']       
         })
       }
-      //console.log(this.trendingMovies)
       
     })
   }
 
   buildNotYetWatchedMovies()
   {
-    var allkeys : string[] = [];
-    
-    this.allMovies.forEach(element => {
-      allkeys.push(element.key)
-    });
-
-    var notWatched = allkeys;
-    //var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,false,true,false,false);
 
     if(this.currentCustomer.watchedMovies)
     {
-      notWatched = notWatched.filter( ( el ) => !this.currentCustomer.watchedMovies.includes( el ) );
-      var notWatchedMovies = [];
-
-      notWatched.forEach(element => {
-        ////console.log(allMoviesFromDb.find(a => a.key===element))        
-        notWatchedMovies.push(this.allMovies.find(a => a.key===element));
-      });
-      this.moviesNotYetWatchedDisplay = this.movieDisplayService.prepareDisplayMovieList(notWatchedMovies,true,false,false,false);
+      this.moviesNotYetWatchedDisplay = this.watchedService.getAllNotWatchedMoviesByCustomer(this.currentCustomer,this.allMovies)
       if(this.moviesNotYetWatchedDisplay.length>0)
       {
         this.NotYetWatchedBool = true;
@@ -863,159 +891,39 @@ export class HomeComponent implements OnInit {
     else
     {
       this.moviesNotYetWatchedDisplay = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,true,false,false,false);
-    }
+    } 
     
-    
-    ////console.log(this.moviesNotYetWatchedDisplay)
   }
 
   buildPersonalisedContentForLoggedInCustomer()
   {
     this.loading = false;
-    var i=0;
-    var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,false,true,false,false);
-    var personalisedMovies = []
-    //console.log(this.currentCustomer.preferredGenre)
-    //console.log()
-    var watched = this.currentCustomer.watchedMovies;
-    allDisplayMovies.forEach(o => {
+    console.log("called")
 
-      var genresForMovie = o.genre.trim().split(' ')
-      
-      genresForMovie.forEach(element => {
-        if(this.currentCustomer.preferredGenre && this.currentCustomer.preferredGenre.includes(element))
-        {
-          i=i+1;
-          personalisedMovies.push(o)
-        }
-
-      });
-
-    });
-    //console.log(personalisedMovies);
-
-    var uniqueArray :DisplayMovie[] = personalisedMovies.filter(function(item, pos) {
-      return personalisedMovies.indexOf(item) == pos;
-    })
-    this.personalisedMoviesDisplay = uniqueArray;
-
-    var LanguageBasedPersonalisedMovies = [];
-    uniqueArray.forEach(o => {
-      this.currentCustomer.preferredLanguages.forEach(element => {
-        ////console.log(o.language.includes(element))
-        if(o.language.includes(element))
-        {
-          LanguageBasedPersonalisedMovies.push(o)
-        }
-      });
-    });
-    // //console.log(LanguageBasedPersonalisedMovies)
-    // //console.log(this.personalisedMoviesDisplay)
-    this.personalisedMoviesDisplay = LanguageBasedPersonalisedMovies
-    //murari
-
-    //console.log("here")
-
-    //this.personalisedMoviesDisplay.filter(x => watched.includes(x.key))
-    //console.log(this.personalisedMoviesDisplay);
-    
-    if(this.personalisedMoviesDisplay.length<10)
-    {
-      var randomNum;
-
-      for(randomNum = 20;randomNum< allDisplayMovies.length;randomNum = randomNum+3)
-      {
-        //loadconsole.log(allDisplayMovies[randomNum])
-        // this.currentCustomer.preferredLanguages.forEach(element => {
-        //   if(element.search(allDisplayMovies[randomNum].language) != -1)
-        //   {
-        //     this.personalisedMoviesDisplay.push(allDisplayMovies[randomNum])
-        //   }
-        // });
-        //if(this.currentCustomer.preferredLanguages.includes(allDisplayMovies[randomNum].language))
-        this.personalisedMoviesDisplay.push(allDisplayMovies[randomNum])
-          
-        if(this.personalisedMoviesDisplay.length>20)
-          break;
-      }
-    }
+    this.personalisedMoviesDisplay = this.personalisedService.getPersonalisedMoviesForCustomer(this.allMovies, this.currentCustomer)    
 
     //get any random movie for corousel
     var shuffledpersonalisedmovies = [];
-    if(this.personalisedMoviesDisplay.length>0)
-    {
-
-    }
     shuffledpersonalisedmovies = this.shuffleArr(this.personalisedMoviesDisplay)
-    //console.log(this.personalisedMoviesDisplay)
     this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[0];
-    //console.log(this.corouselPersonalisedMovieD)
     if(this.todayMovieD && this.corouselWishlistedMovieD && this.todayMovieD.key === this.corouselPersonalisedMovieD.key)
     {
       this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[1];
     }
-    //murari
-    if(localStorage.getItem("today-personal") && localStorage.getItem("date") == moment().format("DD/MM/YYYY") && false)
-    {
-      ////console.log("inside 2");
-      var personal = localStorage.getItem("today-personal")
-      var mov = this.allMovies.find(x => x.key === personal);
-      this.corouselPersonalisedMovie = this.allMovies.find(x => x.key === personal);
-      var fakearr3 = [];
-      fakearr3.push(mov);
-      ////console.log(fakearr3)
-      this.corouselPersonalisedMovieD = this.movieDisplayService.prepareDisplayMovieList(fakearr3)[0]; 
-      if(this.corouselPersonalisedMovieD)
-      {
-        this.corouselPersonalisedMovieBool = true;
-      }
-    }
-    else
-    {
-      this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[0];
-      localStorage.setItem("today-personal",this.corouselPersonalisedMovieD.key)
-      if(this.corouselPersonalisedMovieD)
-      {
-        this.corouselPersonalisedMovieBool = true;
-      }
-    }
-
+    this.corouselPersonalisedMovieD = shuffledpersonalisedmovies[0];
     if(this.corouselPersonalisedMovieD)
     {
       this.corouselPersonalisedMovieBool = true;
     }
-  }
 
-  //decide whether we want preferred language movies or not.
-  buildMovieSuggestionBasedOnLanguage()
-  {
-    // var allDisplayMovies : DisplayMovie[] = this.movieDisplayService.prepareDisplayMovieList(this.allMovies,false,true,false,false);
-
-    //this.locationBasedMovies = this.movieDisplayService.prepareDisplayMovieList(allmovies2,true,false,false,false)
   }
 
   buildRecentlySuggestedMovieList()
   {
-    var allmovies2 = [];
-    //this.sortedArray.length = 0;
-    this.allMovies.forEach(element => {
-      var newDate = this.buildProperDate(element.suggestedDate);       
-        if(moment().startOf('day').isAfter(moment(new Date(newDate))))
-        {
-          allmovies2.push(element)
-        }
-    });
 
-    var sortedArrayTS = this.movieDisplayService.prepareDisplayMovieList(allmovies2)
-    // //console.log(this.sortedArray)
+    this.sortedArray = this.personalisedService.getRecentlySuggestedMoviesList(this.allMovies);
 
-    this.sortedArray = _.orderBy(sortedArrayTS, (o: DisplayMovie) => {
-      ////console.log(moment(new Date(this.buildProperDate(o.suggestedDate))))
-      return moment(new Date(this.buildProperDate(o.suggestedDate)))
-    }, ['desc']);
-
-    //store this array in storage and load this until data loads 
-    localStorage.setItem("recently",JSON.stringify(this.sortedArray));
+    localStorage.setItem("recently",JSON.stringify(this.sortedArray.slice(0,20)));
   }
 
   buildProperDate(str : string) :string
@@ -1061,6 +969,7 @@ export class HomeComponent implements OnInit {
 
   GoToMovieHref(key)
   {
+    //this.loading = true
     if(this.loading2)
     {
       alert("please wait while data is loading its one time process")
@@ -1068,6 +977,7 @@ export class HomeComponent implements OnInit {
     else
     {
       window.location.href = '/movie/'+key
+      
     }
   }
 
@@ -1075,22 +985,8 @@ export class HomeComponent implements OnInit {
   {
     if(this.loggedIn)
     {
-      //console.log(key)
-      var wishlisted = []
+
       this.wishlistedMovies.push(key)
-      console.log(this.wishlistedMovies)
-      // wishlisted.push(key)
-      // if(!this.currentCustomer.wishlistedMovies)
-      // {
-      //   //console.log("new");
-      //   this.currentCustomer.wishlistedMovies = wishlisted;
-      // }
-      // else
-      // {
-      //   this.currentCustomer.wishlistedMovies.push(key);
-      // }
-      // ////console.log(this.currentCustomer)
-      // this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
       this.wishlistService.addToWishlist(key,this.currentCustomer);
       var feeditm : FeedItem = new FeedItem();
       feeditm.content = this.currentCustomer.name + " added "+this.allMovies.find(x=>x.key == key).title + " to their wishlist . Click to view the movie."
@@ -1114,19 +1010,6 @@ export class HomeComponent implements OnInit {
   removeFromWishlist(key)
   {
     this.wishlistService.removeFromWishlist(key,this.currentCustomer);
-    // //console.log(this.currentCustomer.wishlistedMovies)
-    // if(this.currentCustomer.wishlistedMovies.includes(key))
-    // {
-    //   for( var i = 0; i < this.currentCustomer.wishlistedMovies.length; i++)
-    //   {     
-    //     if (this.currentCustomer.wishlistedMovies[i] == key) 
-    //     {   
-    //       this.currentCustomer.wishlistedMovies.splice(i, 1); 
-    //     }
-    //   }
-    //   //console.log(this.currentCustomer.wishlistedMovies)
-    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer);
-    // }
   }
 
   addToWatchedMovies(key)
@@ -1138,34 +1021,12 @@ export class HomeComponent implements OnInit {
     }
     this.watchedMovies.push(key)
     this.watchedService.addToWatched(key,this.currentCustomer)
-    // if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.length >1)
-    // {
-    //   this.currentCustomer.watchedMovies.push(key);
-
-    // }
-    // else
-    // {
-    //   var arr :string[] = [];
-    //   arr.push(key);
-    //   this.currentCustomer.watchedMovies = arr;
     // }
     if(this.currentCustomer.watchedMovies)
     {
       this.buildNotYetWatchedMovies()
     }
     
-    // if(this.moviesNotYetWatchedKeys.includes(key))
-    // {
-    //   for( var i = 0; i < this.moviesNotYetWatchedDisplay.length; i++)
-    //   {     
-    //     if (this.moviesNotYetWatchedDisplay[i].key == key) 
-    //     {   
-    //       this.moviesNotYetWatchedDisplay.splice(i, 1); 
-    //     }
-    //   }
-    // }
-
-    //this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
     var feeditm : FeedItem = new FeedItem();
     feeditm.content = this.currentCustomer.name + " watched "+this.allMovies.find(x=>x.key == key).title + " . Click to view the movie."
     feeditm.customerName = this.currentCustomer.name;
@@ -1180,20 +1041,6 @@ export class HomeComponent implements OnInit {
   {
     this.watchedService.removeFromWatched(key,this.currentCustomer);
     this.buildNotYetWatchedMovies();
-    // if(this.currentCustomer.watchedMovies && this.currentCustomer.watchedMovies.includes(key))
-    // {
-    //   for( var i = 0; i < this.currentCustomer.watchedMovies.length; i++)
-    //   {     
-    //     if (this.currentCustomer.watchedMovies[i] == key) 
-    //     {   
-    //       this.currentCustomer.watchedMovies.splice(i, 1); 
-    //     }
-    //   }
-    //     this.buildNotYetWatchedMovies()
-      
-    //   this.customerService.updateCustomer(this.currentCustomer['key'],this.currentCustomer)
-    // }
-
   }
 
   startRateMovie(key)
@@ -1204,8 +1051,7 @@ export class HomeComponent implements OnInit {
           //+"?autoplay=1";
           // //console.log(this.actualMovieEmbedTrailer);
     this.safeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(str)
-    //this.safeSrc= ""
-    ////console.log(this.MovieToBeRated);
+
   }
 
   rateMovie(key)
@@ -1222,24 +1068,6 @@ export class HomeComponent implements OnInit {
       this.navigatedMovieStatus = false;
     }
     this.ratingService.rateMovie(key,this.MovieToBeRated,this.rating,this.currentCustomer,this.loggedIn);
-    // this.MovieToBeRated.rating = Number(this.MovieToBeRated.rating) + Number(this.rating);
-    // var movieKey = this.MovieToBeRated.key
-    // delete this.MovieToBeRated.key
-    // this.movieService.updateMovie(movieKey,this.MovieToBeRated)
-    // var ratedMovieLocal : RatedMovies = new RatedMovies();
-    // var arr = [];
-    // ratedMovieLocal.movieId = key;
-    // ratedMovieLocal.rating = Number(this.rating)
-    // if(!this.currentCustomer.ratedMovies)
-    // {
-    //   arr.push(ratedMovieLocal)
-    //   this.currentCustomer.ratedMovies = arr
-    // }
-    // else
-    // {
-    //   this.currentCustomer.ratedMovies.push(ratedMovieLocal)
-    // }
-    // this.customerService.updateCustomer(this.currentCustomer["key"],this.currentCustomer)
 
   }
 
@@ -1260,13 +1088,6 @@ export class HomeComponent implements OnInit {
           // //console.log(this.actualMovieEmbedTrailer);
     this.quickViewSafeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(tariler)
     this.quickViewDisplay = this.movieDisplayService.prepareDisplayMovieSingle(this.quickViewMovie);
-    ////console.log(JSON.stringify(this.quickViewMovie));
-    // //console.log(this.quickViewMovie.language)
-    // //console.log(this.quickViewMovie.movieGenre)
-    // //console.log(this.quickViewMovie.availableIn)
-    // const player = new window['YT'].Player('ytplayer')
-    // //console.log(player);
-    //window.onYouTubeIframeAPIReady
   }
 
   closeQuickView()
@@ -1275,12 +1096,9 @@ export class HomeComponent implements OnInit {
     this.quickViewedMovies.push(this.quickViewMovie);
     var tariler = "https://www.youtube.com/embed/"+this.quickViewMovie.ytTrailerLink.slice(32,)
     this.quickViewSafeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(tariler)
-    //console.log(this.quickViewMovie.visitedCount);
-    //console.log(this.quickViewSafeSrc);
   }
 
-  quickViewedMovies : FMovie[] = [];
-
+  quickViewedMovies : FMovie[] = []
 
   GoToMovieExternalSiteQuickView()
   {

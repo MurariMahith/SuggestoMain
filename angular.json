@@ -26,16 +26,19 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.json",
-              "src/.well-known"
+              "src/.well-known",
+              "src/ads.txt"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/animate.css/animate.css",
               "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/shake.js/shake.js"
             ]
           },
           "configurations": {

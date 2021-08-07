@@ -26,4 +26,6 @@ export class FMovie
     numberOfSeasons : number = 0;
     numberOfEpisodes : number = 0;
     seriesStatus : string = '';
+
+    imdbID : string = '';
 }

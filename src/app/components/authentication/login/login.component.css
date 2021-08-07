@@ -50,8 +50,8 @@
     max-width: 450px;
     position: relative;
     padding: 0px;
-    -webkit-box-shadow: 0 30px 60px 0 rgba(255, 255, 255, 0.3);
-    box-shadow: 0 30px 60px 0 rgba(255, 253, 253, 0.3);
+    /* -webkit-box-shadow: 0 30px 60px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 30px 60px 0 rgba(255, 253, 253, 0.3); */
     text-align: center;
   }
   

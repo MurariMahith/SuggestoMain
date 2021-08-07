@@ -162,13 +162,25 @@ export class Profile2Component implements OnInit {
     else{
       ////console.log("laptop")
     }
-    if(localStorage.getItem("allMovies") !== null )
+    // if(localStorage.getItem("allMovies") !== null )
+    // {
+    //   this.allMovies = JSON.parse(localStorage.getItem("allMovies"));
+    // }
+
+    if(localStorage.getItem("secure-current-customer") !== null && localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
     {
-      this.allMovies = JSON.parse(localStorage.getItem("allMovies"));
-      //console.log("backup Movies")
-      //console.log(this.allMovies.length)
-      //this.loading = false;
+      this.currentCustomer = JSON.parse(localStorage.getItem("secure-current-customer"))
+      this.performNullChecks()
+
+      if(localStorage.getItem("secure-all-movies") !== null)
+      {
+        this.allMovies = JSON.parse(localStorage.getItem("secure-all-movies"));
+        
+        this.loggedIn = true;
+        this.loading = false;
+      }
     }
+
     if(localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
     {
       this.customerService.getLoggedInCustomer()
@@ -187,9 +199,7 @@ export class Profile2Component implements OnInit {
               }
             });
             this.allCustomersWhoArePublicDisplay = this.allCustomersWhoArePublic
-            //remove current customer from all customers.
-
-            
+            //remove current customer from all customers.            
 
             ////console.log(o)
             if(o.find(x => x.uid === localStorage.getItem("uid")))
@@ -199,7 +209,7 @@ export class Profile2Component implements OnInit {
               this.smalldescription = this.currentCustomer.smallDescription ? this.currentCustomer.smallDescription : '';
               this.loading = false;
               //get back here
-              //window.localStorage.setItem("currentCustomer",JSON.stringify(this.currentCustomer));
+              window.localStorage.setItem("secure-current-customer",JSON.stringify(this.currentCustomer));
 
               //getting all messages sent for this customer
               this.getAllMessages();
@@ -210,47 +220,41 @@ export class Profile2Component implements OnInit {
                   this.notifyRequest = true;
                 }                  
               },5000)
-              if(!this.currentCustomer.followRequestSent || this.currentCustomer.followRequestSent == undefined)
-              {
-                this.currentCustomer.followRequestSent = [];
-              }
-              if(!this.currentCustomer.following || this.currentCustomer.following == undefined)
-              {
-                this.currentCustomer.following = [];
-              }
-              if(!this.currentCustomer.followers || this.currentCustomer.followers == undefined)
-              {
-                this.currentCustomer.followers = [];
-              }
-              if(!this.currentCustomer.followRequestReceived || this.currentCustomer.followRequestReceived == undefined)
-              {
-                this.currentCustomer.followRequestReceived = [];
-              }
-
-              
-              if(!this.currentCustomer.wishlistedMovies || this.currentCustomer.wishlistedMovies == undefined)
-              {
-                this.currentCustomer.wishlistedMovies = [];
-              }
-              if(!this.currentCustomer.watchedMovies || this.currentCustomer.watchedMovies == undefined)
-              {
-                this.currentCustomer.watchedMovies = [];
-              }
-              if(!this.currentCustomer.ratedMovies || this.currentCustomer.ratedMovies == undefined)
-              {
-                this.currentCustomer.ratedMovies = [];
-              }
-              
-              
-
-
+              this.performNullChecks()
+              // if(!this.currentCustomer.followRequestSent || this.currentCustomer.followRequestSent == undefined)
+              // {
+              //   this.currentCustomer.followRequestSent = [];
+              // }
+              // if(!this.currentCustomer.following || this.currentCustomer.following == undefined)
+              // {
+              //   this.currentCustomer.following = [];
+              // }
+              // if(!this.currentCustomer.followers || this.currentCustomer.followers == undefined)
+              // {
+              //   this.currentCustomer.followers = [];
+              // }
+              // if(!this.currentCustomer.followRequestReceived || this.currentCustomer.followRequestReceived == undefined)
+              // {
+              //   this.currentCustomer.followRequestReceived = [];
+              // }
+              // if(!this.currentCustomer.wishlistedMovies || this.currentCustomer.wishlistedMovies == undefined)
+              // {
+              //   this.currentCustomer.wishlistedMovies = [];
+              // }
+              // if(!this.currentCustomer.watchedMovies || this.currentCustomer.watchedMovies == undefined)
+              // {
+              //   this.currentCustomer.watchedMovies = [];
+              // }
+              // if(!this.currentCustomer.ratedMovies || this.currentCustomer.ratedMovies == undefined)
+              // {
+              //   this.currentCustomer.ratedMovies = [];
+              // }
 
               this.currentCustomer.following.forEach(element => {
                 this.allFollowinguids.push(element.followerUserId)
               });
-              ////console.log(this.allFollowinguids)
               this.loggedIn = true
-              //console.log(this.currentCustomer)
+
               for( var i = 0; i < this.allCustomersWhoArePublic.length; i++)
               {     
                 if (this.allCustomersWhoArePublic[i].uid == this.currentCustomer.uid) 
@@ -285,9 +289,6 @@ export class Profile2Component implements OnInit {
       {
         this.allMovies.length = 0;
         this.allMovies = o;
-        window.localStorage.setItem("allMovies",JSON.stringify(this.allMovies.slice(0,50)))
-        //console.log("Original Movies Loaded")
-        //console.log(this.allMovies.length)
         try
         {
           this.getCategorisedMoviesForThisCustomer()
@@ -377,6 +378,38 @@ export class Profile2Component implements OnInit {
       }        
     },20000)
 
+  }
+
+  performNullChecks()
+  {
+    if(!this.currentCustomer.followRequestSent || this.currentCustomer.followRequestSent == undefined)
+    {
+      this.currentCustomer.followRequestSent = [];
+    }
+    if(!this.currentCustomer.following || this.currentCustomer.following == undefined)
+    {
+      this.currentCustomer.following = [];
+    }
+    if(!this.currentCustomer.followers || this.currentCustomer.followers == undefined)
+    {
+      this.currentCustomer.followers = [];
+    }
+    if(!this.currentCustomer.followRequestReceived || this.currentCustomer.followRequestReceived == undefined)
+    {
+      this.currentCustomer.followRequestReceived = [];
+    }
+    if(!this.currentCustomer.wishlistedMovies || this.currentCustomer.wishlistedMovies == undefined)
+    {
+      this.currentCustomer.wishlistedMovies = [];
+    }
+    if(!this.currentCustomer.watchedMovies || this.currentCustomer.watchedMovies == undefined)
+    {
+      this.currentCustomer.watchedMovies = [];
+    }
+    if(!this.currentCustomer.ratedMovies || this.currentCustomer.ratedMovies == undefined)
+    {
+      this.currentCustomer.ratedMovies = [];
+    }
   }
 
   showMessageIcon : boolean = true;
@@ -478,16 +511,21 @@ export class Profile2Component implements OnInit {
     ).subscribe(o => 
       {
         this.allLists = o;
-        ////console.log(this.allLists)
-        this.listsByCurrentCustomer.length = 0;
-        this.allLists.forEach(x => {
-          if(x.createdBy && x.createdBy === this.currentCustomer.uid)
-          {
-            this.listsByCurrentCustomer.push(x);              
-          }
-        });
-        this.listsByCurrentCustomer.sort((x,y) => y.rating - x.rating);
+        this.buildListsCreatedBythisCustomer()
+
       })
+  }
+
+  buildListsCreatedBythisCustomer()
+  {
+    this.listsByCurrentCustomer.length = 0;
+    this.allLists.forEach(x => {
+      if(x.createdBy && x.createdBy === this.currentCustomer.uid)
+      {
+        this.listsByCurrentCustomer.push(x);              
+      }
+    });
+    this.listsByCurrentCustomer.sort((x,y) => y.rating - x.rating);
   }
 
   getCategorisedMoviesForThisCustomer()

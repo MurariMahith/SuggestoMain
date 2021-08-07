@@ -64,7 +64,8 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
 import { MoviecardComponent } from './ui-components/moviecard/moviecard.component';
 import { PlainmoviecardComponent } from './ui-components/plainmoviecard/plainmoviecard.component';
 import { ListmoviecardComponent } from './ui-components/listmoviecard/listmoviecard.component';
-import { ExpandedmoviecardComponent } from './ui-components/expandedmoviecard/expandedmoviecard.component'
+import { ExpandedmoviecardComponent } from './ui-components/expandedmoviecard/expandedmoviecard.component';
+import { RandomMoviesComponent } from './components/random-movies/random-movies.component'
 
 @NgModule({
   declarations: [
@@ -113,7 +114,8 @@ import { ExpandedmoviecardComponent } from './ui-components/expandedmoviecard/ex
     MoviecardComponent,
     PlainmoviecardComponent,
     ListmoviecardComponent,
-    ExpandedmoviecardComponent
+    ExpandedmoviecardComponent,
+    RandomMoviesComponent
   ],
   imports: [
     BrowserModule,

@@ -15,7 +15,7 @@ export class AuthGuardService implements CanActivate {
     {
         this.router.navigateByUrl('/login')
         //console.log(localStorage.getItem("loggedIn"))
-        alert("You should be logged In to see this content, please login to continue.")
+        //alert("You should be logged In to see this content, please login to continue.")
         return false;
     }
     return true;

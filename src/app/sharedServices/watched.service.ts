@@ -30,7 +30,7 @@ export class WatchedService {
     }
 
     //update customer
-    console.log("customer key from watched service: "+customer['key'])
+    //console.log("customer key from watched service: "+customer['key'])
     this.customerService.updateCustomer(customer['key'],customer)
   }
 
@@ -71,6 +71,26 @@ export class WatchedService {
       return [];
     }
 
+  }
+
+  getAllNotWatchedMoviesByCustomer(customer : Customer,allMovies : FMovie[]) : DisplayMovie[]
+  {
+    if(customer.watchedMovies && customer.watchedMovies != undefined && customer.watchedMovies != null && customer.watchedMovies.length>0)
+    {
+      var watchedMovies :FMovie[] = [];
+      allMovies.forEach(element => {
+        if(!customer.watchedMovies.includes(element.key))
+        {
+          watchedMovies.push(element);
+        }
+      });
+
+      return this.movieDisplayService.prepareDisplayMovieList(watchedMovies)
+    }
+    else
+    {
+      return [];
+    }
   }
 
 }

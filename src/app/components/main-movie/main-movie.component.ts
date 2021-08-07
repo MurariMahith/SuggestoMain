@@ -9,7 +9,7 @@ import {Inject} from '@angular/core';
 import { MovieList } from 'src/app/models/MovieList';
 import { DisplayMovie } from 'src/app/models/DisplayMovie';
 import { DisplayMovieService } from 'src/app/services/display-movie.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { CustomerService } from 'src/app/services/customerService';
 import { Customer } from 'src/app/models/Customer';
 import { RatedMovies } from 'src/app/models/Customer Related/RatedMovies';
@@ -21,6 +21,7 @@ import { HitsService } from 'src/app/services/hits.service';
 import { WishlistService } from 'src/app/sharedServices/wishlist.service';
 import { WatchedService } from 'src/app/sharedServices/watched.service';
 import { RatingService } from 'src/app/sharedServices/rating.service';
+
 
 @Component({
   selector: 'app-main-movie',
@@ -57,6 +58,11 @@ export class MainMovieComponent implements OnInit {
 
   imdbID : string = 'tt1375666';
 
+  IMDBRatingStringPart1 : string = '<div class="imdbRatingPlugin" id="test" data-user="ur79426835" data-title="';
+  IMDBRatingStringPart2 : string = '" data-style="p1">'
+  IMDBRatingStringBypass : SafeHtml;
+  IMDBRatingAvailable : boolean = true;
+
   constructor(private movieService : MovieServiceService, 
     private activatedRoute: ActivatedRoute,
     private router : Router,
@@ -70,9 +76,6 @@ export class MainMovieComponent implements OnInit {
     private messageService : HitsService,
     private location: Location,
     private sanitizer: DomSanitizer) {
-
-
-
      }
 
   ngOnInit() {
@@ -82,6 +85,26 @@ export class MainMovieComponent implements OnInit {
     }
     else{
       //console.log("laptop")
+    }
+
+    if(localStorage.getItem("secure-current-customer") !== null && localStorage.getItem("loggedIn") !== null && localStorage.getItem("loggedIn") === "true" && localStorage.getItem("uid") !== null)
+    {
+      this.currentCustomer = JSON.parse(localStorage.getItem("secure-current-customer"))
+
+      if(localStorage.getItem("secure-all-movies") !== null)
+      {
+        this.allMovies = JSON.parse(localStorage.getItem("secure-all-movies"));
+
+        this.actualMovie.smallImageUrl = "../../../assets/images/suggesto_darkbg.jpeg";
+
+        var movieKey = this.activatedRoute.snapshot.params.key
+        var m = this.allMovies.find(o => o.key === movieKey)
+        this.buildActualMovie(m, movieKey)
+        console.log("local")
+        
+        this.loggedIn = true;
+        this.loading = false;
+      }
     }
 
     var elmnt = document.getElementById("scrollhere");
@@ -199,61 +222,103 @@ export class MainMovieComponent implements OnInit {
       {
         var movieKey = this.activatedRoute.snapshot.params.key
         var m = this.allMovies.find(o => o.key === movieKey)
-        if(m)
-        {
-          // if(m.visitedCount)
-          // {
-          //   m.visitedCount = m.visitedCount+1;
-          //   this.movieService.updateMovie(m.key,m);
-          //   console.log(m)
-          //   obs.unsubscribe();
-          // }
-          // else
-          // {
-          //   m.visitedCount = 1;
-          //   this.movieService.updateMovie(m.key,m);
-          //   //console.log(m)
-          //   obs.unsubscribe();
-          // }
-          this.foundMovies.push(m);
-          this.movieHere = m;
-          //console.log(this.movieHere.availableIn.Aha)
-          //console.log(m.ytTrailerLink);
-          this.actualMovieEmbedTrailer = "https://www.youtube.com/embed/"+m.ytTrailerLink.slice(32,)
-          //add below line to above str to have autoplay feature
-          //+"?autoplay=1";
-          // console.log(this.actualMovieEmbedTrailer);
-          this.safeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.actualMovieEmbedTrailer)
-          this.actualMovie = this.displaymovieservice.prepareDisplayMovieList(this.foundMovies)[0];
-          this.getListsInWhichThisMovieIsThere()
-          this.findSimilarMovies()
-          //console.log(document.getElementsByClassName("imdbRatingPlugin"))
-          this.getIMDbRating(document,"script","imdb-rating-api");
 
-          
-          
-          //console.log(this.actualMovie)
-          if(!this.loggedIn)
-          {
-            //console.log(movieKey)
-            //console.log(window.localStorage.getItem(movieKey))
-            //console.log(localStorage.getItem("loggedIn"))
-            //console.log(window.localStorage.getItem(movieKey))
-            var prevRating = window.localStorage.getItem(movieKey);
-            if(prevRating != null && window.localStorage)
-            {
-              this.eligibleForRating = false;
-              this.rating = Number(prevRating);
-            }
-          }
-        }
-        else
-        {
-          this.router.navigateByUrl('/home')
-        }
-          
+        this.buildActualMovie(m, movieKey)
       }
     })
+  }
+
+  buildActualMovie(m : FMovie, movieKey : string)
+  {
+    if(m)
+    {
+
+      this.foundMovies.push(m);
+      this.movieHere = m;
+      //console.log(this.movieHere.availableIn.Aha)
+      //console.log(m.ytTrailerLink);
+      this.actualMovieEmbedTrailer = "https://www.youtube.com/embed/"+m.ytTrailerLink.slice(32,)
+      //add below line to above str to have autoplay feature
+      //+"?autoplay=1";
+      // console.log(this.actualMovieEmbedTrailer);
+      this.safeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.actualMovieEmbedTrailer)
+      this.actualMovie = this.displaymovieservice.prepareDisplayMovieList(this.foundMovies)[0];
+      this.getListsInWhichThisMovieIsThere()
+      this.findSimilarMovies()
+      
+      this.generateIMDBString(this.movieHere.imdbID);
+      //console.log(document.getElementsByClassName("imdbRatingPlugin"))
+      this.getIMDbRating(document,"script","imdb-rating-api");
+
+      if(!this.loggedIn)
+      {
+
+        var prevRating = window.localStorage.getItem(movieKey);
+        if(prevRating != null && window.localStorage)
+        {
+          this.eligibleForRating = false;
+          this.rating = Number(prevRating);
+        }
+      }
+    }
+    else
+    {
+      this.router.navigateByUrl('/home')
+    }
+  }
+
+  refresh()
+  {
+    window.location.reload();
+  }
+
+  generateIMDBString(imdbid : string)
+  {
+    // if(document.getElementById("imdb-rating-api"))
+    // {
+    //   console.log("script exists already")
+    //   var element = document.getElementById("imdb-rating-api");
+    //   element.parentNode.removeChild(element);
+    //   console.log(document.getElementById("imdb-rating-api"))
+    // }
+    if(imdbid != undefined && imdbid.length>0 && imdbid != null)
+    {
+      this.IMDBRatingStringBypass = this.sanitizer.bypassSecurityTrustHtml(this.IMDBRatingStringPart1+imdbid+this.IMDBRatingStringPart2)
+      console.log(this.IMDBRatingStringBypass)
+      
+      // setTimeout(()=>
+      // {
+      //   console.log("called after 2 seconds")
+      //   this.getIMDbRating(document,"script","imdb-rating-api");
+      // },2000)
+    }
+    else
+    {
+      this.IMDBRatingAvailable = false;
+    }
+    
+  }
+
+  getIMDbRating(d,s,id)
+  {
+    console.log("called plugin method")
+    // console.log(s)
+    // console.log(id)
+    //console.log(this.imdbID)
+    // console.log(document.getElementById("test"))
+    var js,stags=d.getElementsByTagName(s)[0];
+    //console.log(stags)
+    if(d.getElementById(id))
+    {
+      console.log("returned")
+      //this.IMDBRatingAvailable = false
+        return;
+    }
+    //this.IMDBRatingAvailable = true
+    js=d.createElement(s);
+    js.id=id;
+    js.src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js";
+    stags.parentNode.insertBefore(js,stags);
   }
 
   sendObj : SharedMovie = new SharedMovie();
@@ -295,8 +360,21 @@ export class MainMovieComponent implements OnInit {
         return friends.find(a => a.followerUserId === id)
       })
     this.sendObj = new SharedMovie();
-    this.shareWindowBool = false
+    if(document.getElementById("share-window") && document.getElementById("share-window").classList.contains("slideInUp"))
+    {
+      document.getElementById("share-window").classList.remove("slideInUp");
+      document.getElementById("share-window").classList.add("slideOutDown");
+    }
+    setTimeout(()=>{
+      this.shareWindowBool = false
+    },500)
+    
     //this.allFriends = this.allFriendsOriginal;
+  }
+
+  openShareWindow()
+  {
+    this.shareWindowBool = true;
   }
 
   featuredLists : MovieList[] = [];
@@ -618,9 +696,15 @@ export class MainMovieComponent implements OnInit {
           
           
         }
-        //console.log(this.recommendedMovieTitles);
       })
     }
+    var uniqueArray :DisplayMovie[] = this.recommendedMovieTitles.filter(function(item, pos) {
+      if(this !== undefined)
+        return this.recommendedMovieTitles.indexOf(item) == pos;
+    })
+
+    this.recommendedMovieTitles = uniqueArray;
+
   }
 
   imagesUrl : string = 'https://api.themoviedb.org/3/movie/';
@@ -635,7 +719,8 @@ export class MainMovieComponent implements OnInit {
     //console.log(movFromOurDb);
     if(movFromOurDb && movFromOurDb !== null)
     {
-      //this.router.navigate('/movie/'+movFromOurDb.key)
+      this.loading = true;
+      //this.router.navigateByUrl('/movie/'+movFromOurDb.key)
       window.location.href = '/movie/'+movFromOurDb.key
     }
     else
@@ -678,24 +763,16 @@ export class MainMovieComponent implements OnInit {
     }
   }
 
-  getIMDbRating(d,s,id)
-  {
-    // console.log(d)
-    // console.log(s)
-    // console.log(id)
-    console.log(this.imdbID)
-    // console.log(document.getElementById("test"))
-    var js,stags=d.getElementsByTagName(s)[0];
-    //console.log(stags)
-    if(d.getElementById(id))
-    {
-        return;
-    }
-    js=d.createElement(s);
-    js.id=id;
-    js.src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js";
-    stags.parentNode.insertBefore(js,stags);
-  }
+
+
+  onSwipe(evt) {
+    console.log("hit")
+    const x = Math.abs(evt.deltaX) > 40 ? (evt.deltaX > 0 ? 'right' : 'left'):'';
+    const y = Math.abs(evt.deltaY) > 40 ? (evt.deltaY > 0 ? 'down' : 'up') : '';
+
+    var eventText = y;
+    alert(y)
+}
 
 
 }

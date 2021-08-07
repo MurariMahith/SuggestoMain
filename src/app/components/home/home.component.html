@@ -31,7 +31,7 @@
 
 <div *ngIf="loading2" style="position: fixed;bottom: 70px;z-index:10;width: 90%;background-color: rgba(255, 255, 255, 0.863);color: black;margin: 5%;border-radius: 20px;z-index: 100;">
   <div class="d-flex bd-highlight" style="align-items: center;">
-      <div class="p-2 w-100 bd-highlight" style="margin-left: 5%;align-items: center;"><h6>Loading data please wait.</h6></div>
+      <div class="w-100 bd-highlight align-self-center" style="margin-left: 5%;align-items: center;"><h6 style="margin-bottom: 0;padding-bottom: 0;">Syncing with real time data.</h6></div>
       <div class="p-2 flex-shrink-1 bd-highlight" style="margin-right: 5%;" (click)="loading2 = false">
           <i style="color: blck;" class="bi bi-x-circle-fill"></i>
       </div>
@@ -608,7 +608,8 @@
           </a>
         </div><br>
         <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieExternalSiteQuickView()"> Watch Movie <i class="fa fa-play-circle-o"></i></a>
-        <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieHref(quickViewMovie.key)"> Detail view about Movie <i class="fa fa-info-circle"></i></a>
+        <!-- <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieHref(quickViewMovie.key)"> Detail view about Movie <i class="fa fa-info-circle"></i></a> -->
+        <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieHref(quickViewMovie.key)" data-dismiss="modal"> Detail view about Movie <i class="fa fa-info-circle"></i></a>
       </div>
     </div>
   </div>
@@ -816,7 +817,7 @@
 
     <h6 *ngIf="randomMovieD" style="text-align: center;">Random Movie Picker</h6> 
     <div *ngIf="randomMovieD" class="random-Movie" style="display: flex;justify-content: center;align-items: center;">
-        <div class="item" [ngStyle]="{'height': (loggedIn) ? '300px' : '260px'}">
+        <div class="item" id="random-movie" [ngStyle]="{'height': (loggedIn) ? '300px' : '260px'}">
             
             <a (click)="GoToMovie(randomMovieD.key)">
               <img src="{{randomMovieD.cardImageUrl}}" class="img-thumbnail" style="height: 210px;width: 150px;">
