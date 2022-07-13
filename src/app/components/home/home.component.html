@@ -29,7 +29,7 @@
 
 
 
-<div *ngIf="loading2" style="position: fixed;bottom: 70px;z-index:10;width: 90%;background-color: rgba(255, 255, 255, 0.863);color: black;margin: 5%;border-radius: 20px;z-index: 100;">
+<div *ngIf="loading2 && isMobile" style="position: fixed;bottom: 70px;z-index:10;width: 90%;background-color: rgba(255, 255, 255, 0.863);color: black;margin: 5%;border-radius: 20px;z-index: 100;">
   <div class="d-flex bd-highlight" style="align-items: center;">
       <div class="w-100 bd-highlight align-self-center" style="margin-left: 5%;align-items: center;"><h6 style="margin-bottom: 0;padding-bottom: 0;">Syncing with real time data.</h6></div>
       <div class="p-2 flex-shrink-1 bd-highlight" style="margin-right: 5%;" (click)="loading2 = false">
@@ -39,12 +39,12 @@
 </div>
 
 <!--this below div is used to display today movie until real data loads-->
-<div *ngIf="loading2" id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
+<div *ngIf="loading2 && isMobile" id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
       <span *ngIf="todayBooleanMovie">
         <a (click)="startQuickView(this.todayMovieD.key)" data-toggle="modal" data-target="#quickviewmodal">
-        <img class="d-block w-100" src="{{this.todayMovieD.bigImageUrl}}" alt="{{this.todayMovieD.title}}"  [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+        <img class="d-block w-100" src="{{this.todayMovieD.bigImageUrl}}" alt="{{this.todayMovieD.title}}"  [ngStyle]="{'height': (isMobile) ? '200px' : '0px'}">
         <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
           <span class="badge badge-primary">
             Today Suggestion
@@ -96,7 +96,7 @@
   </a>
 </div>
 
-<div *ngIf="!loggedIn && !loading2">
+<div *ngIf="!loggedIn && !loading2 && isMobile">
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       <!--today movie-->
@@ -106,7 +106,7 @@
         </span>
         <span *ngIf="!todayBooleanMovie && !loading">
           <a (click)="startQuickView(this.todayMovieD.key)" data-toggle="modal" data-target="#quickviewmodal">
-          <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"  [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+          <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"  [ngStyle]="{'height': (isMobile) ? '200px' : '0px'}">
           <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
             <span class="badge badge-primary">
               Today Suggestion
@@ -153,7 +153,7 @@
         </span>
         <span *ngIf="!todayBooleanMovie && !loading">
           <a (click)="this.router.navigateByUrl('/board')">
-          <img class="d-block w-100" src="{{topCustomer.customerPhotoUrl}}" alt="{{topCustomer.name}}"  [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+          <img class="d-block w-100" src="{{topCustomer.customerPhotoUrl}}" alt="{{topCustomer.name}}"  [ngStyle]="{'height': (isMobile) ? '200px' : '0px'}">
           <div style="background-color: rgba(70, 70, 70, 0.493);height: 200px;width: 100%;position: absolute;top: 0;">
             <div style="margin: 5%;display: flex;justify-content: center;align-items: center;height: 200px;">
               <img style="width: 80px;height: 80px;border-radius: 100px;border: 2px solid white;margin-right: 10px;" src="{{topCustomer.customerPhotoUrl}}" alt="{{topCustomer.name}}">
@@ -211,7 +211,7 @@
   </div>
 </div>
 
-<div *ngIf="loggedIn && !loading2" id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+<div *ngIf="loggedIn && !loading2 && isMobile" id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
     <!--today movie-->
     <div class="carousel-item active">      
@@ -220,7 +220,7 @@
       </span> -->
       <span *ngIf="todayBooleanMovie && !loading">
         <a >
-        <img class="d-block w-100" src="../../../assets/images/nomovietoday2.PNG" alt="No Movie Today"  [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+        <img class="d-block w-100" src="../../../assets/images/nomovietoday2.PNG" alt="No Movie Today"  [ngStyle]="{'height': (isMobile) ? '200px' : '0px'}">
         </a>
         <div style="display: flex;justify-content: center;flex-wrap: nowrap;">
           <h5>Suggesto</h5><br>          
@@ -257,7 +257,7 @@
       </span>
       <span *ngIf="!todayBooleanMovie && !loading">
         <a (click)="startQuickView(this.todayMovieD.key)" data-toggle="modal" data-target="#quickviewmodal">
-        <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"  [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+        <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"  [ngStyle]="{'height': (isMobile) ? '200px' : '0px'}">
         <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
           <span class="badge badge-primary">
             Today Suggestion
@@ -303,7 +303,7 @@
     <div class="carousel-item" *ngIf="loggedIn && corouselWishlistedMovieBool">
       <span *ngIf="!loading">
         <a (click)="startQuickView(this.corouselWishlistedMovie.key)" data-toggle="modal" data-target="#quickviewmodal">
-          <img class="d-block w-100" src="{{this.corouselWishlistedMovie.imageUrl}}" alt="{{this.corouselWishlistedMovie.title}}" [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+          <img class="d-block w-100" src="{{this.corouselWishlistedMovie.imageUrl}}" alt="{{this.corouselWishlistedMovie.title}}" [ngStyle]="{'height': (isMobile) ? '200px' : '0px'}">
           <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
             <span class="badge badge-primary">
               From Wishlist
@@ -351,7 +351,7 @@
       </span>
       <span *ngIf="!todayBooleanMovie && !loading">
         <a (click)="startQuickView(this.todayMovieD.key)" data-toggle="modal" data-target="#quickviewmodal">
-        <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"  [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+        <img class="d-block w-100" src="{{this.todayMovie.imageUrl}}" alt="{{this.todayMovie.title}}"  [ngStyle]="{'height': (isMobile) ? '200px' : '0px'}">
         <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
           <span class="badge badge-primary">
             Today Suggestion
@@ -396,7 +396,7 @@
     <div class="carousel-item" *ngIf="loggedIn && corouselPersonalisedMovieBool">
       <span *ngIf="!loading">
         <a (click)="startQuickView(this.corouselPersonalisedMovieD.key)" data-toggle="modal" data-target="#quickviewmodal">
-          <img class="d-block w-100" src="{{this.corouselPersonalisedMovieD.bigImageUrl}}" alt="{{this.corouselPersonalisedMovieD.title}}" [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+          <img class="d-block w-100" src="{{this.corouselPersonalisedMovieD.bigImageUrl}}" alt="{{this.corouselPersonalisedMovieD.title}}" [ngStyle]="{'height': (isMobile) ? '200px' : '0px'}">
           <span style="position: absolute;top: 10px;left: 10px;width: 100%; ">
             <span class="badge badge-primary">
               From Personalised Movies
@@ -444,7 +444,7 @@
       </span>
       <span *ngIf="!todayBooleanMovie && !loading">
         <a (click)="this.router.navigateByUrl('/board')">
-        <img class="d-block w-100" src="{{topCustomer.customerPhotoUrl}}" alt="{{topCustomer.name}}"  [ngStyle]="{'height': (isMobile) ? '200px' : 'auto'}">
+        <img class="d-block w-100" src="{{topCustomer.customerPhotoUrl}}" alt="{{topCustomer.name}}"  [ngStyle]="{'height': (isMobile) ? '200px' : '0px'}">
         <div style="background-color: rgba(70, 70, 70, 0.493);height: 200px;width: 100%;position: absolute;top: 0;">
           <div style="margin: 5%;display: flex;justify-content: center;align-items: center;height: 200px;">
             <img style="width: 80px;height: 80px;border-radius: 100px;border: 2px solid white;margin-right: 10px;" src="{{topCustomer.customerPhotoUrl}}" alt="{{topCustomer.name}}">

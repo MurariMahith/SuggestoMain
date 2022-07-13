@@ -22,16 +22,22 @@
 
 .list-item
 {
-    background-color: rgba(90, 89, 89, 0.76);
+    background-color: #ffede71f;
+    //previous colro : rgba(90, 89, 89, 0.76);
     // min-width: 100px;
     // height: 100px;
-    border-radius: 10px;
+    border-radius: 6px;
     margin: 2%;
     padding: 2%;
+    padding-top: 0%;
+    padding-bottom: 0%;
     // display: flex;
 
     // justify-content: center;
-    // align-items: center;
+    // // align-items: center;
+    // border: 0.5px solid #ff895a;
+    // color: #DF6B3F;
+    // background: #ffede71f;
 }
 
 .content-item

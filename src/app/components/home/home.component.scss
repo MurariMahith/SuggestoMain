@@ -82,7 +82,7 @@ a:hover {
 }
 
 .movie-card {
-  background: #ffffff;
+  //background: #ffffff;
   box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 315px;
@@ -159,7 +159,10 @@ a:hover {
   //below two lines are original
   // padding: 18px 18px 24px 18px;
   // margin: 0;
-
+  background: #2b2b2b !important;
+  color: white !important;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   padding: 18px 18px 24px 18px;
   margin: 0;
   //change height here to control content below movie cards
@@ -180,7 +183,7 @@ a:hover {
 }
 
 .movie-title {
-  font-size: 24px;
+  font-size: 16px;
   margin: 0;
   display: table-cell;
 }
@@ -258,7 +261,7 @@ a:hover {
   .card2 {
     display: inline-block;
     margin: 10px;
-    width: 300px;
+    width: 250px;
   }
 }
 
@@ -369,7 +372,7 @@ a:hover {
 
 .list-item
 {
-    background-color: rgba(90, 89, 89, 0.76);
+    background-color: #ffede71f;
     // min-width: 100px;
     // height: 100px;
     border-radius: 10px;

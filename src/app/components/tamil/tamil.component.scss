@@ -7,19 +7,26 @@
     text-decoration: none;
     margin: 5px 2px;
     border-radius: 5px;
+    color: white
   }
 
   
   .play2
   {
-    background: #55ACEE;
     color: white; 
+    background: #ffede71f;
+
+    box-sizing: border-box;
+    border-radius: 6px;
   }
 
   .play3
   {
-      background:#00b489;
       color: white;
+      background: #ffede71f;
+
+      box-sizing: border-box;
+      border-radius: 6px;
   }
 
   .fa-share-alt

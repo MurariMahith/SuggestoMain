@@ -111,19 +111,19 @@ background-color: rgb(0, 0, 0)">
                     <a class="btn btn-outline-info " style="margin: 2%;border-radius: 10px;background-color: rgb(22,22,22);border: 0.5px solid rgb(156, 156, 156);;" role="button" (click)="MoreAboutMovie()"><i class="fa fa-info-circle" aria-hidden="true"></i><br>About</a>
                   </span> -->
                   <span *ngIf="currentCustomer">
-                    <a class="btn btn-outline-info " style="margin: 2%;border-radius: 10px;background-color: rgb(22,22,22);border: 0.5px solid rgb(156, 156, 156);;" role="button" (click)="openShareWindow()">
+                    <a class="btn btn-outline-info " style="margin: 2%;border-radius: 10px;background-color: rgb(22,22,22);border: 0.5px solid #DF6B3F;width: 100px;" role="button" (click)="openShareWindow()">
                       <i class="bi bi-share"></i>
-                       Send to friends</a>
+                       <br>Send</a>
                   </span>
                   <span *ngIf="eligibleForWishList && loggedIn ">
-                    <a class="btn btn-outline-primary " style="margin: 2%;border-radius: 10px;background-color: rgb(22,22,22);border: 0.5px solid rgb(156, 156, 156);;" role="button" (click)='wishListMovie(actualMovie.key)'> <i class="fa fa-heart" style="color: red;" aria-hidden="true"></i><br> Wishlist</a>
+                    <a class="btn btn-outline-primary " style="margin: 2%;border-radius: 10px;background-color: rgb(22,22,22);border: 0.5px solid #DF6B3F;width: 100px;" role="button" (click)='wishListMovie(actualMovie.key)'> <i class="fa fa-heart" style="color: red;" aria-hidden="true"></i><br> Wishlist</a>
                   </span >
                   <span *ngIf="!eligibleForWishList && loggedIn">
                     <a class="btn btn-danger " style="margin: 2%;border-radius: 10px;" role="button" (click)='removeFromWishlist(actualMovie.key)'> <i class="bi bi-heart" aria-hidden="true"></i><br> Remove</a>
                   </span> 
 
                   <span *ngIf="eligibleForWatched && loggedIn">
-                    <a class="btn btn-outline-success " style="margin: 2%;border-radius: 10px;background-color: rgb(22,22,22);border: 0.5px solid rgb(156, 156, 156);;"  role="button" (click)="addToWatchedMovies(actualMovie.key)"> <i class="bi bi-tv-fill"></i><br> Watched</a>
+                    <a class="btn btn-outline-success " style="margin: 2%;border-radius: 10px;background-color: rgb(22,22,22);border: 0.5px solid #DF6B3F;width: 100px;"  role="button" (click)="addToWatchedMovies(actualMovie.key)"> <i class="bi bi-tv-fill"></i><br> Watched</a>
                   </span >
                   <span *ngIf="!eligibleForWatched && loggedIn">
                     <a class="btn btn-success " style="margin: 2%;border-radius: 10px;" role="button" (click)='removeFromWatched(actualMovie.key)'><i class="bi bi-tv" aria-hidden="true"></i><br> Remove</a>
@@ -180,8 +180,8 @@ background-color: rgb(0, 0, 0)">
                   </a>
                   </div><br>
                 <div style="display: flex;justify-content: center;">
-                  <a class="btn btn-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieExternalSite()">Watch Movie <i class="fa fa-play-circle-o"></i></a>
-                  <a class="btn btn-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)='trailer()'>Watch Trailer <i class="fa fa-play-circle-o"></i></a>
+                  <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)="GoToMovieExternalSite()">Watch Movie <i class="fa fa-play-circle-o"></i></a>
+                  <a class="btn btn-outline-primary  buttons-top btn-block" style="width: 95%;" role="button" (click)='trailer()'>Watch Trailer <i class="fa fa-play-circle-o"></i></a>
                 </div>
               </span> 
               <div class="rating" style="margin: 5%;">
@@ -239,7 +239,7 @@ background-color: rgb(0, 0, 0)">
 
               <!-- <small  id="emailHelp" class="form-text "><h6>Description about Movie : <br></h6>{{actualMovie.description}}</small> -->
               
-              <button class="btn btn-lg btn-outline-primary btn-block" (click)="copyToClipboard()"><i class="bi bi-share-fill"></i>  Suggest this movie to your friends outside Suggesto</button><br>
+              <button class="btn btn-lg btn-outline-primary " (click)="copyToClipboard()"><i class="bi bi-share-fill"></i>  Share</button><br>
               <h6 *ngIf="featuredLists.length !== 0">Featured on</h6>
               <div>
                 <span *ngFor="let list of featuredLists">

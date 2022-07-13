@@ -227,6 +227,10 @@ export class HomeComponent implements OnInit {
   ngOnDestroy()
   { 
 
+    if(!this.isMobile)
+    {
+      document.body.style.zoom = "100%";
+    }
     window.removeEventListener('shake',this.shaked,false);
     this.hitsService.getHits()
     .snapshotChanges().pipe(
@@ -294,6 +298,10 @@ export class HomeComponent implements OnInit {
     }
     else{
       ////console.log("laptop")
+    }
+    if(!this.isMobile)
+    {
+      document.body.style.zoom = "80%";
     }
     //get today movie from localstorage until it loads from db.
     console.log(localStorage.getItem("editorchoiceList") == null)
